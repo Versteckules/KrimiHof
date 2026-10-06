@@ -68,9 +68,6 @@
 
         <!-- Story & Reset Button Bar -->
         <div style="display: flex; gap: var(--space-md); justify-content: center; margin-top: var(--space-lg); flex-wrap: wrap;">
-          <button id="btn-open-intro-landing" class="btn-secondary" title="Die Hintergrundgeschichte als Bilderstory ansehen">
-            📖 Fall-Prolog & Bilderstory
-          </button>
           <button id="btn-open-reset" class="btn-danger" title="Gesamten Spielstand löschen">
             🗑️ Akte Schreddern
           </button>
@@ -208,24 +205,11 @@
           <p id="station-description" style="font-size: 1.15rem; margin-bottom: var(--space-lg); line-height: 1.6; font-style: italic; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: var(--space-md);">Beschreibung lädt...</p>
           
           <div class="riddle-section" style="margin-top: var(--space-md);">
-            <h3 style="font-family: var(--font-mono); font-size: 0.9rem; color: #555; text-transform: uppercase; margin-bottom: 5px;">Ermittlungsaufgabe</h3>
-            <p id="station-question" style="font-size: 1.1rem; font-weight: 600; margin-bottom: var(--space-md);">Frage lädt...</p>
-            
             <!-- Klickbare Personen-Karten (z.B. Station 1 Rathaus) -->
             <div id="station-characters-container" class="station-characters-grid hidden"></div>
 
-            <!-- Klickbare Multiple-Choice Optionen (für alle weiteren Stationen) -->
-            <div id="station-choices-container" class="station-choices-grid hidden"></div>
-            
-            <!-- Optionale manuelle Eingabe -->
+            <!-- Fallback-Wrap für Gadget Start -->
             <div id="station-manual-wrap" class="station-manual-wrap hidden">
-              <input type="text" id="station-answer-input" placeholder="Deine Antwort..." style="background: rgba(0,0,0,0.05); color: #2c1e16; border: 1px solid rgba(0,0,0,0.2); padding: 12px; font-size: 1.1rem; font-family: var(--font-mono); border-radius: 4px; text-transform: lowercase; width: 100%; box-sizing: border-box;">
-              <button id="btn-station-submit" class="btn-primary" style="margin-top: 10px; padding: 10px 20px; font-size: 1rem; width: 100%;">Antwort überprüfen</button>
-            </div>
-
-            <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center; margin-top: 15px;">
-              <button id="btn-station-hint" style="background: none; border: none; color: #555; text-decoration: underline; cursor: pointer; font-family: var(--font-mono); font-size: 0.85rem;">Hinweis anfordern?</button>
-              <button id="btn-toggle-manual" style="background: none; border: none; color: #777; cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem;">⌨️ Freitext eingeben</button>
             </div>
             
             <p id="station-error-msg" class="hidden" style="color: #8b0000; font-family: var(--font-mono); font-size: 0.9rem; margin-top: 10px;">Fehlerhafte Eingabe.</p>

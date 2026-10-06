@@ -27,16 +27,12 @@ export function openStation(stationId) {
   const hintBox = document.getElementById('station-hint-box');
 
   const charsContainer = document.getElementById('station-characters-container');
-  const choicesContainer = document.getElementById('station-choices-container');
   const manualWrap = document.getElementById('station-manual-wrap');
 
   titleEl.textContent = station.name;
   numStampEl.textContent = station.number.toString().padStart(2, '0');
   descEl.textContent = station.description;
-  questionEl.textContent = station.riddle.question;
   
-  // Reset fields
-  if (answerInput) answerInput.value = '';
   if (errorMsg) errorMsg.classList.add('hidden');
   if (hintBox) hintBox.classList.add('hidden');
 
@@ -84,44 +80,18 @@ export function openStation(stationId) {
       });
     }
 
-    if (choicesContainer) choicesContainer.classList.add('hidden');
     if (manualWrap) manualWrap.classList.add('hidden');
   } 
-  // 2. Klickbare Multiple-Choice Optionen vorhanden? (z.B. Hauptpost, Obelisk, Lorenzkirche etc.)
-  else if (station.riddle && station.riddle.choices && station.riddle.choices.length > 0) {
-    if (charsContainer) charsContainer.classList.add('hidden');
-    
-    if (choicesContainer) {
-      choicesContainer.innerHTML = '';
-      choicesContainer.classList.remove('hidden');
-
-      station.riddle.choices.forEach(choice => {
-        const btn = document.createElement('button');
-        btn.className = 'station-choice-btn';
-        btn.innerHTML = `<span>📌</span> <span>${choice.text}</span>`;
-        btn.setAttribute('data-val', choice.value);
-
-        btn.addEventListener('click', () => {
-          handleChoiceClick(station, choice, btn);
-        });
-
-        choicesContainer.appendChild(btn);
-      });
-    }
-
-    if (manualWrap) manualWrap.classList.add('hidden');
-  } 
-  // 3. Fallback: Direktes Starten des Gadgets (Kein manuelles Text-Eingabefeld mehr)
+  // 2. Fallback: Direktes Starten des Gadgets (Keine Abfragen mehr, nur GPS-Trigger)
   else {
     if (charsContainer) charsContainer.classList.add('hidden');
-    if (choicesContainer) choicesContainer.classList.add('hidden');
     if (manualWrap) {
       manualWrap.classList.remove('hidden');
-      manualWrap.innerHTML = `
+      manualWrap.innerHTML = \`
         <button class="btn-primary" id="btn-station-direct-gadget" style="width: 100%; padding: 15px; font-size: 1.2rem; margin-top: 20px;">
           🔎 Tatort untersuchen
         </button>
-      `;
+      \`;
       document.getElementById('btn-station-direct-gadget').addEventListener('click', () => {
         import('./gadgets/gadget-manager.js').then(mod => mod.startGadget(station.gadget.id, currentStationId));
       });
@@ -173,93 +143,8 @@ function handleChoiceClick(station, choice, btnEl) {
 }
 
 export function initStationView() {
-  const btnSubmit = document.getElementById('btn-station-submit');
   const btnCancel = document.getElementById('btn-station-cancel');
-  const btnHint = document.getElementById('btn-station-hint');
-  const btnToggleManual = document.getElementById('btn-toggle-manual');
-  const answerInput = document.getElementById('station-answer-input');
-  const errorMsg = document.getElementById('station-error-msg');
-  const hintBox = document.getElementById('station-hint-box');
-  const manualWrap = document.getElementById('station-manual-wrap');
-
-  const submitAnswer = () => {
-    if (!currentStationId) return;
-    const station = getStationById(currentStationId);
-    if (!station) return;
-    
-    const inputVal = answerInput ? answerInput.value.trim() : '';
-    if (!inputVal) {
-      if (errorMsg) {
-        errorMsg.textContent = "Bitte wähle eine Option oder gib eine Antwort ein.";
-        errorMsg.classList.remove('hidden');
-      }
-      return;
-    }
-
-    if (checkAnswer(inputVal, station.riddle.answers)) {
-      if (errorMsg) errorMsg.classList.add('hidden');
-      
-      if (station.isStoryEvent) {
-        const story = getStory();
-        let treeKey = null;
-        if (inputVal.toLowerCase().includes('polizist') || inputVal.toLowerCase().includes('stahl')) {
-          treeKey = station.storyEventId + "_polizist";
-        } else if (inputVal.toLowerCase().includes('reporter') || inputVal.toLowerCase().includes('stift')) {
-          treeKey = station.storyEventId + "_reporter";
-        }
-
-        if (treeKey && story.dialogueTrees && story.dialogueTrees[treeKey]) {
-          openDialogue(story.dialogueTrees[treeKey], () => {
-            onStationComplete(currentStationId);
-          });
-          return;
-        }
-      }
-
-      startGadget(station.gadget.id, currentStationId);
-    } else {
-      wrongAttempts++;
-      if (errorMsg) {
-        errorMsg.textContent = "Das scheint nicht zu stimmen. Versuch es noch einmal.";
-        errorMsg.classList.remove('hidden');
-      }
-      if (answerInput) {
-        answerInput.classList.add('shake');
-        setTimeout(() => answerInput.classList.remove('shake'), 500);
-      }
-    }
-  };
-
-  if (btnSubmit) btnSubmit.addEventListener('click', submitAnswer);
   
-  if (answerInput) {
-    answerInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') submitAnswer();
-    });
-  }
-
-  if (btnHint) {
-    btnHint.addEventListener('click', () => {
-      if (!currentStationId) return;
-      const station = getStationById(currentStationId);
-      if (hintBox && station) {
-        hintBox.textContent = "Tipp: " + station.riddle.hint;
-        hintBox.classList.remove('hidden');
-      }
-    });
-  }
-
-  if (btnToggleManual) {
-    btnToggleManual.addEventListener('click', () => {
-      if (manualWrap) {
-        manualWrap.classList.toggle('hidden');
-        if (!manualWrap.classList.contains('hidden') && answerInput) {
-          answerInput.focus();
-        }
-      }
-    });
-  }
-
   if (btnCancel) {
     btnCancel.addEventListener('click', () => {
       showView('view-dashboard');

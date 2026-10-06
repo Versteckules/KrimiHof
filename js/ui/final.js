@@ -104,60 +104,23 @@ export function startFinaleForSuspect(suspectId) {
 }
 
 function generateDiploma() {
-  const state = getState();
-  const name = state.playerName || 'Ermittler';
-  const result = calculateFinalResult(state);
-  const murdererName = getSuspectName(result.murderer);
-  const fc = getFinalCoords() || {};
-  const diploma = fc.diploma || {};
-  const date = new Date().toLocaleDateString('de-DE');
-  const avatarUrl = new URL('assets/avatar.jpg', window.location.href).href;
+  const resultContainer = document.getElementById('final-result');
+  const existingBanner = document.getElementById('diploma-banner-wrapper');
+  if (existingBanner) existingBanner.remove();
 
-  const win = window.open('', '_blank');
-  if (!win) {
-    alert('Bitte Pop-ups erlauben, um das Diplom anzuzeigen.');
-    return;
-  }
-
-  win.document.write(`
-    <html>
-      <head>
-        <meta charset="UTF-8">
-        <title>Diplom - Der Pakt der Schlappen-Erben</title>
-        <style>
-          body { font-family: 'Playfair Display', Georgia, serif; text-align: center; background: #fdfbf7; color: #111; padding: 40px; }
-          .border { border: 10px double #111; padding: 40px; position: relative; }
-          h1 { font-size: 2.6rem; margin-bottom: 10px; }
-          h2 { font-size: 1.4rem; color: #555; font-weight: normal; }
-          p { font-size: 1.3rem; margin: 18px 0; }
-          .name { font-size: 2.3rem; font-weight: bold; border-bottom: 2px solid #111; display: inline-block; padding: 0 50px; margin: 16px 0; font-family: 'Courier New', monospace; }
-          .signature { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 40px; }
-          .signature img { width: 110px; mix-blend-mode: multiply; filter: sepia(0.4) contrast(1.1); }
-          .signature small { font-size: 0.95rem; color: #444; display: block; }
-        </style>
-      </head>
-      <body>
-        <div class="border">
-          <h1>${diploma.title || 'OFFIZIELLES DIPLOM'}</h1>
-          <h2>${diploma.subtitle || 'Stadt Hof - Historische Ermittlungen'}</h2>
-          <p>Hiermit wird bestätigt, dass</p>
-          <div class="name">${name}</div>
-          <p>den historischen Fall „Der Pakt der Schlappen-Erben" erfolgreich gelöst hat.</p>
-          <p>Der Täter <strong>${murdererName}</strong> wurde durch sorgfältige Sammlung von Beweisen überführt.</p>
-          <div class="signature">
-            <div style="text-align:left;">
-              <small>Hof an der Saale, den ${date}</small>
-              <small>${diploma.signature || ''}</small>
-            </div>
-            <div>
-              <img src="${avatarUrl}" alt="Versteckules">
-              <small>Geocache Owner · Versteckules</small>
-            </div>
-          </div>
-        </div>
-        <script>window.onload = () => window.print();<\/script>
-      </body>
-    </html>
-  `);
-  win.document.close();
+  const bannerWrapper = document.createElement('div');
+  bannerWrapper.id = 'diploma-banner-wrapper';
+  bannerWrapper.style = "margin-top: 30px; border-top: 1px solid var(--color-glass-border); padding-top: 20px;";
+  
+  const bannerUrl = new URL('assets/diploma_banner.jpg', window.location.href).href;
+  
+  bannerWrapper.innerHTML = \`
+    <h3 style="color: var(--color-amber-glow); font-size: 1.2rem; margin-bottom: 15px;">Dein Geocaching-Banner</h3>
+    <img src="\${bannerUrl}" alt="Diplom Banner" style="width: 100%; max-width: 600px; border-radius: 8px; border: 2px solid var(--color-amber-muted); margin-bottom: 15px;">
+    <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 10px;">Füge diesen Code in dein Geocaching-Profil ein:</p>
+    <textarea readonly style="width: 100%; height: 60px; background: rgba(0,0,0,0.5); color: #fff; font-family: monospace; border: 1px solid var(--color-glass-border); padding: 10px; border-radius: 4px; resize: none;"><a href="\${window.location.origin}\${window.location.pathname}"><img src="\${bannerUrl}" alt="Der Pakt der Schlappen-Erben - Meister-Ermittler" /></a></textarea>
+  \`;
+  
+  resultContainer.appendChild(bannerWrapper);
+  bannerWrapper.scrollIntoView({ behavior: 'smooth' });
 }

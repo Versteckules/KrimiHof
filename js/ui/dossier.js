@@ -61,7 +61,7 @@ function updateDossier() {
       const motive = suspectData.motive || '';
       
       const isHighest = index === 0;
-      const canArrest = perc > 50 || (isAllStationsSolved && isHighest);
+      const canArrest = isAllStationsSolved && (perc > 50 || isHighest);
 
       html += `
         <div class="dossier-suspect-card" style="background: rgba(10, 14, 23, 0.85); border: 1px solid var(--color-glass-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
