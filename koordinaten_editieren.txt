@@ -1,0 +1,14 @@
+﻿rathaus | Rathaus LudwigstraÃŸe | N 50Â° 19.313 E 011Â° 55.121
+hauptpost | Hauptpost am Sonnenplatz | N 50Â° 18.986 E 011Â° 54.898
+Kriegerdenkmal | Kriegerdenkmal an der Sophienschule | N 50Â° 18.728 E 011Â° 55.052
+lorenzkirche | St. Lorenzpark & Kirche | N 50Â° 18.893 E 011Â° 55.057
+biengaesschen | BiengÃ¤sschen | N 50Â° 18.907 E 011Â° 54.979
+ludwigstrasse | LudwigstraÃŸe 18 & 20 | N 50Â° 19.168 E 011Â° 55.004
+karolinenstrasse | KarolinenstraÃŸe (Nr. 12) | N 50Â° 19.306 E 011Â° 55.037
+schlossplatz | SchloÃŸplatz 12b | N 50Â° 19.220 E 011Â° 54.950
+hospitalkirche | Hospitalkirche am Unteren Tor | N 50Â° 19.463 E 011Â° 55.164
+michaeliskirche | St. Michaeliskirche | N 50Â° 19.321 E 011Â° 55.167
+sonnenplatz | Sonnenplatz / WÃ¤rschtlamo | N 50Â° 18.981 E 011Â° 54.892
+marienkirche | St. Marien-Kirche | N 50Â° 19.321 E 011Â° 55.167
+saale_schmuggel | Saaleufer-Schmuggelpfad | N 50Â° 19.462 E 011Â° 55.272
+altstadt_archiv | Altes Spital-Archiv | N 50Â° 19.425 E 011Â° 55.215

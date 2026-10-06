@@ -124,16 +124,20 @@ function updateDossier() {
     const inv = state.inventory || [];
     let h = `<strong>Trackables (${tbs.length}/4):</strong><br>`;
     const itemNames = {
+      'evidence_fire_dossier': 'Brandnotiz von Dr. Renger',
+      'evidence_polaroid_station': 'Überwachungs-Polaroid',
+      'evidence_cipher_paper': 'Chiffrierter Schuldschein',
+      'evidence_rosina_note': 'Rosina-Stiftungsurkunde',
+      'evidence_briefcase_lock': 'Geknackter Aktenkoffer',
+      'evidence_tape_renger': 'Tonbandaufnahme Renger',
+      'evidence_phone_warning': 'Anonyme Warn-Nachricht',
+      'evidence_ambigram_mirror': 'Geheimes Ambigramm',
       'evidence_dice_gamble': 'Gezinkte Würfel vom Wärschtlamo',
-      'evidence_uv_text': 'Geheime UV-Botschaft',
-      'evidence_blood_sample': 'Eingetrocknete Blutprobe',
-      'evidence_key_rusty': 'Rostiger Tresorschlüssel',
-      'evidence_ledger_page': 'Zerrissene Kontobuch-Seite',
-      'evidence_ring_signet': 'Schlappen-Erben Siegelring',
-      'evidence_photo_old': 'Altes Schwarz-Weiß-Foto',
-      'evidence_matches': 'Streichholzschachtel "Zum Löwen"',
-      'evidence_lockpick': 'Dietrich-Set',
-      'evidence_poison_vial': 'Leeres Giftfläschchen'
+      'evidence_wiretap_log': 'Abhörprotokoll Geheimbund',
+      'evidence_brass_wheel': 'Entschlüsselte Botschaft',
+      'evidence_uv_formula': 'Fluoreszierende Losung',
+      'evidence_torn_letter': 'Zerrissener Drohbrief',
+      'evidence_charter_1432': 'Historische Gründungsurkunde'
     };
     
     h += tbs.length > 0 ? tbs.join(', ') : '<em>Noch keine</em>';

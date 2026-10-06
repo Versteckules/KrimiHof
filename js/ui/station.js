@@ -13,6 +13,13 @@ let currentStationId = null;
 let wrongAttempts = 0;
 
 export function openStation(stationId) {
+  const state = getState();
+  if (state.solvedStations && state.solvedStations.includes(stationId)) {
+    alert('Du hast diesen Tatort bereits vollständig untersucht. Die Beteiligten lehnen weitere Gespräche ohne ihren Anwalt ab!');
+    showView('view-dashboard');
+    return;
+  }
+
   currentStationId = stationId;
   
   const station = getStationById(stationId);
@@ -93,7 +100,7 @@ export function openStation(stationId) {
         </button>
       `;
       document.getElementById('btn-station-direct-gadget').addEventListener('click', () => {
-        import('./gadgets/gadget-manager.js').then(mod => mod.startGadget(station.gadget.id, currentStationId));
+        startGadget(station.gadget.id, currentStationId);
       });
     }
   }
