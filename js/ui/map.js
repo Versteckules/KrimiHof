@@ -27,10 +27,10 @@ export function initMap() {
     attributionControl: false
   }).setView([lat, lng], 15);
 
-  // CARTO Dark Matter Kacheln
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  // OpenStreetMap mit Dark-Filter (siehe CSS) anstelle von Carto (API Key nötig)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    subdomains: 'abcd'
+    attribution: '© OpenStreetMap'
   }).addTo(map);
 
   L.control.zoom({ position: 'topright' }).addTo(map);

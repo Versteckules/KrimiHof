@@ -412,3 +412,7 @@
   margin-top: var(--space-sm);
 }
 
+/* Dark Mode Filter for OSM Tiles */
+.leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(85%) contrast(110%);
+}
