@@ -51,11 +51,26 @@
           <p style="font-size: 0.8rem; color: var(--color-night-light);">OFFIZIELLE ERMITTLUNGSAKTE</p>
         </div>
 
-        <!-- Start Button -->
-        <button id="btn-start-game" class="btn-primary">Akte Öffnen</button>
+        <!-- Start Button & Action Controls -->
+        <div id="game-progress-indicator" class="progress-status hidden">
+          Fortschritt: 0/12 Stationen
+        </div>
+        <div>
+          <button id="btn-start-game" class="btn-primary">Akte Öffnen</button>
+        </div>
         <p id="name-error" class="hidden" style="color: var(--color-blood-red); margin-top: var(--space-sm); font-family: var(--font-mono);">
           [FEHLER] Bitte Identität bestätigen.
         </p>
+
+        <!-- Team-Sync & Reset Button Bar -->
+        <div style="display: flex; gap: var(--space-md); justify-content: center; margin-top: var(--space-lg); flex-wrap: wrap;">
+          <button id="btn-open-sync" class="btn-secondary" title="Spielstand via QR-Code übertragen oder einlesen">
+            📱 Team-Sync (QR-Code)
+          </button>
+          <button id="btn-open-reset" class="btn-danger hidden" title="Gesamten Spielstand löschen">
+            🗑️ Akte Schreddern
+          </button>
+        </div>
 
         <div style="margin: var(--space-2xl) 0;"></div>
 
@@ -112,6 +127,95 @@
       </section>
 
     </main>
+  </div>
+
+  <!-- Modal: Team-Sync (QR-Code) -->
+  <div id="modal-sync" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">📱 Team-Synchronisation</h3>
+        <button id="modal-sync-close" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.95rem; margin-bottom: var(--space-md); color: var(--color-text-muted);">
+          Scanne diesen Code mit einem zweiten Smartphone, um die Ermittlungsakte sofort 1:1 zu spiegeln.
+        </p>
+
+        <div class="qr-container">
+          <canvas id="sync-qr-canvas" class="qr-canvas"></canvas>
+          <div class="qr-subtext">Offline QR-Code • Gültig für alle Teammitglieder</div>
+        </div>
+
+        <div style="text-align: center; margin: var(--space-md) 0;">
+          <button id="btn-copy-sync-link" class="btn-secondary" style="width: 100%;">
+            📋 Sync-Link in Zwischenablage kopieren
+          </button>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--color-glass-border); margin: var(--space-lg) 0;">
+
+        <h4 style="font-size: 1rem; color: var(--color-amber-glow); margin-bottom: var(--space-xs);">
+          Code manuell einlesen
+        </h4>
+        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: var(--space-xs);">
+          Falls die Kamera den Code nicht lesen kann, füge den Code hier ein:
+        </p>
+        <div style="display: flex; gap: var(--space-xs);">
+          <input type="text" id="sync-import-input" class="sync-input" placeholder="Sync-Code hier einfügen...">
+          <button id="btn-import-sync" class="btn-primary" style="font-size: 0.9rem; padding: var(--space-sm) var(--space-md); white-space: nowrap;">
+            Import
+          </button>
+        </div>
+        <p id="sync-import-error" class="hidden" style="color: var(--color-blood-red); font-size: 0.85rem; margin-top: var(--space-xs); font-family: var(--font-mono);">
+          [FEHLER] Ungültiger Sync-Code.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Reset Confirmation -->
+  <div id="modal-reset" class="modal-backdrop hidden">
+    <div class="modal-card" style="border-color: rgba(153, 27, 27, 0.4);">
+      <div class="modal-header" style="background: rgba(153, 27, 27, 0.1);">
+        <h3 class="modal-title" style="color: #fca5a5;">⚠️ Akte schreddern?</h3>
+        <button id="modal-reset-close" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: var(--space-md);">
+          Möchtest du die gesamte Ermittlungsakte wirklich <strong>unwiderruflich vernichten</strong>?
+        </p>
+        <p style="color: var(--color-text-muted); font-size: 0.9rem;">
+          Alle gelösten Stationen, gesammelten Indizien, Verdächtigen-Profile und die 4 Trackables gehen dabei verloren.
+        </p>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-cancel-reset" class="btn-secondary">Abbrechen</button>
+        <button id="btn-confirm-reset" class="btn-danger">Ja, alles löschen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Sync URL Import Prompt -->
+  <div id="modal-sync-prompt" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">📥 Team-Spielstand gefunden!</h3>
+      </div>
+      <div class="modal-body">
+        <p id="sync-prompt-text" style="margin-bottom: var(--space-md);">
+          Es wurde ein geteilter Team-Spielstand gefunden.
+        </p>
+        <p style="color: var(--color-text-muted); font-size: 0.9rem;">
+          Möchtest du diese Ermittlungsakte auf dein Gerät übernehmen? Dein bisheriger Stand wird dabei aktualisiert.
+        </p>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-reject-sync" class="btn-secondary">Ignorieren</button>
+        <button id="btn-accept-sync" class="btn-primary" style="font-size: 0.95rem; padding: var(--space-sm) var(--space-lg);">
+          Übernehmen
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Scripts -->

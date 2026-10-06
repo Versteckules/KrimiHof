@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>AP3 Test Runner: State, Team-Sync & QR-Code</title>
+  <style>
+    body { font-family: monospace; background: #0a0e17; color: #e2e8f0; padding: 2rem; }
+    .pass { color: #4ade80; }
+    .fail { color: #f87171; font-weight: bold; }
+    .summary { margin-top: 1.5rem; font-size: 1.2rem; border-top: 1px solid #334155; padding-top: 1rem; }
+    canvas { display: inline-block; margin: 10px 0; border: 1px solid #334155; }
+  </style>
+</head>
+<body>
+  <h1>AP3 Test Runner: State, Sync, TB & Reset</h1>
+  <div id="results"></div>
+  <canvas id="test-qr-canvas" width="200" height="200" style="display:none;"></canvas>
+
+  <script type="module">
+    import {
+      getState,
+      saveState,
+      loadState,
+      setPlayerName,
+      startGame,
+      markStationSolved,
+      recordDecision,
+      recordEventTriggered,
+      unlockTrackable,
+      addInventoryItem,
+      isStationSolved,
+      isTrackableUnlocked,
+      getSuspectRanking,
+      resetState,
+      subscribe
+    } from '../js/state.js';
+
+    import {
+      exportStateHash,
+      importStateHash,
+      applySyncHash,
+      generateSyncUrl,
+      renderSyncQRCode
+    } from '../js/sync.js';
+
+    import QRCode from '../vendor/qrcode.min.js';
+
+    const results = document.getElementById('results');
+    let passed = 0;
+    let failed = 0;
+
+    function assert(condition, desc) {
+      const div = document.createElement('div');
+      if (condition) {
+        div.className = 'pass';
+        div.textContent = `[PASS] ${desc}`;
+        passed++;
+      } else {
+        div.className = 'fail';
+        div.textContent = `[FAIL] ${desc}`;
+        failed++;
+      }
+      results.appendChild(div);
+      console.log(div.textContent);
+    }
+
+    async function runTests() {
+      console.log("Starting AP3 Tests...");
+
+      // 1. Reset initial state
+      resetState();
+      let state = getState();
+      assert(state.playerName === '', "Default state has empty player name");
+      assert(state.gameStarted === false, "Default state has gameStarted = false");
+      assert(Array.isArray(state.solvedStations) && state.solvedStations.length === 0, "Default solvedStations is empty array");
+      assert(Array.isArray(state.unlockedTrackables) && state.unlockedTrackables.length === 0, "Default unlockedTrackables is empty array");
+
+      // 2. Set player name
+      setPlayerName("Versteckules");
+      assert(getState().playerName === "Versteckules", "setPlayerName updates state correctly");
+
+      // 3. Start game
+      startGame();
+      assert(getState().gameStarted === true, "startGame sets gameStarted to true");
+      assert(getState().startedAt !== null, "startedAt timestamp is populated");
+
+      // 4. Subscription check
+      let subscriberNotified = false;
+      const unsub = subscribe((updated) => {
+        if (updated.playerName === "Sherlock") {
+          subscriberNotified = true;
+        }
+      });
+      setPlayerName("Sherlock");
+      assert(subscriberNotified === true, "State subscriber was notified on name change");
+      unsub();
+
+      // 5. Mark stations solved (Mandatory & Bonus)
+      markStationSolved('rathaus', { zone: 'altstadt', points: 10, evidenceId: 'evidence_fire_dossier' });
+      state = getState();
+      assert(isStationSolved('rathaus') === true, "isStationSolved('rathaus') returns true");
+      assert(state.stationOrder.includes('rathaus'), "rathaus added to stationOrder");
+      assert(state.zoneScores.altstadt === 1, "zoneScores.altstadt incremented to 1");
+      assert(state.inventory.includes('evidence_fire_dossier'), "evidence_fire_dossier added to inventory");
+      assert(state.score === 10, `Score updated to 10: got ${state.score}`);
+
+      // Bonus station
+      markStationSolved('saale_schmuggel', { isBonus: true, points: 15, zone: 'saale' });
+      state = getState();
+      assert(state.bonusSolved.includes('saale_schmuggel'), "Bonus station saale_schmuggel recorded in bonusSolved");
+      assert(state.score === 25, `Score updated to 25 after bonus: got ${state.score}`);
+
+      // 6. Dialogue Decisions & Suspect Scores
+      recordDecision('hauptbahnhof', 'bhf_1', 'herold', 2);
+      recordDecision('obelisk', 'ob_1', 'herold', 2);
+      recordDecision('lorenzkirche', 'lor_2', 'gipser', 2);
+      state = getState();
+      assert(state.decisions['hauptbahnhof'] === 'bhf_1', "Decision for hauptbahnhof stored");
+      assert(state.suspectScores.herold === 4, `Herold score is 4: got ${state.suspectScores.herold}`);
+      assert(state.suspectScores.gipser === 2, `Gipser score is 2: got ${state.suspectScores.gipser}`);
+
+      const ranking = getSuspectRanking();
+      assert(ranking[0].id === 'herold' && ranking[0].points === 4, "getSuspectRanking puts Herold in 1st place");
+
+      // 7. Events Triggered
+      recordEventTriggered('event_shadow_sprint', 10);
+      assert(getState().triggeredEvents.includes('event_shadow_sprint'), "event_shadow_sprint recorded in triggeredEvents");
+
+      // 8. Trackable Unlocks (All 4 codes)
+      unlockTrackable('HQZJCG');
+      unlockTrackable('ea99db'); // Test case insensitivity
+      unlockTrackable('CABGEW');
+      unlockTrackable('CARGC7');
+      state = getState();
+      assert(state.unlockedTrackables.length === 4, `All 4 trackables unlocked: got ${state.unlockedTrackables.length}`);
+      assert(isTrackableUnlocked('HQZJCG') === true, "isTrackableUnlocked('HQZJCG') returns true");
+      assert(isTrackableUnlocked('EA99DB') === true, "isTrackableUnlocked('EA99DB') returns true for lowercase input");
+      assert(isTrackableUnlocked('UNKNOWN') === false, "isTrackableUnlocked('UNKNOWN') returns false");
+
+      // 9. LocalStorage Persistence Test (Simulate reload)
+      const currentSnapshot = getState();
+      const reloadedState = loadState();
+      assert(reloadedState.playerName === "Sherlock", "Reloaded state retains playerName");
+      assert(reloadedState.solvedStations.length === 2, "Reloaded state retains 2 solved stations");
+      assert(reloadedState.unlockedTrackables.length === 4, "Reloaded state retains 4 trackables");
+      assert(reloadedState.suspectScores.herold === 4, "Reloaded state retains suspect scores");
+
+      // 10. Sync Serialization & Deserialization
+      const syncHash = exportStateHash();
+      assert(typeof syncHash === 'string' && syncHash.length > 20, "exportStateHash returns non-empty hash string");
+
+      const imported = importStateHash(syncHash);
+      assert(imported.playerName === "Sherlock", "importStateHash restores playerName");
+      assert(imported.solvedStations.length === 2, "importStateHash restores solvedStations");
+      assert(imported.unlockedTrackables.length === 4, "importStateHash restores unlockedTrackables");
+      assert(imported.suspectScores.herold === 4, "importStateHash restores suspectScores");
+
+      const syncUrl = generateSyncUrl();
+      assert(syncUrl.includes('?sync='), `generateSyncUrl creates valid sync URL: ${syncUrl.slice(0, 40)}...`);
+
+      // 11. QR Code Generator Tests (vendor/qrcode.min.js)
+      const canvas = document.getElementById('test-qr-canvas');
+      renderSyncQRCode(canvas, { size: 180 });
+      assert(canvas.width > 0 && canvas.height > 0, `QR Code successfully rendered to canvas (${canvas.width}x${canvas.height})`);
+
+      const svgContainer = document.createElement('div');
+      QRCode.toSVG(syncUrl, { width: 200 });
+      assert(typeof QRCode.toSVG(syncUrl) === 'string' && QRCode.toSVG(syncUrl).includes('<svg'), "QRCode.toSVG produces valid SVG string");
+
+      // 12. Apply Sync Hash on secondary client
+      resetState();
+      assert(getState().solvedStations.length === 0, "State reset before testing applySyncHash");
+      applySyncHash(syncHash);
+      const syncedState = getState();
+      assert(syncedState.playerName === "Sherlock", "applySyncHash successfully restored playerName on second device");
+      assert(syncedState.solvedStations.length === 2, "applySyncHash restored solved stations on second device");
+      assert(syncedState.unlockedTrackables.length === 4, "applySyncHash restored trackables on second device");
+
+      // 13. Reset State & Confirmation Test
+      resetState();
+      const finalState = getState();
+      assert(finalState.playerName === '', "resetState completely clears player name");
+      assert(finalState.solvedStations.length === 0, "resetState clears solved stations");
+      assert(finalState.unlockedTrackables.length === 0, "resetState clears trackables");
+      assert(finalState.score === 0, "resetState resets score to 0");
+
+      // Summary
+      const summary = document.createElement('div');
+      summary.className = 'summary';
+      summary.innerHTML = `<strong>AP3 Tests abgeschlossen:</strong> <span class="pass">${passed} bestanden</span>, <span class="${failed ? 'fail' : ''}">${failed} fehlgeschlagen</span>`;
+      results.appendChild(summary);
+      window.__TEST_RESULTS__ = { passed, failed };
+    }
+
+    runTests();
+  </script>
+</body>
+</html>
