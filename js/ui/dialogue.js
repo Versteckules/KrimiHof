@@ -125,10 +125,9 @@ function renderChoices(choices, isEnd, unlockSuspects) {
         currentNodeIndex = nextIndex;
         renderNode();
       } else {
+        showView('view-dashboard');
         if (onDialogComplete) {
           onDialogComplete();
-        } else {
-          showView('view-dashboard');
         }
       }
     };
