@@ -1,0 +1,57 @@
+/* tokens.css - Design System Variables */
+:root {
+  /* Colors - Noir / Graphic Novel Theme */
+  --color-night-dark: #0a0e17; /* Deep midnight blue */
+  --color-night-medium: #151a28;
+  --color-night-light: #232c40;
+  
+  --color-amber-glow: #f59e0b;
+  --color-amber-muted: #d97706;
+  --color-amber-dark: #92400e;
+  
+  --color-brass-light: #fef08a;
+  --color-brass: #eab308;
+  --color-brass-dark: #a16207;
+
+  --color-text-main: #e2e8f0;
+  --color-text-muted: #94a3b8;
+  
+  --color-paper-light: #fdfbf7;
+  --color-paper-dark: #d6d1c4;
+  --color-blood-red: #991b1b;
+  
+  --color-glass-bg: rgba(10, 14, 23, 0.7);
+  --color-glass-border: rgba(245, 158, 11, 0.2);
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-glow: 0 0 15px rgba(245, 158, 11, 0.5);
+  --shadow-strong: 0 10px 25px -5px rgba(0, 0, 0, 0.8);
+  --shadow-glass: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  
+  /* Z-Index Layers */
+  --z-background: -10;
+  --z-base: 1;
+  --z-content: 10;
+  --z-overlay: 50;
+  --z-modal: 100;
+  --z-flashlight: 200;
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Der Pakt der Schlappen-Erben - Ein Nacht-Krimi in Hof</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/effects.css">
+  
+  <!-- Fonts (Google Fonts for AP1, ideally local later) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <!-- Global Flashlight Overlay -->
+  <div id="flashlight-overlay"></div>
+
+  <!-- Main App Container -->
+  <div id="app">
+    <!-- Landing View will be injected here or hardcoded for AP1 -->
+    <main id="view-landing" class="view">
+      
+      <!-- Hero Section -->
+      <section class="hero-container">
+        <img src="assets/hero_hof_night.jpg" alt="Nächtliches Hof" class="hero-image">
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+          <img src="assets/seal_schlappen.jpg" alt="Schlappen-Erben Siegel" class="seal-img">
+          <h1 class="hero-title">Der Pakt der<br>Schlappen-Erben</h1>
+          <p class="hero-subtitle">Ein Nacht-Krimi in Hof (Saale)</p>
+        </div>
+      </section>
+
+      <!-- Content Area -->
+      <section style="padding: var(--space-xl) var(--space-md); text-align: center; max-width: 800px; margin: 0 auto;">
+        
+        <p style="color: var(--color-text-muted); font-size: 1.1rem; margin-bottom: var(--space-xl);">
+          Die Nacht senkt sich über Hof. Ein historisches Geheimnis aus dem Jahr 1823 wartet darauf, gelöst zu werden. Bist du bereit, die Ermittlungen aufzunehmen?
+        </p>
+
+        <!-- Dienstausweis -->
+        <div class="badge-card">
+          <input type="text" id="player-name-input" placeholder="Name des Ermittlers..." autocomplete="off">
+          <p style="font-size: 0.8rem; color: var(--color-night-light);">OFFIZIELLE ERMITTLUNGSAKTE</p>
+        </div>
+
+        <!-- Start Button -->
+        <button id="btn-start-game" class="btn-primary">Akte Öffnen</button>
+        <p id="name-error" class="hidden" style="color: var(--color-blood-red); margin-top: var(--space-sm); font-family: var(--font-mono);">
+          [FEHLER] Bitte Identität bestätigen.
+        </p>
+
+        <div style="margin: var(--space-2xl) 0;"></div>
+
+        <!-- 6-Schritte-Anleitung -->
+        <h2 style="font-size: 1.5rem; margin-bottom: var(--space-lg);">Ermittlungs-Protokoll</h2>
+        <div class="instruction-accordion" id="instructions">
+          <div class="instruction-card">
+            <div class="instruction-header">1. Vorbereitung</div>
+            <div class="instruction-body">
+              Begib dich nach Einbruch der Dunkelheit zum Rathaus in der Ludwigstraße. Bringe ein aufgeladenes Smartphone mit Internetverbindung mit.
+            </div>
+          </div>
+          <div class="instruction-card">
+            <div class="instruction-header">2. Das Dossier</div>
+            <div class="instruction-body">
+              Deine Ermittler-Pinnwand sammelt automatisch alle Beweise, Zeugenaussagen und verdächtigen Personen.
+            </div>
+          </div>
+          <div class="instruction-card">
+            <div class="instruction-header">3. Navigation & Sonar</div>
+            <div class="instruction-body">
+              Das GPS führt dich. Je näher du einem Tatort kommst, desto schneller pulsiert dein digitaler Peilsender.
+            </div>
+          </div>
+          <div class="instruction-card">
+            <div class="instruction-header">4. Gadgets nutzen</div>
+            <div class="instruction-body">
+              Setze virtuelles UV-Licht ein, rubble Rußspuren frei oder lausche mit dem Richtmikrofon. Dein Smartphone wird zum Werkzeug.
+            </div>
+          </div>
+          <div class="instruction-card">
+            <div class="instruction-header">5. Teamplay</div>
+            <div class="instruction-body">
+              Spielt ihr im Team? Scannt jederzeit den QR-Code eures Partners, um die Beweisakte zu synchronisieren.
+            </div>
+          </div>
+          <div class="instruction-card">
+            <div class="instruction-header">6. Das Finale</div>
+            <div class="instruction-body">
+              Hast du alle 11 Stationen untersucht, musst du den wahren Täter überführen und erhältst die Koordinaten der Final-Dose sowie dein Diplom.
+            </div>
+          </div>
+        </div>
+
+        <!-- Owner Badge -->
+        <div class="owner-badge">
+          <img src="assets/avatar.jpg" alt="Versteckules" class="owner-avatar">
+          <div class="owner-text">
+            <span style="display: block; color: var(--color-amber-muted);">Geocache Owner</span>
+            made by <strong>Versteckules</strong>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
