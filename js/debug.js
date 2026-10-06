@@ -124,6 +124,16 @@ export function initDebug() {
         </div>
       </div>
 
+      <!-- Anruf Simulator -->
+      <div class="debug-section">
+        <h4>Telefon-Simulation</h4>
+        <div class="debug-control" style="display:flex; gap:4px; flex-wrap:wrap;">
+          <button class="debug-btn btn-sim-call" data-event="event_call_herold">Herold</button>
+          <button class="debug-btn btn-sim-call" data-event="event_call_gipser">Gipser</button>
+          <button class="debug-btn btn-sim-call" data-event="event_call_heiden">Heiden</button>
+        </div>
+      </div>
+
       <!-- Trackables -->
       <div class="debug-section">
         <h4>TB-Fund Simulation</h4>
@@ -245,6 +255,17 @@ export function initDebug() {
       const { triggerStoryEventById } = await import('./ui/street-events.js');
       triggerStoryEventById(eid);
     }
+  });
+
+  // Phone Call Simulation
+  document.querySelectorAll('.btn-sim-call').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const eid = e.target.dataset.event;
+      if (eid) {
+        const { triggerStoryEventById } = await import('./ui/street-events.js');
+        triggerStoryEventById(eid);
+      }
+    });
   });
 
   // TB

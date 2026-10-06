@@ -155,17 +155,49 @@ function renderMarkers() {
                   marker.on('popupopen', () => {
                     const btn = document.getElementById(`btn-interrogate-map-${suspect.id}`);
                     if (btn) {
-                      btn.onclick = () => {
-                        marker.closePopup();
-                        import('./dialogue.js').then(dMod => {
-                          const treeKey = 'interrogate_' + suspect.id;
-                          if (story.dialogueTrees && story.dialogueTrees[treeKey]) {
-                            dMod.openDialogue(story.dialogueTrees[treeKey], () => {
-                              import('../main.js').then(m => m.showView('view-dashboard'));
-                            });
+                      import('../state.js').then(st => {
+                        const currentState = st.getState();
+                        const treeKey = 'interrogate_' + suspect.id;
+                        const interrogations = currentState.interrogations ? currentState.interrogations[suspect.id] : [];
+                        
+                        let canInterrogate = true;
+                        let blockReason = "";
+
+                        if (interrogations && interrogations.length > 0) {
+                          if (interrogations.length >= 2) {
+                            canInterrogate = false;
+                            blockReason = "Keine weiteren Verhöre";
+                          } else {
+                            const lastCount = interrogations[interrogations.length - 1];
+                            const currentSolved = currentState.solvedStations ? currentState.solvedStations.length : 0;
+                            if (currentSolved < lastCount + 3) {
+                              canInterrogate = false;
+                              const left = (lastCount + 3) - currentSolved;
+                              blockReason = `Noch ${left} Station(en) lösen`;
+                            }
                           }
-                        });
-                      };
+                        }
+
+                        if (!canInterrogate) {
+                          btn.innerText = blockReason;
+                          btn.style.opacity = "0.5";
+                          btn.style.cursor = "not-allowed";
+                          btn.onclick = null;
+                        } else {
+                          btn.onclick = () => {
+                            marker.closePopup();
+                            const currentSolved = currentState.solvedStations ? currentState.solvedStations.length : 0;
+                            st.recordInterrogation(suspect.id, currentSolved);
+                            import('./dialogue.js').then(dMod => {
+                              if (story.dialogueTrees && story.dialogueTrees[treeKey]) {
+                                dMod.openDialogue(story.dialogueTrees[treeKey], () => {
+                                  import('../main.js').then(m => m.showView('view-dashboard'));
+                                });
+                              }
+                            });
+                          };
+                        }
+                      });
                     }
                   });
 

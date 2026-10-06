@@ -86,7 +86,7 @@ function updateDossier() {
             </div>
           </div>
 
-          <div style="font-size: 0.78rem; color: #ccc; line-height: 1.35; max-height: 48px; overflow: hidden; text-overflow: ellipsis;">
+          <div style="font-size: 0.78rem; color: #ccc; line-height: 1.35; max-height: none; overflow: visible;">
             ${motive}
           </div>
 
@@ -153,7 +153,13 @@ function updateDossier() {
     if (inv.length > 0) {
       inv.forEach(id => {
         const name = itemNames[id] || id;
-        h += `<button class="btn-evidence" data-id="${id}" style="background: rgba(255,255,255,0.1); border: 1px solid var(--color-glass-border); padding: 8px; border-radius: 4px; color: var(--color-amber-glow); cursor: pointer; text-align: left; font-family: var(--font-serif); font-size: 1rem;">🔍 ${name}</button>`;
+        const assignedTo = state.assignedEvidence ? state.assignedEvidence[id] : null;
+        let suffix = '';
+        if (assignedTo) {
+          const suspectName = getSuspectName(assignedTo);
+          suffix = ` <span style="color:#888; font-size:0.8rem;">(&rarr; ${suspectName})</span>`;
+        }
+        h += `<button class="btn-evidence" data-id="${id}" style="background: rgba(255,255,255,0.1); border: 1px solid var(--color-glass-border); padding: 8px; border-radius: 4px; color: var(--color-amber-glow); cursor: pointer; text-align: left; font-family: var(--font-serif); font-size: 1rem;">🔍 ${name}${suffix}</button>`;
       });
     } else {
       h += '<em>Leer</em>';
@@ -200,6 +206,7 @@ function updateDossier() {
                 feedbackEl.innerText = '📈 Passt perfekt! (Verdacht +15%)';
                 import('../state.js').then(mod => {
                   mod.addSuspectImpact(suspectId, 2);
+                  mod.assignEvidence(id, suspectId);
                   updateDossier(); // Refresh UI behind modal
                 });
               } else {
@@ -207,6 +214,7 @@ function updateDossier() {
                 feedbackEl.innerText = '📉 Ergibt wenig Sinn... (Verdacht -7%)';
                 import('../state.js').then(mod => {
                   mod.addSuspectImpact(suspectId, -1);
+                  mod.assignEvidence(id, suspectId);
                   updateDossier(); // Refresh UI behind modal
                 });
               }

@@ -56,6 +56,8 @@ function createDefaultState() {
     // Weg-Events & Inventar
     triggeredEvents: [],      // Array der Event-IDs (z.B. ['event_shadow_sprint'])
     inventory: [],            // Gesammelte Beweisstücke/Items
+    assignedEvidence: {},     // { evidenceId: suspectId }
+    interrogations: {},       // { suspectId: [solvedStationsCount] }
     
     // Die 4 Trackables (TBs)
     unlockedTrackables: [],   // ['HQZJCG', 'EA99DB', 'CABGEW', 'CARGC7']
@@ -290,6 +292,29 @@ export function addSuspectImpact(suspectId, value) {
     suspectScores[suspectId] += value;
     saveState({ suspectScores });
   }
+  return getState();
+}
+
+/**
+ * Ordnet ein Beweisstück einem Verdächtigen zu
+ */
+export function assignEvidence(evidenceId, suspectId) {
+  const state = getState();
+  const assigned = { ...state.assignedEvidence };
+  assigned[evidenceId] = suspectId;
+  saveState({ assignedEvidence: assigned });
+  return getState();
+}
+
+/**
+ * Protokolliert ein Verhör und die Anzahl gelöster Stationen zu diesem Zeitpunkt
+ */
+export function recordInterrogation(suspectId, solvedCount) {
+  const state = getState();
+  const interrogations = { ...state.interrogations };
+  if (!interrogations[suspectId]) interrogations[suspectId] = [];
+  interrogations[suspectId].push(solvedCount);
+  saveState({ interrogations });
   return getState();
 }
 

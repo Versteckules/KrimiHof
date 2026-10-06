@@ -43,13 +43,14 @@ export function calculateFinalResult(state) {
     }
   }
 
-  // Calculate absolute percentages (2 points per station, max 7 stations = 14 points max. 14 * 7.1 = ~100%)
-  const multiplier = 7.1;
-  const percentages = {
-    herold: Math.min(100, Math.max(0, Math.round(scores.herold * multiplier))),
-    gipser: Math.min(100, Math.max(0, Math.round(scores.gipser * multiplier))),
-    heiden: Math.min(100, Math.max(0, Math.round(scores.heiden * multiplier)))
-  };
+  const totalScore = scores.herold + scores.gipser + scores.heiden;
+  let percentages = { herold: 0, gipser: 0, heiden: 0 };
+  
+  if (totalScore > 0) {
+    percentages.herold = Math.round((scores.herold / totalScore) * 100);
+    percentages.gipser = Math.round((scores.gipser / totalScore) * 100);
+    percentages.heiden = Math.round((scores.heiden / totalScore) * 100);
+  }
 
   return {
     murderer,
