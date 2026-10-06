@@ -40,6 +40,18 @@ export function openStation(stationId) {
   if (errorMsg) errorMsg.classList.add('hidden');
   if (hintBox) hintBox.classList.add('hidden');
 
+  // Easter Egg 4: Glockenschlag um Mitternacht an der Michaeliskirche
+  if (stationId === 'michaeliskirche') {
+    const d = new Date();
+    if (d.getHours() === 0 && d.getMinutes() <= 15) {
+      const state = getState();
+      if (!state.easterEggBell) {
+        alert("EASTER EGG GEFUNDEN! Der unheimliche Mitternachtsschlag der Michaeliskirche ertönt! (+25 Punkte)");
+        import('../state.js').then(mod => mod.saveState({ easterEggBell: true, score: (state.score || 0) + 25 }));
+      }
+    }
+  }
+
   // 1. Klickbare Personen vorhanden? (z.B. Station 1 Rathaus)
   if (station.characters && station.characters.length > 0) {
     if (charsContainer) {
@@ -99,11 +111,21 @@ export function openStation(stationId) {
 
     if (manualWrap) manualWrap.classList.add('hidden');
   } 
-  // 3. Fallback: Manuelle Eingabe
+  // 3. Fallback: Direktes Starten des Gadgets (Kein manuelles Text-Eingabefeld mehr)
   else {
     if (charsContainer) charsContainer.classList.add('hidden');
     if (choicesContainer) choicesContainer.classList.add('hidden');
-    if (manualWrap) manualWrap.classList.remove('hidden');
+    if (manualWrap) {
+      manualWrap.classList.remove('hidden');
+      manualWrap.innerHTML = `
+        <button class="btn-primary" id="btn-station-direct-gadget" style="width: 100%; padding: 15px; font-size: 1.2rem; margin-top: 20px;">
+          🔎 Tatort untersuchen
+        </button>
+      `;
+      document.getElementById('btn-station-direct-gadget').addEventListener('click', () => {
+        import('./gadgets/gadget-manager.js').then(mod => mod.startGadget(station.gadget.id, currentStationId));
+      });
+    }
   }
 
   showView('view-station');

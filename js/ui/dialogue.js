@@ -106,6 +106,14 @@ function renderChoices(choices, isEnd, unlockSuspects) {
   if (!choices || choices.length === 0) return;
 
   choices.forEach(choice => {
+    // Check evidence requirement for dynamic branching
+    if (choice.requires_evidence) {
+      const inv = state.inventory || [];
+      if (!inv.includes(choice.requires_evidence)) {
+        return; // Hide choice if evidence is missing
+      }
+    }
+
     const btn = document.createElement('button');
     btn.className = 'btn-secondary dialogue-btn';
     btn.textContent = choice.text.replace(/{PLAYER_NAME}/g, playerName);

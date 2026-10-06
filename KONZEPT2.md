@@ -79,40 +79,23 @@ Ein Dialog-Knoten in `story.json` hat Bedingungen (`requires_evidence`) und Kons
 
 An jedem Standort MUSS der Spieler erst agieren, bevor der Dialog startet. Kein reines Text-Klicken.
 
-**Batch 1-3:**
-1. **Polaroid-Schütteln (`hauptbahnhof`):** Echtes Schütteln (DeviceMotion) mit Fallback-Button. Bild fadet langsam von unscharf auf scharf.
-2. **Ruß-Freirubbeln (`ludwigstrasse`):** HTML-Canvas `destination-out` mit fotorealistischer Asche-Textur. Ab 60% Freirubbeln gelöst.
-3. **Virtuelles UV-Schwarzlichtlampe (`hospitalkirche`):** Violetter Lichtkegel folgt dem Finger und lädt unsichtbare "Geheimtinte" auf, bis sie permanent leuchtet.
-
-**Batch 4-6:**
-4. **Aktenkoffer-Zahlenschloss (`obelisk`):** 3-stelliges 3D-Schloss. Wischen, um Zahlen zu drehen. Crack-by-feel (visuelles Ruckeln + Audio-Klick verrät die richtige Ziffer).
-5. **Messing-Chiffrierscheibe (`michaeliskirche`):** Konzentrische Ringe, die man per Fingerstreich dreht, bis die Symbole einrasten und golden aufleuchten.
-6. **Kopfüber-Ambigramm (`schlossplatz`):** Magisches Pergament. Dreht man das Smartphone um 180 Grad (Gyroskop), leuchten die Runen auf und transformieren sich in deutschen Text.
-
-**Batch 7-9:**
-7. **Bierdeckel-Puzzle (`sonnenplatz`) & 8. Erpresserbrief (`saale_schmuggel`):** Frei bewegliche Teile per Drag & Drop (Touch), die mit "Snap-to-Grid" magnetisch einrasten.
-9. **Richtmikrofon (`marienkirche`):** Animierter Equalizer. Schwenken des Handys (Kompass) sucht die korrekte Frequenz, bis Stimmen klar werden.
-
-**Batch 10-12:**
-10. **Retro-Geheimanruf (`karolinenstrasse`):** Täuschend echtes Fake-Call-Interface mit Klingeln/Vibration. Wischen zum Abnehmen.
-11. **Laser-Parcours (`biengaesschen`):** Vogelperspektive. Mit dem Finger eine Figur durch bewegende rote Linien ziehen.
-12. **Phantombild (`hauptbahnhof`):** Polizeiakten-Optik mit Pfeilen links/rechts für Haare, Augen etc., bis Identität bestätigt wird.
-
-**Batch 13-17 & Natives:**
-13. **Schleich-Schrittzähler (`lorenzkirche`):** Echtes Pedometer. Fallback: Rhythmus-Tipp-Spiel.
-14. **Wirtshaus-Würfeln (`sonnenplatz`):** 3D-CSS Würfel, ausgelöst durch Schütteln. Man muss >10 Augen werfen (unendlich Versuche).
-15. **Zeitreise-Slider (`rathaus`):** Slider Vorher/Nachher.
-16. **Flüster-Passwort (`altstadt_archiv`) & 17. Infrarot-Scanner (`scanner`):** Web Speech & WebRTC. Bei fehlender Berechtigung taucht nach 5 Sekunden ein "Sensor überspringen"-Button auf.
-
----
-
-## 5. Die 5 Easter-Eggs
-
-1. **Versteckules-Name**: Eingabe von "Versteckules" beim Start bringt sofort das goldene Badge und 50 Punkte.
-2. **Wärschtlamo**: Dreimaliges Antippen des virtuellen Kessels im Würfel-Gadget schaltet Sound und Bonus frei.
-3. **Kompass-Schwindel**: Schnelles 3x im Kreis drehen im Navigator verschwimmt den Bildschirm und triggert das Jean-Paul-Zitat.
-4. **Glockenschlag**: (Wird in die Story/Uhrzeit integriert).
-5. **Jean-Paul-Geist**: (Wird in die Story integriert).
+1. **Polaroid-Schütteln (`polaroid.js`):** Beweisfotos schüttelnd entwickeln (DeviceMotion).
+2. **UV-Schwarzlichtlampe (`uv-light.js`):** Fluoreszierendes Wischen über Geheimtinten.
+3. **Ruß-Freirubbeln (`scratch.js`):** Canvas Scratch-Card Effekt an Brandstellen.
+4. **Retro-Geheimanruf (`fake-call.js`):** Audio-Anruf Simulator.
+5. **Messing-Chiffrierscheibe (`cryptowheel.js`):** Kryptorad mit Haptik.
+6. **Kopfüber-Ambigramm (`ambigram.js`):** DeviceOrientation API.
+7. **Bierdeckel-Puzzle (`coaster.js`):** Drag & Drop Puzzle.
+8. **Aktenkoffer-Zahlenschloss (`briefcase.js`):** 3D-CSS Drehschloss.
+9. **Richtmikrofon (`wiretap.js`):** Audio-Wellenformen suchen.
+10. **Erpresserbrief-Schnipsel (`letter.js`):** Puzzle.
+11. **Laser-Parcours (`laser.js`):** Touch-Geschicklichkeit.
+12. **Phantombild (`mugshot.js`):** Gesichter-Baukasten.
+13. **Schleich-Schrittzähler (`stealth.js`):** DeviceMotion Pedometer.
+14. **Wirtshaus-Würfeln (`dice.js`):** Physik-Würfelspiel.
+15. **Zeitreise-Slider (`time-slider.js`):** Vorher/Nachher Bilder.
+16. **Flüster-Passwort (`whisper.js`):** Web Speech API.
+17. **Infrarot-Scanner (`scanner.js`):** Kamera-Zugriff.
 
 ---
 

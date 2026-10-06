@@ -4,12 +4,27 @@
 
 import { onStationComplete } from '../station.js';
 import { getStationById, getStory } from '../../config-loader.js';
-import { recordDecision } from '../../state.js';
+import { recordDecision, addInventoryItem } from '../../state.js';
 
 export function startGadget(gadgetId, stationId) {
   const station = getStationById(stationId);
   if (!station) return;
 
+  import(`./${gadgetId}.js`)
+    .then(mod => {
+      if (mod && mod.runGadget) {
+        mod.runGadget(stationId, () => showPostGadgetDialogue(stationId, station));
+      } else {
+        showPostGadgetDialogue(stationId, station);
+      }
+    })
+    .catch(err => {
+      console.warn(`Gadget ${gadgetId} module not found, skipping to dialogue.`, err);
+      showPostGadgetDialogue(stationId, station);
+    });
+}
+
+function showPostGadgetDialogue(stationId, station) {
   let overlay = document.getElementById('gadget-mock-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -24,15 +39,7 @@ export function startGadget(gadgetId, stationId) {
 
   // Build narrative HTML
   let html = `
-    <h2 style="color:${color}; margin-bottom: var(--space-sm); font-family: var(--font-serif); font-size:2rem;">${icon} ${station.name} gelöst!</h2>
-    
-    <div style="width:100%; max-width:500px; background:rgba(255,255,255,0.05); border:1px solid var(--color-glass-border); border-radius:10px; padding:var(--space-md); margin-bottom:var(--space-md); text-align:left;">
-      <h3 style="color:var(--color-text-main); margin-bottom:5px; font-family:var(--font-mono); font-size:1rem;">⚙️ Gadget-Einsatz: ${station.gadget.name}</h3>
-      <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:var(--space-md);">${station.gadget.description}</p>
-      <div style="width: 100%; height: 4px; background: rgba(0,0,0,0.5); overflow: hidden; border-radius: 2px;">
-         <div id="gadget-progress-bar" style="width: 0%; height: 100%; background: ${color}; transition: width 1.5s ease-out;"></div>
-      </div>
-    </div>
+    <h2 style="color:${color}; margin-bottom: var(--space-sm); font-family: var(--font-serif); font-size:2rem;">${icon} Beweis gesichert!</h2>
   `;
 
   html += `
@@ -75,23 +82,18 @@ export function startGadget(gadgetId, stationId) {
 
   // Animation Sequence
   setTimeout(() => {
-    const bar = document.getElementById('gadget-progress-bar');
-    if(bar) bar.style.width = '100%';
-  }, 100);
-
-  setTimeout(() => {
     const wBox = document.getElementById('witness-box');
     if(wBox) { wBox.style.opacity = '1'; wBox.style.transform = 'translateY(0)'; }
-  }, 1600);
+  }, 100);
 
   if (isBonus) {
     setTimeout(() => {
       const bBox = document.getElementById('bonus-box');
       if(bBox) bBox.style.opacity = '1';
-    }, 2400);
+    }, 1000);
   }
 
-  const showButtonsDelay = isBonus ? 3000 : 2200;
+  const showButtonsDelay = isBonus ? 1500 : 800;
   
   setTimeout(() => {
     if (decisions && decisions.length > 0) {
@@ -107,6 +109,11 @@ export function startGadget(gadgetId, stationId) {
           
           recordDecision(stationId, choiceId, suspect, points);
           
+          const evidence = (story.evidenceCatalog || []).find(e => e.stationId === stationId);
+          if (evidence) {
+            addInventoryItem(evidence.id);
+          }
+
           overlay.style.display = 'none';
           onStationComplete(stationId);
         };
@@ -116,6 +123,10 @@ export function startGadget(gadgetId, stationId) {
       if(btn) {
         btn.style.opacity = '1';
         btn.onclick = () => {
+          const evidence = (story.evidenceCatalog || []).find(e => e.stationId === stationId);
+          if (evidence) {
+            addInventoryItem(evidence.id);
+          }
           overlay.style.display = 'none';
           onStationComplete(stationId);
         };

@@ -78,6 +78,19 @@ export function initLanding() {
       errorMsg.classList.add('hidden');
     }
     setPlayerName(val);
+    
+    // Easter Egg 1: Versteckules-Name
+    if (val.toLowerCase() === 'versteckules') {
+      const state = getState();
+      if (!state.easterEggVersteckules) {
+        alert("EASTER EGG GEFUNDEN! Meister-Ermittler Versteckules persönlich! (+50 Punkte)");
+        saveState({ 
+          easterEggVersteckules: true, 
+          score: (state.score || 0) + 50 
+        });
+        updateUIFromState(getState());
+      }
+    }
   });
 
   // Start / Fortsetzen Button

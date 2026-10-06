@@ -89,6 +89,20 @@ function handleAccusation(suspectId) {
   accusedSuspect = suspectId;
 }
 
+export function startFinaleForSuspect(suspectId) {
+  openFinal();
+  // Ensure the UI is populated first if it wasn't
+  initFinalView();
+  
+  // Hide all suspect buttons since we already made a choice
+  const container = document.getElementById('final-suspects-container');
+  if (container) {
+    container.style.display = 'none';
+  }
+  
+  handleAccusation(suspectId);
+}
+
 function generateDiploma() {
   const state = getState();
   const name = state.playerName || 'Ermittler';

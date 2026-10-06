@@ -50,12 +50,18 @@ function updateDossier() {
     let html = '';
     const storySuspects = (story && story.suspects) ? story.suspects : {};
 
-    result.suspects.forEach(s => {
+    const pflichtCount = (state.solvedStations || []).filter(sid => !sid.startsWith('saale_') && !sid.startsWith('altstadt_')).length;
+    const isAllStationsSolved = pflichtCount >= 12;
+
+    result.suspects.forEach((s, index) => {
       const perc = result.percentages[s.id] || 0;
       const suspectData = storySuspects[s.id] || {};
       const img = suspectData.image || 'assets/avatar.jpg';
       const role = suspectData.role || 'Tatverdächtige(r)';
       const motive = suspectData.motive || '';
+      
+      const isHighest = index === 0;
+      const canArrest = perc > 50 || (isAllStationsSolved && isHighest);
 
       html += `
         <div class="dossier-suspect-card" style="background: rgba(10, 14, 23, 0.85); border: 1px solid var(--color-glass-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
@@ -80,16 +86,21 @@ function updateDossier() {
           <div>
             <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 3px;">
               <span>Verdachtslast:</span>
-              <span style="color: ${perc > 35 ? 'var(--color-blood-red)' : 'var(--color-amber-glow)'}; font-weight: bold;">${perc}%</span>
+              <span style="color: ${perc > 50 ? 'var(--color-blood-red)' : 'var(--color-amber-glow)'}; font-weight: bold;">${perc}%</span>
             </div>
             <div style="width: 100%; background: #222; height: 7px; border-radius: 4px; overflow: hidden;">
-              <div style="width: ${perc}%; background: ${perc > 35 ? 'var(--color-blood-red)' : 'var(--color-amber-muted)'}; height: 100%; transition: width 0.4s ease;"></div>
+              <div style="width: ${perc}%; background: ${perc > 50 ? 'var(--color-blood-red)' : 'var(--color-amber-muted)'}; height: 100%; transition: width 0.4s ease;"></div>
             </div>
           </div>
 
-          <button class="btn-secondary btn-interrogate" data-suspect-id="${s.id}" style="margin-top: 4px; padding: 6px 12px; font-size: 0.85rem; width: 100%; text-align: center; border-radius: 4px;">
-            🗣️ Verhör / Konfrontation
-          </button>
+          <div style="display: flex; gap: 8px; margin-top: 4px;">
+            <button class="btn-secondary btn-interrogate" data-suspect-id="${s.id}" style="flex: 1; padding: 6px 12px; font-size: 0.85rem; text-align: center; border-radius: 4px;">
+              🗣️ Verhör
+            </button>
+            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="flex: 1; padding: 6px 12px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.5; filter: grayscale(1);'}">
+              🚨 Verhaften
+            </button>
+          </div>
         </div>
       `;
     });
@@ -104,6 +115,18 @@ function updateDossier() {
           openDialogue(story.dialogueTrees[treeKey], () => {
             showView('view-dossier');
           });
+        }
+      });
+    });
+
+    // Klick-Handler für Verhaftung
+    suspContainer.querySelectorAll('.btn-arrest').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.hasAttribute('disabled')) return;
+        const suspectId = btn.getAttribute('data-suspect-id');
+        if (confirm('Bist du sicher, dass du diesen Verdächtigen verhaften willst? Dies beendet die Ermittlung!')) {
+          // Trigger finale logic directly for this suspect
+          import('./final.js').then(mod => mod.startFinaleForSuspect(suspectId));
         }
       });
     });

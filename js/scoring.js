@@ -43,12 +43,11 @@ export function calculateFinalResult(state) {
     }
   }
 
-  // Calculate percentages
-  const total = suspects.reduce((sum, s) => sum + s.score, 0) || 1; // avoid / 0
+  // Calculate absolute percentages (1 point = 1%)
   const percentages = {
-    herold: Math.round((scores.herold / total) * 100),
-    gipser: Math.round((scores.gipser / total) * 100),
-    heiden: Math.round((scores.heiden / total) * 100)
+    herold: Math.min(100, Math.max(0, scores.herold)),
+    gipser: Math.min(100, Math.max(0, scores.gipser)),
+    heiden: Math.min(100, Math.max(0, scores.heiden))
   };
 
   return {

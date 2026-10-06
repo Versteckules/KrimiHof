@@ -54,6 +54,38 @@ export function initNavigator() {
     checkGeofence(dist, config.geo, targetId);
     updateSonar(dist, config.geo);
   });
+
+  // Easter Egg 3: Kompass-Schwindel
+  let totalRotation = 0;
+  let lastAlpha = null;
+  window.addEventListener('deviceorientation', (e) => {
+    if (e.alpha === null) return;
+    if (lastAlpha !== null) {
+      let diff = e.alpha - lastAlpha;
+      // Handle wrap around 360/0
+      if (diff > 180) diff -= 360;
+      else if (diff < -180) diff += 360;
+      
+      totalRotation += diff;
+      
+      if (Math.abs(totalRotation) > 1080) { // 3 full rotations
+        totalRotation = 0; // reset
+        import('../state.js').then(mod => {
+          const state = mod.getState();
+          if (!state.easterEggCompass) {
+            document.body.style.transition = 'filter 2s';
+            document.body.style.filter = 'blur(5px) hue-rotate(90deg)';
+            setTimeout(() => {
+              alert("EASTER EGG GEFUNDEN! Jean Paul sagt: 'Schwindel ist die Poesie des Raumes'. (+25 Punkte)");
+              document.body.style.filter = 'none';
+              mod.saveState({ easterEggCompass: true, score: (state.score || 0) + 25 });
+            }, 2000);
+          }
+        });
+      }
+    }
+    lastAlpha = e.alpha;
+  });
 }
 
 function checkGeofence(dist, geoConfig, targetId) {

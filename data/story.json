@@ -297,7 +297,27 @@
         "choices": [
           { "text": "Herr Herold, Zeugen sahen einen Mann mit Ihrer Statur und einem Aktenkoffer vom brennenden Rathaus fliehen.", "next": "koffer", "impact": {"suspect": "herold", "value": 15} },
           { "text": "Was wissen Sie über Dr. Rengers Fund der Bundessatzung von 1823?", "next": "pakt", "impact": {"suspect": "herold", "value": 10} },
-          { "text": "Wo haben Sie sich heute Nacht zwischen 22 und 24 Uhr aufgehalten?", "next": "alibi", "impact": {"suspect": "herold", "value": 5} }
+          { "text": "Wo haben Sie sich heute Nacht zwischen 22 und 24 Uhr aufgehalten?", "next": "alibi", "impact": {"suspect": "herold", "value": 5} },
+          { "text": "[Beweis: Überwachungs-Polaroid] Ich habe hier ein Polaroid vom Bahnhof, das Sie eindeutig beim Fliehen zeigt!", "requires_evidence": "evidence_polaroid_station", "next": "herold_polaroid_proof", "impact": {"suspect": "herold", "value": 25} },
+          { "text": "[Beweis: Chiffrierter Schuldschein] Dieser Schuldschein aus Ihrem Koffer spricht eine deutliche Sprache!", "requires_evidence": "evidence_cipher_paper", "next": "herold_cipher_proof", "impact": {"suspect": "herold", "value": 30} }
+        ]
+      },
+      {
+        "id": "herold_polaroid_proof",
+        "speaker": "Valentin Herold",
+        "avatar": "assets/suspect_herold.jpg",
+        "text": "(weicht einen Schritt zurück) Woher haben Sie das?! ... Das beweist gar nichts! Jeder trägt nachts dunkle Mäntel. Aber... gut, ich war am Rathaus. Ich wollte die Dokumente vor Gipser retten, nicht vernichten!",
+        "choices": [
+          { "text": "Sie lügen. Sie wollten sie auf dem Schwarzmarkt verkaufen.", "next": "end_herold", "impact": {"suspect": "herold", "value": 10} }
+        ]
+      },
+      {
+        "id": "herold_cipher_proof",
+        "speaker": "Valentin Herold",
+        "avatar": "assets/suspect_herold.jpg",
+        "text": "(erbleicht) Mein Koffer... Sie haben ihn geknackt. Die Zahlen... Sie verstehen ihren wahren Wert nicht. Es geht hier um ein Erbe, das älter und größer ist als diese ganze Stadt!",
+        "choices": [
+          { "text": "Ihre Gier wird Sie ins Gefängnis bringen.", "next": "end_herold", "impact": {"suspect": "herold", "value": 15} }
         ]
       },
       {
@@ -373,7 +393,27 @@
         "choices": [
           { "text": "Frau Stadträtin, Rengers Fund der Verträge von 1823 hätte Ihr Millionenvorhaben am Saaleufer blockiert.", "next": "projekt", "impact": {"suspect": "gipser", "value": 15} },
           { "text": "Ein Nachtfischer sah Sie um Mitternacht am Unteren Tor bei einer verdächtigen Übergabe.", "next": "tor", "impact": {"suspect": "gipser", "value": 15} },
-          { "text": "Wo waren Sie zum Zeitpunkt des Feueralarms im Rathaus?", "next": "alibi_gipser", "impact": {"suspect": "gipser", "value": 5} }
+          { "text": "Wo waren Sie zum Zeitpunkt des Feueralarms im Rathaus?", "next": "alibi_gipser", "impact": {"suspect": "gipser", "value": 5} },
+          { "text": "[Beweis: Rosina-Urkunde] Diese Urkunde belegt, dass Ihre Grundstücke den Schlappen-Erben gehören!", "requires_evidence": "evidence_rosina_note", "next": "gipser_rosina_proof", "impact": {"suspect": "gipser", "value": 25} },
+          { "text": "[Beweis: Abhörprotokoll] Ich habe Ihr heimliches Gespräch an der Marienkirche belauscht!", "requires_evidence": "evidence_wiretap_log", "next": "gipser_wiretap_proof", "impact": {"suspect": "gipser", "value": 30} }
+        ]
+      },
+      {
+        "id": "gipser_rosina_proof",
+        "speaker": "Katharina von Gipser",
+        "avatar": "assets/suspect_gipser.jpg",
+        "text": "(betrachtet die Urkunde fasziniert) Sie haben sie gefunden... Die Originalabschrift. Damit könnten meine Gegner den gesamten Stadtrat lahmlegen. Aber deshalb zünde ich doch nicht gleich das Rathaus an, ich bitte Sie!",
+        "choices": [
+          { "text": "Das werden wir noch sehen.", "next": "end_gipser", "impact": {"suspect": "gipser", "value": 10} }
+        ]
+      },
+      {
+        "id": "gipser_wiretap_proof",
+        "speaker": "Katharina von Gipser",
+        "avatar": "assets/suspect_gipser.jpg",
+        "text": "Sie spionieren mir nach?! Das Gespräch mit Herold war rein geschäftlich! Er bot mir an, die Urkunden verschwinden zu lassen, für eine... Gegenleistung. Ich habe abgelehnt! Er ist der Brandstifter!",
+        "choices": [
+          { "text": "Eine bequeme Ausrede. Ich werde Ihre Finanzen prüfen.", "next": "end_gipser", "impact": {"suspect": "gipser", "value": 15} }
         ]
       },
       {
@@ -448,7 +488,27 @@
         "choices": [
           { "text": "Herr Heiden, Sie wurden gestern um Mitternacht am Altar von St. Lorenz beobachtet.", "next": "altar", "impact": {"suspect": "heiden", "value": 15} },
           { "text": "Haben Sie Dr. Renger bedroht, weil er die Dokumente von 1823 veröffentlichen wollte?", "next": "renger_drohung", "impact": {"suspect": "heiden", "value": 15} },
-          { "text": "Was wissen Sie über den Brandanschlag auf das Rathausarchiv?", "next": "brand_urteil", "impact": {"suspect": "heiden", "value": 10} }
+          { "text": "Was wissen Sie über den Brandanschlag auf das Rathausarchiv?", "next": "brand_urteil", "impact": {"suspect": "heiden", "value": 10} },
+          { "text": "[Beweis: Zerrissener Drohbrief] Dieser Brief stammt eindeutig von Ihnen. 'Hof wird brennen'!", "requires_evidence": "evidence_torn_letter", "next": "heiden_letter_proof", "impact": {"suspect": "heiden", "value": 25} },
+          { "text": "[Beweis: Fluoreszierende Losung] Ihre geheime UV-Losung verrät Ihr Versteck!", "requires_evidence": "evidence_uv_formula", "next": "heiden_uv_proof", "impact": {"suspect": "heiden", "value": 30} }
+        ]
+      },
+      {
+        "id": "heiden_letter_proof",
+        "speaker": "Severin Heiden",
+        "avatar": "assets/suspect_heiden.jpg",
+        "text": "(lacht freudlos) Ich leugne meine Handschrift nicht. Aber es war eine Prophezeiung, keine Drohung! Wer den Pakt bricht, ruft das Feuer herbei. Das ist das Gesetz der Ahnen!",
+        "choices": [
+          { "text": "Ihre Prophezeiungen sind gefährlich konkret.", "next": "end_heiden", "impact": {"suspect": "heiden", "value": 10} }
+        ]
+      },
+      {
+        "id": "heiden_uv_proof",
+        "speaker": "Severin Heiden",
+        "avatar": "assets/suspect_heiden.jpg",
+        "text": "Sie haben die verborgenen Zeichen gelesen? Dann sind Sie wahrhaft einer von uns, {PLAYER_NAME}. Nur die Erleuchteten sehen, was im Dunkeln leuchtet. Das Ritual ist fast abgeschlossen.",
+        "choices": [
+          { "text": "Das Ritual endet hier und jetzt, Heiden.", "next": "end_heiden", "impact": {"suspect": "heiden", "value": 15} }
         ]
       },
       {
