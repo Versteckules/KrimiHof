@@ -36,6 +36,13 @@ export function initDossier() {
 
   // Initiale Aktualisierung
   subscribe(updateDossier);
+
+  const closeEvBtn = document.getElementById('btn-close-evidence');
+  if (closeEvBtn) {
+    closeEvBtn.addEventListener('click', () => {
+      document.getElementById('modal-evidence').classList.add('hidden');
+    });
+  }
 }
 
 function updateDossier() {
@@ -141,12 +148,39 @@ function updateDossier() {
     };
     
     h += tbs.length > 0 ? tbs.join(', ') : '<em>Noch keine</em>';
-    h += `<br><br><strong>Gegenstände (${inv.length}):</strong><br>`;
-    h += inv.length > 0 ? inv.map(id => itemNames[id] || id).join('<br>') : '<em>Leer</em>';
+    h += `<br><br><strong>Gegenstände (${inv.length}):</strong><br><div style="display:flex; flex-direction:column; gap:8px; margin-top:5px;">`;
+    
+    if (inv.length > 0) {
+      inv.forEach(id => {
+        const name = itemNames[id] || id;
+        h += `<button class="btn-evidence" data-id="${id}" style="background: rgba(255,255,255,0.1); border: 1px solid var(--color-glass-border); padding: 8px; border-radius: 4px; color: var(--color-amber-glow); cursor: pointer; text-align: left; font-family: var(--font-serif); font-size: 1rem;">🔍 ${name}</button>`;
+      });
+    } else {
+      h += '<em>Leer</em>';
+    }
+    h += '</div>';
     invContainer.innerHTML = h;
-  }
 
-  // 3. Gelöste Stationen (Pflicht & Bonus)
+    // Klick-Handler für Beweisstücke
+    invContainer.querySelectorAll('.btn-evidence').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const evidenceData = (story.evidenceCatalog || []).find(e => e.id === id);
+        const modal = document.getElementById('modal-evidence');
+        if (modal && evidenceData) {
+          document.getElementById('evidence-title').innerText = evidenceData.name;
+          document.getElementById('evidence-desc').innerText = evidenceData.description;
+          modal.classList.remove('hidden');
+        }
+      });
+    });
+
+    // Close Handler
+    const closeEvBtn = document.getElementById('btn-close-evidence');
+    if (closeEvBtn) {
+      // prevent multiple bindings by cloning or ensuring it's bound once. 
+      // easiest is to just bind it here and it will overwrite or we bind it in initDossier.
+    }
   const statContainer = document.getElementById('dossier-stations');
   if (statContainer) {
     const solved = state.solvedStations || [];

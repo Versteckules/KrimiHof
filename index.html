@@ -328,6 +328,20 @@
     </div>
   </div>
 
+  <!-- Modal Beweisstück -->
+  <div id="modal-evidence" class="modal-backdrop hidden">
+    <div class="modal-box paper-note" style="position: relative; max-width: 90%; background: #fdf5e6; color: #2c1e16; text-align: left;">
+      <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 40px; height: 15px; background: rgba(0,0,0,0.2); border-radius: 2px;"></div>
+      <h3 id="evidence-title" style="font-family: var(--font-serif); color: #8b0000; font-size: 1.5rem; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">Beweis</h3>
+      <p id="evidence-desc" style="font-size: 1.1rem; line-height: 1.6; font-style: italic; min-height: 80px;">
+        Details laden...
+      </p>
+      <div style="display: flex; justify-content: center; margin-top: 20px;">
+        <button id="btn-close-evidence" class="btn-secondary" style="opacity: 0.8; padding: 8px 16px;">Zurück zur Akte</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Visual Novel Dialogue View -->
   <main id="view-dialogue" class="view hidden">
     <div class="dialogue-scene">

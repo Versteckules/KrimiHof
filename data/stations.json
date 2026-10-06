@@ -5,7 +5,7 @@
         "name":  "Rathaus LudwigstraÃŸe",
         "type":  "start",
         "zone":  "altstadt",
-        "coords":  "N 50° 19.313 E 011° 55.121",
+        "coords":  "N 50Â° 19.313 E 011Â° 55.121",
         "radius":  20,
         "description":  "Das Herz der Hofer Verwaltung. Das Portal des Rathauses ist verkohlt, Absperrband flattert im Wind. Es raucht noch. Die Polizei hat alles abgeriegelt.",
         "isStoryEvent":  true,
@@ -50,10 +50,10 @@
     {
         "id":  "hauptpost",
         "number":  2,
-        "name":  "Hauptpost am Sonnenplatz",
+        "name":  "Kino LorenzstraÃŸe",
         "type":  "mandatory",
         "zone":  "zentrum",
-        "coords":  "N 50° 18.986 E 011° 54.898",
+        "coords":  "N 50Â° 18.950 E 011Â° 54.950",
         "radius":  20,
         "markerColor":  "red",
         "description":  "Das wuchtige GebÃ¤ude der Hauptpost. Vor den leeren PostfÃ¤chern im Vorraum hat ein Informant einen der VerdÃ¤chtigen gesehen.",
@@ -105,7 +105,7 @@
         "name":  "Kriegerdenkmal an der Sophienschule",
         "type":  "mandatory",
         "zone":  "neustadt",
-        "coords":  "N 50° 18.728 E 011° 55.052",
+        "coords":  "N 50Â° 18.728 E 011Â° 55.052",
         "radius":  20,
         "description":  "Ein stiller Parkwinkel vor der historischen Schule. Der Sandstein-Obelisk ragt wie ein stummer Zeuge vergangener Epochen in den Nachthimmel.",
         "riddle":  {
@@ -148,7 +148,8 @@
         "witness":  {
                         "name":  "Dr. Sommer",
                         "role":  "Gymnasiallehrer im Ruhestand",
-                        "dialogue":  "â€žDie Akte Ã¼ber die Erbfolge von 1823 war nie verschollen, {PLAYER_NAME}. Sie wurde absichtlich aus dem Archiv entwendet!â€œ"
+                        "dialogue":  "â€žDie Akte Ã¼ber die Erbfolge von 1823 war nie verschollen, {PLAYER_NAME}. Sie wurde absichtlich aus dem Archiv entwendet!â€œ",
+                        "image":  "assets/dr_sommer.jpg"
                     }
     },
     {
@@ -157,7 +158,7 @@
         "name":  "St. Lorenzpark \u0026 Kirche",
         "type":  "mandatory",
         "zone":  "altstadt",
-        "coords":  "N 50° 18.893 E 011° 55.057",
+        "coords":  "N 50Â° 18.893 E 011Â° 55.057",
         "radius":  20,
         "description":  "Die Ã¤lteste Pfarrkirche Hofs. Alte Grabplatten und hohe KastanienbÃ¤ume sÃ¤umen den Kirchhof. Das Laub raschelt unter deinen Schritten.",
         "riddle":  {
@@ -210,7 +211,7 @@
         "name":  "BiengÃ¤sschen",
         "type":  "mandatory",
         "zone":  "altstadt",
-        "coords":  "N 50° 18.907 E 011° 54.979",
+        "coords":  "N 50Â° 18.907 E 011Â° 54.979",
         "radius":  20,
         "description":  "Die engste und verwinkeltste Gasse der Stadt. Hohe Fachwerkmauern ragen empor, das Kopfsteinpflaster glÃ¤nzt feucht im Schein deiner Lampe.",
         "riddle":  {
@@ -254,7 +255,8 @@
         "witness":  {
                         "name":  "Erschrockener Passant",
                         "role":  "Anwohner",
-                        "dialogue":  "â€žJemand rannte wie von Furien gehetzt um die Ecke! Er trug ein AntiquitÃ¤ten-Futteral aus Leder... ganz wie dieser HÃ¤ndler Valentin Herold!â€œ"
+                        "dialogue":  "â€žJemand rannte wie von Furien gehetzt um die Ecke! Er trug ein AntiquitÃ¤ten-Futteral aus Leder... ganz wie dieser HÃ¤ndler Valentin Herold!â€œ",
+                        "image":  "assets/passant.jpg"
                     }
     },
     {
@@ -263,7 +265,7 @@
         "name":  "LudwigstraÃŸe 18 \u0026 20",
         "type":  "mandatory",
         "zone":  "zentrum",
-        "coords":  "N 50° 19.168 E 011° 55.004",
+        "coords":  "N 50Â° 19.168 E 011Â° 55.004",
         "radius":  20,
         "description":  "Der historische Brandherd. Am 4. September 1823 brach in der Scheune hinter Haus Nr. 18 das Feuer aus, das fast die gesamte Hofer Altstadt in Schutt und Asche legte.",
         "riddle":  {
@@ -307,7 +309,8 @@
         "witness":  {
                         "name":  "Tonbandaufnahme Dr. Renger",
                         "role":  "Vermisster Stadtarchivar",
-                        "dialogue":  "â€žWenn Sie dies hÃ¶ren, {PLAYER_NAME}, dann haben die Erben mich gefunden! Das Feuer von 1823 war kein Unfall â€“ es war ein gigantischer Versicherungsbetrug!â€œ"
+                        "dialogue":  "â€žWenn Sie dies hÃ¶ren, {PLAYER_NAME}, dann haben die Erben mich gefunden! Das Feuer von 1823 war kein Unfall â€“ es war ein gigantischer Versicherungsbetrug!â€œ",
+                        "image":  "assets/dr_renger.jpg"
                     }
     },
     {
@@ -316,7 +319,7 @@
         "name":  "KarolinenstraÃŸe (Nr. 12)",
         "type":  "mandatory",
         "zone":  "neustadt",
-        "coords":  "N 50° 19.306 E 011° 55.037",
+        "coords":  "N 50Â° 19.306 E 011Â° 55.037",
         "radius":  20,
         "description":  "Prachtvolle Biedermeier- und GrÃ¼nderzeitfassaden sÃ¤umen den breiten Boulevard, der nach dem groÃŸen Brand planmÃ¤ÃŸig neu errichtet wurde.",
         "riddle":  {
@@ -360,7 +363,8 @@
         "witness":  {
                         "name":  "Anonyme Informantin",
                         "role":  "Unbekannte Anruferin",
-                        "dialogue":  "â€žPassen Sie auf Frau von Gipser auf! Sie will das gesamte Saale-Viertel sanieren lassen und kauft heimlich alte Schuldscheine auf!â€œ"
+                        "dialogue":  "â€žPassen Sie auf Frau von Gipser auf! Sie will das gesamte Saale-Viertel sanieren lassen und kauft heimlich alte Schuldscheine auf!â€œ",
+                        "image":  "assets/informantin.jpg"
                     }
     },
     {
@@ -369,7 +373,7 @@
         "name":  "SchloÃŸplatz 12b",
         "type":  "mandatory",
         "zone":  "altstadt",
-        "coords":  "N 50° 19.220 E 011° 54.950",
+        "coords":  "N 50Â° 19.220 E 011Â° 54.950",
         "radius":  20,
         "description":  "Einst Standort des markgrÃ¤flichen Schlosses. In unmittelbarer NÃ¤he lebte der berÃ¼hmte Dichter Jean Paul. Alte Gaslaternen werfen lange Schatten.",
         "riddle":  {
@@ -413,7 +417,8 @@
         "witness":  {
                         "name":  "Antiquariats-Gehilfe",
                         "role":  "Buchbinder",
-                        "dialogue":  "â€žJean Paul schrieb einst Ã¼ber DoppelgÃ¤nger... wer zwei Gesichter hat, fÃ¼hrt meist nichts Gutes im Schilde, {PLAYER_NAME}!â€œ"
+                        "dialogue":  "â€žJean Paul schrieb einst Ã¼ber DoppelgÃ¤nger... wer zwei Gesichter hat, fÃ¼hrt meist nichts Gutes im Schilde, {PLAYER_NAME}!â€œ",
+                        "image":  "assets/gehilfe.jpg"
                     }
     },
     {
@@ -422,7 +427,7 @@
         "name":  "Sonnenplatz / WÃ¤rschtlamo",
         "type":  "mandatory",
         "zone":  "zentrum",
-        "coords":  "N 50° 18.981 E 011° 54.892",
+        "coords":  "N 50Â° 18.981 E 011Â° 54.892",
         "radius":  20,
         "description":  "Das Bronzedenkmal des traditionellen Hofer WÃ¤rschtlamo. Mit Kessel und SchÃ¼rze steht er seit Generationen im Herzen der FuÃŸgÃ¤ngerzone.",
         "riddle":  {
@@ -475,7 +480,7 @@
         "name":  "St. Marien-Kirche",
         "type":  "mandatory",
         "zone":  "altstadt",
-        "coords":  "N 50° 19.321 E 011° 55.167",
+        "coords":  "N 50Â° 19.321 E 011Â° 55.167",
         "radius":  20,
         "description":  "Die neugotische katholische Stadtkirche mit ihren markanten DoppeltÃ¼rmen. Nachts wirkt das massive Portal wie das Tor zu einer Trutzburg.",
         "riddle":  {
@@ -519,7 +524,8 @@
         "witness":  {
                         "name":  "Belauschte Geheimbund-Stimmen",
                         "role":  "Zwei Schatten im Kirchenportal",
-                        "dialogue":  "â€žDas Privileg muss noch vor dem Morgengrauen vernichtet werden. Wenn {PLAYER_NAME} das Finale erreicht, ist alles vorbei!â€œ"
+                        "dialogue":  "â€žDas Privileg muss noch vor dem Morgengrauen vernichtet werden. Wenn {PLAYER_NAME} das Finale erreicht, ist alles vorbei!â€œ",
+                        "image":  "assets/geheimbund.jpg"
                     }
     },
     {
@@ -528,7 +534,7 @@
         "name":  "St. Michaeliskirche",
         "type":  "mandatory",
         "zone":  "altstadt",
-        "coords":  "N 50° 19.321 E 011° 55.167",
+        "coords":  "N 50Â° 19.321 E 011Â° 55.167",
         "radius":  20,
         "description":  "Die evangelische Hauptkirche Hofs auf dem Kirchplatz. Ihre mÃ¤chtigen TÃ¼rme Ã¼berragten schon 1823 das Flammenmeer der brennenden Altstadt.",
         "riddle":  {
@@ -581,7 +587,7 @@
         "name":  "Hospitalkirche am Unteren Tor",
         "type":  "mandatory",
         "zone":  "saale",
-        "coords":  "N 50° 19.463 E 011° 55.164",
+        "coords":  "N 50Â° 19.463 E 011Â° 55.164",
         "radius":  20,
         "description":  "Am Unteren Tor, nahe dem Fluss Saale. Die spÃ¤tgotische Hospitalkirche Ã¼berstand als eines der ganz wenigen GebÃ¤ude den groÃŸen Brand von 1823 unbeschadet.",
         "riddle":  {
@@ -624,7 +630,8 @@
         "witness":  {
                         "name":  "Nachtfischer an der Saale",
                         "role":  "Saale-Angler",
-                        "dialogue":  "â€žUm Mitternacht legte ein Kahn am Unteren Tor an. Eine Dame im feinen Mantel â€“ Frau von Gipser â€“ Ã¼bergab eine eiserne Kassette!â€œ"
+                        "dialogue":  "â€žUm Mitternacht legte ein Kahn am Unteren Tor an. Eine Dame im feinen Mantel â€“ Frau von Gipser â€“ Ã¼bergab eine eiserne Kassette!â€œ",
+                        "image":  "assets/fischer.jpg"
                     }
     },
     {
@@ -633,7 +640,7 @@
         "name":  "Saaleufer-Schmuggelpfad",
         "type":  "bonus",
         "zone":  "saale",
-        "coords":  "N 50° 19.462 E 011° 55.272",
+        "coords":  "N 50Â° 19.462 E 011Â° 55.272",
         "radius":  20,
         "description":  "[BONUS-ERMITTLUNG 1] Ein einsamer Treidelpfad entlang der Saale. Hier schmuggelten die Hofer Handwerker einst Rohstoffe an den stÃ¤dtischen ZÃ¶llnern vorbei.",
         "riddle":  {
@@ -675,7 +682,8 @@
         "witness":  {
                         "name":  "Alter Flussschiffer",
                         "role":  "Zeitzeuge der Saaleschifffahrt",
-                        "dialogue":  "â€žDie Schlappen-Erben nutzten diese Route seit 1823 als Fluchtweg! Hier, ich fand diesen zerrissenen Brief im Schilf...â€œ"
+                        "dialogue":  "â€žDie Schlappen-Erben nutzten diese Route seit 1823 als Fluchtweg! Hier, ich fand diesen zerrissenen Brief im Schilf...â€œ",
+                        "image":  "assets/flussschiffer.jpg"
                     },
         "bonusReward":  "+15 Detektiv-Punkte \u0026 Freischaltung des Meister-Detektiv-Titels"
     },
@@ -685,7 +693,7 @@
         "name":  "Altes Spital-Archiv",
         "type":  "bonus",
         "zone":  "altstadt",
-        "coords":  "N 50° 19.425 E 011° 55.215",
+        "coords":  "N 50Â° 19.425 E 011Â° 55.215",
         "radius":  20,
         "description":  "[BONUS-ERMITTLUNG 2] Das verborgene KellergewÃ¶lbe des ehemaligen BÃ¼rgerspitals. Hinter verstaubten Folianten ruhen Akten aus dem 15. Jahrhundert.",
         "riddle":  {
@@ -727,6 +735,7 @@
         "witness":  {
                         "name":  "Archivgehilfe Otto",
                         "role":  "Ehrenamtlicher Urkundenforscher",
+                        "image":  "assets/archivgehilfe_otto.jpg",
                         "dialogue":  "â€žSie haben die uralte Bundessatzung von 1432 gefunden! Dies beweist die Existenz des Pakts zweifelsfrei, {PLAYER_NAME}! Ehrenwort!â€œ"
                     },
         "bonusReward":  "+15 Detektiv-Punkte \u0026 Goldenes Bundessiegel auf der Abschlussurkunde"
