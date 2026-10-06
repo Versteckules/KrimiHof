@@ -181,6 +181,8 @@ function updateDossier() {
       // prevent multiple bindings by cloning or ensuring it's bound once. 
       // easiest is to just bind it here and it will overwrite or we bind it in initDossier.
     }
+  }
+
   const statContainer = document.getElementById('dossier-stations');
   if (statContainer) {
     const solved = state.solvedStations || [];
