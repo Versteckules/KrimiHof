@@ -44,11 +44,13 @@ export function initMap() {
   });
 }
 
-function getIcon(status) {
+function getIcon(status, customColor) {
   let color = '#d4af37'; // Amber (active)
   if (status === 'locked') color = '#555555';
   if (status === 'solved') color = '#2e8b57'; // Green
   if (status === 'bonus') color = '#c0c0c0'; // Silver
+  if (status === 'suspect') color = '#3b82f6'; // Blue
+  if (customColor) color = customColor;
 
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="24" height="36">
@@ -68,6 +70,7 @@ function getIcon(status) {
 function renderMarkers() {
   const stations = getStations();
   if (!stations) return;
+  const state = getState();
   const startSolved = isStationSolved('rathaus');
 
   stations.forEach(st => {
@@ -86,7 +89,7 @@ function renderMarkers() {
 
     if (!markers[st.id]) {
       const marker = L.marker([st.coordsDecimal.lat, st.coordsDecimal.lng], {
-        icon: getIcon(status)
+        icon: getIcon(status, st.markerColor)
       }).addTo(map);
 
       marker.customStatus = status;
@@ -97,8 +100,8 @@ function renderMarkers() {
         if (currentStatus === 'active' || currentStatus === 'bonus') {
           setActiveTarget(st.id);
           
-          const state = getState();
-          if (state.isTestingMode) {
+          const currentState = getState();
+          if (currentState.isTestingMode) {
             console.log('[Testing] Öffne Station direkt ohne GPS (Test-Modus)');
             import('./station.js').then(module => {
               module.openStation(st.id);
@@ -114,10 +117,33 @@ function renderMarkers() {
       markers[st.id] = marker;
     } else {
       markers[st.id].customStatus = status;
-      markers[st.id].setIcon(getIcon(status));
+      markers[st.id].setIcon(getIcon(status, st.markerColor));
       markers[st.id].setPopupContent(`<b>${st.name}</b><br><small>${status.toUpperCase()}</small>`);
     }
   });
+
+  // Suspects rendern
+  if (state.suspectsUnlocked) {
+    import('../config-loader.js').then(module => {
+       const story = module.getStory();
+       if(story && story.suspects) {
+          import('../coords.js').then(coordsModule => {
+            Object.values(story.suspects).forEach(suspect => {
+              if (suspect.coords && !markers['suspect_'+suspect.id]) {
+                const parsed = coordsModule.parseCoords(suspect.coords);
+                if (parsed) {
+                  const marker = L.marker([parsed.lat, parsed.lng], {
+                    icon: getIcon('suspect')
+                  }).addTo(map);
+                  marker.bindPopup(`<b>${suspect.name}</b><br><small>HAUPTVERDÄCHTIGE(R)</small>`);
+                  markers['suspect_'+suspect.id] = marker;
+                }
+              }
+            });
+          });
+       }
+    });
+  }
 }
 
 function setActiveTarget(id) {

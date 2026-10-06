@@ -34,6 +34,7 @@ function createDefaultState() {
     solvedStations: [],       // Array von Stations-IDs (z.B. ['rathaus', ...])
     stationOrder: [],         // Genaue Reihenfolge der Lösung für Zonen-Auswertung
     bonusSolved: [],          // Gelöste Bonusstationen (z.B. ['saale_schmuggel'])
+    suspectsUnlocked: false,  // Ob die 3 Hauptverdächtigen freigeschaltet sind
     
     // Zonen & Scores
     zoneScores: {
@@ -268,6 +269,27 @@ export function recordDecision(stationId, choiceId, suspectId, points = 2) {
     suspectScores
   });
 
+  return getState();
+}
+
+/**
+ * Schaltet die Verdächtigen frei nach dem ersten Event.
+ */
+export function unlockSuspectsInState() {
+  saveState({ suspectsUnlocked: true });
+  return getState();
+}
+
+/**
+ * Fügt einem Verdächtigen Punkte (Prozente) hinzu
+ */
+export function addSuspectImpact(suspectId, value) {
+  const state = getState();
+  const suspectScores = { ...state.suspectScores };
+  if (suspectId && suspectScores[suspectId] !== undefined) {
+    suspectScores[suspectId] += value;
+    saveState({ suspectScores });
+  }
   return getState();
 }
 

@@ -25,7 +25,8 @@ export function initFinalView() {
   const container = document.getElementById('final-suspects-container');
   if (!container) return;
 
-  const suspects = getConfig().gameplay.suspects;
+  const story = getStory();
+  const suspects = story && story.suspects ? Object.values(story.suspects) : [];
 
   container.innerHTML = '';
   suspects.forEach(s => {
@@ -68,15 +69,20 @@ function handleAccusation(suspectId) {
 
   const accusedName = getSuspectName(suspectId);
   const realName = getSuspectName(result.murderer);
+  const story = getStory();
+  let confession = "";
+  if (story && story.endings && story.endings[suspectId]) {
+     confession = `<br><br><i>${story.endings[suspectId].confession}</i>`;
+  }
 
   if (suspectId === result.murderer) {
     title.textContent = 'Korrekt!';
     title.style.color = 'var(--color-green, #2e8b57)';
-    text.innerHTML = `Deine Beweisaufnahme war stichhaltig. Die Indizien verweisen mit <strong>${result.percentages[result.murderer]}%</strong> auf ${accusedName}!<br>Die Akte ist geschlossen.`;
+    text.innerHTML = `Deine Beweisaufnahme war stichhaltig. Die Indizien verweisen mit <strong>${result.percentages[result.murderer]}%</strong> auf ${accusedName}!${confession}<br><br>Die Akte ist geschlossen.`;
   } else {
     title.textContent = 'Ein fataler Irrtum!';
     title.style.color = 'var(--color-blood-red)';
-    text.innerHTML = `Du hast den Falschen beschuldigt. Die Beweise (${result.percentages[result.murderer]}%) sprachen eigentlich gegen <strong>${realName}</strong>!<br>Das Spiel ist dennoch vorbei. Die Koordinaten erhältst du trotzdem:`;
+    text.innerHTML = `Du hast den Falschen beschuldigt. Die Beweise (${result.percentages[result.murderer]}%) sprachen eigentlich gegen <strong>${realName}</strong>!${confession}<br><br>Das Spiel ist dennoch vorbei. Die Koordinaten erhältst du trotzdem:`;
   }
 
   coords.innerHTML = formatFinalCoords();

@@ -12,6 +12,7 @@
       "role": "Antiquitätenhändler & Kunstsammler",
       "age": 58,
       "location": "Altstadt / Lorenzberg",
+      "coords": "N 50° 19.330 E 011° 55.200",
       "image": "assets/suspect_herold.webp",
       "motive": "Machtgier & historischer Wert: Wollte die unschätzbaren Original-Urkunden und Goldschmuck-Relikte des Bundes von 1823 an einen internationalen Schattenmarkt veräußern.",
       "description": "Eloquenter, stets elegant gekleideter Kunsthändler mit Samtweste und Gehstock. Kennt jeden historischen Keller in Hof, zeigt sich zynisch und betont herablassend gegenüber Behörden.",
@@ -23,6 +24,7 @@
       "role": "Kommunalpolitikerin & Immobilieninvestorin",
       "age": 46,
       "location": "Neustadt / Karolinenstraße",
+      "coords": "N 50° 19.100 E 011° 55.000",
       "image": "assets/suspect_gipser.webp",
       "motive": "Kommerzielle Vertuschung: Wollte das Saaleufer sanieren. Die uralten Erbrechte im Bundespakt hätten ihre millionenschweren Bauprojekte augenblicklich blockiert.",
       "description": "Einflussreiche Stadträtin mit exzellenten Kontakten in Politik und Wirtschaft. Kühle Rhetorik, maßgeschneiderte Kostüme, scheut keine Skrupel beim Schutz ihrer Investitionen.",
@@ -34,6 +36,7 @@
       "role": "Domorganist & Chorleiter an St. Michaelis",
       "age": 62,
       "location": "Kirchplatz St. Michaelis",
+      "coords": "N 50° 19.150 E 011° 55.250",
       "image": "assets/suspect_heiden.webp",
       "motive": "Fanatische Traditionstreue: Sah sich als rechtmäßiger Nachfahre der Gründerväter und wollte das Vermächtnis der Schlappen-Erben vor profaner Entweihung schützen.",
       "description": "Dürrer, asketischer Mann mit durchdringendem Blick und langen grauen Haaren. Verbringt seine Nächte allein an den Kirchenorgeln von Hof, spricht in biblischen Metaphern.",
@@ -140,8 +143,81 @@
       "description": "Die originale mittelalterliche Gründungsurkunde des Schlappen-Privilegs."
     }
   ],
+  "dialogueTrees": {
+    "rathaus_fire_polizist": [
+      {
+        "id": "start",
+        "speaker": "Kommissar Stahl",
+        "avatar": "assets/avatar.jpg",
+        "text": "Das ist ein Tatort, kein Spielplatz! Warten Sie auf den Pressebericht nächste Woche.",
+        "choices": [
+          { "text": "Ich ermittle im Auftrag von Dr. Renger.", "next": "renger", "impact": {"suspect": "none", "value": 0} },
+          { "text": "Haben Sie verkohlte Dokumente gefunden?", "next": "documents", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "renger",
+        "speaker": "Kommissar Stahl",
+        "text": "Renger? Der ist verschwunden. Wir haben nur seine Brille hier gefunden. Wenn Sie was wissen, melden Sie sich offiziell auf dem Revier. Abflug jetzt!",
+        "choices": [
+          { "text": "Verstanden, ich halte mich zurück.", "next": "end_polizist" }
+        ]
+      },
+      {
+        "id": "documents",
+        "speaker": "Kommissar Stahl",
+        "text": "Darüber gebe ich keine Auskunft. Wir sichern gerade Spuren. Treten Sie zurück hinter die Absperrung!",
+        "choices": [
+          { "text": "Okay, ich gehe ja schon.", "next": "end_polizist" }
+        ]
+      },
+      {
+        "id": "end_polizist",
+        "speaker": "Kommissar Stahl",
+        "text": "Und dass ich Sie hier nicht mehr sehe!",
+        "isEnd": true,
+        "unlockSuspects": true
+      }
+    ],
+    "rathaus_fire_reporter": [
+      {
+        "id": "start",
+        "speaker": "Paul Stift (Reporter)",
+        "avatar": "assets/avatar.jpg",
+        "text": "Heftig, oder? Das alte Gemäuer brennt wie Zunder. Ich habe jemanden wegrennen sehen.",
+        "choices": [
+          { "text": "Wen haben Sie gesehen?", "next": "who", "impact": {"suspect": "none", "value": 0} },
+          { "text": "Wann war das genau?", "next": "when", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "who",
+        "speaker": "Paul Stift (Reporter)",
+        "text": "Konnte das Gesicht nicht erkennen, aber er trug so einen altmodischen Antiquitätenkoffer. Sah teuer aus.",
+        "choices": [
+          { "text": "Könnte Valentin Herold gewesen sein.", "next": "end_reporter", "impact": {"suspect": "herold", "value": 15} },
+          { "text": "Danke für die Info.", "next": "end_reporter" }
+        ]
+      },
+      {
+        "id": "when",
+        "speaker": "Paul Stift (Reporter)",
+        "text": "Kurz bevor die Feuerwehr eintraf. Er rannte Richtung Biengässchen. Ziemlich eilig.",
+        "choices": [
+          { "text": "Ich werde mir das Gässchen ansehen.", "next": "end_reporter" }
+        ]
+      },
+      {
+        "id": "end_reporter",
+        "speaker": "Paul Stift (Reporter)",
+        "text": "Halten Sie mich auf dem Laufenden, okay? Wenn das ein Krimi wird, will ich die Exklusiv-Story!",
+        "isEnd": true,
+        "unlockSuspects": true
+      }
+    ]
+  },
   "dialogueDecisions": {
-    "hauptbahnhof": [
+    "hauptpost": [
       { "id": "bhf_1", "text": "[Beweis vorlegen] Dem Gepäckträger das Fahndungsfoto von Valentin Herold zeigen", "suspect": "herold", "points": 2 },
       { "id": "bhf_2", "text": "[Freundlich] Nach einer Dame im teuren Wintermantel fragen (Katharina von Gipser)", "suspect": "gipser", "points": 2 },
       { "id": "bhf_3", "text": "[Direkt] Nach einem Mann in schwarzer Kutte mit Notenmappe forschen (Severin Heiden)", "suspect": "heiden", "points": 2 }

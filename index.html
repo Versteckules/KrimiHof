@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/effects.css">
+  <link rel="stylesheet" href="css/dialogue.css">
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
   
   <!-- Fonts (Google Fonts for AP1, ideally local later) -->
@@ -165,6 +166,15 @@
     <main id="view-dashboard" class="view hidden">
       <div id="map-container" style="position: absolute; top: 0; bottom: 80px; left: 0; right: 0;"></div>
 
+      <!-- Map Legend Overlay -->
+      <div class="map-legend" style="position: absolute; bottom: 100px; right: 12px; z-index: 1000; background: rgba(10,14,23,0.85); padding: 10px; border-radius: 8px; border: 1px solid var(--color-glass-border); font-family: var(--font-mono); font-size: 0.8rem; pointer-events: none;">
+        <div style="margin-bottom: 5px;"><strong>Legende</strong></div>
+        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;"><span style="display:inline-block; width:10px; height:10px; background:#d4af37; border-radius:50%;"></span> Tatort (Offen)</div>
+        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;"><span style="display:inline-block; width:10px; height:10px; background:#2e8b57; border-radius:50%;"></span> Tatort (Gelöst)</div>
+        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;"><span style="display:inline-block; width:10px; height:10px; background:red; border-radius:50%;"></span> Wichtiger Beweis</div>
+        <div style="display: flex; align-items: center; gap: 5px;"><span style="display:inline-block; width:10px; height:10px; background:#3b82f6; border-radius:50%;"></span> Hauptverdächtige</div>
+      </div>
+
       <!-- Dezentes Owner-Siegel auf der Karte -->
       <div class="owner-stamp" style="position: absolute; top: 12px; left: 12px; z-index: 1000; background: rgba(10,14,23,0.75); padding: 4px 10px 4px 4px; border-radius: 999px; border: 1px solid var(--color-glass-border);">
         <span class="avatar-frame avatar-frame--sm"><img src="assets/avatar.jpg" alt="" class="avatar-noir"></span>
@@ -276,6 +286,20 @@
   </div>
 
   <!-- Removed Modals for Sync -->
+
+  <!-- Visual Novel Dialogue View -->
+  <main id="view-dialogue" class="view hidden">
+    <div class="dialogue-scene">
+      <div class="dialogue-character">
+        <img id="dialogue-avatar" src="" alt="Avatar" style="display:none;">
+        <div class="dialogue-box">
+          <div id="dialogue-name"></div>
+          <div id="dialogue-text"></div>
+        </div>
+      </div>
+      <div id="dialogue-choices"></div>
+    </div>
+  </main>
 
   <!-- Scripts -->
   <script src="vendor/leaflet/leaflet.js"></script>

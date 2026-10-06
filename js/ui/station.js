@@ -2,11 +2,12 @@
  * station.js - Rätselmaske, Szene, Entscheidungs-Dialog (AP8)
  */
 
-import { getStationById, getConfig } from '../config-loader.js';
+import { getStationById, getConfig, getStory } from '../config-loader.js';
 import { checkAnswer } from '../answers.js';
 import { showView } from '../main.js';
 import { markStationSolved, getState } from '../state.js';
 import { startGadget } from './gadgets/gadget-manager.js';
+import { openDialogue } from './dialogue.js';
 
 let currentStationId = null;
 let wrongAttempts = 0;
@@ -59,7 +60,26 @@ export function initStationView() {
 
     if (checkAnswer(inputVal, station.riddle.answers)) {
       errorMsg.classList.add('hidden');
-      // Direkt zum narrativen Gadget/Zeugen-Gespräch (Story-Walk)
+      
+      if (station.isStoryEvent) {
+        // Special Story Event Route
+        const story = getStory();
+        let treeKey = null;
+        if (inputVal.toLowerCase().includes('polizist') || inputVal.toLowerCase().includes('stahl')) {
+          treeKey = station.storyEventId + "_polizist";
+        } else if (inputVal.toLowerCase().includes('reporter') || inputVal.toLowerCase().includes('stift')) {
+          treeKey = station.storyEventId + "_reporter";
+        }
+
+        if (treeKey && story.dialogueTrees && story.dialogueTrees[treeKey]) {
+           openDialogue(story.dialogueTrees[treeKey], () => {
+             onStationComplete(currentStationId);
+           });
+           return;
+        }
+      }
+
+      // Default route
       startGadget(station.gadget.id, currentStationId);
     } else {
       wrongAttempts++;

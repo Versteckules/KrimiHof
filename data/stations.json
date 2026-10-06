@@ -7,48 +7,46 @@
     "zone": "altstadt",
     "coords": "N 50° 19.182 E 011° 55.074",
     "radius": 20,
-    "description": "Das Herz der Hofer Verwaltung. Hier im historischen Rathaus begann die verhängnisvolle Nacht des Stadtbrandes von 1823. Dr. Renger hinterließ seine ersten kryptischen Notizen in einer Mauerritze nahe dem Hauptportal.",
+    "description": "Das Herz der Hofer Verwaltung. Das Portal des Rathauses ist verkohlt, Absperrband flattert im Wind. Es raucht noch. Die Polizei hat alles abgeriegelt.",
+    "isStoryEvent": true,
+    "storyEventId": "rathaus_fire",
     "riddle": {
-      "question": "Welches historische Wappentier ziert den Scheitelstein über dem Rundbogen des Hauptportals?",
-      "answers": ["löwe", "loewe", "goldener löwe", "wappenlöwe"],
-      "hint": "Richte den Schein deiner Taschenlampe direkt mittig über den Scheitel des Haupteingang-Portals.",
-      "solutionDebug": "Löwe"
+      "question": "Untersuche den Tatort. Mit wem möchtest du sprechen?",
+      "answers": ["polizist", "reporter", "stahl", "stift"],
+      "hint": "Tippe auf den Polizisten oder den Reporter auf dem Bildschirm, um einen Dialog zu starten.",
+      "solutionDebug": "Polizist"
     },
     "gadget": {
       "id": "time-slider",
       "name": "Zeitreise-Slider (Rathaus 1823)",
       "description": "Blende stufenlos zwischen dem Kupferstich der Feuersbrunst von 1823 und der heutigen Nachtansicht über."
-    },
-    "witness": {
-      "name": "Nachtwächter Kilian",
-      "role": "Ehrenamtlicher Wächter der Altstadt",
-      "dialogue": "„Guten Abend, {PLAYER_NAME}. Wenn Sie Dr. Renger suchen: Er murmelte etwas vom Brandarchiv und verschwand hastig in Richtung Karolinenstraße...“"
     }
   },
   {
-    "id": "hauptbahnhof",
+    "id": "hauptpost",
     "number": 2,
-    "name": "Hauptbahnhof Hof",
+    "name": "Hauptpost am Sonnenplatz",
     "type": "mandatory",
-    "zone": "bahnhof",
-    "coords": "N 50° 18.675 E 011° 55.390",
+    "zone": "zentrum",
+    "coords": "N 50° 19.150 E 011° 55.120",
     "radius": 20,
-    "description": "Der monumentale Bahnhofskomplex. Zu später Stunde hallt das Quietschen der Güterzüge über den Vorplatz. Ein Informant will hier einen der Verdächtigen mit einer schweren ledernen Dokumentenmappe gesehen haben.",
+    "markerColor": "red",
+    "description": "Das wuchtige Gebäude der Hauptpost. Vor den leeren Postfächern im Vorraum hat ein Informant einen der Verdächtigen gesehen.",
     "riddle": {
-      "question": "Wie viele menschliche Figuren sind auf dem Relief des Denkmals am Bahnhofsvorplatz zu sehen?",
-      "answers": ["3", "drei", "3 figuren"],
-      "hint": "Zähle die auf dem Relief dargestellten Personen von links nach rechts.",
+      "question": "Wie viele Briefschlitze befinden sich an der äußeren Postboxanlage?",
+      "answers": ["3", "drei"],
+      "hint": "Zähle die goldenen Einwurfschlitze an der Außenwand.",
       "solutionDebug": "3"
     },
     "gadget": {
       "id": "polaroid",
       "name": "Polaroid-Schütteln & Phantombild",
-      "description": "Schüttle dein Smartphone, um ein Überwachungsfoto aus der Bahnhofshalle im Entwicklerbad scharfzustellen."
+      "description": "Schüttle dein Smartphone, um ein Foto aus dem Post-Vorraum im Entwicklerbad scharfzustellen."
     },
     "witness": {
-      "name": "Gepäckträger Sepp",
-      "role": "Nachtschicht am Bahnsteig 1",
-      "dialogue": "„Um 23:15 Uhr stieg jemand mit Hut und Mantel in ein wartendes Taxi. Er verlor einen Umschlag mit einem Siegel der Schlappen-Erben!“"
+      "name": "Nachtkurier Sepp",
+      "role": "Kurierfahrer",
+      "dialogue": "„Um 23:15 Uhr stieg jemand mit Hut und Mantel hastig in ein Taxi. Er warf noch schnell einen Brief mit dem Siegel der Schlappen-Erben ein!“"
     }
   },
   {
