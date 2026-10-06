@@ -140,21 +140,18 @@ export function renderSyncQRCode(targetElement, options = {}) {
   const syncUrl = generateSyncUrl();
   const textToEncode = options.useShortHash ? exportStateHash() : syncUrl;
 
-  const qrOptions = {
+  targetElement.innerHTML = ''; // Vorherigen Code löschen
+
+  new QRCode(targetElement, {
+    text: textToEncode,
     width: options.size || 240,
+    height: options.size || 240,
     colorDark: options.colorDark || '#0a0e17',
     colorLight: options.colorLight || '#ffffff',
-    margin: 2
-  };
+    correctLevel: QRCode.CorrectLevel.L
+  });
 
-  if (targetElement.tagName && targetElement.tagName.toLowerCase() === 'canvas') {
-    QRCode.toCanvas(targetElement, textToEncode, qrOptions);
-    return targetElement;
-  } else {
-    const svgString = QRCode.toSVG(textToEncode, qrOptions);
-    targetElement.innerHTML = svgString;
-    return targetElement;
-  }
+  return targetElement;
 }
 
 /**
