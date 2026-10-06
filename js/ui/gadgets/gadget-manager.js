@@ -5,6 +5,7 @@
 import { onStationComplete } from '../station.js';
 import { getStationById, getStory } from '../../config-loader.js';
 import { recordDecision, addInventoryItem } from '../../state.js';
+import { stationDialogueTrees } from '../../station-dialogues.js';
 
 export function startGadget(gadgetId, stationId) {
   const station = getStationById(stationId);
@@ -25,6 +26,24 @@ export function startGadget(gadgetId, stationId) {
 }
 
 function showPostGadgetDialogue(stationId, station) {
+  const story = getStory();
+
+  // Wenn ein komplexer Dialogbaum existiert, nutze diesen!
+  if (stationDialogueTrees && stationDialogueTrees[stationId]) {
+    import('../dialogue.js').then(mod => {
+      mod.openDialogue(stationDialogueTrees[stationId], () => {
+        // Beim Beenden des Dialogs Beweis eintragen und Station abschließen
+        const evidence = (story.evidenceCatalog || []).find(e => e.stationId === stationId);
+        if (evidence) {
+          addInventoryItem(evidence.id);
+        }
+        onStationComplete(stationId);
+      });
+    });
+    return;
+  }
+
+  // Fallback: Das alte statische UI
   let overlay = document.getElementById('gadget-mock-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -66,7 +85,6 @@ function showPostGadgetDialogue(stationId, station) {
   }
 
   // Get decisions for this station if they exist
-  const story = getStory();
   const decisions = (story && story.dialogueDecisions && story.dialogueDecisions[stationId]) || null;
 
   if (decisions && decisions.length > 0) {
