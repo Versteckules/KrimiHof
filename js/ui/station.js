@@ -107,7 +107,7 @@ function handleCharacterClick(station, char) {
 
   if (story && story.dialogueTrees && story.dialogueTrees[treeKey]) {
     openDialogue(story.dialogueTrees[treeKey], () => {
-      onStationComplete(currentStationId);
+      startGadget(station.gadget.id, currentStationId);
     });
   } else {
     // Fallback falls kein Dialog hinterlegt ist

@@ -93,11 +93,8 @@ function updateDossier() {
             </div>
           </div>
 
-          <div style="display: flex; gap: 8px; margin-top: 4px;">
-            <button class="btn-secondary btn-interrogate" data-suspect-id="${s.id}" style="flex: 1; padding: 6px 12px; font-size: 0.85rem; text-align: center; border-radius: 4px;">
-              🗣️ Verhör
-            </button>
-            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="flex: 1; padding: 6px 12px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.5; filter: grayscale(1);'}">
+          <div style="display: flex; gap: 8px; margin-top: 8px;">
+            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="width: 100%; padding: 10px 12px; font-size: 0.9rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.5; filter: grayscale(1);'}">
               🚨 Verhaften
             </button>
           </div>
@@ -106,18 +103,6 @@ function updateDossier() {
     });
     suspContainer.innerHTML = html;
 
-    // Klick-Handler für Verhöre
-    suspContainer.querySelectorAll('.btn-interrogate').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const suspectId = btn.getAttribute('data-suspect-id');
-        const treeKey = 'interrogate_' + suspectId;
-        if (story && story.dialogueTrees && story.dialogueTrees[treeKey]) {
-          openDialogue(story.dialogueTrees[treeKey], () => {
-            showView('view-dossier');
-          });
-        }
-      });
-    });
 
     // Klick-Handler für Verhaftung
     suspContainer.querySelectorAll('.btn-arrest').forEach(btn => {
@@ -138,9 +123,22 @@ function updateDossier() {
     const tbs = state.unlockedTrackables || [];
     const inv = state.inventory || [];
     let h = `<strong>Trackables (${tbs.length}/4):</strong><br>`;
+    const itemNames = {
+      'evidence_dice_gamble': 'Gezinkte Würfel vom Wärschtlamo',
+      'evidence_uv_text': 'Geheime UV-Botschaft',
+      'evidence_blood_sample': 'Eingetrocknete Blutprobe',
+      'evidence_key_rusty': 'Rostiger Tresorschlüssel',
+      'evidence_ledger_page': 'Zerrissene Kontobuch-Seite',
+      'evidence_ring_signet': 'Schlappen-Erben Siegelring',
+      'evidence_photo_old': 'Altes Schwarz-Weiß-Foto',
+      'evidence_matches': 'Streichholzschachtel "Zum Löwen"',
+      'evidence_lockpick': 'Dietrich-Set',
+      'evidence_poison_vial': 'Leeres Giftfläschchen'
+    };
+    
     h += tbs.length > 0 ? tbs.join(', ') : '<em>Noch keine</em>';
     h += `<br><br><strong>Gegenstände (${inv.length}):</strong><br>`;
-    h += inv.length > 0 ? inv.join('<br>') : '<em>Leer</em>';
+    h += inv.length > 0 ? inv.map(id => itemNames[id] || id).join('<br>') : '<em>Leer</em>';
     invContainer.innerHTML = h;
   }
 

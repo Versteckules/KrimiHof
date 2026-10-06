@@ -36,12 +36,8 @@ function renderNode() {
   const textEl = document.getElementById('dialogue-text');
   const choicesEl = document.getElementById('dialogue-choices');
   
-  if (node.avatar) {
-    avatarEl.src = node.avatar;
-    avatarEl.style.display = 'block';
-  } else {
-    avatarEl.style.display = 'none';
-  }
+  avatarEl.src = node.avatar || 'assets/avatar.jpg';
+  avatarEl.style.display = 'block';
 
   nameEl.textContent = (node.speaker || 'Unbekannt').replace(/{PLAYER_NAME}/g, playerName);
   

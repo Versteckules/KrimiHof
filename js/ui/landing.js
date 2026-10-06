@@ -87,6 +87,7 @@ export function initLanding() {
           easterEggVersteckules: true, 
           score: (state.score || 0) + 50 
         });
+        import('../state.js').then(mod => mod.unlockTrackable('CA6D92'));
         updateUIFromState(getState());
 
         const easterEggOverlay = document.createElement('div');
