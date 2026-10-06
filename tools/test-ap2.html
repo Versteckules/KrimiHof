@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>AP2 Test Runner</title>
+  <style>
+    body { font-family: monospace; background: #0a0e17; color: #e2e8f0; padding: 2rem; }
+    .pass { color: #4ade80; }
+    .fail { color: #f87171; font-weight: bold; }
+    .summary { margin-top: 1.5rem; font-size: 1.2rem; border-top: 1px solid #334155; padding-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>AP2 Test Runner: Coords & ConfigLoader</h1>
+  <div id="results"></div>
+
+  <script type="module">
+    import { APP_CONFIG } from '../config.js';
+    import { parseCoords, formatDMM, calculateDistance, calculateBearing, checkGeofence, isValidCoords } from '../js/coords.js';
+    import { loadAllData, getStations, getStory, getEvents, getFinalCoords } from '../js/config-loader.js';
+
+    const results = document.getElementById('results');
+    let passed = 0;
+    let failed = 0;
+
+    function assert(condition, desc) {
+      const div = document.createElement('div');
+      if (condition) {
+        div.className = 'pass';
+        div.textContent = `[PASS] ${desc}`;
+        passed++;
+      } else {
+        div.className = 'fail';
+        div.textContent = `[FAIL] ${desc}`;
+        failed++;
+      }
+      results.appendChild(div);
+      console.log(div.textContent);
+    }
+
+    async function runTests() {
+      // 1. Coords Parsing Tests
+      const c1 = parseCoords("N 50° 19.784 E 011° 42.485");
+      assert(c1 !== null, "parseCoords returns non-null for canonical DMM");
+      assert(Math.abs(c1.lat - 50.329733) < 0.001, `Lat parsed correctly (~50.3297): got ${c1?.lat}`);
+      assert(Math.abs(c1.lng - 11.708083) < 0.001, `Lng parsed correctly (~11.7081): got ${c1?.lng}`);
+
+      // German comma tolerance
+      const cComma = parseCoords("N 50° 19,784 E 011° 42,485");
+      assert(cComma !== null && Math.abs(cComma.lat - 50.329733) < 0.001, "parseCoords handles German comma");
+
+      // Without degree sign
+      const cNoDeg = parseCoords("N 50 19.784 E 011 42.485");
+      assert(cNoDeg !== null && Math.abs(cNoDeg.lat - 50.329733) < 0.001, "parseCoords handles missing degree sign");
+
+      // Decimal fallback
+      const cDec = parseCoords("50.329733, 11.708083");
+      assert(cDec !== null && Math.abs(cDec.lat - 50.329733) < 0.0001, "parseCoords handles decimal fallback");
+
+      // Format DMM
+      const f1 = formatDMM(50.329733, 11.708083);
+      assert(f1 === "N 50° 19.784 E 011° 42.485", `formatDMM matches expected: got "${f1}"`);
+
+      // Distance calculation
+      // Rathaus: N 50° 19.182 E 011° 55.074 (lat ~50.3197, lng ~11.9179)
+      // Ludwigstr 18: N 50° 19.215 E 011° 55.105 (lat ~50.32025, lng ~11.91842)
+      // Distance should be around 70-80 meters
+      const dist = calculateDistance("N 50° 19.182 E 011° 55.074", "N 50° 19.215 E 011° 55.105");
+      assert(dist > 50 && dist < 120, `Distance between Rathaus & Ludwigstraße 18 is realistic: ${dist}m`);
+
+      // Distance to same point is 0
+      const distZero = calculateDistance("N 50° 19.182 E 011° 55.074", "N 50° 19.182 E 011° 55.074");
+      assert(distZero === 0, `Distance to same point is 0: ${distZero}`);
+
+      // Bearing
+      const bearing = calculateBearing("N 50° 19.182 E 011° 55.074", "N 50° 19.215 E 011° 55.105");
+      assert(bearing >= 0 && bearing <= 360, `Bearing calculation valid (0-360): ${bearing}°`);
+
+      // Geofence checks
+      // 10m away -> inside 20m geofence
+      const fenceInside = checkGeofence("N 50° 19.182 E 011° 55.074", "N 50° 19.182 E 011° 55.074", 20, 5);
+      assert(fenceInside.inside === true, "checkGeofence returns inside=true at target position");
+
+      // Accuracy tolerance formula test
+      // If raw distance is 28m and accuracy is 12m: effective distance = 28 - 12 = 16m <= 20m -> inside!
+      // If accuracy is 25m, max tolerance is 15m: effective distance = 28 - 15 = 13m <= 20m -> inside!
+      // Let's test with a point roughly 30m away
+      const fenceTol = checkGeofence({ lat: 50.31970, lng: 11.91790 }, { lat: 50.31995, lng: 11.91790 }, 20, 10);
+      assert(typeof fenceTol.inside === 'boolean', "checkGeofence tolerance calculation executes properly");
+
+      // 2. Config & Data Loader Tests
+      try {
+        const data = await loadAllData();
+        assert(data.stations.length === 14, `Loaded exactly 14 stations (12 Pflicht + 2 Bonus): got ${data.stations.length}`);
+        assert(data.events.length === 11, `Loaded exactly 11 Street-Events: got ${data.events.length}`);
+        assert(Object.keys(data.story.suspects).length === 3, "Loaded exactly 3 suspects");
+        assert(data.finalCoords.coordsDMM === "N 50° 19.345 E 011° 55.412", "Final coordinates verified");
+
+        // Verify getters
+        assert(getStations().length === 14, "getStations() getter returns 14 stations");
+        assert(getStory().suspects.herold.name === "Valentin Herold", "getStory() contains suspect Valentin Herold");
+        assert(getEvents()[0].id === "event_shadow_sprint", "getEvents() returns first event shadow sprint");
+        assert(getFinalCoords().coordsDecimal.lat > 50, "getFinalCoords() contains parsed decimal latitude");
+
+        // Verify Rathaus as start
+        const rathaus = data.stations[0];
+        assert(rathaus.id === "rathaus" && rathaus.type === "start", "Station 1 is Rathaus Ludwigstraße with type 'start'");
+      } catch (err) {
+        assert(false, `Data loading error: ${err.message}`);
+      }
+
+      // Summary
+      const summary = document.createElement('div');
+      summary.className = 'summary';
+      summary.innerHTML = `<strong>Tests abgeschlossen:</strong> <span class="pass">${passed} bestanden</span>, <span class="${failed ? 'fail' : ''}">${failed} fehlgeschlagen</span>`;
+      results.appendChild(summary);
+      window.__TEST_RESULTS__ = { passed, failed };
+    }
+
+    runTests();
+  </script>
+</body>
+</html>

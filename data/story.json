@@ -1,0 +1,230 @@
+{
+  "title": "Der Pakt der Schlappen-Erben",
+  "subtitle": "Ein Nacht-Krimi in Hof (Saale)",
+  "prologue": {
+    "heading": "Die Asche von 1823",
+    "text": "In der Nacht des 4. September 1823 vernichtete ein verheerendes Feuer fast die gesamte Hofer Altstadt. Über zweihundert Gebäude sanken in Schutt und Asche. Doch was die Chroniken als tragischen Unfall verzeichneten, verbirgt ein düsteres Geheimnis: Den 'Pakt der Schlappen-Erben'. Eine verschworene Gemeinschaft mächtiger Bürger nutzte die Katastrophe, um sich unermessliche Liegenschaften und Handwerksprivilegien anzueignen.\n\nHeute, über zwei Jahrhunderte später, stieß der renommierte Hofer Stadtarchivar Dr. Renger auf die vergilbten Originalverträge im Gewölbe unter dem Rathaus. Seit gestern Abend fehlt von ihm jede Spur. Seine verwüstete Arbeitsstube und eine panische Sprachnachricht sind alles, was blieb.\n\nErmittler {PLAYER_NAME}, deine Aufgabe ist es, in den nächtlichen Straßen von Hof die Fäden zusammenzuführen, die Beweise auf deiner Pinnwand zu verknüpfen und den wahren Drahtzieher vor dem Morgengrauen zu entlarven!"
+  },
+  "suspects": {
+    "herold": {
+      "id": "herold",
+      "name": "Valentin Herold",
+      "role": "Antiquitätenhändler & Kunstsammler",
+      "age": 58,
+      "location": "Altstadt / Lorenzberg",
+      "image": "assets/suspect_herold.webp",
+      "motive": "Machtgier & historischer Wert: Wollte die unschätzbaren Original-Urkunden und Goldschmuck-Relikte des Bundes von 1823 an einen internationalen Schattenmarkt veräußern.",
+      "description": "Eloquenter, stets elegant gekleideter Kunsthändler mit Samtweste und Gehstock. Kennt jeden historischen Keller in Hof, zeigt sich zynisch und betont herablassend gegenüber Behörden.",
+      "evidenceKey": "Antiquitäten-Futteral & Brandkassette"
+    },
+    "gipser": {
+      "id": "gipser",
+      "name": "Katharina von Gipser",
+      "role": "Kommunalpolitikerin & Immobilieninvestorin",
+      "age": 46,
+      "location": "Neustadt / Karolinenstraße",
+      "image": "assets/suspect_gipser.webp",
+      "motive": "Kommerzielle Vertuschung: Wollte das Saaleufer sanieren. Die uralten Erbrechte im Bundespakt hätten ihre millionenschweren Bauprojekte augenblicklich blockiert.",
+      "description": "Einflussreiche Stadträtin mit exzellenten Kontakten in Politik und Wirtschaft. Kühle Rhetorik, maßgeschneiderte Kostüme, scheut keine Skrupel beim Schutz ihrer Investitionen.",
+      "evidenceKey": "Notarieller Vorvertrag & gefälschtes Grundbuch"
+    },
+    "heiden": {
+      "id": "heiden",
+      "name": "Severin Heiden",
+      "role": "Domorganist & Chorleiter an St. Michaelis",
+      "age": 62,
+      "location": "Kirchplatz St. Michaelis",
+      "image": "assets/suspect_heiden.webp",
+      "motive": "Fanatische Traditionstreue: Sah sich als rechtmäßiger Nachfahre der Gründerväter und wollte das Vermächtnis der Schlappen-Erben vor profaner Entweihung schützen.",
+      "description": "Dürrer, asketischer Mann mit durchdringendem Blick und langen grauen Haaren. Verbringt seine Nächte allein an den Kirchenorgeln von Hof, spricht in biblischen Metaphern.",
+      "evidenceKey": "Chiffriertes Notenblatt & Geheimbund-Siegel"
+    }
+  },
+  "evidenceCatalog": [
+    {
+      "id": "evidence_fire_dossier",
+      "name": "Brandakte 1823",
+      "type": "document",
+      "stationId": "rathaus",
+      "description": "Ein vergilbter Bericht der Löschkommission mit Hinweisen auf Brandbeschleuniger in der Scheune Ludwigstraße 18."
+    },
+    {
+      "id": "evidence_polaroid_station",
+      "name": "Überwachungs-Polaroid",
+      "type": "photo",
+      "stationId": "hauptbahnhof",
+      "description": "Ein unscharfes Nachtfoto: Ein Fliehender mit ledernem Futteral und goldener Siegelnadel."
+    },
+    {
+      "id": "evidence_cipher_paper",
+      "name": "Chiffrierter Schuldschein",
+      "type": "cipher",
+      "stationId": "obelisk",
+      "description": "Aus dem Koffer geborgener Zahlencode, der Vermögenswerte aus dem 19. Jahrhundert aufführt."
+    },
+    {
+      "id": "evidence_rosina_note",
+      "name": "Rosina-Stiftungsurkunde",
+      "type": "document",
+      "stationId": "lorenzkirche",
+      "description": "Historische Urkunde über geheime Schenkungen an die Bruderschaft der Schlappen-Erben."
+    },
+    {
+      "id": "evidence_briefcase_lock",
+      "name": "Gravierter Siegelring",
+      "type": "object",
+      "stationId": "biengaesschen",
+      "description": "Im Spurt verlorener Messingring mit dem Wappen der Hofer Zünfte."
+    },
+    {
+      "id": "evidence_tape_renger",
+      "name": "Dr. Rengers Tonband",
+      "type": "audio",
+      "stationId": "ludwigstrasse",
+      "description": "Letzte verzweifelte Worte des Archivars vor seiner Entführung aus der Ludwigstraße."
+    },
+    {
+      "id": "evidence_phone_warning",
+      "name": "Münzfernsprecher-Aufnahme",
+      "type": "audio",
+      "stationId": "karolinenstrasse",
+      "description": "Die verzerrte Stimme einer Frau, die vor Manipulationen am Saaleufer warnt."
+    },
+    {
+      "id": "evidence_ambigram_mirror",
+      "name": "Spiegelschrift-Pergament",
+      "type": "cipher",
+      "stationId": "schlossplatz",
+      "description": "Ein Doppel-Ambigramm mit den Unterschriften der drei Patrizierfamilien von 1823."
+    },
+    {
+      "id": "evidence_dice_gamble",
+      "name": "Wirtshaus-Notizblock",
+      "type": "document",
+      "stationId": "sonnenplatz",
+      "description": "Auf Bierfilz gekritzelte Abrechnung über geheime Zahlungen am Schlappentag."
+    },
+    {
+      "id": "evidence_wiretap_log",
+      "name": "Abhörprotokoll St. Marien",
+      "type": "audio",
+      "stationId": "marienkirche",
+      "description": "Beweis für eine bevorstehende Übergabe der Verträge an der Hospitalkirche."
+    },
+    {
+      "id": "evidence_brass_wheel",
+      "name": "Kryptorad-Entschlüsselung",
+      "type": "cipher",
+      "stationId": "michaeliskirche",
+      "description": "Das entschlüsselte Codewort 'ORDO SCHLAPPIS 1823', das zum Versteck der Urkunden führt."
+    },
+    {
+      "id": "evidence_uv_formula",
+      "name": "Fluoreszierende Losung",
+      "type": "document",
+      "stationId": "hospitalkirche",
+      "description": "Mit UV-Licht sichtbar gemachte Wegmarkierung am Ufer der Saale."
+    },
+    {
+      "id": "evidence_torn_letter",
+      "name": "Zerrissener Drohbrief",
+      "type": "document",
+      "stationId": "saale_schmuggel",
+      "description": "Drohung an Dr. Renger: 'Schweigen Sie, oder Hof wird ein zweites Mal brennen!'"
+    },
+    {
+      "id": "evidence_charter_1432",
+      "name": "Bundessatzung von 1432",
+      "type": "document",
+      "stationId": "altstadt_archiv",
+      "description": "Die originale mittelalterliche Gründungsurkunde des Schlappen-Privilegs."
+    }
+  ],
+  "dialogueDecisions": {
+    "hauptbahnhof": [
+      { "id": "bhf_1", "text": "Dem Gepäckträger das Foto von Valentin Herold zeigen", "suspect": "herold", "points": 2 },
+      { "id": "bhf_2", "text": "Nach einer Dame im teuren Wintermantel fragen (Katharina von Gipser)", "suspect": "gipser", "points": 2 },
+      { "id": "bhf_3", "text": "Nach einem Mann in schwarzer Kutte mit Notenmappe forschen (Severin Heiden)", "suspect": "heiden", "points": 2 }
+    ],
+    "obelisk": [
+      { "id": "ob_1", "text": "Dr. Sommer nach Herolds Aktivitäten auf Auktionen befragen", "suspect": "herold", "points": 2 },
+      { "id": "ob_2", "text": "Die Stadträtin Gipser und ihre Stiftungsgelder durchleuchten", "suspect": "gipser", "points": 2 },
+      { "id": "ob_3", "text": "Über Heidens Rolle im Michaelis-Kirchenvorstand sprechen", "suspect": "heiden", "points": 2 }
+    ],
+    "lorenzkirche": [
+      { "id": "lor_1", "text": "Vermuten, dass Herold historische Kirchenschätze gestohlen hat", "suspect": "herold", "points": 2 },
+      { "id": "lor_2", "text": "Den Verkauf städtischer Friedhofsgrundstücke an Gipsers Firma prüfen", "suspect": "gipser", "points": 2 },
+      { "id": "lor_3", "text": "Küster Franz über Heidens nächtliche Orgelproben befragen", "suspect": "heiden", "points": 2 }
+    ],
+    "karolinenstrasse": [
+      { "id": "kar_1", "text": "Den anonymen Anruf als Ablenkungsmanöver von Valentin Herold einstufen", "suspect": "herold", "points": 2 },
+      { "id": "kar_2", "text": "Die Spur von Gipsers Baukonsortium an die Saale weiterverfolgen", "suspect": "gipser", "points": 2 },
+      { "id": "kar_3", "text": "Religiöse Chiffren in der Botschaft Severin Heiden zuordnen", "suspect": "heiden", "points": 2 }
+    ],
+    "marienkirche": [
+      { "id": "mar_1", "text": "Die Stimmen als Herold und einen Schwarzmarkthändler identifizieren", "suspect": "herold", "points": 2 },
+      { "id": "mar_2", "text": "Frau von Gipser bei geheimen Absprachen ertappen", "suspect": "gipser", "points": 2 },
+      { "id": "mar_3", "text": "Severin Heidens Predigt über das Erbe der Väter belauschen", "suspect": "heiden", "points": 2 }
+    ],
+    "michaeliskirche": [
+      { "id": "mic_1", "text": "Glauben, dass Herold den Kirchturm als Schmuggelversteck nutzt", "suspect": "herold", "points": 2 },
+      { "id": "mic_2", "text": "Frau von Gipsers Sanierungsspenden für den Südturm hinterfragen", "suspect": "gipser", "points": 2 },
+      { "id": "mic_3", "text": "Heiden direkt mit den Geheimbund-Noten konfrontieren", "suspect": "heiden", "points": 2 }
+    ],
+    "hospitalkirche": [
+      { "id": "hos_1", "text": "Herolds Hehlerboot an der Saale vermuten", "suspect": "herold", "points": 2 },
+      { "id": "hos_2", "text": "Gipsers Bestechungsgelder an den Saaleschiffer aufdecken", "suspect": "gipser", "points": 2 },
+      { "id": "hos_3", "text": "Heidens sakrales Ritual zur Weihe der Erben entlarven", "suspect": "heiden", "points": 2 }
+    ]
+  },
+  "endings": {
+    "herold": {
+      "culpritId": "herold",
+      "culpritName": "Valentin Herold",
+      "title": "Das Geständnis des Antiquars",
+      "confession": "„Bravo, Ermittler {PLAYER_NAME}. Sie haben mich tatsächlich bis hierher verfolgt. Sehen Sie sich diese Dokumente an! Sie sind über zweihundert Jahre alt. Wissen Sie, was eine originale Brandurkunde von 1823 mit dem echten Ratssiegel auf dem internationalen Sammlermarkt einbringt? Ein Vermögen! Dr. Renger wollte sie dem Stadtmuseum schenken – welch sentimentale Verschwendung! Ich habe ihn im alten Eiskeller unter dem Lorenzberg festgesetzt. Keine Sorge, er lebt... aber der Pakt gehört mir. Doch nun haben Sie die Fäden entwirrt. Nehmen Sie die Koordinaten des Archivs und lassen Sie mich gehen... oder übergeben Sie mich den Behörden!“"
+    },
+    "gipser": {
+      "culpritId": "gipser",
+      "culpritName": "Katharina von Gipser",
+      "title": "Der Fall der Stadträtin",
+      "confession": "„Sie verstehen gar nichts, {PLAYER_NAME}! Hof braucht Zukunft, moderne Architektur, Investoren! Das Saaleufer liegt seit einem Jahrhundert brach, nur weil diese verstaubten Schlappen-Erben ein unkündbares Vorkaufsrecht aus dem Jahr 1823 besitzen! Dr. Renger wollte den Pakt öffentlich machen und damit mein gesamtes Lebenswerk vernichten! Ich musste ihn aufhalten! Ich habe die Urkunden in der Saale versenken lassen – so dachte ich jedenfalls. Doch Ihre Spurensuche war gründlicher als meine Anwälte. Mein politischer Untergang ist besiegelt. Hier sind die Koordinaten des geheimen Schließfachs. Nehmen Sie Ihren Sieg!“"
+    },
+    "heiden": {
+      "culpritId": "heiden",
+      "culpritName": "Severin Heiden",
+      "title": "Das Vermächtnis des Domorganisten",
+      "confession": "„Die Glocken läuten für die Wahrheit, {PLAYER_NAME}! Hören Sie sie nicht? Der Pakt der Schlappen-Erben war kein Verbrechen, er war das heilige Versprechen unserer Ahnen, die Stadt aus den Flammen wiederaufzubauen! Die Ehre des Handwerks, das Schlappenbier, die Würde Hofs – all das ruht in diesem Bund! Renger wollte unser Erbe profanieren, es der Sensationslust der Massen zum Fraß vorwerfen! Ich konnte das nicht zulassen! Ich habe ihn im Glockenstuhl von St. Michaelis verwahrt, damit er die Erhabenheit unseres Schwurs begreift! Doch Ihre Beharrlichkeit, {PLAYER_NAME}, zeigt mir: Der Bund hat einen neuen würdigen Hüter gefunden. Hier sind die Koordinaten der wahren Bundeslade!“"
+    }
+  },
+  "trackables": [
+    {
+      "code": "HQZJCG",
+      "name": "Die Flamme von 1823",
+      "stationId": "ludwigstrasse",
+      "puzzle": "Entschlüssele die Gravur auf der Rückseite der Brandgedenktafel.",
+      "description": "Erinnerungs-Trackable an den Stadtbrand von 1823 in Hof."
+    },
+    {
+      "code": "EA99DB",
+      "name": "Das Hofer Schlappen-Siegel",
+      "stationId": "sonnenplatz",
+      "puzzle": "Gewinne das Würfelspiel am Wärschtlamo-Denkmal mit mindestens 10 Augen.",
+      "description": "Traditions-Trackable zu Ehren des Hofer Schlappentags."
+    },
+    {
+      "code": "CABGEW",
+      "name": "Der Domorganist-Schlüssel",
+      "stationId": "michaeliskirche",
+      "puzzle": "Knacke die Messing-Chiffrierscheibe am Fuße des Südturms.",
+      "description": "Geheimbund-Trackable der Michaelis-Bruderschaft."
+    },
+    {
+      "code": "CARGC7",
+      "name": "Der Saale-Goldbarren",
+      "stationId": "saale_schmuggel",
+      "puzzle": "Setze den zerrissenen Erpresserbrief am Flussufer vollständig zusammen.",
+      "description": "Exklusiver Bonus-Trackable für erfolgreiche Meister-Detektive."
+    }
+  ]
+}
