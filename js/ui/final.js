@@ -114,12 +114,12 @@ function generateDiploma() {
   
   const bannerUrl = new URL('assets/diploma_banner.jpg', window.location.href).href;
   
-  bannerWrapper.innerHTML = \`
-    <h3 style="color: var(--color-amber-glow); font-size: 1.2rem; margin-bottom: 15px;">Dein Geocaching-Banner</h3>
-    <img src="\${bannerUrl}" alt="Diplom Banner" style="width: 100%; max-width: 600px; border-radius: 8px; border: 2px solid var(--color-amber-muted); margin-bottom: 15px;">
+  bannerWrapper.innerHTML = `
+    <h3 style="color: var(--color-amber-glow); font-size: 1.2rem; margin-bottom: 15px;">Dein Geocaching-Banner (GCBYXW0)</h3>
+    <img src="${bannerUrl}" alt="Diplom Banner" style="width: 100%; max-width: 600px; border-radius: 8px; border: 2px solid var(--color-amber-muted); margin-bottom: 15px;">
     <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 10px;">Füge diesen Code in dein Geocaching-Profil ein:</p>
-    <textarea readonly style="width: 100%; height: 60px; background: rgba(0,0,0,0.5); color: #fff; font-family: monospace; border: 1px solid var(--color-glass-border); padding: 10px; border-radius: 4px; resize: none;"><a href="\${window.location.origin}\${window.location.pathname}"><img src="\${bannerUrl}" alt="Der Pakt der Schlappen-Erben - Meister-Ermittler" /></a></textarea>
-  \`;
+    <textarea readonly style="width: 100%; height: 60px; background: rgba(0,0,0,0.5); color: #fff; font-family: monospace; border: 1px solid var(--color-glass-border); padding: 10px; border-radius: 4px; resize: none;"><a href="${window.location.origin}${window.location.pathname}"><img src="${bannerUrl}" alt="Der Pakt der Schlappen-Erben - Meister-Ermittler" /></a></textarea>
+  `;
   
   resultContainer.appendChild(bannerWrapper);
   bannerWrapper.scrollIntoView({ behavior: 'smooth' });

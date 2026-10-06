@@ -91,7 +91,7 @@ export function initLanding() {
 
         const easterEggOverlay = document.createElement('div');
         easterEggOverlay.style = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.9); z-index: 10000; display:flex; align-items:center; justify-content:center; padding: 20px;";
-        easterEggOverlay.innerHTML = \`
+        easterEggOverlay.innerHTML = `
           <div style="background: #1a1a1a; border: 2px solid #d4af37; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);">
             <h2 style="color: #d4af37; font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.8rem;">EASTER EGG GEFUNDEN!</h2>
             <div class="avatar-frame" style="margin: 0 auto 15px auto; width: 100px; height: 100px;">
@@ -104,7 +104,7 @@ export function initLanding() {
             <p style="color: var(--color-amber-muted); font-size: 0.9rem; margin-bottom: 25px;">+50 Detektiv-Punkte</p>
             <button class="btn-primary" onclick="this.parentElement.parentElement.remove()" style="width: 100%;">Akte anlegen!</button>
           </div>
-        \`;
+        `;
         document.body.appendChild(easterEggOverlay);
       }
     }

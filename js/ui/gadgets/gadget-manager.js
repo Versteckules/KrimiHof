@@ -45,12 +45,12 @@ function showPostGadgetDialogue(stationId, station) {
   html += `
     <div id="witness-box" style="width:100%; max-width:500px; background:rgba(0,0,0,0.6); border-left:4px solid var(--color-blood-red); padding:var(--space-md); margin-bottom:var(--space-lg); text-align:left; opacity:0; transition:opacity 1s ease; transform:translateY(10px); display:flex; gap:15px; align-items:flex-start;">
       <div style="flex-shrink:0; width:60px; height:60px; border-radius:50%; overflow:hidden; border:2px solid var(--color-night-light);">
-        <img src="\${station.witness.image || 'assets/avatar.jpg'}" alt="Zeuge" style="width:100%; height:100%; object-fit:cover;">
+        <img src="${station.witness.image || 'assets/avatar.jpg'}" alt="Zeuge" style="width:100%; height:100%; object-fit:cover;">
       </div>
       <div>
-        <h3 style="color:var(--color-blood-red); margin-bottom:5px; font-size:1.1rem; font-family:var(--font-serif);">🗣️ \${station.witness.name}</h3>
-        <p style="color:var(--color-text-muted); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">\${station.witness.role}</p>
-        <p style="color:var(--color-text-main); font-size:1rem; font-style:italic; line-height:1.5;">\${station.witness.dialogue}</p>
+        <h3 style="color:var(--color-blood-red); margin-bottom:5px; font-size:1.1rem; font-family:var(--font-serif);">🗣️ ${station.witness.name}</h3>
+        <p style="color:var(--color-text-muted); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">${station.witness.role}</p>
+        <p style="color:var(--color-text-main); font-size:1rem; font-style:italic; line-height:1.5;">${station.witness.dialogue}</p>
       </div>
     </div>
   `;

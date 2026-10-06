@@ -87,11 +87,11 @@ export function openStation(stationId) {
     if (charsContainer) charsContainer.classList.add('hidden');
     if (manualWrap) {
       manualWrap.classList.remove('hidden');
-      manualWrap.innerHTML = \`
+      manualWrap.innerHTML = `
         <button class="btn-primary" id="btn-station-direct-gadget" style="width: 100%; padding: 15px; font-size: 1.2rem; margin-top: 20px;">
           🔎 Tatort untersuchen
         </button>
-      \`;
+      `;
       document.getElementById('btn-station-direct-gadget').addEventListener('click', () => {
         import('./gadgets/gadget-manager.js').then(mod => mod.startGadget(station.gadget.id, currentStationId));
       });
