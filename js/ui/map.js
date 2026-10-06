@@ -89,10 +89,12 @@ function renderMarkers() {
         icon: getIcon(status)
       }).addTo(map);
 
+      marker.customStatus = status;
       marker.bindPopup(`<b>${st.name}</b><br><small>${status.toUpperCase()}</small>`);
       
       marker.on('click', () => {
-        if (status === 'active' || status === 'bonus') {
+        const currentStatus = marker.customStatus;
+        if (currentStatus === 'active' || currentStatus === 'bonus') {
           setActiveTarget(st.id);
           
           const state = getState();
@@ -102,16 +104,18 @@ function renderMarkers() {
               module.openStation(st.id);
             });
           }
-        } else if (status === 'locked') {
+        } else if (currentStatus === 'locked') {
           alert('Löse zuerst das Rätsel am Rathaus, bevor du hierher kommst.');
-        } else if (status === 'solved') {
+        } else if (currentStatus === 'solved') {
           alert('Diese Station hast du bereits abgeschlossen.');
         }
       });
       
       markers[st.id] = marker;
     } else {
+      markers[st.id].customStatus = status;
       markers[st.id].setIcon(getIcon(status));
+      markers[st.id].setPopupContent(`<b>${st.name}</b><br><small>${status.toUpperCase()}</small>`);
     }
   });
 }

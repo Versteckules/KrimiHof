@@ -13,22 +13,15 @@ let wrongAttempts = 0;
 
 export function openStation(stationId) {
   currentStationId = stationId;
-  wrongAttempts = 0;
   
   const station = getStationById(stationId);
   if (!station) return;
 
   const titleEl = document.getElementById('station-title');
-  const questionEl = document.getElementById('station-question');
-  const inputEl = document.getElementById('station-answer-input');
-  const errorEl = document.getElementById('station-error');
-  const hintEl = document.getElementById('station-hint');
+  const descEl = document.getElementById('station-description');
 
   titleEl.textContent = station.name;
-  questionEl.textContent = station.riddle.question;
-  inputEl.value = '';
-  errorEl.classList.add('hidden');
-  hintEl.classList.add('hidden');
+  descEl.textContent = station.description;
 
   showView('view-station');
 }
@@ -36,39 +29,16 @@ export function openStation(stationId) {
 export function initStationView() {
   const btnSubmit = document.getElementById('btn-station-submit');
   const btnCancel = document.getElementById('btn-station-cancel');
-  const inputEl = document.getElementById('station-answer-input');
-  const errorEl = document.getElementById('station-error');
-  const hintEl = document.getElementById('station-hint');
 
   const submitAnswer = () => {
     if (!currentStationId) return;
     const station = getStationById(currentStationId);
-    const config = getConfig();
-    const val = inputEl.value;
     
-    if (checkAnswer(val, station.riddle.answers)) {
-      // Erfolgreich!
-      errorEl.classList.add('hidden');
-      
-      // AP9: Starte das verknüpfte Gadget
-      startGadget(station.gadget.id, currentStationId);
-    } else {
-      // Falsch!
-      wrongAttempts++;
-      errorEl.textContent = `Das ist leider nicht korrekt. Versuch: ${wrongAttempts}`;
-      errorEl.classList.remove('hidden');
-
-      if (wrongAttempts >= config.gameplay.maxWrongAnswersBeforeHint) {
-        hintEl.textContent = `Tipp: ${station.riddle.hint || "Schau genau hin."}`;
-        hintEl.classList.remove('hidden');
-      }
-    }
+    // Direkt zum narrativen Gadget/Zeugen-Gespräch (Story-Walk)
+    startGadget(station.gadget.id, currentStationId);
   };
 
   btnSubmit.addEventListener('click', submitAnswer);
-  inputEl.addEventListener('keyup', (e) => {
-    if (e.key === 'Enter') submitAnswer();
-  });
 
   btnCancel.addEventListener('click', () => {
     // Zurück zur Karte

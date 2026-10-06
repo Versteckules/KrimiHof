@@ -2,11 +2,11 @@
  * street-events.js - Zufällige Begegnungen auf dem Weg (AP9)
  */
 
-import { getEvents } from '../config-loader.js';
+import { getEvents, getConfig } from '../config-loader.js';
 import { onPositionUpdate, getDistance } from '../geo.js';
-import { recordEventTriggered, getState } from '../state.js';
+import { recordEventTriggered, getState, unlockTrackable, isTrackableUnlocked } from '../state.js';
+import { playSound } from '../audio.js';
 
-// Ein simpler Zähler für gelaufene Meter (als Trigger)
 let totalDistanceWalked = 0;
 let lastPos = null;
 
@@ -24,65 +24,97 @@ export function initStreetEvents() {
 }
 
 function checkEventTrigger() {
-  // Alle 300m wird ein Event getriggert (für die Simulation, in echt nach Konzept)
-  if (totalDistanceWalked > 300) {
+  // Alle 150m wird ein Event getriggert
+  if (totalDistanceWalked > 150) {
     totalDistanceWalked = 0; // Reset
 
     const state = getState();
+    const config = getConfig();
     const allEvents = getEvents();
     
-    // Finde ein Event, das noch nicht getriggert wurde
-    const available = allEvents.filter(e => !state.triggeredEvents.includes(e.id));
+    // Check available TBs
+    const allTbs = config.gameplay.trackables;
+    const availableTbs = allTbs.filter(tb => !isTrackableUnlocked(tb));
+
+    // Check available Story Events
+    const availableEvents = allEvents.filter(e => !state.triggeredEvents.includes(e.id));
     
-    if (available.length > 0) {
-      // Zufälliges Event
-      const evt = available[Math.floor(Math.random() * available.length)];
-      triggerStreetEvent(evt.id);
+    // 50% chance for a TB, 50% for a Story Event (if available)
+    const roll = Math.random();
+    
+    if (roll > 0.5 && availableTbs.length > 0) {
+      const randomTb = availableTbs[Math.floor(Math.random() * availableTbs.length)];
+      triggerTrackableDiscovery(randomTb);
+    } else if (availableEvents.length > 0) {
+      const evt = availableEvents[Math.floor(Math.random() * availableEvents.length)];
+      triggerStoryEvent(evt);
+    } else if (availableTbs.length > 0) {
+       // Fallback to TB if no events left
+       const randomTb = availableTbs[Math.floor(Math.random() * availableTbs.length)];
+       triggerTrackableDiscovery(randomTb);
     }
   }
 }
 
-export function triggerStreetEvent(eventId) {
-  console.log(`[AP9] Street-Event getriggert: ${eventId}`);
-  
-  const allEvents = getEvents();
-  const evt = allEvents.find(e => e.id === eventId);
-  if (!evt) return;
-
-  // Mock UI für Street Event
+function triggerTrackableDiscovery(tbCode) {
+  playSound('notification');
   let overlay = document.getElementById('event-mock-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.id = 'event-mock-overlay';
-    overlay.style = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.9); z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; font-family:var(--font-mono); text-align:center; padding:20px;";
+    overlay.style = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(5,8,15,0.98); z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:var(--space-lg);";
     document.body.appendChild(overlay);
   }
   
   overlay.innerHTML = `
-    <h2 style="color:var(--color-blood-red); font-size:1.8rem; margin-bottom:10px;">⚠️ ZUFALLS-EREIGNIS</h2>
-    <h3 style="font-size:1.5rem; margin-bottom: 20px;">${evt.title}</h3>
-    <p style="margin-bottom:30px; max-width:400px;">(Dies ist eine Event-Simulation. In der fertigen Version erscheint hier ein interaktives UI, z.B. eine Verfolgungsjagd oder ein klingelndes Telefon).</p>
-    
+    <h2 style="color:var(--color-night-light); font-size:2rem; margin-bottom:var(--space-md); font-family:var(--font-serif);">📜 Fund am Wegesrand!</h2>
+    <div style="background:rgba(255,255,255,0.05); border:1px solid var(--color-glass-border); padding:var(--space-xl); border-radius:10px; margin-bottom:var(--space-lg); max-width: 450px;">
+      <p style="font-size:1.1rem; line-height:1.6; margin-bottom:var(--space-md);">Während du aufmerksam die Straße hinuntergehst, fällt dir ein gefaltetes Stück Papier auf, das in einer Mauerritze steckt. Du ziehst es heraus und entdeckst einen Geheimcode der Bruderschaft!</p>
+      <div style="font-family:var(--font-mono); font-size:2.5rem; color:var(--color-amber-glow); letter-spacing:4px; font-weight:bold; padding:var(--space-sm); border:2px dashed var(--color-amber-glow); border-radius:5px;">
+        ${tbCode}
+      </div>
+    </div>
+    <button id="btn-pickup-tb" class="btn-primary" style="max-width:300px; width:100%;">Code in die Akte aufnehmen</button>
+  `;
+  overlay.style.display = 'flex';
+
+  document.getElementById('btn-pickup-tb').onclick = () => {
+    unlockTrackable(tbCode);
+    playSound('success');
+    overlay.style.display = 'none';
+  };
+}
+
+function triggerStoryEvent(evt) {
+  playSound('notification');
+  let overlay = document.getElementById('event-mock-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'event-mock-overlay';
+    overlay.style = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(5,8,15,0.98); z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:var(--space-lg);";
+    document.body.appendChild(overlay);
+  }
+  
+  overlay.innerHTML = `
+    <h2 style="color:var(--color-blood-red); font-size:1.8rem; margin-bottom:10px; font-family:var(--font-serif);">⚠️ EREIGNIS</h2>
+    <h3 style="font-size:1.5rem; margin-bottom: 20px; color:var(--color-amber-glow);">${evt.title}</h3>
+    <div style="background:rgba(255,255,255,0.05); border:1px solid var(--color-glass-border); padding:var(--space-lg); border-radius:10px; margin-bottom:var(--space-lg); max-width: 450px;">
+      <p style="font-size:1rem; line-height:1.6; font-style:italic;">${evt.description}</p>
+    </div>
     <div style="display:flex; gap:10px; width:100%; max-width:400px;">
-      <button id="btn-mock-event-ok" class="btn-primary" style="flex:1;">Akzeptieren (+5 Pkt)</button>
-      <button id="btn-mock-event-fail" class="btn-danger" style="flex:1;">Verweigern (0 Pkt)</button>
+      <button id="btn-mock-event-ok" class="btn-primary" style="flex:1;">Interagieren</button>
+      <button id="btn-mock-event-fail" class="btn-secondary" style="flex:1;">Ignorieren</button>
     </div>
   `;
   overlay.style.display = 'flex';
 
   document.getElementById('btn-mock-event-ok').onclick = () => {
     overlay.style.display = 'none';
-    recordEventTriggered(eventId, 5); // 5 Punkte als Belohnung
-    alert("Event bewältigt!");
+    recordEventTriggered(evt.id, 10); 
   };
   
   document.getElementById('btn-mock-event-fail').onclick = () => {
     overlay.style.display = 'none';
-    recordEventTriggered(eventId, 0); 
-    // Konzept: Display Zersplittert Effekt (bei Fehlern)
-    document.body.classList.add('glass-crack');
-    setTimeout(() => {
-      document.body.classList.remove('glass-crack');
-    }, 2000);
+    recordEventTriggered(evt.id, 0); 
   };
 }
