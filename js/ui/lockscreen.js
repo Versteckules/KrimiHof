@@ -5,6 +5,7 @@
 import { getCurrentTimelockStatus, getNext7DaysPreview } from '../timelock.js';
 import { showView } from '../main.js';
 import { getCurrentTime } from '../clock.js';
+import { getState } from '../state.js';
 
 let countdownInterval = null;
 
@@ -22,6 +23,12 @@ export function initLockscreen() {
  * Wenn nicht, rendert es die Lockscreen-Infos und gibt false zurück.
  */
 export function checkLockscreenStatus() {
+  const state = getState();
+  if (state && state.isTestingMode) {
+    stopCountdown();
+    return true;
+  }
+
   const status = getCurrentTimelockStatus();
   if (status.isPlayable) {
     stopCountdown();

@@ -321,4 +321,4 @@ if (typeof window !== 'undefined') {
 
 }());
 
-export default (typeof window !== 'undefined' ? window.SunCalc : (typeof module !== 'undefined' ? module.exports : null));
+

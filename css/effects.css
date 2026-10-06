@@ -92,8 +92,8 @@ body.flashlight-active #flashlight-overlay {
   opacity: 1;
 }
 
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
+/* Reduced motion & touch device support */
+@media (prefers-reduced-motion: reduce), (hover: none) and (pointer: coarse) {
   #flashlight-overlay {
     display: none;
   }
