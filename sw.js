@@ -6,7 +6,7 @@
  * - Jede erfolgreiche Antwort wird im Cache abgelegt
  * - Offline (z.B. Funkloch in der Altstadt) wird aus dem Cache bedient
  */
-const CACHE_NAME = 'krimi-hof-v4';
+const CACHE_NAME = 'krimi-hof-v8';
 const ASSETS = [
   './',
   './index.html',
@@ -69,7 +69,8 @@ const ASSETS = [
   './vendor/leaflet/leaflet.css',
   './assets/avatar.jpg',
   './assets/hero_hof_night.jpg',
-  './assets/seal_schlappen.jpg'
+  './assets/seal_schlappen.jpg',
+  './assets/soundtrack.mp3'
 ];
 
 self.addEventListener('install', (event) => {

@@ -242,8 +242,8 @@ export function initDebug() {
   document.getElementById('btn-debug-event').addEventListener('click', async () => {
     const eid = document.getElementById('debug-event-select').value;
     if (eid) {
-      const { triggerStreetEvent } = await import('./ui/street-events.js');
-      triggerStreetEvent(eid);
+      const { triggerStoryEventById } = await import('./ui/street-events.js');
+      triggerStoryEventById(eid);
     }
   });
 

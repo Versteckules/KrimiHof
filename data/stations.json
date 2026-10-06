@@ -50,10 +50,10 @@
     {
         "id":  "hauptpost",
         "number":  2,
-        "name":  "Kino Lorenzstraße",
+        "name":  "Rotary Brunnen",
         "type":  "mandatory",
         "zone":  "zentrum",
-        "coords":  "N 50° 18.950 E 011° 54.950",
+        "coords":  "N 50° 19.123 E 011° 54.962",
         "radius":  20,
         "markerColor":  "red",
         "description":  "Das wuchtige Gebäude der Hauptpost. Vor den leeren Postfächern im Vorraum hat ein Informant einen der Verdächtigen gesehen.",
@@ -96,6 +96,7 @@
         "witness":  {
                         "name":  "Nachtkurier Sepp",
                         "role":  "Kurierfahrer",
+                          "image": "assets/kurier.jpg",
                         "dialogue":  "„Um 23:15 Uhr stieg jemand mit Hut und Mantel hastig in ein Taxi. Er warf noch schnell einen Brief mit dem Siegel der Schlappen-Erben ein!“"
                     }
     },
@@ -471,6 +472,7 @@
         "witness":  {
                         "name":  "Wärschtlamo-Stammgast",
                         "role":  "Nachtschwärmer",
+                          "image": "assets/stammgast.jpg",
                         "dialogue":  "„Heut Nacht schmecken die Wiener nach Pulverdampf... Valentin Herold saß bis eben drüben und verhandelte über alte Braurechte!“"
                     }
     },
@@ -578,6 +580,7 @@
         "witness":  {
                         "name":  "Chorsängerin Helene",
                         "role":  "Sopranistin an St. Michaelis",
+                          "image": "assets/helene.jpg",
                         "dialogue":  "„Severin Heiden versteckt im Orgelprospekt alte Pergamente. Er schwört, dass die Schlappen-Erben die Stadt vor dem Ruin bewahren!“"
                     }
     },
@@ -587,7 +590,7 @@
         "name":  "Hospitalkirche am Unteren Tor",
         "type":  "mandatory",
         "zone":  "saale",
-        "coords":  "N 50° 19.463 E 011° 55.164",
+        "coords":  "N 50° 19.455 E 011° 55.147",
         "radius":  20,
         "description":  "Am Unteren Tor, nahe dem Fluss Saale. Die spätgotische Hospitalkirche überstand als eines der ganz wenigen Gebäude den großen Brand von 1823 unbeschadet.",
         "riddle":  {

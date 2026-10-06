@@ -61,6 +61,8 @@
         </div>
         <div>
           <button id="btn-start-game" class="btn-primary">Akte Öffnen</button>
+          <br>
+          <a href="?debug=1" style="color: rgba(255,255,255,0.2); font-size: 0.75rem; text-decoration: none; margin-top: 15px; display: inline-block;">[Offline-Test aktivieren]</a>
         </div>
         <p id="name-error" class="hidden" style="color: var(--color-blood-red); margin-top: var(--space-sm); font-family: var(--font-mono);">
           [FEHLER] Bitte Identität bestätigen.
@@ -333,9 +335,20 @@
     <div class="modal-box paper-note" style="position: relative; max-width: 90%; background: #fdf5e6; color: #2c1e16; text-align: left;">
       <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 40px; height: 15px; background: rgba(0,0,0,0.2); border-radius: 2px;"></div>
       <h3 id="evidence-title" style="font-family: var(--font-serif); color: #8b0000; font-size: 1.5rem; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">Beweis</h3>
-      <p id="evidence-desc" style="font-size: 1.1rem; line-height: 1.6; font-style: italic; min-height: 80px;">
+      <p id="evidence-desc" style="font-size: 1.1rem; line-height: 1.6; font-style: italic; min-height: 60px;">
         Details laden...
       </p>
+
+      <div id="evidence-assignment-ui" style="margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 15px;">
+        <p style="font-size: 0.95rem; font-weight: bold; margin-bottom: 10px; color: #444; text-align: center;">Belastet diesen Verdächtigen:</p>
+        <div style="display: flex; gap: 8px; justify-content: center;">
+          <button class="btn-assign-evidence" data-suspect="herold" style="flex: 1; padding: 8px; background: #2c1e16; color: #fdf5e6; border: none; border-radius: 4px; font-weight: bold; font-size: 0.85rem; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">Herold</button>
+          <button class="btn-assign-evidence" data-suspect="gipser" style="flex: 1; padding: 8px; background: #2c1e16; color: #fdf5e6; border: none; border-radius: 4px; font-weight: bold; font-size: 0.85rem; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">Gipser</button>
+          <button class="btn-assign-evidence" data-suspect="heiden" style="flex: 1; padding: 8px; background: #2c1e16; color: #fdf5e6; border: none; border-radius: 4px; font-weight: bold; font-size: 0.85rem; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">Heiden</button>
+        </div>
+        <div id="evidence-assignment-feedback" style="margin-top: 15px; font-size: 0.95rem; font-weight: bold; text-align: center; height: 20px; color: #8b0000;"></div>
+      </div>
+
       <div style="display: flex; justify-content: center; margin-top: 20px;">
         <button id="btn-close-evidence" class="btn-secondary" style="opacity: 0.8; padding: 8px 16px;">Zurück zur Akte</button>
       </div>

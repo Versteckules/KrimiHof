@@ -1,5 +1,5 @@
 let bgm = null;
-let isMuted = false;
+let isMuted = localStorage.getItem('krimi_muted') === 'true';
 
 export function initAudio() {
   console.log("Audio Module initialized. (Web Audio API ready)");
@@ -9,11 +9,21 @@ export function initAudio() {
 
   const startAudioOnFirstClick = () => {
     if (!isMuted) {
-      bgm.play().catch(e => {});
+      bgm.play().catch(e => console.log('Audio autoplay prevented'));
     }
     document.body.removeEventListener('click', startAudioOnFirstClick);
   };
   document.body.addEventListener('click', startAudioOnFirstClick);
+
+  const btnMusic = document.getElementById('btn-toggle-music');
+  if (btnMusic) {
+    btnMusic.textContent = isMuted ? '🔇' : '🔊';
+    btnMusic.addEventListener('click', (e) => {
+      e.stopPropagation(); // prevent triggering other clicks
+      const mutedNow = toggleMute();
+      btnMusic.textContent = mutedNow ? '🔇' : '🔊';
+    });
+  }
 }
 
 export function playSound(name) {
@@ -25,6 +35,7 @@ export function playSound(name) {
 
 export function toggleMute() {
   isMuted = !isMuted;
+  localStorage.setItem('krimi_muted', isMuted);
   if (isMuted) {
     if (bgm) bgm.pause();
     console.log("[Audio] Muted");
@@ -32,5 +43,9 @@ export function toggleMute() {
     if (bgm) bgm.play().catch(e => {});
     console.log("[Audio] Unmuted");
   }
+  return isMuted;
+}
+
+export function getMuteState() {
   return isMuted;
 }

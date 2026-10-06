@@ -122,5 +122,38 @@
     "description": "Vor dir am Tor steht eine verdächtige Gestalt im Mantel und flüstert mit jemandem im Schatten. Du musst dich auf Hörweite heranschleichen.",
     "action": "Mache 20 vorsichtige Schritte, ohne dass der Bewegungssensor Erschütterungen meldet.",
     "reward": "Gespräch belauscht: Hinweis auf Treffen am Unteren Tor"
+  },
+  {
+    "id": "event_call_herold",
+    "number": 12,
+    "title": "Unbekannter Anruf",
+    "location": "Handy",
+    "type": "suspect_call",
+    "suspectId": "herold",
+    "description": "Dein Telefon vibriert. 'Hier ist Herold! Sie schnüffeln in meinen Geschäften. Ich habe nichts mit dem Brand zu tun! Jemand will mir das anhängen!'",
+    "action": "Nimm den Anruf an und entscheide, wie du reagierst.",
+    "reward": "Neue Erkenntnisse über Valentin Herold"
+  },
+  {
+    "id": "event_call_gipser",
+    "number": 13,
+    "title": "Unterdrückte Nummer",
+    "location": "Handy",
+    "type": "suspect_call",
+    "suspectId": "gipser",
+    "description": "Eine kühle Frauenstimme: 'Hier spricht Katharina von Gipser. Ihre Ermittlungen stören unsere Bauprojekte. Hören Sie auf, Gespenster zu jagen!'",
+    "action": "Nimm den Anruf an und entscheide, wie du reagierst.",
+    "reward": "Neue Erkenntnisse über Katharina von Gipser"
+  },
+  {
+    "id": "event_call_heiden",
+    "number": 14,
+    "title": "Rauschen in der Leitung",
+    "location": "Handy",
+    "type": "suspect_call",
+    "suspectId": "heiden",
+    "description": "Orgelmusik im Hintergrund. 'Das Feuer reinigt, Ermittler. Die Erben wachen über Hof. Stellen Sie sich nicht gegen das Schicksal!'",
+    "action": "Nimm den Anruf an und entscheide, wie du reagierst.",
+    "reward": "Neue Erkenntnisse über Severin Heiden"
   }
 ]

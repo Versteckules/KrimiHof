@@ -70,19 +70,31 @@ function handleAccusation(suspectId) {
   const accusedName = getSuspectName(suspectId);
   const realName = getSuspectName(result.murderer);
   const story = getStory();
-  let confession = "";
+  
+  let confessionHtml = "";
   if (story && story.endings && story.endings[suspectId]) {
-     confession = `<br><br><i>${story.endings[suspectId].confession}</i>`;
+     const ending = story.endings[suspectId];
+     const avatar = story.suspects && story.suspects[suspectId] ? story.suspects[suspectId].image : 'assets/avatar.jpg';
+     
+     confessionHtml = `
+       <div style="margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.6); border-left: 4px solid var(--color-blood-red); border-radius: 4px; display: flex; flex-direction: column; gap: 15px; align-items: center;">
+         <img src="${avatar}" alt="${accusedName}" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--color-amber-muted); object-fit: cover; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);">
+         <h3 style="color: var(--color-amber-glow); font-family: var(--font-serif); font-size: 1.4rem;">${ending.title || 'Das Geständnis'}</h3>
+         <p style="color: var(--color-text-main); font-size: 1.05rem; font-style: italic; line-height: 1.6; text-align: justify;">
+           ${ending.confession}
+         </p>
+       </div>
+     `;
   }
 
   if (suspectId === result.murderer) {
     title.textContent = 'Korrekt!';
     title.style.color = 'var(--color-green, #2e8b57)';
-    text.innerHTML = `Deine Beweisaufnahme war stichhaltig. Die Indizien verweisen mit <strong>${result.percentages[result.murderer]}%</strong> auf ${accusedName}!${confession}<br><br>Die Akte ist geschlossen.`;
+    text.innerHTML = `Deine Beweisaufnahme war stichhaltig. Die Indizien verweisen mit <strong>${result.percentages[result.murderer]}%</strong> auf ${accusedName}!${confessionHtml}<br><br><span style="color: var(--color-night-light);">Die Akte ist geschlossen.</span>`;
   } else {
     title.textContent = 'Ein fataler Irrtum!';
     title.style.color = 'var(--color-blood-red)';
-    text.innerHTML = `Du hast den Falschen beschuldigt. Die Beweise (${result.percentages[result.murderer]}%) sprachen eigentlich gegen <strong>${realName}</strong>!${confession}<br><br>Das Spiel ist dennoch vorbei. Die Koordinaten erhältst du trotzdem:`;
+    text.innerHTML = `Du hast den Falschen beschuldigt. Die Beweise (${result.percentages[result.murderer]}%) sprachen eigentlich gegen <strong>${realName}</strong>!${confessionHtml}<br><br><span style="color: var(--color-night-light);">Das Spiel ist dennoch vorbei. Die Koordinaten erhältst du trotzdem:</span>`;
   }
 
   coords.innerHTML = formatFinalCoords();

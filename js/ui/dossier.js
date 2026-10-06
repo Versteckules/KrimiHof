@@ -168,8 +168,51 @@ function updateDossier() {
         const evidenceData = (story.evidenceCatalog || []).find(e => e.id === id);
         const modal = document.getElementById('modal-evidence');
         if (modal && evidenceData) {
-          document.getElementById('evidence-title').innerText = evidenceData.name;
-          document.getElementById('evidence-desc').innerText = evidenceData.description;
+          document.getElementById('evidence-title').innerText = evidenceData.name || 'Beweis';
+          document.getElementById('evidence-desc').innerText = evidenceData.description || '';
+          
+          // Reset feedback
+          document.getElementById('evidence-assignment-feedback').innerText = '';
+          
+          // Wire up assignment buttons
+          modal.querySelectorAll('.btn-assign-evidence').forEach(assignBtn => {
+            // Remove old listeners by cloning
+            const newAssignBtn = assignBtn.cloneNode(true);
+            assignBtn.parentNode.replaceChild(newAssignBtn, assignBtn);
+            
+            newAssignBtn.addEventListener('click', () => {
+              const suspectId = newAssignBtn.getAttribute('data-suspect');
+              
+              // Hardcoded mapping for which evidence belongs to whom
+              const evidenceMapping = {
+                'herold': ['evidence_polaroid_station', 'evidence_cipher_paper', 'evidence_briefcase_lock', 'evidence_dice_gamble'],
+                'gipser': ['evidence_rosina_note', 'evidence_wiretap_log', 'evidence_phone_warning'],
+                'heiden': ['evidence_torn_letter', 'evidence_uv_formula', 'evidence_ambigram_mirror', 'evidence_brass_wheel']
+              };
+              
+              const feedbackEl = document.getElementById('evidence-assignment-feedback');
+              
+              // Generic evidence fits everyone slightly
+              const generic = ['evidence_fire_dossier', 'evidence_tape_renger', 'evidence_charter_1432'];
+              
+              if ((evidenceMapping[suspectId] && evidenceMapping[suspectId].includes(id)) || generic.includes(id)) {
+                feedbackEl.style.color = '#006400';
+                feedbackEl.innerText = '📈 Passt perfekt! (Verdacht +15%)';
+                import('../state.js').then(mod => {
+                  mod.addSuspectImpact(suspectId, 2);
+                  updateDossier(); // Refresh UI behind modal
+                });
+              } else {
+                feedbackEl.style.color = '#8b0000';
+                feedbackEl.innerText = '📉 Ergibt wenig Sinn... (Verdacht -7%)';
+                import('../state.js').then(mod => {
+                  mod.addSuspectImpact(suspectId, -1);
+                  updateDossier(); // Refresh UI behind modal
+                });
+              }
+            });
+          });
+
           modal.classList.remove('hidden');
         }
       });
@@ -201,8 +244,8 @@ function updateDossier() {
       const isSolved = solved.includes(st.id);
       if (isSolved) {
         const isBonus = st.id.startsWith('saale_') || st.id.startsWith('altstadt_');
-        const color = isBonus ? '#c0c0c0' : 'var(--color-green)';
-        sHtml += `<span style="background: ${color}; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">${st.name}</span>`;
+        const color = isBonus ? 'var(--color-text-muted)' : 'var(--color-green)';
+        sHtml += `<span style="border: 1px solid ${color}; color: ${color}; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; background: rgba(0,0,0,0.3);">${st.name}</span>`;
       }
     });
     statContainer.innerHTML = sHtml;

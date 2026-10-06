@@ -2,10 +2,11 @@
  * street-events.js - Zufällige Begegnungen auf dem Weg (AP9)
  */
 
-import { getEvents, getConfig } from '../config-loader.js';
+import { getEvents, getConfig, getStory } from '../config-loader.js';
 import { onPositionUpdate, getDistance } from '../geo.js';
 import { recordEventTriggered, getState, unlockTrackable, isTrackableUnlocked } from '../state.js';
 import { playSound } from '../audio.js';
+import { openDialogue } from './dialogue.js';
 
 let totalDistanceWalked = 0;
 let lastPos = null;
@@ -95,26 +96,46 @@ function triggerStoryEvent(evt) {
     document.body.appendChild(overlay);
   }
   
+  const isPhoneCall = evt.type === 'suspect_call';
+  const icon = isPhoneCall ? '📱 EINGEHENDER ANRUF' : '⚠️ EREIGNIS';
+  
   overlay.innerHTML = `
-    <h2 style="color:var(--color-blood-red); font-size:1.8rem; margin-bottom:10px; font-family:var(--font-serif);">⚠️ EREIGNIS</h2>
+    <h2 style="color:var(--color-blood-red); font-size:1.8rem; margin-bottom:10px; font-family:var(--font-serif);">${icon}</h2>
     <h3 style="font-size:1.5rem; margin-bottom: 20px; color:var(--color-amber-glow);">${evt.title}</h3>
     <div style="background:rgba(255,255,255,0.05); border:1px solid var(--color-glass-border); padding:var(--space-lg); border-radius:10px; margin-bottom:var(--space-lg); max-width: 450px;">
       <p style="font-size:1rem; line-height:1.6; font-style:italic;">${evt.description}</p>
     </div>
     <div style="display:flex; gap:10px; width:100%; max-width:400px;">
-      <button id="btn-mock-event-ok" class="btn-primary" style="flex:1;">Interagieren</button>
-      <button id="btn-mock-event-fail" class="btn-secondary" style="flex:1;">Ignorieren</button>
+      <button id="btn-mock-event-ok" class="btn-primary" style="flex:1;">${isPhoneCall ? 'Annehmen' : 'Interagieren'}</button>
+      <button id="btn-mock-event-fail" class="btn-secondary" style="flex:1;">${isPhoneCall ? 'Abweisen' : 'Ignorieren'}</button>
     </div>
   `;
   overlay.style.display = 'flex';
 
   document.getElementById('btn-mock-event-ok').onclick = () => {
     overlay.style.display = 'none';
-    recordEventTriggered(evt.id, 10); 
+    recordEventTriggered(evt.id, 10);
+    
+    if (isPhoneCall) {
+      const story = getStory();
+      if (story && story.dialogueTrees && story.dialogueTrees[evt.id]) {
+        openDialogue(story.dialogueTrees[evt.id]);
+      }
+    }
   };
   
   document.getElementById('btn-mock-event-fail').onclick = () => {
     overlay.style.display = 'none';
     recordEventTriggered(evt.id, 0); 
   };
+}
+
+export function triggerStoryEventById(eventId) {
+  const allEvents = getEvents();
+  const evt = allEvents.find(e => e.id === eventId);
+  if (evt) {
+    triggerStoryEvent(evt);
+  } else {
+    console.warn("Event nicht gefunden:", eventId);
+  }
 }
