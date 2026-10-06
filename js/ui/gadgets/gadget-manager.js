@@ -3,7 +3,8 @@
  */
 
 import { onStationComplete } from '../station.js';
-import { getStationById } from '../../config-loader.js';
+import { getStationById, getStory } from '../../config-loader.js';
+import { recordDecision } from '../../state.js';
 
 export function startGadget(gadgetId, stationId) {
   const station = getStationById(stationId);
@@ -50,9 +51,24 @@ export function startGadget(gadgetId, stationId) {
     `;
   }
 
-  html += `
-    <button id="btn-mock-gadget-success" class="btn-primary" style="width:100%; max-width:300px; opacity:0; transition:opacity 0.5s ease;">Akte aktualisieren & Weiter</button>
-  `;
+  // Get decisions for this station if they exist
+  const story = getStory();
+  const decisions = (story && story.dialogueDecisions && story.dialogueDecisions[stationId]) || null;
+
+  if (decisions && decisions.length > 0) {
+    html += `
+      <div id="decision-box" style="width:100%; max-width:500px; margin-top:var(--space-md); opacity:0; transition:opacity 0.5s ease; display:flex; flex-direction:column; gap:10px;">
+        <h4 style="color:var(--color-night-light); font-size:0.9rem; margin-bottom:5px;">Wie reagierst du auf diese Aussage?</h4>
+    `;
+    decisions.forEach((dec, idx) => {
+      html += `<button class="btn-decision btn-secondary" data-choice-id="${dec.id}" data-suspect="${dec.suspect}" data-points="${dec.points}" style="text-align:left; padding:10px; font-size:0.9rem;">${dec.text}</button>`;
+    });
+    html += `</div>`;
+  } else {
+    html += `
+      <button id="btn-mock-gadget-success" class="btn-primary" style="width:100%; max-width:300px; margin-top:var(--space-md); opacity:0; transition:opacity 0.5s ease;">Akte aktualisieren & Weiter</button>
+    `;
+  }
 
   overlay.innerHTML = html;
   overlay.style.display = 'flex';
@@ -75,13 +91,35 @@ export function startGadget(gadgetId, stationId) {
     }, 2400);
   }
 
+  const showButtonsDelay = isBonus ? 3000 : 2200;
+  
   setTimeout(() => {
-    const btn = document.getElementById('btn-mock-gadget-success');
-    if(btn) btn.style.opacity = '1';
-  }, isBonus ? 3000 : 2200);
-
-  document.getElementById('btn-mock-gadget-success').onclick = () => {
-    overlay.style.display = 'none';
-    onStationComplete(stationId);
-  };
+    if (decisions && decisions.length > 0) {
+      const dBox = document.getElementById('decision-box');
+      if (dBox) dBox.style.opacity = '1';
+      
+      const buttons = overlay.querySelectorAll('.btn-decision');
+      buttons.forEach(btn => {
+        btn.onclick = () => {
+          const choiceId = btn.getAttribute('data-choice-id');
+          const suspect = btn.getAttribute('data-suspect');
+          const points = parseInt(btn.getAttribute('data-points'), 10);
+          
+          recordDecision(stationId, choiceId, suspect, points);
+          
+          overlay.style.display = 'none';
+          onStationComplete(stationId);
+        };
+      });
+    } else {
+      const btn = document.getElementById('btn-mock-gadget-success');
+      if(btn) {
+        btn.style.opacity = '1';
+        btn.onclick = () => {
+          overlay.style.display = 'none';
+          onStationComplete(stationId);
+        };
+      }
+    }
+  }, showButtonsDelay);
 }

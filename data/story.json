@@ -142,19 +142,19 @@
   ],
   "dialogueDecisions": {
     "hauptbahnhof": [
-      { "id": "bhf_1", "text": "Dem Gepäckträger das Foto von Valentin Herold zeigen", "suspect": "herold", "points": 2 },
-      { "id": "bhf_2", "text": "Nach einer Dame im teuren Wintermantel fragen (Katharina von Gipser)", "suspect": "gipser", "points": 2 },
-      { "id": "bhf_3", "text": "Nach einem Mann in schwarzer Kutte mit Notenmappe forschen (Severin Heiden)", "suspect": "heiden", "points": 2 }
+      { "id": "bhf_1", "text": "[Beweis vorlegen] Dem Gepäckträger das Fahndungsfoto von Valentin Herold zeigen", "suspect": "herold", "points": 2 },
+      { "id": "bhf_2", "text": "[Freundlich] Nach einer Dame im teuren Wintermantel fragen (Katharina von Gipser)", "suspect": "gipser", "points": 2 },
+      { "id": "bhf_3", "text": "[Direkt] Nach einem Mann in schwarzer Kutte mit Notenmappe forschen (Severin Heiden)", "suspect": "heiden", "points": 2 }
     ],
     "obelisk": [
-      { "id": "ob_1", "text": "Dr. Sommer nach Herolds Aktivitäten auf Auktionen befragen", "suspect": "herold", "points": 2 },
-      { "id": "ob_2", "text": "Die Stadträtin Gipser und ihre Stiftungsgelder durchleuchten", "suspect": "gipser", "points": 2 },
-      { "id": "ob_3", "text": "Über Heidens Rolle im Michaelis-Kirchenvorstand sprechen", "suspect": "heiden", "points": 2 }
+      { "id": "ob_1", "text": "[Aggressiv] Dr. Sommer bezüglich Herolds illegalen Auktionen in die Enge treiben", "suspect": "herold", "points": 2 },
+      { "id": "ob_2", "text": "[Sachlich] Die Stadträtin Gipser und ihre dubiosen Stiftungsgelder durchleuchten", "suspect": "gipser", "points": 2 },
+      { "id": "ob_3", "text": "[Skeptisch] Über Heidens extremistische Rolle im Kirchenvorstand spekulieren", "suspect": "heiden", "points": 2 }
     ],
     "lorenzkirche": [
-      { "id": "lor_1", "text": "Vermuten, dass Herold historische Kirchenschätze gestohlen hat", "suspect": "herold", "points": 2 },
-      { "id": "lor_2", "text": "Den Verkauf städtischer Friedhofsgrundstücke an Gipsers Firma prüfen", "suspect": "gipser", "points": 2 },
-      { "id": "lor_3", "text": "Küster Franz über Heidens nächtliche Orgelproben befragen", "suspect": "heiden", "points": 2 }
+      { "id": "lor_1", "text": "[Kombinieren] Vermuten, dass Herold historische Kirchenschätze gestohlen hat", "suspect": "herold", "points": 2 },
+      { "id": "lor_2", "text": "[Beweis] Den Verkauf städtischer Grundstücke an Gipsers Firma prüfen", "suspect": "gipser", "points": 2 },
+      { "id": "lor_3", "text": "[Einfühlsam] Küster Franz behutsam über Heidens nächtliche Orgelproben befragen", "suspect": "heiden", "points": 2 }
     ],
     "karolinenstrasse": [
       { "id": "kar_1", "text": "Den anonymen Anruf als Ablenkungsmanöver von Valentin Herold einstufen", "suspect": "herold", "points": 2 },

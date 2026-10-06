@@ -67,9 +67,6 @@
 
         <!-- Team-Sync & Reset Button Bar -->
         <div style="display: flex; gap: var(--space-md); justify-content: center; margin-top: var(--space-lg); flex-wrap: wrap;">
-          <button id="btn-open-sync" class="btn-secondary" title="Spielstand via QR-Code übertragen oder einlesen">
-            📱 Team-Sync (QR-Code)
-          </button>
           <button id="btn-open-reset" class="btn-danger hidden" title="Gesamten Spielstand löschen">
             🗑️ Akte Schreddern
           </button>
@@ -105,13 +102,7 @@
             </div>
           </div>
           <div class="instruction-card">
-            <div class="instruction-header">5. Teamplay</div>
-            <div class="instruction-body">
-              Spielt ihr im Team? Scannt jederzeit den QR-Code eures Partners, um die Beweisakte zu synchronisieren.
-            </div>
-          </div>
-          <div class="instruction-card">
-            <div class="instruction-header">6. Das Finale</div>
+            <div class="instruction-header">5. Das Finale</div>
             <div class="instruction-body">
               Hast du alle 11 Stationen untersucht, musst du den wahren Täter überführen und erhältst die Koordinaten der Final-Dose sowie dein Diplom.
             </div>
@@ -194,14 +185,34 @@
 
     <!-- Station Riddle View (AP8) -->
     <main id="view-station" class="view hidden">
-      <section style="padding: var(--space-xl) var(--space-md); text-align: center; max-width: 600px; margin: 0 auto; margin-top: 5vh;">
+      <section style="padding: var(--space-xl) var(--space-md); text-align: center; max-width: 600px; margin: 0 auto; margin-top: 2vh;">
         <h2 id="station-title" style="font-size: 2rem; margin-bottom: var(--space-lg); font-family: var(--font-serif); color: var(--color-amber-glow);">Station</h2>
-        <div class="lock-box" style="background: rgba(0,0,0,0.4); border: 1px solid var(--color-glass-border); padding: var(--space-lg); border-radius: 8px; margin-bottom: var(--space-lg);">
-          <p id="station-description" style="font-size: 1.1rem; margin-bottom: var(--space-md); color: var(--color-text-main); line-height: 1.5; font-style: italic;">Beschreibung lädt...</p>
+        
+        <div class="paper-note" style="background: #fdf5e6; color: #2c1e16; padding: var(--space-xl); border-radius: 4px; box-shadow: 2px 4px 15px rgba(0,0,0,0.5); font-family: var(--font-serif); text-align: left; position: relative; margin-bottom: var(--space-xl); background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%25%22 height=%22100%25%22><filter id=%22noise%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%224%22 stitchTiles=%22stitch%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%220.08%22/></svg>');">
+          <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 40px; height: 15px; background: rgba(0,0,0,0.2); border-radius: 2px;"></div> <!-- Clip -->
+          <div style="position: absolute; top: 10px; right: 15px; font-family: var(--font-mono); font-size: 0.7rem; color: #8b0000; font-weight: bold; transform: rotate(5deg); border: 1px solid #8b0000; padding: 2px 4px;">AKTE: <span id="station-number-stamp">00</span></div>
+          
+          <p id="station-description" style="font-size: 1.15rem; margin-bottom: var(--space-lg); line-height: 1.6; font-style: italic; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: var(--space-md);">Beschreibung lädt...</p>
+          
+          <div class="riddle-section" style="margin-top: var(--space-md);">
+            <h3 style="font-family: var(--font-mono); font-size: 0.9rem; color: #555; text-transform: uppercase; margin-bottom: 5px;">Ermittlungsaufgabe</h3>
+            <p id="station-question" style="font-size: 1.1rem; font-weight: 600; margin-bottom: var(--space-md);">Frage lädt...</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <input type="text" id="station-answer-input" placeholder="Deine Antwort..." style="background: rgba(0,0,0,0.05); color: #2c1e16; border: 1px solid rgba(0,0,0,0.2); padding: 12px; font-size: 1.1rem; font-family: var(--font-mono); border-radius: 4px; text-transform: lowercase;">
+              <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
+                <button id="btn-station-hint" style="background: none; border: none; color: #555; text-decoration: underline; cursor: pointer; font-family: var(--font-mono); font-size: 0.85rem;">Hinweis anfordern?</button>
+                <button id="btn-station-submit" class="btn-primary" style="padding: 10px 20px; font-size: 1rem; box-shadow: none;">Antwort überprüfen</button>
+              </div>
+            </div>
+            
+            <p id="station-error-msg" class="hidden" style="color: #8b0000; font-family: var(--font-mono); font-size: 0.9rem; margin-top: 10px;">Fehlerhafte Eingabe.</p>
+            <div id="station-hint-box" class="hidden" style="margin-top: 15px; background: rgba(0,0,0,0.05); padding: 10px; border-left: 3px solid #555; font-size: 0.9rem; font-style: italic;"></div>
+          </div>
         </div>
-        <div style="display: flex; gap: var(--space-md); justify-content: center;">
-          <button id="btn-station-cancel" class="btn-secondary">Später</button>
-          <button id="btn-station-submit" class="btn-primary">Interaktion starten</button>
+
+        <div style="display: flex; justify-content: center;">
+          <button id="btn-station-cancel" class="btn-secondary" style="opacity: 0.7;">Zurück zur Karte</button>
         </div>
       </section>
     </main>
@@ -264,99 +275,11 @@
     </main>
   </div>
 
-  <!-- Modal: Team-Sync (QR-Code) -->
-  <div id="modal-sync" class="modal-backdrop hidden">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">📱 Team-Synchronisation</h3>
-        <button id="modal-sync-close" class="modal-close-btn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p style="font-size: 0.95rem; margin-bottom: var(--space-md); color: var(--color-text-muted);">
-          Scanne diesen Code mit einem zweiten Smartphone, um die Ermittlungsakte sofort 1:1 zu spiegeln.
-        </p>
-
-        <div class="qr-container">
-          <div id="sync-qr-canvas" class="qr-canvas"></div>
-          <div class="qr-subtext">Offline QR-Code • Gültig für alle Teammitglieder</div>
-        </div>
-
-        <div style="text-align: center; margin: var(--space-md) 0;">
-          <button id="btn-copy-sync-link" class="btn-secondary" style="width: 100%;">
-            📋 Sync-Link in Zwischenablage kopieren
-          </button>
-        </div>
-
-        <hr style="border: none; border-top: 1px solid var(--color-glass-border); margin: var(--space-lg) 0;">
-
-        <h4 style="font-size: 1rem; color: var(--color-amber-glow); margin-bottom: var(--space-xs);">
-          Code manuell einlesen
-        </h4>
-        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: var(--space-xs);">
-          Falls die Kamera den Code nicht lesen kann, füge den Code hier ein:
-        </p>
-        <div style="display: flex; gap: var(--space-xs);">
-          <input type="text" id="sync-import-input" class="sync-input" placeholder="Sync-Code hier einfügen...">
-          <button id="btn-import-sync" class="btn-primary" style="font-size: 0.9rem; padding: var(--space-sm) var(--space-md); white-space: nowrap;">
-            Import
-          </button>
-        </div>
-        <p id="sync-import-error" class="hidden" style="color: var(--color-blood-red); font-size: 0.85rem; margin-top: var(--space-xs); font-family: var(--font-mono);">
-          [FEHLER] Ungültiger Sync-Code.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Reset Confirmation -->
-  <div id="modal-reset" class="modal-backdrop hidden">
-    <div class="modal-card" style="border-color: rgba(153, 27, 27, 0.4);">
-      <div class="modal-header" style="background: rgba(153, 27, 27, 0.1);">
-        <h3 class="modal-title" style="color: #fca5a5;">⚠️ Akte schreddern?</h3>
-        <button id="modal-reset-close" class="modal-close-btn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p style="margin-bottom: var(--space-md);">
-          Möchtest du die gesamte Ermittlungsakte wirklich <strong>unwiderruflich vernichten</strong>?
-        </p>
-        <p style="color: var(--color-text-muted); font-size: 0.9rem;">
-          Alle gelösten Stationen, gesammelten Indizien, Verdächtigen-Profile und die 4 Trackables gehen dabei verloren.
-        </p>
-      </div>
-      <div class="modal-actions">
-        <button id="btn-cancel-reset" class="btn-secondary">Abbrechen</button>
-        <button id="btn-confirm-reset" class="btn-danger">Ja, alles löschen</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Sync URL Import Prompt -->
-  <div id="modal-sync-prompt" class="modal-backdrop hidden">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">📥 Team-Spielstand gefunden!</h3>
-      </div>
-      <div class="modal-body">
-        <p id="sync-prompt-text" style="margin-bottom: var(--space-md);">
-          Es wurde ein geteilter Team-Spielstand gefunden.
-        </p>
-        <p style="color: var(--color-text-muted); font-size: 0.9rem;">
-          Möchtest du diese Ermittlungsakte auf dein Gerät übernehmen? Dein bisheriger Stand wird dabei aktualisiert.
-        </p>
-      </div>
-      <div class="modal-actions">
-        <button id="btn-reject-sync" class="btn-secondary">Ignorieren</button>
-        <button id="btn-accept-sync" class="btn-primary" style="font-size: 0.95rem; padding: var(--space-sm) var(--space-lg);">
-          Übernehmen
-        </button>
-      </div>
-    </div>
-  </div>
+  <!-- Removed Modals for Sync -->
 
   <!-- Scripts -->
   <script src="vendor/leaflet/leaflet.js"></script>
   <script src="vendor/suncalc.js"></script>
-  <script src="vendor/qrcode.min.js"></script>
   <script type="module" src="js/main.js"></script>
 
   <!-- Start-Wächter (klassisches Script, läuft auch wenn ES-Module blockiert sind) -->
