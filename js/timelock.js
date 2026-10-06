@@ -3,7 +3,7 @@
  */
 import APP_CONFIG from '../config.js';
 import { getCurrentTime } from './clock.js';
-import SunCalc from '../vendor/suncalc.js';
+
 
 /**
  * Berechnet Freigabe und Ende für den "Spieltag" (Abend) eines gegebenen Datums.

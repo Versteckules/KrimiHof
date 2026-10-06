@@ -8,7 +8,7 @@
  */
 
 import { getState, saveState } from './state.js';
-import QRCode from '../vendor/qrcode.min.js';
+
 
 /**
  * Wandelt einen UTF-8 String in URL-sicheres Base64 um
