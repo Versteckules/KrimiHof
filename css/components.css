@@ -148,14 +148,84 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.owner-avatar {
-  width: 60px;
-  height: 60px;
+/* ==========================================================================
+   Owner-Avatar (Versteckules) – Noir-Variante
+   Das Original ist eine schwarze Strichzeichnung auf cremefarbenem Papier
+   (Hochformat). Per Filter wird das Papier mitternachtsblau und die Linien
+   messing-/bernsteinfarben. Das Bild wird NIE beschnitten (object-fit: contain),
+   das Padding ist so gewählt, dass das Hochformat komplett in den Kreis passt.
+   ========================================================================== */
+.avatar-frame {
+  --avatar-size: 110px;
+  --avatar-pad: 12px;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  padding: var(--avatar-pad);
+  flex-shrink: 0;
   border-radius: 50%;
-  border: 2px solid var(--color-brass);
-  box-shadow: var(--shadow-glow);
-  object-fit: cover;
+  border: 2px solid var(--color-brass-dark);
+  background: radial-gradient(circle at 50% 40%, var(--color-night-medium) 0%, var(--color-night-dark) 75%);
+  box-shadow: 0 0 0 4px rgba(10, 14, 23, 0.9), 0 0 18px rgba(245, 158, 11, 0.35), inset 0 0 20px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
 }
+
+.avatar-frame:hover {
+  transform: rotate(-3deg) scale(1.04);
+  box-shadow: 0 0 0 4px rgba(10, 14, 23, 0.9), 0 0 28px rgba(245, 158, 11, 0.6), inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.avatar-frame--sm { --avatar-size: 44px; --avatar-pad: 5px; border-width: 1px; }
+.avatar-frame--md { --avatar-size: 72px; --avatar-pad: 8px; }
+.avatar-frame--lg { --avatar-size: 140px; --avatar-pad: 15px; }
+
+.avatar-noir {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  object-position: center;
+  filter: invert(1) sepia(1) saturate(3.5) hue-rotate(-12deg) brightness(0.92) contrast(1.15);
+  mix-blend-mode: screen;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Dezentes Wasserzeichen (Hintergrund von Karten, Akten, Overlays) */
+.avatar-watermark {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  width: 160px;
+  height: auto;
+  max-width: 40vw;
+  opacity: 0.08;
+  filter: invert(1) sepia(1) saturate(3) hue-rotate(-12deg);
+  mix-blend-mode: screen;
+  z-index: 0;
+}
+
+/* "Akte verwahrt von"-Stempel */
+.owner-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+.owner-stamp:hover { opacity: 1; }
+.owner-stamp strong { color: var(--color-amber-muted); font-weight: 700; }
+
 
 .owner-text {
   font-family: var(--font-mono);

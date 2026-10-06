@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head><title>AP4 Test</title></head>
+<body>
+<pre id="log"></pre>
+<script type="module">
+  import { getTimelockInfoForDate, getCurrentTimelockStatus, getNext7DaysPreview } from '../js/timelock.js';
+  import { getCurrentTime } from '../js/clock.js';
+  
+  function log(msg) {
+    document.getElementById('log').textContent += msg + '\n';
+  }
+
+  try {
+    log('--- AP4 TIMELOCK TESTS ---');
+    const now = getCurrentTime();
+    log(`Current Fake/Real Time: ${now.toLocaleString('de-DE')}`);
+    
+    const status = getCurrentTimelockStatus();
+    log(`isPlayable: ${status.isPlayable}`);
+    log(`startTime: ${status.startTime.toLocaleString('de-DE')}`);
+    log(`endTime: ${status.endTime ? status.endTime.toLocaleString('de-DE') : 'none'}`);
+    log(`nextStartTime: ${status.nextStartTime.toLocaleString('de-DE')}`);
+    
+    log('\n7-Day Preview:');
+    const preview = getNext7DaysPreview();
+    preview.forEach((p, i) => {
+      log(`Day ${i}: ${p.date.toLocaleDateString('de-DE')} - Start: ${p.startTime.toLocaleString('de-DE')}`);
+    });
+    
+    log('\nSUCCESS: Test script executed without errors.');
+  } catch (e) {
+    log('ERROR: ' + e.stack);
+  }
+</script>
+</body>
+</html>

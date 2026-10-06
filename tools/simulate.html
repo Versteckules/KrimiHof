@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>AP10 - Simulation</title>
+  <style>
+    body { font-family: monospace; background: #111; color: #fff; padding: 20px; }
+    h1 { color: #d4af37; }
+    .result { margin-top: 20px; padding: 10px; border: 1px solid #333; }
+  </style>
+</head>
+<body>
+  <h1>AP10 - Score Balancing Simulation</h1>
+  <p>Starte 10.000 Durchläufe...</p>
+  <div id="output" class="result">Bitte warten...</div>
+
+  <script type="module">
+    import { calculateFinalResult } from '../js/scoring.js';
+
+    async function run() {
+      const res = await fetch('../data/story.json');
+      const storyData = await res.json();
+      
+      const runs = 10000;
+      const results = { herold: 0, gipser: 0, heiden: 0 };
+
+      for (let i = 0; i < runs; i++) {
+        const state = {
+          suspectScores: { herold: 0, gipser: 0, heiden: 0 },
+          zoneScores: { zentrum: 0, altstadt: 0, neustadt: 0, bahnhof: 0, saale: 0 }
+        };
+        
+        for (const stationId in storyData.stations) {
+          const scene = storyData.stations[stationId];
+          const zones = Object.keys(state.zoneScores);
+          const z = zones[Math.floor(Math.random() * zones.length)];
+          state.zoneScores[z]++;
+          
+          if (scene.type === 'dialog' && scene.choices) {
+            const choice = scene.choices[Math.floor(Math.random() * scene.choices.length)];
+            if (choice.suspectId) {
+              state.suspectScores[choice.suspectId] += 2;
+            }
+          }
+        }
+        
+        const final = calculateFinalResult(state);
+        results[final.murderer]++;
+      }
+
+      let out = "=== ERGEBNIS DER SIMULATION ===<br><br>";
+      out += `Herold: ${results.herold} (${((results.herold / runs) * 100).toFixed(1)}%)<br>`;
+      out += `Gipser: ${results.gipser} (${((results.gipser / runs) * 100).toFixed(1)}%)<br>`;
+      out += `Heiden: ${results.heiden} (${((results.heiden / runs) * 100).toFixed(1)}%)<br><br>`;
+      
+      let allInRange = true;
+      for (const suspect in results) {
+        const perc = (results[suspect] / runs) * 100;
+        if (perc < 25 || perc > 45) {
+          allInRange = false;
+        }
+      }
+      
+      if (allInRange) {
+        out += "<strong style='color:green;'>✅ BALANCING ERFOLGREICH: Alle 3 Täter liegen im Gleichgewicht (25-45%).</strong>";
+      } else {
+        out += "<strong style='color:red;'>⚠️ WARNUNG: Balancing könnte angepasst werden müssen.</strong>";
+      }
+
+      document.getElementById('output').innerHTML = out;
+    }
+    
+    run();
+  </script>
+</body>
+</html>

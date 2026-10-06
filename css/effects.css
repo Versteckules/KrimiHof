@@ -98,3 +98,54 @@ body.flashlight-active #flashlight-overlay {
     display: none;
   }
 }
+
+/* "Display zersplittert"-Effekt (Fehlentscheidungen, Easter Egg) */
+body.glass-crack #app {
+  animation: glass-shake 0.5s ease;
+  filter: contrast(1.3) saturate(0.6);
+}
+
+body.glass-crack::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background:
+    linear-gradient(32deg, transparent 49.6%, rgba(255,255,255,0.55) 50%, transparent 50.4%),
+    linear-gradient(-58deg, transparent 49.7%, rgba(255,255,255,0.45) 50%, transparent 50.3%),
+    linear-gradient(105deg, transparent 49.8%, rgba(255,255,255,0.35) 50%, transparent 50.2%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 40%);
+}
+
+@keyframes glass-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+/* Boot-Fehler-Hinweis (z.B. bei file:// Aufruf) */
+.boot-error {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-lg);
+  transform: translateX(-50%);
+  width: min(560px, calc(100vw - 2rem));
+  z-index: 10001;
+  padding: var(--space-md) var(--space-lg);
+  background: rgba(20, 8, 8, 0.96);
+  border: 1px solid rgba(153, 27, 27, 0.7);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-strong);
+  color: var(--color-text-main);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.boot-error strong { color: #fca5a5; }
+.boot-error p { margin: var(--space-xs) 0; }
+.boot-error .boot-error-hint { color: var(--color-text-muted); font-size: 0.85rem; }
+.boot-error code { font-family: var(--font-mono); color: var(--color-amber-glow); }
+.boot-error button { margin-top: var(--space-sm); }

@@ -1,0 +1,21 @@
+{
+  "name": "Der Pakt der Schlappen-Erben",
+  "short_name": "Nacht-Krimi Hof",
+  "description": "Ein abendliches Krimi-Abenteuer durch die Hofer Innenstadt.",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "background_color": "#0a0e17",
+  "theme_color": "#0a0e17",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

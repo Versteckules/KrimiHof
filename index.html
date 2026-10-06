@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Der Pakt der Schlappen-Erben - Ein Nacht-Krimi in Hof</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0a0e17">
   
   <!-- CSS -->
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/effects.css">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
   
   <!-- Fonts (Google Fonts for AP1, ideally local later) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,7 +120,9 @@
 
         <!-- Owner Badge -->
         <div class="owner-badge">
-          <img src="assets/avatar.jpg" alt="Versteckules" class="owner-avatar">
+          <div class="avatar-frame" title="Versteckules">
+            <img src="assets/avatar.jpg" alt="Avatar von Versteckules" class="avatar-noir">
+          </div>
           <div class="owner-text">
             <span style="display: block; color: var(--color-amber-muted);">Geocache Owner</span>
             made by <strong>Versteckules</strong>
@@ -126,6 +131,139 @@
 
       </section>
 
+    </main>
+
+    <!-- Lockscreen View (AP4) -->
+    <main id="view-lockscreen" class="view hidden">
+      <section style="padding: var(--space-xl) var(--space-md); text-align: center; max-width: 600px; margin: 0 auto; margin-top: 10vh;">
+        <img src="assets/seal_schlappen.jpg" alt="Siegel" style="width: 100px; border-radius: 50%; opacity: 0.5; margin-bottom: var(--space-lg);">
+        <h2 style="font-size: 2rem; margin-bottom: var(--space-sm); font-family: var(--font-serif); color: var(--color-amber-glow);">Die Akte ist versiegelt</h2>
+        <p style="color: var(--color-text-muted); font-size: 1.1rem; margin-bottom: var(--space-xl);">
+          Echte Ermittlungen erfordern den Schutz der Dunkelheit.
+        </p>
+        
+        <div class="lock-box" style="background: rgba(0,0,0,0.4); border: 1px solid var(--color-glass-border); padding: var(--space-lg); border-radius: 8px; margin-bottom: var(--space-lg);">
+          <div style="font-family: var(--font-mono); color: var(--color-night-light); font-size: 0.9rem; margin-bottom: var(--space-xs);">FREIGABE ERFOLGT IN</div>
+          <div id="lockscreen-countdown" style="font-size: 2.5rem; font-family: var(--font-mono); color: var(--color-amber-glow); font-weight: bold; letter-spacing: 2px;">
+            00:00:00
+          </div>
+          <div id="lockscreen-start-info" style="margin-top: var(--space-sm); color: var(--color-text);">
+            Heute ab --:-- Uhr
+          </div>
+        </div>
+
+        <h3 style="font-size: 1.1rem; color: var(--color-text-muted); margin-bottom: var(--space-md);">7-Tage Vorschau</h3>
+        <table id="lockscreen-preview-table" style="width: 100%; text-align: left; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-text-muted);">
+          <!-- injected via JS -->
+        </table>
+
+        <div style="margin-top: var(--space-2xl);">
+          <button id="btn-lockscreen-back" class="btn-secondary">Zurück zur Startseite</button>
+        </div>
+
+        <div style="margin-top: var(--space-xl);">
+          <span class="owner-stamp">
+            <span class="avatar-frame avatar-frame--sm"><img src="assets/avatar.jpg" alt="" class="avatar-noir"></span>
+            Akte verwahrt von <strong>Versteckules</strong>
+          </span>
+        </div>
+      </section>
+    </main>
+
+    <!-- Dashboard View (Map & Dossier) (AP6) -->
+    <main id="view-dashboard" class="view hidden">
+      <div id="map-container" style="position: absolute; top: 0; bottom: 80px; left: 0; right: 0;"></div>
+
+      <!-- Dezentes Owner-Siegel auf der Karte -->
+      <div class="owner-stamp" style="position: absolute; top: 12px; left: 12px; z-index: 1000; background: rgba(10,14,23,0.75); padding: 4px 10px 4px 4px; border-radius: 999px; border: 1px solid var(--color-glass-border);">
+        <span class="avatar-frame avatar-frame--sm"><img src="assets/avatar.jpg" alt="" class="avatar-noir"></span>
+        <strong>Versteckules</strong>
+      </div>
+      
+      <!-- Bottom Navigator Bar (AP7) -->
+      <div id="navigator-bar" style="position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: rgba(10, 14, 23, 0.95); border-top: 1px solid var(--color-glass-border); display: flex; align-items: center; justify-content: space-around; padding: 0 var(--space-md); z-index: 1000;">
+        <div id="nav-distance" style="font-family: var(--font-mono); font-size: 1.5rem; color: var(--color-amber-glow); font-weight: bold;">
+          -- m
+        </div>
+        <div id="nav-compass" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--color-amber-muted); position: relative; transition: transform 0.2s ease;">
+          <div style="position: absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid var(--color-blood-red);"></div>
+        </div>
+        <button id="btn-open-dossier" class="btn-primary" style="padding: 10px 20px;">Dossier</button>
+      </div>
+    </main>
+
+    <!-- Station Riddle View (AP8) -->
+    <main id="view-station" class="view hidden">
+      <section style="padding: var(--space-xl) var(--space-md); text-align: center; max-width: 600px; margin: 0 auto; margin-top: 5vh;">
+        <h2 id="station-title" style="font-size: 2rem; margin-bottom: var(--space-lg); font-family: var(--font-serif); color: var(--color-amber-glow);">Station</h2>
+        <div class="lock-box" style="background: rgba(0,0,0,0.4); border: 1px solid var(--color-glass-border); padding: var(--space-lg); border-radius: 8px; margin-bottom: var(--space-lg);">
+          <p id="station-question" style="font-size: 1.2rem; margin-bottom: var(--space-md);">Frage?</p>
+          <input type="text" id="station-answer-input" class="debug-input" style="width: 100%; text-align: center; font-size: 1.2rem; padding: 10px; background: rgba(0,0,0,0.6);" placeholder="Lösung eingeben..." autocomplete="off">
+          <p id="station-error" class="hidden" style="color: var(--color-blood-red); margin-top: var(--space-sm); font-family: var(--font-mono);"></p>
+          <p id="station-hint" class="hidden" style="color: var(--color-amber-muted); margin-top: var(--space-sm); font-style: italic;"></p>
+        </div>
+        <div style="display: flex; gap: var(--space-md); justify-content: center;">
+          <button id="btn-station-cancel" class="btn-secondary">Zurück</button>
+          <button id="btn-station-submit" class="btn-primary">Prüfen</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Dossier View (AP12) -->
+    <main id="view-dossier" class="view hidden">
+      <section style="padding: var(--space-xl) var(--space-md); max-width: 800px; margin: 0 auto; color: var(--color-text); position: relative; overflow: hidden;">
+        <img src="assets/avatar.jpg" alt="" class="avatar-watermark" style="right: -20px; bottom: -30px; width: 260px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-glass-border); padding-bottom: var(--space-md); margin-bottom: var(--space-lg); position: relative; z-index: 1;">
+          <div>
+            <h2 style="font-size: 2rem; font-family: var(--font-serif); color: var(--color-amber-glow); margin-bottom: var(--space-xs);">Ermittlungsakte</h2>
+            <span class="owner-stamp">
+              <span class="avatar-frame avatar-frame--sm"><img src="assets/avatar.jpg" alt="" class="avatar-noir"></span>
+              Aktenführung: <strong>Versteckules</strong>
+            </span>
+          </div>
+          <button id="btn-close-dossier" class="btn-secondary">Schließen</button>
+        </div>
+        
+        <div class="dossier-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-lg); position: relative; z-index: 1;">
+          <div class="dossier-card" style="background: rgba(255,255,255,0.05); padding: var(--space-md); border-radius: 8px;">
+            <h3 style="color: var(--color-amber-muted); border-bottom: 1px solid #333; padding-bottom: 5px;">Tatverdächtige</h3>
+            <div id="dossier-suspects" style="margin-top: 10px;"></div>
+          </div>
+          <div class="dossier-card" style="background: rgba(255,255,255,0.05); padding: var(--space-md); border-radius: 8px;">
+            <h3 style="color: var(--color-amber-muted); border-bottom: 1px solid #333; padding-bottom: 5px;">Inventar & TBs</h3>
+            <div id="dossier-inventory" style="margin-top: 10px; font-family: var(--font-mono); font-size: 0.9rem;"></div>
+          </div>
+        </div>
+        <div style="margin-top: var(--space-lg); background: rgba(255,255,255,0.05); padding: var(--space-md); border-radius: 8px; position: relative; z-index: 1;">
+          <h3 style="color: var(--color-amber-muted); border-bottom: 1px solid #333; padding-bottom: 5px;">Gelöste Stationen</h3>
+          <div id="dossier-stations" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px;"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Final View (AP11) -->
+    <main id="view-final" class="view hidden">
+      <section style="padding: var(--space-xl) var(--space-md); text-align: center; max-width: 800px; margin: 0 auto; color: var(--color-text);">
+        <h2 style="font-size: 2.5rem; font-family: var(--font-serif); color: var(--color-amber-glow); margin-bottom: var(--space-md);">Die Überführung</h2>
+        <p style="font-size: 1.1rem; margin-bottom: var(--space-xl);">Du hast alle Hinweise gesammelt. Wer ist der Täter?</p>
+        
+        <div id="final-suspects-container" style="display: flex; gap: var(--space-md); justify-content: center; margin-bottom: var(--space-xl);">
+          <!-- Buttons generated in JS -->
+        </div>
+
+        <div id="final-result" class="hidden lock-box" style="background: rgba(0,0,0,0.4); border: 1px solid var(--color-glass-border); padding: var(--space-lg); border-radius: 8px; margin-bottom: var(--space-lg);">
+          <h3 id="final-result-title" style="color: var(--color-amber-glow); font-size: 1.5rem; margin-bottom: 10px;"></h3>
+          <p id="final-result-text" style="margin-bottom: 15px;"></p>
+          <div id="final-coords" style="font-family: var(--font-mono); font-size: 1.2rem; color: var(--color-blood-red); font-weight: bold; margin-bottom: 20px;"></div>
+          
+          <button id="btn-print-diploma" class="btn-primary">Diplom anzeigen / speichern</button>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); margin-top: var(--space-xl);">
+          <div class="avatar-frame avatar-frame--md"><img src="assets/avatar.jpg" alt="Avatar von Versteckules" class="avatar-noir"></div>
+          <span class="owner-stamp">Fall abgeschlossen · gezeichnet <strong>Versteckules</strong></span>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -219,6 +357,39 @@
   </div>
 
   <!-- Scripts -->
+  <script src="vendor/leaflet/leaflet.js"></script>
   <script type="module" src="js/main.js"></script>
+
+  <!-- Start-Wächter (klassisches Script, läuft auch wenn ES-Module blockiert sind) -->
+  <script>
+    (function () {
+      function showStartProblem(html) {
+        if (document.getElementById('boot-error')) return;
+        var box = document.createElement('div');
+        box.id = 'boot-error';
+        box.className = 'boot-error';
+        box.innerHTML = '<strong>\u26A0\uFE0F Akte konnte nicht ge\u00F6ffnet werden</strong>' + html;
+        document.body.appendChild(box);
+      }
+
+      if (location.protocol === 'file:') {
+        showStartProblem(
+          '<p>Die Seite wurde per Doppelklick ge\u00F6ffnet (<code>file://</code>). Browser blockieren dabei JavaScript-Module und das Laden der Spieldaten.</p>' +
+          '<p class="boot-error-hint"><strong>L\u00F6sung:</strong> Im Projektordner <code>tools\\serve.ps1</code> starten und <code>http://localhost:8080</code> \u00F6ffnen \u2013 oder die Seite \u00FCber GitHub Pages (https) aufrufen.</p>'
+        );
+        return;
+      }
+
+      // Falls das Haupt-Script aus irgendeinem Grund nicht startet
+      setTimeout(function () {
+        if (!window.__krimiBooted) {
+          showStartProblem(
+            '<p>Das Spiel-Script konnte nicht gestartet werden.</p>' +
+            '<p class="boot-error-hint">Bitte Seite mit <code>Strg + F5</code> neu laden. Bleibt der Fehler, die Browser-Konsole (F12) pr\u00FCfen.</p>'
+          );
+        }
+      }, 4000);
+    })();
+  </script>
 </body>
 </html>

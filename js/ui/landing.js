@@ -98,8 +98,8 @@ export function initLanding() {
     startBtn.innerHTML = "Öffne Fallakte...";
     startBtn.style.pointerEvents = "none";
     setTimeout(() => {
-      alert(`Ermittlungsakte für ${name} geöffnet!\n\n(AP4 bringt als nächsten Schritt die Nacht-Zeitsperre und den Countdown-Screen).`);
       startBtn.style.pointerEvents = "auto";
+      window.dispatchEvent(new Event('requestRouting'));
       updateUIFromState(getState());
     }, 400);
   });
