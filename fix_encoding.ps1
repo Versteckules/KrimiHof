@@ -12,8 +12,13 @@ $text = $text.Replace("Ãœ", "Ü")
 $text = $text.Replace("â€ž", "„")
 $text = $text.Replace("â€œ", "“")
 $text = $text.Replace("â€“", "–")
+$text = $text.Replace("Â°", "°")
+$text = $text.Replace("Â", "")
 
-[System.IO.File]::WriteAllText($path, $text, [System.Text.Encoding]::UTF8)
+$utf8NoBom = New-Object System.Text.UTF8Encoding($False)
+[System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
+
+[System.IO.File]::WriteAllText($path, $text, $utf8NoBom)
 Write-Host "Done stations.json"
 
 $path2 = "c:\Users\flaem\Desktop\Krimi\data\story.json"
