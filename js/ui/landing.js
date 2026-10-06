@@ -1,8 +1,9 @@
 /**
- * landing.js - Eingangsseite mit Hero-Cover, Dienstausweis, Team-Sync & Reset (AP1 + AP3)
+ * landing.js - Eingangsseite mit Hero-Cover, Dienstausweis, Bilderstory & Akte-Schreddern (AP1 + AP3)
  */
 
 import { getState, saveState, setPlayerName, startGame, resetState, subscribe } from '../state.js';
+import { openIntro } from './intro.js';
 
 export function initLanding() {
   const startBtn = document.getElementById('btn-start-game');
@@ -10,14 +11,12 @@ export function initLanding() {
   const errorMsg = document.getElementById('name-error');
   const progressIndicator = document.getElementById('game-progress-indicator');
   const openResetBtn = document.getElementById('btn-open-reset');
-  // Removed Sync Modals
+  const openIntroBtn = document.getElementById('btn-open-intro-landing');
 
   const modalReset = document.getElementById('modal-reset');
   const modalResetClose = document.getElementById('modal-reset-close');
   const btnCancelReset = document.getElementById('btn-cancel-reset');
   const btnConfirmReset = document.getElementById('btn-confirm-reset');
-
-
 
   const heroContainer = document.querySelector('.hero-container');
   const flashlightOverlay = document.getElementById('flashlight-overlay');
@@ -54,11 +53,14 @@ export function initLanding() {
       progressIndicator.textContent = `Akte aktiv: ${solvedCount}/12 Pflichtstationen gelöst • ${state.score || 0} Punkte`;
       if (state.isTestingMode) progressIndicator.textContent += " [TEST-MODUS]";
       progressIndicator.classList.remove('hidden');
-      openResetBtn.classList.remove('hidden');
     } else {
       startBtn.innerHTML = "Akte Öffnen";
       progressIndicator.classList.add('hidden');
-      openResetBtn.classList.add('hidden');
+    }
+
+    // "Akte Schreddern" ist IMMER zugänglich
+    if (openResetBtn) {
+      openResetBtn.classList.remove('hidden');
     }
   };
 
@@ -81,6 +83,9 @@ export function initLanding() {
   // Start / Fortsetzen Button
   startBtn.addEventListener('click', () => {
     const name = nameInput.value.trim();
+    const currentState = getState();
+    const solvedCount = (currentState.solvedStations || []).length;
+
     if (name === "OFFLINETEST") {
       errorMsg.classList.add('hidden');
       saveState({ isTestingMode: true, playerName: "TEST-AGENT" });
@@ -97,24 +102,50 @@ export function initLanding() {
 
     startBtn.innerHTML = "Öffne Fallakte...";
     startBtn.style.pointerEvents = "none";
+
     setTimeout(() => {
       startBtn.style.pointerEvents = "auto";
-      window.dispatchEvent(new Event('requestRouting'));
-      updateUIFromState(getState());
-    }, 400);
+      // Beim ersten Start bzw. wenn noch nichts gelöst ist: Bilderstory zeigen!
+      if (solvedCount === 0) {
+        openIntro(() => {
+          window.dispatchEvent(new Event('requestRouting'));
+          updateUIFromState(getState());
+        });
+      } else {
+        window.dispatchEvent(new Event('requestRouting'));
+        updateUIFromState(getState());
+      }
+    }, 300);
   });
 
-  // Removed Team-Sync Modal Logik
+  // Vorgeschichte direkt ansehen
+  if (openIntroBtn) {
+    openIntroBtn.addEventListener('click', () => {
+      openIntro();
+    });
+  }
 
   // 4. Reset Modal Logik (Sicherheitsbestätigung)
   if (openResetBtn) {
     openResetBtn.addEventListener('click', () => {
-      modalReset.classList.remove('hidden');
+      if (modalReset) {
+        modalReset.classList.remove('hidden');
+      } else {
+        // Fallback falls Modal nicht im DOM ist
+        if (confirm("Möchtest du die Fallakte wirklich schreddern und alle Daten zurücksetzen?")) {
+          resetState();
+          nameInput.value = '';
+          nameInput.disabled = false;
+          nameInput.style.opacity = '1';
+          updateUIFromState(getState());
+          alert("Die Fallakte wurde erfolgreich geschreddert.");
+        }
+      }
     });
   }
 
   const closeResetModal = () => {
-    modalReset.classList.add('hidden');
+    if (modalReset) modalReset.classList.add('hidden');
   };
 
   if (modalResetClose) modalResetClose.addEventListener('click', closeResetModal);
@@ -124,12 +155,13 @@ export function initLanding() {
     btnConfirmReset.addEventListener('click', () => {
       resetState();
       nameInput.value = '';
+      nameInput.disabled = false;
+      nameInput.style.opacity = '1';
       closeResetModal();
-      alert("Die Ermittlungsakte wurde vollständig und sicher geschreddert.");
+      updateUIFromState(getState());
+      alert("Die Ermittlungsakte wurde vollständig geschreddert und zurückgesetzt.");
     });
   }
-
-  // Removed Automatische Erkennung von ?sync= beim Seitenaufruf
 
   // 6. Taschenlampen-Effekt
   const updateFlashlight = (x, y) => {

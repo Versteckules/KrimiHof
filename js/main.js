@@ -1,5 +1,6 @@
 import { initLanding } from './ui/landing.js';
 import { initLockscreen, checkLockscreenStatus } from './ui/lockscreen.js';
+import { initIntro } from './ui/intro.js';
 import { initMap } from './ui/map.js';
 import { initNavigator } from './ui/navigator.js';
 import { initStationView } from './ui/station.js';
@@ -99,6 +100,7 @@ async function boot() {
   safeInit('Audio', initAudio);
   safeInit('EasterEggs', initEasterEggs);
   safeInit('Landing', initLanding);
+  safeInit('Intro', initIntro);
   safeInit('Lockscreen', initLockscreen);
 
   // Spieldaten laden

@@ -10,10 +10,30 @@
     "description": "Das Herz der Hofer Verwaltung. Das Portal des Rathauses ist verkohlt, Absperrband flattert im Wind. Es raucht noch. Die Polizei hat alles abgeriegelt.",
     "isStoryEvent": true,
     "storyEventId": "rathaus_fire",
+    "characters": [
+      {
+        "id": "polizist",
+        "name": "Kommissar Stahl",
+        "role": "Ermittlungsleiter Kriminalpolizei",
+        "badge": "Polizei Hof",
+        "image": "assets/kommissar_stahl.jpg",
+        "dialogueKey": "rathaus_fire_polizist",
+        "description": "Erfahrener Chefermittler am Brandort. Sichert das verkohlte Ratsportal."
+      },
+      {
+        "id": "reporter",
+        "name": "Paul Stift",
+        "role": "Chefreporter Hofer Anzeiger",
+        "badge": "Presse",
+        "image": "assets/reporter_stift.jpg",
+        "dialogueKey": "rathaus_fire_reporter",
+        "description": "Ehrgeiziger Journalist. War kurz nach dem Feueralarm am Sonnenplatz vor Ort."
+      }
+    ],
     "riddle": {
       "question": "Untersuche den Tatort. Mit wem möchtest du sprechen?",
       "answers": ["polizist", "reporter", "stahl", "stift"],
-      "hint": "Tippe auf den Polizisten oder den Reporter auf dem Bildschirm, um einen Dialog zu starten.",
+      "hint": "Klicke direkt auf die Personenkarte von Kommissar Stahl oder Reporter Paul Stift.",
       "solutionDebug": "Polizist"
     },
     "gadget": {
@@ -36,7 +56,13 @@
       "question": "Wie viele Briefschlitze befinden sich an der äußeren Postboxanlage?",
       "answers": ["3", "drei"],
       "hint": "Zähle die goldenen Einwurfschlitze an der Außenwand.",
-      "solutionDebug": "3"
+      "solutionDebug": "3",
+      "choices": [
+        { "id": "c1", "text": "3 Briefschlitze", "value": "3" },
+        { "id": "c2", "text": "1 Briefschlitz", "value": "1" },
+        { "id": "c3", "text": "5 Briefschlitze", "value": "5" },
+        { "id": "c4", "text": "2 Briefschlitze", "value": "2" }
+      ]
     },
     "gadget": {
       "id": "polaroid",
@@ -62,7 +88,13 @@
       "question": "Welche vorletzte vierstellige Jahreszahl ist auf der Inschrifttafel des Denkmals eingemeißelt?",
       "answers": ["1870", "1871", "1870/71"],
       "hint": "Betrachte die eingemeißelten Gedenkjahre der Stele von oben nach unten.",
-      "solutionDebug": "1870"
+      "solutionDebug": "1870",
+      "choices": [
+        { "id": "c1", "text": "1870 (1870/71)", "value": "1870" },
+        { "id": "c2", "text": "1823", "value": "1823" },
+        { "id": "c3", "text": "1914", "value": "1914" },
+        { "id": "c4", "text": "1848", "value": "1848" }
+      ]
     },
     "gadget": {
       "id": "briefcase",
@@ -88,7 +120,13 @@
       "question": "Welcher Stand oder Titel steht neben dem Namen 'Rosina Richter' auf der historischen Gedenktafel?",
       "answers": ["bürgerswitwe", "buergerswitwe", "witwe", "stifterin"],
       "hint": "Untersuche die verwitterte Sandsteintafel an der Kirchenaußenwand nahe dem Parkportal.",
-      "solutionDebug": "Bürgerswitwe"
+      "solutionDebug": "Bürgerswitwe",
+      "choices": [
+        { "id": "c1", "text": "Bürgerswitwe", "value": "bürgerswitwe" },
+        { "id": "c2", "text": "Ratsherrin", "value": "ratsherrin" },
+        { "id": "c3", "text": "Stifterin / Witwe", "value": "witwe" },
+        { "id": "c4", "text": "Handwerksmeisterin", "value": "meisterin" }
+      ]
     },
     "gadget": {
       "id": "stealth",
@@ -114,7 +152,13 @@
       "question": "Welche geometrische Form besitzt der schmiedeeiserne Wandanker am historischen Eckhaus?",
       "answers": ["s", "s-form", "spirale", "s-anker"],
       "hint": "Blicke in etwa 3 Metern Höhe auf das Mauerwerk des alten Eckgebäudes.",
-      "solutionDebug": "S-Form"
+      "solutionDebug": "S-Form",
+      "choices": [
+        { "id": "c1", "text": "S-Form (Maueranker)", "value": "s" },
+        { "id": "c2", "text": "X-Form", "value": "x" },
+        { "id": "c3", "text": "Rundanker", "value": "rund" },
+        { "id": "c4", "text": "T-Träger", "value": "t" }
+      ]
     },
     "gadget": {
       "id": "laser",
@@ -140,7 +184,13 @@
       "question": "Welche Hausnummer trägt die Tafel, die an den historischen Brandherd von 1823 erinnert?",
       "answers": ["18", "hausnummer 18", "nr. 18", "nr 18"],
       "hint": "Suche zwischen den Arkadenpfeilern nach der bronzenen Brandgedenktafel.",
-      "solutionDebug": "18"
+      "solutionDebug": "18",
+      "choices": [
+        { "id": "c1", "text": "Hausnummer 18", "value": "18" },
+        { "id": "c2", "text": "Hausnummer 20", "value": "20" },
+        { "id": "c3", "text": "Hausnummer 12", "value": "12" },
+        { "id": "c4", "text": "Hausnummer 24", "value": "24" }
+      ]
     },
     "gadget": {
       "id": "scratch",
@@ -166,7 +216,13 @@
       "question": "Wie viele geschnitzte Sandstein-Rosetten verzieren den Rundbogen des Portals von Haus Nr. 12?",
       "answers": ["6", "sechs", "8", "acht"],
       "hint": "Zähle die runden Blütenrosetten im Sandsteinbogen über der Eingangstür.",
-      "solutionDebug": "6"
+      "solutionDebug": "6",
+      "choices": [
+        { "id": "c1", "text": "6 Rosetten", "value": "6" },
+        { "id": "c2", "text": "4 Rosetten", "value": "4" },
+        { "id": "c3", "text": "8 Rosetten", "value": "8" },
+        { "id": "c4", "text": "10 Rosetten", "value": "10" }
+      ]
     },
     "gadget": {
       "id": "fake-call",
@@ -192,7 +248,13 @@
       "question": "Welches Substantiv ist das dritte Wort in der ersten Zeile der Jean-Paul-Gedenktafel?",
       "answers": ["dichter", "dichters", "geburtshaus", "leben"],
       "hint": "Lies die bronzene Inschrift auf Augenhöhe am Eckgebäude.",
-      "solutionDebug": "Dichter"
+      "solutionDebug": "Dichter",
+      "choices": [
+        { "id": "c1", "text": "Dichter", "value": "dichter" },
+        { "id": "c2", "text": "Geburtshaus", "value": "geburtshaus" },
+        { "id": "c3", "text": "Leben", "value": "leben" },
+        { "id": "c4", "text": "Ehrenbürger", "value": "ehrenbuerger" }
+      ]
     },
     "gadget": {
       "id": "ambigram",
@@ -218,7 +280,13 @@
       "question": "Welche beiden Initialen sind auf der Rückseite des kupfernen Wurstkessels der Statue eingestanzt?",
       "answers": ["wh", "w.h.", "hw", "h.w."],
       "hint": "Führe deine Taschenlampe an die Rückseite des getragenen Kessels.",
-      "solutionDebug": "WH"
+      "solutionDebug": "WH",
+      "choices": [
+        { "id": "c1", "text": "Initialen WH", "value": "wh" },
+        { "id": "c2", "text": "Initialen HB", "value": "hb" },
+        { "id": "c3", "text": "Initialen VR", "value": "vr" },
+        { "id": "c4", "text": "Initialen KS", "value": "ks" }
+      ]
     },
     "gadget": {
       "id": "dice",
@@ -244,7 +312,13 @@
       "question": "Wie viele spitze Zacken besitzt das steinerne Stern-Maßwerk über dem Westportal?",
       "answers": ["8", "acht", "achtzackig", "achtzackiger stern"],
       "hint": "Betrachte die steinerne Maßwerk-Rose direkt über dem Portalbogen.",
-      "solutionDebug": "8"
+      "solutionDebug": "8",
+      "choices": [
+        { "id": "c1", "text": "8 Zacken", "value": "8" },
+        { "id": "c2", "text": "6 Zacken", "value": "6" },
+        { "id": "c3", "text": "12 Zacken", "value": "12" },
+        { "id": "c4", "text": "5 Zacken", "value": "5" }
+      ]
     },
     "gadget": {
       "id": "wiretap",
@@ -270,7 +344,13 @@
       "question": "Welche letzte Ziffer trägt die Bau- bzw. Renovierungs-Jahreszahl am Sockel des Südturms?",
       "answers": ["4", "vier", "7", "sieben"],
       "hint": "Untersuche die eingemeißelten Ziffern am Sandsteinsockel des Südturms.",
-      "solutionDebug": "4"
+      "solutionDebug": "4",
+      "choices": [
+        { "id": "c1", "text": "Ziffer 4", "value": "4" },
+        { "id": "c2", "text": "Ziffer 7", "value": "7" },
+        { "id": "c3", "text": "Ziffer 1", "value": "1" },
+        { "id": "c4", "text": "Ziffer 9", "value": "9" }
+      ]
     },
     "gadget": {
       "id": "cryptowheel",
@@ -296,7 +376,13 @@
       "question": "Wie viele kleine eingemeißelte Kreuzmotive zählst du auf der Saaleseite der Einfriedungsmauer?",
       "answers": ["5", "fünf", "fuenf"],
       "hint": "Befühle die Steinquader der Mauerabdeckung zur Saale hin.",
-      "solutionDebug": "5"
+      "solutionDebug": "5",
+      "choices": [
+        { "id": "c1", "text": "5 Kreuzmotive", "value": "5" },
+        { "id": "c2", "text": "3 Kreuzmotive", "value": "3" },
+        { "id": "c3", "text": "7 Kreuzmotive", "value": "7" },
+        { "id": "c4", "text": "1 Kreuzmotiv", "value": "1" }
+      ]
     },
     "gadget": {
       "id": "uv-light",
@@ -322,7 +408,13 @@
       "question": "Wie viele rostige eiserne Festmach-Ringe sind in den Uferpollern verankert?",
       "answers": ["4", "vier"],
       "hint": "Leuchte den alten Treidelpfad direkt am Flussufer ab.",
-      "solutionDebug": "4"
+      "solutionDebug": "4",
+      "choices": [
+        { "id": "c1", "text": "4 Festmach-Ringe", "value": "4" },
+        { "id": "c2", "text": "2 Ringe", "value": "2" },
+        { "id": "c3", "text": "6 Ringe", "value": "6" },
+        { "id": "c4", "text": "8 Ringe", "value": "8" }
+      ]
     },
     "gadget": {
       "id": "letter",
@@ -349,7 +441,13 @@
       "question": "Welche vierstellige Jahreszahl ziert den Schlussstein im Gewölbebogen des ehemaligen Spital-Eingangs?",
       "answers": ["1432", "1432 n.chr."],
       "hint": "Richte deine Taschenlampe senkrecht nach oben in den Scheitelpunkt des Torbogens.",
-      "solutionDebug": "1432"
+      "solutionDebug": "1432",
+      "choices": [
+        { "id": "c1", "text": "Jahreszahl 1432", "value": "1432" },
+        { "id": "c2", "text": "Jahreszahl 1520", "value": "1520" },
+        { "id": "c3", "text": "Jahreszahl 1823", "value": "1823" },
+        { "id": "c4", "text": "Jahreszahl 1398", "value": "1398" }
+      ]
     },
     "gadget": {
       "id": "whisper",

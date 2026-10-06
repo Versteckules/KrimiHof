@@ -1,8 +1,19 @@
+/**
+ * dialogue.js - Visual Novel Dialogsystem mit Avataren und dynamischen Verzweigungen
+ */
+
+import { getState, unlockSuspectsInState, addSuspectImpact } from '../state.js';
+import { showView } from '../main.js';
+
 export let currentTree = null;
 export let currentNodeIndex = 0;
 export let onDialogComplete = null;
+let typewriterTimer = null;
+let isTyping = false;
+let currentFullText = '';
 
 export function openDialogue(treeData, completeCallback) {
+  if (!treeData || !treeData.length) return;
   currentTree = treeData;
   currentNodeIndex = 0;
   onDialogComplete = completeCallback;
@@ -15,7 +26,10 @@ export function openDialogue(treeData, completeCallback) {
 }
 
 function renderNode() {
+  if (!currentTree || !currentTree[currentNodeIndex]) return;
   const node = currentTree[currentNodeIndex];
+  const state = getState();
+  const playerName = state.playerName || 'Ermittler';
   
   const avatarEl = document.getElementById('dialogue-avatar');
   const nameEl = document.getElementById('dialogue-name');
@@ -29,57 +43,76 @@ function renderNode() {
     avatarEl.style.display = 'none';
   }
 
-  nameEl.textContent = node.speaker || 'Unbekannt';
+  nameEl.textContent = (node.speaker || 'Unbekannt').replace(/{PLAYER_NAME}/g, playerName);
   
-  // Effekt: Text schrittweise einblenden
+  // Text formatieren
+  currentFullText = (node.text || '').replace(/{PLAYER_NAME}/g, playerName);
   textEl.innerHTML = '';
-  let i = 0;
-  choicesEl.innerHTML = ''; // Leeren
+  choicesEl.innerHTML = '';
+  
+  if (typewriterTimer) clearTimeout(typewriterTimer);
+  isTyping = true;
+  let charIndex = 0;
 
   function typeWriter() {
-    if (i < node.text.length) {
-      textEl.innerHTML += node.text.charAt(i);
-      i++;
-      setTimeout(typeWriter, 20);
+    if (charIndex < currentFullText.length) {
+      textEl.innerHTML += currentFullText.charAt(charIndex);
+      charIndex++;
+      typewriterTimer = setTimeout(typeWriter, 18);
     } else {
+      isTyping = false;
       renderChoices(node.choices, node.isEnd, node.unlockSuspects);
     }
   }
+
+  // Ermögliche Klick auf Dialogbox zum Überspringen des Tipp-Effekts
+  const dialogueBox = textEl.closest('.dialogue-box') || textEl;
+  dialogueBox.onclick = () => {
+    if (isTyping) {
+      if (typewriterTimer) clearTimeout(typewriterTimer);
+      textEl.innerHTML = currentFullText;
+      isTyping = false;
+      renderChoices(node.choices, node.isEnd, node.unlockSuspects);
+    }
+  };
+
   typeWriter();
 }
 
 function renderChoices(choices, isEnd, unlockSuspects) {
   const choicesEl = document.getElementById('dialogue-choices');
+  choicesEl.innerHTML = '';
+  const state = getState();
+  const playerName = state.playerName || 'Ermittler';
   
   if (isEnd) {
     const btn = document.createElement('button');
     btn.className = 'btn-primary dialogue-btn';
-    btn.textContent = 'Gespräch beenden';
+    btn.textContent = '✓ Gespräch beenden';
     btn.onclick = () => {
       if (unlockSuspects) {
-         // Suspects freischalten Logic (State aktualisieren)
-         import('../state.js').then(module => {
-            module.unlockSuspectsInState();
-         });
+        unlockSuspectsInState();
       }
-      if (onDialogComplete) onDialogComplete();
+      if (onDialogComplete) {
+        onDialogComplete();
+      } else {
+        showView('view-dashboard');
+      }
     };
     choicesEl.appendChild(btn);
     return;
   }
 
-  if (!choices) return;
+  if (!choices || choices.length === 0) return;
 
   choices.forEach(choice => {
     const btn = document.createElement('button');
     btn.className = 'btn-secondary dialogue-btn';
-    btn.textContent = choice.text;
+    btn.textContent = choice.text.replace(/{PLAYER_NAME}/g, playerName);
     btn.onclick = () => {
       // Impact verbuchen
-      if (choice.impact && choice.impact.suspect !== 'none') {
-        import('../state.js').then(module => {
-           module.addSuspectImpact(choice.impact.suspect, choice.impact.value);
-        });
+      if (choice.impact && choice.impact.suspect && choice.impact.suspect !== 'none') {
+        addSuspectImpact(choice.impact.suspect, choice.impact.value);
       }
 
       // Nächste Node finden
@@ -88,7 +121,11 @@ function renderChoices(choices, isEnd, unlockSuspects) {
         currentNodeIndex = nextIndex;
         renderNode();
       } else {
-        if (onDialogComplete) onDialogComplete();
+        if (onDialogComplete) {
+          onDialogComplete();
+        } else {
+          showView('view-dashboard');
+        }
       }
     };
     choicesEl.appendChild(btn);

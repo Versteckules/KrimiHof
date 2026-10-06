@@ -66,9 +66,12 @@
           [FEHLER] Bitte Identität bestätigen.
         </p>
 
-        <!-- Team-Sync & Reset Button Bar -->
+        <!-- Story & Reset Button Bar -->
         <div style="display: flex; gap: var(--space-md); justify-content: center; margin-top: var(--space-lg); flex-wrap: wrap;">
-          <button id="btn-open-reset" class="btn-danger hidden" title="Gesamten Spielstand löschen">
+          <button id="btn-open-intro-landing" class="btn-secondary" title="Die Hintergrundgeschichte als Bilderstory ansehen">
+            📖 Fall-Prolog & Bilderstory
+          </button>
+          <button id="btn-open-reset" class="btn-danger" title="Gesamten Spielstand löschen">
             🗑️ Akte Schreddern
           </button>
         </div>
@@ -208,12 +211,21 @@
             <h3 style="font-family: var(--font-mono); font-size: 0.9rem; color: #555; text-transform: uppercase; margin-bottom: 5px;">Ermittlungsaufgabe</h3>
             <p id="station-question" style="font-size: 1.1rem; font-weight: 600; margin-bottom: var(--space-md);">Frage lädt...</p>
             
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <input type="text" id="station-answer-input" placeholder="Deine Antwort..." style="background: rgba(0,0,0,0.05); color: #2c1e16; border: 1px solid rgba(0,0,0,0.2); padding: 12px; font-size: 1.1rem; font-family: var(--font-mono); border-radius: 4px; text-transform: lowercase;">
-              <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
-                <button id="btn-station-hint" style="background: none; border: none; color: #555; text-decoration: underline; cursor: pointer; font-family: var(--font-mono); font-size: 0.85rem;">Hinweis anfordern?</button>
-                <button id="btn-station-submit" class="btn-primary" style="padding: 10px 20px; font-size: 1rem; box-shadow: none;">Antwort überprüfen</button>
-              </div>
+            <!-- Klickbare Personen-Karten (z.B. Station 1 Rathaus) -->
+            <div id="station-characters-container" class="station-characters-grid hidden"></div>
+
+            <!-- Klickbare Multiple-Choice Optionen (für alle weiteren Stationen) -->
+            <div id="station-choices-container" class="station-choices-grid hidden"></div>
+            
+            <!-- Optionale manuelle Eingabe -->
+            <div id="station-manual-wrap" class="station-manual-wrap hidden">
+              <input type="text" id="station-answer-input" placeholder="Deine Antwort..." style="background: rgba(0,0,0,0.05); color: #2c1e16; border: 1px solid rgba(0,0,0,0.2); padding: 12px; font-size: 1.1rem; font-family: var(--font-mono); border-radius: 4px; text-transform: lowercase; width: 100%; box-sizing: border-box;">
+              <button id="btn-station-submit" class="btn-primary" style="margin-top: 10px; padding: 10px 20px; font-size: 1rem; width: 100%;">Antwort überprüfen</button>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center; margin-top: 15px;">
+              <button id="btn-station-hint" style="background: none; border: none; color: #555; text-decoration: underline; cursor: pointer; font-family: var(--font-mono); font-size: 0.85rem;">Hinweis anfordern?</button>
+              <button id="btn-toggle-manual" style="background: none; border: none; color: #777; cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem;">⌨️ Freitext eingeben</button>
             </div>
             
             <p id="station-error-msg" class="hidden" style="color: #8b0000; font-family: var(--font-mono); font-size: 0.9rem; margin-top: 10px;">Fehlerhafte Eingabe.</p>
@@ -239,7 +251,10 @@
               Aktenführung: <strong>Versteckules</strong>
             </span>
           </div>
-          <button id="btn-close-dossier" class="btn-secondary">Schließen</button>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="btn-dossier-replay-intro" class="btn-secondary" style="font-size: 0.85rem; padding: 6px 12px;">📖 Fall-Prolog</button>
+            <button id="btn-close-dossier" class="btn-secondary">Schließen</button>
+          </div>
         </div>
         
         <div class="dossier-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-lg); position: relative; z-index: 1;">
@@ -285,7 +300,49 @@
     </main>
   </div>
 
-  <!-- Removed Modals for Sync -->
+  <!-- Bilderstory / Prologue View -->
+  <main id="view-intro" class="view hidden">
+    <div class="intro-overlay">
+      <div class="intro-container">
+        <div class="intro-badge" id="intro-slide-badge">KAPITEL 1 • HISTORIE</div>
+        
+        <div class="intro-media-wrapper">
+          <img id="intro-slide-img" src="assets/intro_fire_1823.jpg" alt="Prolog Szene" class="intro-slide-image">
+          <div class="intro-media-vignette"></div>
+        </div>
+
+        <div class="intro-body">
+          <div class="intro-dots" id="intro-indicators"></div>
+          <h2 id="intro-slide-title" class="intro-title">4. September 1823 — Die Flammen von Hof</h2>
+          <div id="intro-slide-text" class="intro-text">
+            Ein verheerendes Feuer vernichtet über zweihundert Häuser der Hofer Altstadt...
+          </div>
+
+          <div class="intro-controls">
+            <button id="btn-intro-prev" class="btn-secondary" style="font-size: 0.95rem; padding: 10px 18px;">‹ Zurück</button>
+            <button id="btn-intro-skip" class="btn-text" style="color: var(--color-text-muted); background: none; border: none; cursor: pointer; text-decoration: underline; font-family: var(--font-mono); font-size: 0.85rem;">Überspringen</button>
+            <button id="btn-intro-next" class="btn-primary" style="font-size: 0.95rem; padding: 10px 22px;">Weiter ›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Akte Schreddern -->
+  <div id="modal-reset" class="modal-backdrop hidden">
+    <div class="modal-box" style="position: relative;">
+      <div style="font-size: 3rem; margin-bottom: 10px;">🗑️</div>
+      <h3 style="font-family: var(--font-serif); color: var(--color-blood-red); font-size: 1.6rem; margin-bottom: 10px;">Akte Schreddern?</h3>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;">
+        Möchtest du die gesamte Ermittlungsakte, den Ermittlernamen und alle bisherigen Fortschritte unwiderruflich vernichten?
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <button id="btn-cancel-reset" class="btn-secondary" style="padding: 10px 20px;">Abbrechen</button>
+        <button id="btn-confirm-reset" class="btn-danger" style="padding: 10px 20px;">Ja, Akte vernichten</button>
+      </div>
+      <button id="modal-reset-close" style="position: absolute; top: 12px; right: 15px; background: none; border: none; color: #888; font-size: 1.5rem; cursor: pointer;">&times;</button>
+    </div>
+  </div>
 
   <!-- Visual Novel Dialogue View -->
   <main id="view-dialogue" class="view hidden">

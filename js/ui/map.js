@@ -135,7 +135,40 @@ function renderMarkers() {
                   const marker = L.marker([parsed.lat, parsed.lng], {
                     icon: getIcon('suspect')
                   }).addTo(map);
-                  marker.bindPopup(`<b>${suspect.name}</b><br><small>HAUPTVERDÄCHTIGE(R)</small>`);
+
+                  const popupDiv = document.createElement('div');
+                  popupDiv.className = 'suspect-map-popup';
+                  popupDiv.innerHTML = `
+                    <div style="width: 220px; font-family: sans-serif; color: #fff;">
+                      <div style="position: relative; width: 100%; height: 130px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; border: 1px solid rgba(212, 175, 55, 0.4);">
+                        <img src="${suspect.image}" alt="${suspect.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <span style="position: absolute; top: 6px; right: 6px; background: rgba(10, 14, 23, 0.85); border: 1px solid #8b0000; color: #ff5555; font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; font-weight: bold; letter-spacing: 1px;">HAUPTVERDACHT</span>
+                      </div>
+                      <div style="font-family: serif; font-size: 1.15rem; color: #d4af37; font-weight: bold; margin-bottom: 2px;">${suspect.name}</div>
+                      <div style="font-size: 0.78rem; color: #aaa; margin-bottom: 6px;">${suspect.role} (${suspect.age} J.)</div>
+                      <div style="font-size: 0.75rem; color: #ddd; line-height: 1.35; margin-bottom: 10px; max-height: 55px; overflow-y: auto;">${suspect.motive}</div>
+                      <button class="btn-interrogate-popup" id="btn-interrogate-map-${suspect.id}" style="width: 100%; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: linear-gradient(135deg, #d4af37, #8c6d23); color: #05080f; border: 1px solid #d4af37; cursor: pointer;">🗣️ Verhör / Konfrontation</button>
+                    </div>
+                  `;
+
+                  marker.bindPopup(popupDiv);
+                  marker.on('popupopen', () => {
+                    const btn = document.getElementById(`btn-interrogate-map-${suspect.id}`);
+                    if (btn) {
+                      btn.onclick = () => {
+                        marker.closePopup();
+                        import('./dialogue.js').then(dMod => {
+                          const treeKey = 'interrogate_' + suspect.id;
+                          if (story.dialogueTrees && story.dialogueTrees[treeKey]) {
+                            dMod.openDialogue(story.dialogueTrees[treeKey], () => {
+                              import('../main.js').then(m => m.showView('view-dashboard'));
+                            });
+                          }
+                        });
+                      };
+                    }
+                  });
+
                   markers['suspect_'+suspect.id] = marker;
                 }
               }

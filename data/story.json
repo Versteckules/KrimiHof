@@ -148,33 +148,85 @@
       {
         "id": "start",
         "speaker": "Kommissar Stahl",
-        "avatar": "assets/avatar.jpg",
-        "text": "Das ist ein Tatort, kein Spielplatz! Warten Sie auf den Pressebericht nächste Woche.",
+        "avatar": "assets/kommissar_stahl.jpg",
+        "text": "Halt! Zurücktreten hinter das Absperrband. Das hier ist ein aktiver Tatort, kein Spielplatz für Schaulustige. Die Feuerwehr löscht drinnen noch letzte Glutnester. Wer sind Sie überhaupt?",
         "choices": [
-          { "text": "Ich ermittle im Auftrag von Dr. Renger.", "next": "renger", "impact": {"suspect": "none", "value": 0} },
-          { "text": "Haben Sie verkohlte Dokumente gefunden?", "next": "documents", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Guten Abend Herr Kommissar. Was ist hier im Rathaus genau vorgefallen?", "next": "fire_info", "impact": {"suspect": "none", "value": 0} },
+          { "text": "Ich bin Ermittler {PLAYER_NAME}. Stadtarchivar Dr. Renger bat mich um Hilfe.", "next": "renger", "impact": {"suspect": "none", "value": 0} },
+          { "text": "Ich sah den Rauch aufsteigen. Gibt es Anzeichen für Brandstiftung?", "next": "arson_info", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "fire_info",
+        "speaker": "Kommissar Stahl",
+        "avatar": "assets/kommissar_stahl.jpg",
+        "text": "Verletzte gab es zum Glück nicht. Aber gezielte Zerstörung! Jemand hat im historischen Ratsarchiv unter dem Rathaus gewütet. Am Portal wurde Brandbeschleuniger verschüttet – ein gezielter Anschlag auf das Archiv!",
+        "choices": [
+          { "text": "Ein Anschlag auf alte Akten? Warum sollte jemand das tun?", "next": "archive_motive", "impact": {"suspect": "none", "value": 0} },
+          { "text": "Haben Sie bereits Verdächtige im Visier?", "next": "suspect_clues", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
         "id": "renger",
         "speaker": "Kommissar Stahl",
-        "text": "Renger? Der ist verschwunden. Wir haben nur seine Brille hier gefunden. Wenn Sie was wissen, melden Sie sich offiziell auf dem Revier. Abflug jetzt!",
+        "avatar": "assets/kommissar_stahl.jpg",
+        "text": "Dr. Renger?! Sagen Sie bloß! Der Archivar ist seit gestern spurlos abgängig. In seiner Wohnung herrschte Chaos, und sein Schreibtisch hier im Keller wurde gewaltsam aufgebrochen. Was wollte Renger von Ihnen?",
         "choices": [
-          { "text": "Verstanden, ich halte mich zurück.", "next": "end_polizist" }
+          { "text": "Er erwähnte brisante Urkunden über den 'Pakt der Schlappen-Erben' von 1823.", "next": "pakt_mention", "impact": {"suspect": "none", "value": 0} },
+          { "text": "Er hatte Angst. Jemand wollte verhindern, dass alte Verträge an die Öffentlichkeit kommen.", "next": "pakt_mention", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
-        "id": "documents",
+        "id": "arson_info",
         "speaker": "Kommissar Stahl",
-        "text": "Darüber gebe ich keine Auskunft. Wir sichern gerade Spuren. Treten Sie zurück hinter die Absperrung!",
+        "avatar": "assets/kommissar_stahl.jpg",
+        "text": "Brandstiftung ist gar kein Ausdruck – das war ein professioneller Sabotageakt. Die Archivtür wurde aufgehebelt, der Tresor geplündert und anschließend Feuer gelegt, um Spuren zu vernichten.",
         "choices": [
-          { "text": "Okay, ich gehe ja schon.", "next": "end_polizist" }
+          { "text": "Wurden Dokumente geraubt oder sind Akten verbrannt?", "next": "stolen_docs", "impact": {"suspect": "none", "value": 0} },
+          { "text": "Gibt es Zeugen, die Verdächtige flüchten sahen?", "next": "suspect_clues", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "pakt_mention",
+        "speaker": "Kommissar Stahl",
+        "avatar": "assets/kommissar_stahl.jpg",
+        "text": "Der Schlappen-Pakt... Davon habe ich gehört. Wenn das stimmt, geht es um Millionen an alten Eigentumsrechten in Hof! Der Tresor im Gewölbe war leer. Das riecht nach Vertuschung auf allerhöchster Ebene.",
+        "choices": [
+          { "text": "Welche Personen hätten das stärkste Motiv für diesen Raub?", "next": "suspect_clues", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "archive_motive",
+        "speaker": "Kommissar Stahl",
+        "avatar": "assets/kommissar_stahl.jpg",
+        "text": "Weil in diesem Archiv die Gründungsurkunden der mächtigsten Hofer Patrizier lagen. Wer diese Papiere kontrolliert, kontrolliert Vermögen und Bauprojekte der halben Stadt.",
+        "choices": [
+          { "text": "Haben Sie Spuren oder Verdächtige?", "next": "suspect_clues", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "stolen_docs",
+        "speaker": "Kommissar Stahl",
+        "avatar": "assets/kommissar_stahl.jpg",
+        "text": "Die Stahltür stand sperrangelweit offen. Auf dem Boden lagen nur noch Aschereste und ein zerbrochenes Siegel. Die wertvollsten Bände über 1823 fehlen komplett.",
+        "choices": [
+          { "text": "Wer kommt als Täter in Frage?", "next": "suspect_clues", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "suspect_clues",
+        "speaker": "Kommissar Stahl",
+        "avatar": "assets/kommissar_stahl.jpg",
+        "text": "Drei Personen stehen ganz oben auf meiner Liste: Erstens Valentin Herold, der Kunsthändler – er giert nach alten Urkunden. Zweitens Stadträtin Katharina von Gipser – sie plant Saale-Großprojekte und hasst alte Schutzrechte. Und drittens Severin Heiden, der fanatische Domorganist von St. Michaelis.",
+        "choices": [
+          { "text": "Ich werde diese drei Personen verhören und Spuren in Hof sichern.", "next": "end_polizist", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
         "id": "end_polizist",
         "speaker": "Kommissar Stahl",
-        "text": "Und dass ich Sie hier nicht mehr sehe!",
+        "avatar": "assets/kommissar_stahl.jpg",
+        "text": "Gut, {PLAYER_NAME}. Ich schalte Ihnen die Dossiers der drei Hauptverdächtigen frei. Sie können sie direkt auf der Karte aufsuchen oder im Dossier verhören. Aber pfuschen Sie mir nicht ins Handwerk!",
         "isEnd": true,
         "unlockSuspects": true
       }
@@ -183,36 +235,275 @@
       {
         "id": "start",
         "speaker": "Paul Stift (Reporter)",
-        "avatar": "assets/avatar.jpg",
-        "text": "Heftig, oder? Das alte Gemäuer brennt wie Zunder. Ich habe jemanden wegrennen sehen.",
+        "avatar": "assets/reporter_stift.jpg",
+        "text": "Hey! Psst, rüber zum Laternenpfahl! Sie sind doch der Ermittler, den Dr. Renger eingeschaltet hat, richtig? Ich bin Paul Stift vom Hofer Anzeiger. Eine Wahnsinns-Story braut sich hier zusammen!",
         "choices": [
-          { "text": "Wen haben Sie gesehen?", "next": "who", "impact": {"suspect": "none", "value": 0} },
-          { "text": "Wann war das genau?", "next": "when", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Herr Stift, was haben Sie kurz vor dem Brand beobachtet?", "next": "who", "impact": {"suspect": "none", "value": 0} },
+          { "text": "Woher wissen Sie von meiner Verbindung zu Dr. Renger?", "next": "source", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "source",
+        "speaker": "Paul Stift (Reporter)",
+        "avatar": "assets/reporter_stift.jpg",
+        "text": "Renger hat mir vor drei Tagen eine Notiz zugesteckt: 'Wenn mir etwas zustößt, suchen Sie nach den Schlappen-Erben.' Und jetzt brennt ausgerechnet sein Archiv im Rathaus!",
+        "choices": [
+          { "text": "Haben Sie Verdächtige in der Nähe des Brandherds gesehen?", "next": "who", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
         "id": "who",
         "speaker": "Paul Stift (Reporter)",
-        "text": "Konnte das Gesicht nicht erkennen, aber er trug so einen altmodischen Antiquitätenkoffer. Sah teuer aus.",
+        "avatar": "assets/reporter_stift.jpg",
+        "text": "Ich stand drüben am Sonnenplatz, als die Sirenen heulten. Sekunden zuvor hastete ein Mann mit elegantem Hut und einem teuren Leder-Antiquitätenkoffer aus dem Biengässchen!",
         "choices": [
-          { "text": "Könnte Valentin Herold gewesen sein.", "next": "end_reporter", "impact": {"suspect": "herold", "value": 15} },
-          { "text": "Danke für die Info.", "next": "end_reporter" }
+          { "text": "Ein Antiquitätenkoffer? Das klingt verdächtig nach Valentin Herold.", "next": "herold_lead", "impact": {"suspect": "herold", "value": 15} },
+          { "text": "Gab es noch andere Personen in der Umgebung?", "next": "more_suspects", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
-        "id": "when",
+        "id": "herold_lead",
         "speaker": "Paul Stift (Reporter)",
-        "text": "Kurz bevor die Feuerwehr eintraf. Er rannte Richtung Biengässchen. Ziemlich eilig.",
+        "avatar": "assets/reporter_stift.jpg",
+        "text": "Ganz genau! Herold kennt jeden Geheimgang der Altstadt. Aber hören Sie: Auch Stadträtin Gipser wurde heute Nacht in einer Limousine am Saaleufer gesehen. Und Organist Heiden predigte wirres Zeug über reinigendes Feuer!",
         "choices": [
-          { "text": "Ich werde mir das Gässchen ansehen.", "next": "end_reporter" }
+          { "text": "Ich werde alle drei Verdächtigen genau unter die Lupe nehmen.", "next": "end_reporter", "impact": {"suspect": "gipser", "value": 5} }
+        ]
+      },
+      {
+        "id": "more_suspects",
+        "speaker": "Paul Stift (Reporter)",
+        "avatar": "assets/reporter_stift.jpg",
+        "text": "Drei Namen kursieren in Redaktionskreisen: Der Kunstsammler Herold, die einflussreiche Immobilien-Politikerin von Gipser und der asketische Kirchenmusiker Heiden. Jeder von ihnen hat ein Geheimnis.",
+        "choices": [
+          { "text": "Danke für den Hinweis. Ich beginne mit den Befragungen.", "next": "end_reporter", "impact": {"suspect": "heiden", "value": 5} }
         ]
       },
       {
         "id": "end_reporter",
         "speaker": "Paul Stift (Reporter)",
-        "text": "Halten Sie mich auf dem Laufenden, okay? Wenn das ein Krimi wird, will ich die Exklusiv-Story!",
+        "avatar": "assets/reporter_stift.jpg",
+        "text": "Hier, ich gebe Ihnen meine Notizen zu den drei Hauptverdächtigen. Sie können sie jetzt verhören! Wenn Sie den Täter stellen, gehört die Exklusivstory mir!",
         "isEnd": true,
         "unlockSuspects": true
+      }
+    ],
+    "interrogate_herold": [
+      {
+        "id": "start",
+        "speaker": "Valentin Herold",
+        "avatar": "assets/suspect_herold.jpg",
+        "text": "(mustert dich mit spöttischem Lächeln und stützt sich auf seinen Gehstock) Ein Schnüffler um diese nachtschlafende Zeit? Wenn Sie antike Hofer Fayencen erwerben möchten, beehren Sie mich morgen zu den Geschäftszeiten. Was verschafft mir die zweifelhafte Ehre?",
+        "choices": [
+          { "text": "Herr Herold, Zeugen sahen einen Mann mit Ihrer Statur und einem Aktenkoffer vom brennenden Rathaus fliehen.", "next": "koffer", "impact": {"suspect": "herold", "value": 15} },
+          { "text": "Was wissen Sie über Dr. Rengers Fund der Bundessatzung von 1823?", "next": "pakt", "impact": {"suspect": "herold", "value": 10} },
+          { "text": "Wo haben Sie sich heute Nacht zwischen 22 und 24 Uhr aufgehalten?", "next": "alibi", "impact": {"suspect": "herold", "value": 5} }
+        ]
+      },
+      {
+        "id": "koffer",
+        "speaker": "Valentin Herold",
+        "avatar": "assets/suspect_herold.jpg",
+        "text": "(lacht heiser) Ein ledernes Futteral macht noch keinen Brandstifter, mein Bester! Ich handle mit edlen Kulturgütern. Warum sollte ich ein Archiv abfackeln, dessen Inhalt auf dem Sammlermarkt Millionen wert ist? Verbrennen tun nur verzweifelte Dilettanten wie Frau von Gipser!",
+        "choices": [
+          { "text": "Woher wissen Sie so genau, was Dr. Rengers Akten wert waren?", "next": "wert", "impact": {"suspect": "herold", "value": 15} },
+          { "text": "Frau von Gipser? Was hat die Stadträtin damit zu schaffen?", "next": "gipser_hint", "impact": {"suspect": "gipser", "value": 10} }
+        ]
+      },
+      {
+        "id": "wert",
+        "speaker": "Valentin Herold",
+        "avatar": "assets/suspect_herold.jpg",
+        "text": "Ich kenne jede historische Antiquität dieser Stadt! Renger war ein Schwätzer, der auf einem Schatz saß, ohne ihn zu schätzen. Aber eine Entführung oder ein Brand? Dafür bin ich viel zu kultiviert.",
+        "choices": [
+          { "text": "Wir werden sehen, Herold. Ich behalte Sie im Visier.", "next": "end_herold", "impact": {"suspect": "herold", "value": 5} }
+        ]
+      },
+      {
+        "id": "pakt",
+        "speaker": "Valentin Herold",
+        "avatar": "assets/suspect_herold.jpg",
+        "text": "Der Pakt der Schlappen-Erben... Nach dem Brand von 1823 sicherten sich drei Dynastien die lukrativsten Grundstücke Hofs. Eine unschätzbare historische Urkunde! Doch wenn Sie nach Brandbeschleunigern suchen: Fragen Sie Kirchenorganist Heiden – der faselt vom göttlichen Weltenbrand!",
+        "choices": [
+          { "text": "Heiden? Was hat ein Organist mit dem Pakt zu tun?", "next": "heiden_hint", "impact": {"suspect": "heiden", "value": 10} },
+          { "text": "Lenken Sie nicht ab. Wo ist Dr. Renger?", "next": "end_herold", "impact": {"suspect": "herold", "value": 10} }
+        ]
+      },
+      {
+        "id": "gipser_hint",
+        "speaker": "Valentin Herold",
+        "avatar": "assets/suspect_herold.jpg",
+        "text": "Gipser hat Millionen in Bauland am Saaleufer gesteckt. Hätte Renger die alten Urkunden publiziert, wären ihre Genehmigungen Makulatur gewesen! Sie hatte jedes Motiv der Welt, das Archiv einzuäschern.",
+        "choices": [
+          { "text": "Interessante Anschuldigung. Das werde ich prüfen.", "next": "end_herold", "impact": {"suspect": "gipser", "value": 10} }
+        ]
+      },
+      {
+        "id": "heiden_hint",
+        "speaker": "Valentin Herold",
+        "avatar": "assets/suspect_herold.jpg",
+        "text": "Heiden hält sich für den letzten wahren Blutsnachfahren der Gründerväter. Er verbringt die Nächte an den Orgeln und schwört Rache an jedem, der den Pakt entweiht.",
+        "choices": [
+          { "text": "Danke für diesen Hinweis.", "next": "end_herold", "impact": {"suspect": "heiden", "value": 10} }
+        ]
+      },
+      {
+        "id": "alibi",
+        "speaker": "Valentin Herold",
+        "avatar": "assets/suspect_herold.jpg",
+        "text": "Ich genoss einen erstklassigen Bordeaux im Gasthaus am Sonnenplatz. Der Wirt kann es bezeugen. Und nun entschuldigen Sie mich – meine kostbare Zeit ist abgelaufen.",
+        "choices": [
+          { "text": "Das Verhör ist vorerst beendet, Herr Herold.", "next": "end_herold", "impact": {"suspect": "herold", "value": 5} }
+        ]
+      },
+      {
+        "id": "end_herold",
+        "speaker": "Valentin Herold",
+        "avatar": "assets/suspect_herold.jpg",
+        "text": "(rückt seine Samtweste zurecht und neigt spöttisch das Haupt) Leben Sie wohl, Detektiv. Und verbrennen Sie sich nicht die Finger in Hofs dunklen Gassen.",
+        "isEnd": true
+      }
+    ],
+    "interrogate_gipser": [
+      {
+        "id": "start",
+        "speaker": "Katharina von Gipser",
+        "avatar": "assets/suspect_gipser.jpg",
+        "text": "(steht am Fenster ihres Büros und blickt kühl herab) Guten Abend, Herr Ermittler {PLAYER_NAME}. Verschwenden Sie nicht meine Zeit mit haltlosen Anschuldigungen. Mein Anwaltsteam ist nur einen Telefonanruf entfernt. Was führt Sie zu mir?",
+        "choices": [
+          { "text": "Frau Stadträtin, Rengers Fund der Verträge von 1823 hätte Ihr Millionenvorhaben am Saaleufer blockiert.", "next": "projekt", "impact": {"suspect": "gipser", "value": 15} },
+          { "text": "Ein Nachtfischer sah Sie um Mitternacht am Unteren Tor bei einer verdächtigen Übergabe.", "next": "tor", "impact": {"suspect": "gipser", "value": 15} },
+          { "text": "Wo waren Sie zum Zeitpunkt des Feueralarms im Rathaus?", "next": "alibi_gipser", "impact": {"suspect": "gipser", "value": 5} }
+        ]
+      },
+      {
+        "id": "projekt",
+        "speaker": "Katharina von Gipser",
+        "avatar": "assets/suspect_gipser.jpg",
+        "text": "(lächelt herablassend) Fortschritt lässt sich nicht durch verstaubte Pergamente aufhalten. Hof braucht Investoren, keine musealen Erbrechte aus der Biedermeierzeit! Aber glauben Sie im Ernst, ich zünde das Rathaus an? Ich siege durch Abstimmungen im Stadtrat, nicht mit Streichhölzern.",
+        "choices": [
+          { "text": "Und wenn die Papiere bewiesen hätten, dass Ihnen das Land gar nicht gehört?", "next": "druck", "impact": {"suspect": "gipser", "value": 15} },
+          { "text": "Wer außer Ihnen hätte ein Interesse an der Zerstörung des Archivs?", "next": "verdacht_andere", "impact": {"suspect": "gipser", "value": 5} }
+        ]
+      },
+      {
+        "id": "druck",
+        "speaker": "Katharina von Gipser",
+        "avatar": "assets/suspect_gipser.jpg",
+        "text": "Wählen Sie Ihre Worte mit Bedacht! Valentin Herold versucht seit Monaten, mich mit gefälschten Grundbüchern zu erpressen. Er ist skrupellos genug, über Leichen zu gehen, um die Originale in die Hände zu bekommen!",
+        "choices": [
+          { "text": "Herold behauptet genau das Gegenteil über Sie.", "next": "end_gipser", "impact": {"suspect": "herold", "value": 10} }
+        ]
+      },
+      {
+        "id": "tor",
+        "speaker": "Katharina von Gipser",
+        "avatar": "assets/suspect_gipser.jpg",
+        "text": "(ihr Blick verfinstert sich) Gerüchte von Flussanglern? Ich führe diskrete Verhandlungen zu jeder Uhrzeit. Bei der Übergabe handelte es sich um vertrauliche Gutachten – nichts Illegales. Vielleicht sollten Sie lieber Organist Heiden beschatten, der nachts die Kirchen durchstreift!",
+        "choices": [
+          { "text": "Was wissen Sie über Severin Heidens Rolle im Bund?", "next": "heiden_gipser", "impact": {"suspect": "heiden", "value": 10} }
+        ]
+      },
+      {
+        "id": "heiden_gipser",
+        "speaker": "Katharina von Gipser",
+        "avatar": "assets/suspect_gipser.jpg",
+        "text": "Heiden ist ein religiöser Eiferer. Er hält Hof für verflucht und glaubt, dass nur ein reinigendes Gericht das Erbe der Schlappen retten kann. Er ist brandgefährlich!",
+        "choices": [
+          { "text": "Ein brisanter Hinweis. Ich werde dem nachgehen.", "next": "end_gipser", "impact": {"suspect": "heiden", "value": 10} }
+        ]
+      },
+      {
+        "id": "alibi_gipser",
+        "speaker": "Katharina von Gipser",
+        "avatar": "assets/suspect_gipser.jpg",
+        "text": "Ich war hier im Büro und prüfte Sanierungsverträge. Meine Sekretärin kann das bestätigen. Und nun gehen Sie, {PLAYER_NAME}.",
+        "choices": [
+          { "text": "Ich behalte Ihre Immobilienprojekte genau im Auge.", "next": "end_gipser", "impact": {"suspect": "gipser", "value": 5} }
+        ]
+      },
+      {
+        "id": "verdacht_andere",
+        "speaker": "Katharina von Gipser",
+        "avatar": "assets/suspect_gipser.jpg",
+        "text": "Herold will Geld, Heiden will religiöse Vergeltung. Ich will Arbeitsplätze für Hof. Überlegen Sie gut, wer von uns dreien bereit wäre, einen Archivar zu entführen.",
+        "choices": [
+          { "text": "Wir werden sehen, wer am Ende überführt wird.", "next": "end_gipser", "impact": {"suspect": "gipser", "value": 5} }
+        ]
+      },
+      {
+        "id": "end_gipser",
+        "speaker": "Katharina von Gipser",
+        "avatar": "assets/suspect_gipser.jpg",
+        "text": "Schließen Sie die Tür leise hinter sich. Mein Chauffeur wird Sie hinausbegleiten.",
+        "isEnd": true
+      }
+    ],
+    "interrogate_heiden": [
+      {
+        "id": "start",
+        "speaker": "Severin Heiden",
+        "avatar": "assets/suspect_heiden.jpg",
+        "text": "(bricht das düstere Orgelspiel auf der Empore jäh ab; die mächtigen Basstöne verhallen im Kirchenschiff) Wer stört die Vigil der Nacht?! Schwefel und Hochmut liegen über Hof... Können Sie die Glut der Vergeltung nicht riechen?",
+        "choices": [
+          { "text": "Herr Heiden, Sie wurden gestern um Mitternacht am Altar von St. Lorenz beobachtet.", "next": "altar", "impact": {"suspect": "heiden", "value": 15} },
+          { "text": "Haben Sie Dr. Renger bedroht, weil er die Dokumente von 1823 veröffentlichen wollte?", "next": "renger_drohung", "impact": {"suspect": "heiden", "value": 15} },
+          { "text": "Was wissen Sie über den Brandanschlag auf das Rathausarchiv?", "next": "brand_urteil", "impact": {"suspect": "heiden", "value": 10} }
+        ]
+      },
+      {
+        "id": "altar",
+        "speaker": "Severin Heiden",
+        "avatar": "assets/suspect_heiden.jpg",
+        "text": "(seine Augen funkeln fanatisch) Ich suchte nach dem heiligen Bundessiegel! Der Pakt der Schlappen-Erben war ein heiliger Eid unserer Vorfahren, die Stadt vor Zügellosigkeit zu bewahren! Renger wollte ihn schänden und profanen Heiden wie Gipser und Herold zum Fraß vorwerfen!",
+        "choices": [
+          { "text": "Haben Sie Dr. Renger verschleppt, um die Dokumente an sich zu reißen?", "next": "entfuehrung", "impact": {"suspect": "heiden", "value": 20} },
+          { "text": "Wo ist die Stiftungsurkunde jetzt?", "next": "chiffre", "impact": {"suspect": "heiden", "value": 10} }
+        ]
+      },
+      {
+        "id": "renger_drohung",
+        "speaker": "Severin Heiden",
+        "avatar": "assets/suspect_heiden.jpg",
+        "text": "Ich habe ihn gewarnt vor dem Zorn des Himmels! 'Renger', rief ich, 'rühre nicht an den heiligen Bund von 1823, sonst wird Hof ein zweites Mal brennen!' Doch er war verblendet von irdischer Wissenschaft!",
+        "choices": [
+          { "text": "Ein zweites Mal brennen?! Das ist ein direktes Geständnis für den Brand!", "next": "brand_urteil", "impact": {"suspect": "heiden", "value": 20} }
+        ]
+      },
+      {
+        "id": "brand_urteil",
+        "speaker": "Severin Heiden",
+        "avatar": "assets/suspect_heiden.jpg",
+        "text": "Feuer läutert! 1823 brannte die Altstadt zur Strafe für den Verrat, und aus der Asche stieg der Bund empor! Doch die Heuchlerin Gipser mit ihrem Beton und der Wucherer Herold mit seinen Auktionen wollten den Pakt verraten. Wenn Asche übrig bleibt, so ist es Gottes Wille!",
+        "choices": [
+          { "text": "Sie sind wahnsinnig, Heiden. Wo ist Dr. Renger eingesperrt?", "next": "entfuehrung", "impact": {"suspect": "heiden", "value": 15} },
+          { "text": "Was bedeutet der Code 'ORDO SCHLAPPIS 1823'?", "next": "chiffre", "impact": {"suspect": "heiden", "value": 10} }
+        ]
+      },
+      {
+        "id": "entfuehrung",
+        "speaker": "Severin Heiden",
+        "avatar": "assets/suspect_heiden.jpg",
+        "text": "Er weilt an einem Ort, wo kein weltlicher Lärm ihn stört... nahe dem Fluss, wo die Wasser die Sünde fortspülen! Suchen Sie ruhig, Detektiv, ehe die Morgensonne über Hof aufgeht!",
+        "choices": [
+          { "text": "Ich werde Renger befreien und Sie vor Gericht bringen!", "next": "end_heiden", "impact": {"suspect": "heiden", "value": 15} }
+        ]
+      },
+      {
+        "id": "chiffre",
+        "speaker": "Severin Heiden",
+        "avatar": "assets/suspect_heiden.jpg",
+        "text": "(greift mit beiden Händen in die Orgeltasten, ein markerschütternder D-Moll-Akkord ertönt) Das ist die Losung der Ewigkeit! Verschlüsselt in den Registern und in den alten Gemäuern am Unteren Tor! Nur die Auserwählten werden sie entziffern!",
+        "choices": [
+          { "text": "Die Indizien gegen Sie sind erdrückend, Heiden.", "next": "end_heiden", "impact": {"suspect": "heiden", "value": 10} }
+        ]
+      },
+      {
+        "id": "end_heiden",
+        "speaker": "Severin Heiden",
+        "avatar": "assets/suspect_heiden.jpg",
+        "text": "(wendet sich mit geschlossenen Augen wieder den Manualen zu) Weiche von mir! Die Finsternis bricht herein... und die Gerechten werden triumphieren!",
+        "isEnd": true
       }
     ]
   },
