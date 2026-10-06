@@ -28,6 +28,7 @@ function createDefaultState() {
     lastSaved: null,
     currentView: 'landing',
     activeStationId: null,
+    isTestingMode: false,
 
     // Stationen & Routing
     solvedStations: [],       // Array von Stations-IDs (z.B. ['rathaus', ...])

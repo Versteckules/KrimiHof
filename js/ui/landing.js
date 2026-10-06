@@ -2,7 +2,7 @@
  * landing.js - Eingangsseite mit Hero-Cover, Dienstausweis, Team-Sync & Reset (AP1 + AP3)
  */
 
-import { getState, setPlayerName, startGame, resetState, subscribe } from '../state.js';
+import { getState, saveState, setPlayerName, startGame, resetState, subscribe } from '../state.js';
 import { renderSyncQRCode, generateSyncUrl, applySyncHash, importStateHash, checkUrlSyncParameter } from '../sync.js';
 
 export function initLanding() {
@@ -57,6 +57,7 @@ export function initLanding() {
     if (hasProgress) {
       startBtn.innerHTML = solvedCount > 0 ? `Ermittlung fortsetzen (${solvedCount}/12)` : "Ermittlung fortsetzen";
       progressIndicator.textContent = `Akte aktiv: ${solvedCount}/12 Pflichtstationen gelöst • ${state.score || 0} Punkte`;
+      if (state.isTestingMode) progressIndicator.textContent += " [TEST-MODUS]";
       progressIndicator.classList.remove('hidden');
       openResetBtn.classList.remove('hidden');
     } else {
@@ -85,15 +86,19 @@ export function initLanding() {
   // Start / Fortsetzen Button
   startBtn.addEventListener('click', () => {
     const name = nameInput.value.trim();
-    if (name.length < 2) {
+    if (name === "OFFLINETEST") {
+      errorMsg.classList.add('hidden');
+      saveState({ isTestingMode: true, playerName: "TEST-AGENT" });
+      startGame();
+    } else if (name.length < 2) {
       errorMsg.classList.remove('hidden');
       nameInput.focus();
       return;
+    } else {
+      errorMsg.classList.add('hidden');
+      setPlayerName(name);
+      startGame();
     }
-
-    errorMsg.classList.add('hidden');
-    setPlayerName(name);
-    startGame();
 
     startBtn.innerHTML = "Öffne Fallakte...";
     startBtn.style.pointerEvents = "none";

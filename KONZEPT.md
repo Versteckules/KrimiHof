@@ -1,4 +1,4 @@
-# KONZEPT – „Der Pakt der Schlappen-Erben“
+3# KONZEPT – „Der Pakt der Schlappen-Erben“
 Geolokalisierter Krimi-Nachtcache (Mystery/Unknown) in Hof (Saale)
 
 > **Stand:** 05.10.2026 – Ergebnis der finalen Konzept-Abstimmung (inkl. 17 Gadgets, 11 Weg-Events, 4 Extreme-Wow-Effekten & Easter Eggs).  

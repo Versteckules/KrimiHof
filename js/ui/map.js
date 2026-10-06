@@ -94,6 +94,14 @@ function renderMarkers() {
       marker.on('click', () => {
         if (status === 'active' || status === 'bonus') {
           setActiveTarget(st.id);
+          
+          const state = getState();
+          if (state.isTestingMode) {
+            console.log('[Testing] Öffne Station direkt ohne GPS (Test-Modus)');
+            import('./station.js').then(module => {
+              module.openStation(st.id);
+            });
+          }
         } else if (status === 'locked') {
           alert('Löse zuerst das Rätsel am Rathaus, bevor du hierher kommst.');
         } else if (status === 'solved') {
