@@ -118,7 +118,7 @@ export function runGadget(stationId, onSuccess) {
   window.addEventListener('touchend', endDrag);
 
   btnDone.onclick = () => {
-    overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Beweis gesichert!</h2></div>\`;
+    overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Beweis gesichert!</h2></div>`;
     setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1000);
   };
 }
