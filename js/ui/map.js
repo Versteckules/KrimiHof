@@ -3,7 +3,7 @@
  */
 
 import { getStations, getConfig } from '../config-loader.js';
-import { getState, subscribe, isStationSolved } from '../state.js';
+import { getState, subscribe, isStationSolved, getPlayerRank } from '../state.js';
 import { showNoirAlert } from '../main.js';
 
 let map = null;
@@ -45,7 +45,60 @@ export function initMap() {
   // Bei Status-Updates Marker aktualisieren
   subscribe(() => {
     renderMarkers();
+    updateRankDisplay();
   });
+
+  // Initiale Rank-Berechnung
+  updateRankDisplay();
+
+  // Sherlock Hint Listener
+  const hintBtn = document.getElementById('btn-sherlock-hint');
+  if (hintBtn) {
+    hintBtn.addEventListener('click', () => {
+      const state = getState();
+      const stations = getStations();
+      const unsolved = stations.find(s => !isStationSolved(s.id));
+      if (unsolved) {
+        showNoirAlert(`Mein Spürsinn sagt mir, wir sollten uns den Ort "${unsolved.name}" genauer ansehen.`, 'Sherlock-Tipp');
+      } else {
+        showNoirAlert('Es gibt aktuell keine neuen Orte zu untersuchen. Überprüfe dein Dossier!', 'Sherlock-Tipp');
+      }
+    });
+  }
+
+  // Rank Info Modal Listener
+  const infoBtn = document.getElementById('btn-rank-info');
+  const infoModal = document.getElementById('rank-info-modal');
+  const infoCloseBtn = document.getElementById('btn-rank-info-close');
+  
+  if (infoBtn && infoModal && infoCloseBtn) {
+    infoBtn.addEventListener('click', () => {
+      infoModal.classList.remove('hidden');
+    });
+    infoCloseBtn.addEventListener('click', () => {
+      infoModal.classList.add('hidden');
+    });
+  }
+}
+
+function updateRankDisplay() {
+  const rank = getPlayerRank();
+  const state = getState();
+  const nameEl = document.getElementById('player-rank-name');
+  const scoreEl = document.getElementById('player-score-val');
+  const hintBtn = document.getElementById('btn-sherlock-hint');
+
+  if (nameEl) nameEl.textContent = rank.name;
+  if (scoreEl) scoreEl.textContent = state.score || 0;
+
+  // Vorteil: Sherlock-Button ab Rang 3
+  if (hintBtn) {
+    if (rank.level >= 3) {
+      hintBtn.classList.remove('hidden');
+    } else {
+      hintBtn.classList.add('hidden');
+    }
+  }
 }
 
 function getIcon(status, customColor) {
@@ -195,7 +248,23 @@ function renderMarkers() {
                             import('./dialogue.js').then(dMod => {
                               if (story.dialogueTrees && story.dialogueTrees[treeKey]) {
                                 dMod.openDialogue(story.dialogueTrees[treeKey], () => {
-                                  import('../main.js').then(m => m.showView('view-dashboard'));
+                                  const suspectGames = {
+                                    'herold': 'safe',
+                                    'gipser': 'shredder',
+                                    'heiden': 'music-cryptogram'
+                                  };
+                                  if (suspectGames[suspect.id]) {
+                                    import(\`./gadgets/\${suspectGames[suspect.id]}.js\`).then(gameMod => {
+                                      gameMod.runGadget(suspect.id, () => {
+                                        import('../main.js').then(m => m.showView('view-dashboard'));
+                                      });
+                                    }).catch(err => {
+                                      console.error("Fehler beim Laden des Suspect-Minispiels:", err);
+                                      import('../main.js').then(m => m.showView('view-dashboard'));
+                                    });
+                                  } else {
+                                    import('../main.js').then(m => m.showView('view-dashboard'));
+                                  }
                                 });
                               }
                             });

@@ -271,9 +271,10 @@ function updateDossier() {
                 });
               } else {
                 feedbackEl.style.color = '#8b0000';
-                feedbackEl.innerText = '📉 Ergibt wenig Sinn... Dieser Beweis passt nicht zu dieser Person. (Verdacht -7%)';
+                feedbackEl.innerText = '📉 Ergibt wenig Sinn... Dieser Beweis passt nicht zu dieser Person. (Verdacht -7%, -5 Kommissarpunkte)';
                 import('../state.js').then(mod => {
                   mod.addSuspectImpact(suspectId, -7);
+                  mod.addScore(-5); // Punktabzug für falsche Zuordnung!
                   mod.assignEvidence(id, suspectId);
                   updateDossier(); // Refresh UI behind modal
                 });

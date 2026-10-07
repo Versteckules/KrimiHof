@@ -136,13 +136,35 @@ function handleCharacterClick(station, char) {
   const story = getStory();
   const treeKey = char.dialogueKey || (station.storyEventId + "_" + char.id);
 
-  if (story && story.dialogueTrees && story.dialogueTrees[treeKey]) {
-    openDialogue(story.dialogueTrees[treeKey], () => {
+  const postDialogueAction = () => {
+    if (station.id === 'rathaus' && char.id === 'reporter') {
+      import('./gadgets/reporter-camera.js').then(mod => {
+        mod.runGadget(station.id, () => {
+          startGadget(station.gadget.id, currentStationId);
+        });
+      }).catch(err => {
+        console.error(err);
+        startGadget(station.gadget.id, currentStationId);
+      });
+    } else if (station.id === 'rathaus' && char.id === 'polizist') {
+      import('./gadgets/policeman-paper.js').then(mod => {
+        mod.runGadget(station.id, () => {
+          startGadget(station.gadget.id, currentStationId);
+        });
+      }).catch(err => {
+        console.error(err);
+        startGadget(station.gadget.id, currentStationId);
+      });
+    } else {
       startGadget(station.gadget.id, currentStationId);
-    });
+    }
+  };
+
+  if (story && story.dialogueTrees && story.dialogueTrees[treeKey]) {
+    openDialogue(story.dialogueTrees[treeKey], postDialogueAction);
   } else {
     // Fallback falls kein Dialog hinterlegt ist
-    startGadget(station.gadget.id, currentStationId);
+    postDialogueAction();
   }
 }
 

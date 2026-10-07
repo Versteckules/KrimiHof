@@ -49,3 +49,22 @@ export function toggleMute() {
 export function getMuteState() {
   return isMuted;
 }
+
+export function duckBGM(isDucking) {
+  if (isMuted || !bgm) return;
+  
+  // Smoothly fade volume
+  const target = isDucking ? 0.05 : 0.4;
+  let current = bgm.volume;
+  const step = (target - current) / 20;
+  
+  const fade = setInterval(() => {
+    current += step;
+    if ((step > 0 && current >= target) || (step < 0 && current <= target)) {
+      bgm.volume = target;
+      clearInterval(fade);
+    } else {
+      bgm.volume = current;
+    }
+  }, 50);
+}

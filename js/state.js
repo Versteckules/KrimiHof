@@ -72,6 +72,23 @@ let _currentState = null;
 const _subscribers = new Set();
 
 /**
+ * Berechnet den aktuellen Rang basierend auf den Punkten (Score)
+ * 0-49: Streifenpolizist
+ * 50-99: Schnüffler
+ * 100-149: Privatdetektiv (Rangstufe 3)
+ * 150-199: Inspektor
+ * 200+: Sherlock Holmes
+ */
+export function getPlayerRank() {
+  const score = _currentState ? _currentState.score || 0 : 0;
+  if (score >= 200) return { name: "Sherlock Holmes", level: 5 };
+  if (score >= 150) return { name: "Inspektor", level: 4 };
+  if (score >= 100) return { name: "Privatdetektiv", level: 3 };
+  if (score >= 50) return { name: "Schnüffler", level: 2 };
+  return { name: "Streifenpolizist", level: 1 };
+}
+
+/**
  * Benachrichtigt alle Abonnenten über Zustandsänderungen
  */
 function notifySubscribers() {
@@ -392,6 +409,15 @@ export function isTrackableUnlocked(code) {
  * Gibt die Verdächtigen sortiert nach aktuellem Punktestand zurück (für das Finale)
  * @returns {Array<{ id: string, points: number }>}
  */
+/**
+ * Fügt dem Gesamtscore direkt Punkte hinzu oder zieht sie ab.
+ */
+export function addScore(points) {
+  const state = getState();
+  const newScore = Math.max(0, (state.score || 0) + points);
+  saveState({ score: newScore });
+}
+
 export function getSuspectRanking() {
   const state = getState();
   const scores = state.suspectScores || { herold: 0, gipser: 0, heiden: 0 };

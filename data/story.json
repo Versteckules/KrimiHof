@@ -45,6 +45,48 @@
   },
   "evidenceCatalog": [
     {
+      "id": "beweis_antike_uhr",
+      "name": "Antike Taschenuhr",
+      "type": "object",
+      "stationId": "ludwigstrasse",
+      "description": "Eine wertvolle Taschenuhr. Bestechungsgeld von Herold an Wachmann Rolf."
+    },
+    {
+      "id": "beweis_frachtpapiere",
+      "name": "Brisante Frachtpapiere",
+      "type": "document",
+      "stationId": "hauptpost",
+      "description": "Ein Lieferschein über den Abtransport von Akten, ausgestellt vom Bauamt (Gipser)."
+    },
+    {
+      "id": "beweis_chorknaben_notiz",
+      "name": "Lateinische Chor-Notiz",
+      "type": "document",
+      "stationId": "sonnenplatz",
+      "description": "Ein Zettel mit Gesängen und einer Skizze des Rathauses. Handschrift: Heiden."
+    },
+    {
+      "id": "beweis_pakt_ring",
+      "name": "Sekten-Siegelring",
+      "type": "object",
+      "stationId": "lorenzkirche",
+      "description": "Ein Ring der Bruderschaft, übergeben von Pfarrer Klement."
+    },
+    {
+      "id": "foto_gipser_auto",
+      "name": "Foto der flüchtenden Limousine",
+      "type": "photo",
+      "stationId": "rathaus",
+      "description": "Eine schwarze Limousine mit dem Kennzeichen HO-KG 1823, fotografiert durch das Teleobjektiv des Reporters."
+    },
+    {
+      "id": "notenblatt_heiden",
+      "name": "Rußiges Notenblatt",
+      "type": "document",
+      "stationId": "rathaus",
+      "description": "Ein vom Polizisten gefundenes, halb verbranntes Blatt. Der Ruß wurde entfernt und offenbart die Noten B-A-C-H."
+    },
+    {
       "id": "evidence_fire_dossier",
       "name": "Brandakte 1823",
       "type": "document",
@@ -144,6 +186,122 @@
     }
   ],
   "dialogueTrees": {
+    "ludwig_rolf_rolf": [
+      {
+        "id": "start",
+        "speaker": "Wachmann Rolf",
+        "avatar": "assets/passant.jpg",
+        "text": "Was suchen Sie hier? Das Kanzleiarchiv ist strengstens abgeriegelt. In der Brandnacht war hier niemand, darauf gebe ich mein Wort!",
+        "choices": [
+          { "text": "Wirklich niemand? Was ist das für eine teure, antike Uhr an Ihrem Handgelenk?", "next": "rolf_2" },
+          { "text": "Dann werde ich mich selbst umsehen.", "isEnd": true }
+        ]
+      },
+      {
+        "id": "rolf_2",
+        "speaker": "Wachmann Rolf",
+        "avatar": "assets/passant.jpg",
+        "text": "(Rolf wird kreidebleich) Das... das war ein Geschenk! Ein Herr mit Samtweste meinte, ich solle mal für eine Stunde wegschauen. Ich wusste ja nicht, dass er ins Archiv will!",
+        "choices": [
+          { "text": "Sie meinen Valentin Herold! Geben Sie mir die Uhr als Beweis.", "next": "rolf_3", "impact": {"suspect": "herold", "value": 15} }
+        ]
+      },
+      {
+        "id": "rolf_3",
+        "speaker": "Wachmann Rolf",
+        "avatar": "assets/passant.jpg",
+        "text": "Nehmen Sie sie! Ich will mit dieser Sache nichts zu tun haben. Er drohte mir, falls ich rede...",
+        "isEnd": true,
+        "reward": "beweis_antike_uhr"
+      }
+    ],
+    "post_kurier_sepp": [
+      {
+        "id": "start",
+        "speaker": "Nachtkurier Sepp",
+        "avatar": "assets/kurier.jpg",
+        "text": "Keine Zeit zum Plaudern, das Postgeheimnis ruft! Diese Kisten müssen noch heute Nacht ins Depot.",
+        "choices": [
+          { "text": "Unmarkierte Kisten vom Rathaus? Mitten in der Nacht?", "next": "sepp_2" },
+          { "text": "Lassen Sie sich nicht aufhalten.", "isEnd": true }
+        ]
+      },
+      {
+        "id": "sepp_2",
+        "speaker": "Nachtkurier Sepp",
+        "avatar": "assets/kurier.jpg",
+        "text": "Ich fahre nur Sonderaufträge für die Stadt. Das Bauamt zahlt für absolute Diskretion. Fragen Sie nicht weiter!",
+        "choices": [
+          { "text": "Das Bauamt? Also Katharina von Gipser! Zeigen Sie mir die Papiere!", "next": "sepp_3", "impact": {"suspect": "gipser", "value": 15} }
+        ]
+      },
+      {
+        "id": "sepp_3",
+        "speaker": "Nachtkurier Sepp",
+        "avatar": "assets/kurier.jpg",
+        "text": "Mist, wenn das rauskommt... Hier ist der Lieferschein. Aber sagen Sie nicht, dass Sie ihn von mir haben!",
+        "isEnd": true,
+        "reward": "beweis_frachtpapiere"
+      }
+    ],
+    "sonne_karl_karl": [
+      {
+        "id": "start",
+        "speaker": "Wärschtlamo Karl",
+        "avatar": "assets/stammgast.jpg",
+        "text": "Ah, noch 'ne heiße Wurst in der kalten Nacht? Hier kommt alles vorbei, ich seh alles und sag nichts.",
+        "choices": [
+          { "text": "Haben Sie heute Nacht auffällige, unheimliche Gestalten gesehen?", "next": "karl_2" },
+          { "text": "Nur eine Wurst, danke.", "isEnd": true }
+        ]
+      },
+      {
+        "id": "karl_2",
+        "speaker": "Wärschtlamo Karl",
+        "avatar": "assets/stammgast.jpg",
+        "text": "Allerdings. Ein hagerer Kerl ganz in Schwarz. Murmelte lateinisches Zeug vor sich hin und starrte rüber zum Rathaus. Völlig fanatisch, der Typ.",
+        "choices": [
+          { "text": "Ein frommer Mann in Schwarz? Severin Heiden! Hat er etwas hinterlassen?", "next": "karl_3", "impact": {"suspect": "heiden", "value": 15} }
+        ]
+      },
+      {
+        "id": "karl_3",
+        "speaker": "Wärschtlamo Karl",
+        "avatar": "assets/stammgast.jpg",
+        "text": "Ja, er hat diesen Zettel hier fallen lassen. Sieht aus wie Chor-Notizen und ein Bauplan. Vielleicht können Sie was damit anfangen.",
+        "isEnd": true,
+        "reward": "beweis_chorknaben_notiz"
+      }
+    ],
+    "lorenz_klement_klement": [
+      {
+        "id": "start",
+        "speaker": "Pfarrer Klement",
+        "avatar": "assets/kuester_franz.jpg",
+        "text": "Gottes Segen, mein Kind. Suchen Sie Zuflucht in dieser dunklen Nacht?",
+        "choices": [
+          { "text": "Ich suche Antworten. Zu den heimlichen Stiftungs-Spenden von 1823.", "next": "klement_2" },
+          { "text": "Ja, etwas Ruhe. Danke.", "isEnd": true }
+        ]
+      },
+      {
+        "id": "klement_2",
+        "speaker": "Pfarrer Klement",
+        "avatar": "assets/kuester_franz.jpg",
+        "text": "1823... (er schluckt). Das sind Mythen! Die Kirche weiß nichts von einem Pakt der Schlappen-Erben. Wir sind reine Diener des Herrn!",
+        "choices": [
+          { "text": "Lügen Sie nicht! Domorganist Heiden führt diesen Pakt doch aus dem Verborgenen!", "next": "klement_3", "impact": {"suspect": "heiden", "value": 15} }
+        ]
+      },
+      {
+        "id": "klement_3",
+        "speaker": "Pfarrer Klement",
+        "avatar": "assets/kuester_franz.jpg",
+        "text": "Vergeben Sie mir! Heidens Fanatismus geht zu weit. Wir sollten die Urkunden nur schützen, nicht vernichten! Nehmen Sie diesen Ring, er ist mein Austritt aus der Bruderschaft.",
+        "isEnd": true,
+        "reward": "beweis_pakt_ring"
+      }
+    ],
     "rathaus_fire_polizist": [
       {
         "id": "start",
