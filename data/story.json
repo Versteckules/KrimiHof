@@ -893,41 +893,74 @@
       {
         "id": "start",
         "speaker": "Gärtner Huber",
-        "avatar": "assets/passant.jpg",
-        "text": "Oh, haben Sie mich erschreckt! Ich kümmere mich nur noch um die letzten Gräber für heute Nacht.",
+        "avatar": "assets/fischer.jpg",
+        "text": "(Zuckt zusammen und lässt eine Gartenschere fallen) Herr im Himmel! Sie schleichen herum wie ein Geist auf Heimaturlaub. Was treibt Sie um diese Uhrzeit auf den Friedhof?",
         "choices": [
-          { "text": "Haben Sie gesehen, wer das Messingrad an der Pforte manipuliert hat?", "next": "node_2", "impact": {"suspect": "none", "value": 0} }
+          { "text": "[Direkt] Das Messingrad an der Pforte wurde manipuliert. Wer war das?", "next": "node_defensive", "impact": {"suspect": "none", "value": 0} },
+          { "text": "[Beruhigend] Keine Sorge. Ich suche nur nach Hinweisen zu den Vorfällen in der Kirche.", "next": "node_trust", "impact": {"suspect": "none", "value": 0} },
+          { "text": "[Einschüchternd] Antworten Sie lieber schnell. Was wissen Sie über den blockierten Turm?", "next": "node_fear", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
-        "id": "node_2",
+        "id": "node_defensive",
         "speaker": "Gärtner Huber",
-        "avatar": "assets/passant.jpg",
-        "text": "Das war dieser furchteinflößende Organist, Herr Heiden! Er hat einen alten Schlüssel hineingesteckt und irgendeine Beschwörungsformel gemurmelt.",
+        "avatar": "assets/fischer.jpg",
+        "text": "Manipuliert? Ich kümmere mich um die Rosen, nicht um die Mechanik! Aber... (er blickt sich nervös um) ...der Organist, Herr Heiden, war vorhin hier. Er wirkte völlig rastlos.",
         "choices": [
-          { "text": "Heiden blockiert den Zugang zum Turm. Er versteckt etwas.", "next": "node_hei", "impact": {"suspect": "heiden", "value": 10} },
-          { "text": "Glauben Sie, Gipser hat ihn dafür bezahlt?", "next": "node_g", "impact": {"suspect": "gipser", "value": 5} }
+          { "text": "Heiden? Was genau hat er am Turm gemacht?", "next": "node_heiden_details", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
-        "id": "node_hei",
+        "id": "node_trust",
         "speaker": "Gärtner Huber",
-        "avatar": "assets/passant.jpg",
-        "text": "Ich wette, er hat den entführten Archivar da oben eingesperrt! Er sprach davon, dass die 'Akte' gereinigt werden muss.",
-        "choices": [ { "text": "Ich muss das Kryptorad knacken und den Turm öffnen.", "next": "end", "impact": {"suspect": "none", "value": 0} } ]
+        "avatar": "assets/fischer.jpg",
+        "text": "(Atmet auf) Eine dunkle Nacht für die Gemeinde. Wissen Sie, ich beobachte die Leute hier. Herr Heiden, der Organist... er hat einen alten, rostigen Schlüssel in das Rad gesteckt und unverständliches Zeug gemurmelt.",
+        "choices": [
+          { "text": "Ein Schlüssel? Hat er den Zugang absichtlich blockiert?", "next": "node_heiden_details", "impact": {"suspect": "none", "value": 0} }
+        ]
       },
       {
-        "id": "node_g",
+        "id": "node_fear",
         "speaker": "Gärtner Huber",
-        "avatar": "assets/passant.jpg",
-        "text": "Gipser? Die hat mit der Kirche nichts am Hut. Das ist alles Heidens Fanatismus.",
-        "choices": [ { "text": "Dann werde ich mir dieses Rad mal ansehen.", "next": "end", "impact": {"suspect": "none", "value": 0} } ]
+        "avatar": "assets/fischer.jpg",
+        "text": "Ich... ich will keinen Ärger! Es war Herr Heiden! Er hat geflucht, dass die 'Akte' gereinigt werden müsse. Er ist ein Fanatiker!",
+        "choices": [
+          { "text": "Beruhigen Sie sich. Was wissen Sie noch über Heidens Vorhaben?", "next": "node_heiden_details", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "node_heiden_details",
+        "speaker": "Gärtner Huber",
+        "avatar": "assets/fischer.jpg",
+        "text": "Er murmelte etwas von Verrat am wahren Glauben. Ich wette, er hat den entführten Archivar da oben im Turm eingesperrt! Er klang jedenfalls, als würde er sich auf einen Krieg vorbereiten.",
+        "choices": [
+          { "text": "Könnte Gipser ihn für diese Sabotage bezahlt haben?", "next": "node_gipser", "impact": {"suspect": "gipser", "value": 5} },
+          { "text": "Er versteckt dort etwas. Heiden ist brandgefährlich.", "next": "node_heiden_suspect", "impact": {"suspect": "heiden", "value": 10} }
+        ]
+      },
+      {
+        "id": "node_gipser",
+        "speaker": "Gärtner Huber",
+        "avatar": "assets/fischer.jpg",
+        "text": "Die Baulöwin? Pah! Die hat mit der Kirche nichts am Hut, der geht es nur um Beton und Geld. Nein, das hier... das ist Heidens religiöser Wahn, ganz sicher.",
+        "choices": [
+          { "text": "Ich muss das Kryptorad knacken und den Turm öffnen. Danke.", "next": "end", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "node_heiden_suspect",
+        "speaker": "Gärtner Huber",
+        "avatar": "assets/fischer.jpg",
+        "text": "Das sage ich Ihnen! Er ist besessen von diesen alten Schriften. Passen Sie bloß auf, wenn Sie da hinaufgehen.",
+        "choices": [
+          { "text": "Ich werde dieses Rad jetzt knacken. Bleiben Sie im Hintergrund.", "next": "end", "impact": {"suspect": "none", "value": 0} }
+        ]
       },
       {
         "id": "end",
         "speaker": "Gärtner Huber",
-        "avatar": "assets/passant.jpg",
-        "text": "Seien Sie vorsichtig da oben, es ist verdammt dunkel im Turm.",
+        "avatar": "assets/fischer.jpg",
+        "text": "Seien Sie vorsichtig da oben. Es ist verdammt dunkel und... naja, Sie wissen schon. Viel Glück.",
         "isEnd": true
       }
     ],

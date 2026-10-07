@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
@@ -10,7 +10,7 @@ export function runGadget(stationId, onSuccess) {
 
   overlay.innerHTML = `<div class="cl-gadget-wrapper"><div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:10px;">Polaroid Entwicklung</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Schüttle das Gerät leicht, um das Bild zu entwickeln.</p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">SchÃ¼ttle das GerÃ¤t leicht, um das Bild zu entwickeln.</p>
     
     <div style="width:300px; height:350px; background:#e0e0e0; padding:15px 15px 60px 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transform: rotate(-3deg);">
       <div style="width:100%; height:100%; background:#111; overflow:hidden; position:relative;">
@@ -29,13 +29,13 @@ export function runGadget(stationId, onSuccess) {
   function updateImage() {
     const blur = Math.max(0, 20 - (development / 100) * 20);
     const bright = Math.min(1, 0.2 + (development / 100) * 0.8);
-    img.style.filter = \`blur(\${blur}px) brightness(\${bright})\`;
+    img.style.filter = `blur(${blur}px) brightness(${bright})`;
     
     if (development >= 100 && !solved) {
       solved = true;
       window.removeEventListener('devicemotion', handleMotion);
       setTimeout(() => {
-        overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Beweis gesichert!</h2>\`;
+        overlay.innerHTML = `<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Beweis gesichert!</h2>`;
         setTimeout(() => {
           overlay.remove();
           FX.playSuccessWumms().then(() => onSuccess());
@@ -50,7 +50,7 @@ export function runGadget(stationId, onSuccess) {
     if (!acc) return;
     
     const force = Math.abs(acc.x || 0) + Math.abs(acc.y || 0) + Math.abs(acc.z || 0);
-    if (force > 15) { // Schütteln
+    if (force > 15) { // SchÃ¼tteln
       development += 2;
       updateImage();
     }

@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -119,7 +119,7 @@ export function runGadget(stationId, onSuccess) {
     status.textContent = "00:00";
     callTimer = setInterval(() => {
       sec++;
-      status.textContent = \`00:0\${sec}\`;
+      status.textContent = `00:0${sec}`;
     }, 1000);
 
     // Speak creepy message

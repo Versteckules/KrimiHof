@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -96,8 +96,8 @@ export function runGadget(stationId, onSuccess) {
     const x = clientX - rect.left;
     const y = clientY - rect.top;
     
-    glowLayer.style.maskPosition = \`\${x - 100}px \${y - 100}px\`;
-    glowLayer.style.webkitMaskPosition = \`\${x - 100}px \${y - 100}px\`;
+    glowLayer.style.maskPosition = `${x - 100}px ${y - 100}px`;
+    glowLayer.style.webkitMaskPosition = `${x - 100}px ${y - 100}px`;
     glowLayer.style.opacity = '1';
     
     // Check if hovering over the text (center of the box approx)
@@ -128,7 +128,7 @@ export function runGadget(stationId, onSuccess) {
       
       setTimeout(() => {
         anim.cancel();
-        overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:#d200ff; font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Geheimnis gelüftet!</h2></div>\`;
+        overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:#d200ff; font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Geheimnis gelÃ¼ftet!</h2></div>`;
         setTimeout(() => {
           overlay.remove();
           FX.playSuccessWumms().then(() => onSuccess());

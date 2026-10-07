@@ -12,28 +12,19 @@ export function runGadget(stationId, onSuccess) {
   overlay.innerHTML = `<div class="cl-gadget-wrapper" style="padding: 20px; width: 95vw; max-width: 500px; display: flex; flex-direction: column; align-items: center; text-align: center;">
     <div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:var(--color-amber-glow);">Zeitreise-Archiv</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Wische über das Bild, um die Brandspuren von 1823 mit der heutigen Ansicht abzugleichen.</p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Wische Ã¼ber das Bild, um die Brandspuren von 1823 mit der heutigen Ansicht abzugleichen.</p>
     
     <div id="time-slider-container" style="position:relative; width:100%; height:300px; max-width: 400px; border: 4px solid var(--color-brass-dark); border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); overflow:hidden; user-select: none; touch-action: none;">
       
       <!-- Base Image (1823 Historic) -->
-      <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: url('assets/texture_paper.webp') center/cover; filter: sepia(0.8) contrast(1.2);">
-        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#000; font-family:var(--font-serif); font-size: 2rem; opacity: 0.3;">RATHAUS 1823</div>
-        <!-- Simulated fire damage drawing -->
-        <svg width="100%" height="100%" style="position:absolute; top:0; left:0; opacity: 0.8;">
-           <path d="M50 150 Q 150 50, 300 200 T 400 100" stroke="#311" stroke-width="15" fill="none" opacity="0.8"/>
-           <circle cx="200" cy="180" r="40" fill="#211"/>
-        </svg>
+      <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: url('assets/intro_fire_1823.jpg') center/cover; filter: sepia(0.3) contrast(1.1);">
+        <div style="position:absolute; top:10px; left:10px; color:#fff; font-family:var(--font-serif); font-size: 1.2rem; opacity: 0.7; text-shadow: 1px 1px 2px #000;">1823</div>
       </div>
 
       <!-- Overlay Image (Today) -->
-      <div id="time-slider-overlay" style="position:absolute; top:0; left:0; width:50%; height:100%; background: #2a2b36; overflow:hidden; border-right: 4px solid var(--color-amber-glow); box-shadow: 5px 0 15px rgba(0,0,0,0.5);">
-         <div style="position:absolute; top:0; left:0; width:400px; height:100%; display:flex; align-items:center; justify-content:center;">
-           <div style="color:#fff; font-family:var(--font-sans); font-size: 1.5rem; opacity: 0.3; text-shadow: 0 0 10px #fff;">HEUTE (NACHT)</div>
-           <svg width="100%" height="100%" style="position:absolute; top:0; left:0;">
-             <path d="M50 150 Q 150 50, 300 200 T 400 100" stroke="#000" stroke-width="15" fill="none" opacity="0.8"/>
-             <circle cx="200" cy="180" r="40" fill="#000"/>
-           </svg>
+      <div id="time-slider-overlay" style="position:absolute; top:0; left:0; width:50%; height:100%; overflow:hidden; border-right: 4px solid var(--color-amber-glow); box-shadow: 5px 0 15px rgba(0,0,0,0.5);">
+         <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: url('assets/hero_hof_night.jpg') center/cover; min-width: 400px;">
+           <div style="position:absolute; top:10px; right:10px; color:#fff; font-family:var(--font-sans); font-size: 1.2rem; opacity: 0.7; text-shadow: 1px 1px 2px #000;">HEUTE</div>
          </div>
          
          <!-- The Slider Handle -->
@@ -45,7 +36,7 @@ export function runGadget(stationId, onSuccess) {
 
     </div>
 
-    <div id="time-slider-hint" style="margin-top: 20px; font-family:var(--font-mono); color:var(--color-amber-glow); opacity:0; transition: opacity 0.5s;">Die Brandmuster stimmen überein!</div>
+    <div id="time-slider-hint" style="margin-top: 20px; font-family:var(--font-mono); color:var(--color-amber-glow); opacity:0; transition: opacity 0.5s;">Die Brandmuster stimmen Ã¼berein!</div>
     
     <button id="btn-time-slider-done" class="btn-primary" style="margin-top:20px; opacity: 0; pointer-events: none; transition: opacity 0.5s;">Akte aktualisieren</button>
   </div>`;

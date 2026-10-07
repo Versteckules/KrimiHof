@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -12,12 +12,12 @@ export function runGadget(stationId, onSuccess) {
   overlay.innerHTML = `<div class="cl-gadget-wrapper" style="padding: 20px; width: 95vw; max-width: 400px; display: flex; flex-direction: column; align-items: center; text-align: center; border-color: #333;">
     <div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:#555; text-shadow: 0 0 10px #000;">Schleich-Modus</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Tippe exakt dann, wenn der Puls-Ring den weißen Kreis berührt. <br>Mach keinen Lärm!</p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Tippe exakt dann, wenn der Puls-Ring den weiÃŸen Kreis berÃ¼hrt. <br>Mach keinen LÃ¤rm!</p>
     
-    <!-- Lärm-Meter -->
+    <!-- LÃ¤rm-Meter -->
     <div style="width: 100%; height: 10px; background: #111; border: 1px solid #333; margin-bottom: 30px; position: relative;">
        <div id="stealth-noise-bar" style="height: 100%; width: 0%; background: #f00; transition: width 0.3s;"></div>
-       <div style="position: absolute; top: -20px; right: 0; font-size: 0.7rem; color: #f00;">LÄRM</div>
+       <div style="position: absolute; top: -20px; right: 0; font-size: 0.7rem; color: #f00;">LÃ„RM</div>
     </div>
 
     <!-- Radar / Rhythm Area -->
@@ -85,7 +85,7 @@ export function runGadget(stationId, onSuccess) {
     if (pulseSize >= 80 && pulseSize <= 120) {
       // Perfect step
       steps++;
-      progressText.textContent = \`\${steps} / 5\`;
+      progressText.textContent = `${steps} / 5`;
       pulse.style.borderColor = "#0f0";
       pulse.style.boxShadow = "0 0 20px #0f0";
       FX.playMechanicalClick();
@@ -106,7 +106,7 @@ export function runGadget(stationId, onSuccess) {
         btnTap.style.background = "#0f0";
         btnTap.style.color = "#000";
         setTimeout(() => {
-          overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Erfolgreich vorbeigeschlichen!</h2></div>\`;
+          overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Erfolgreich vorbeigeschlichen!</h2></div>`;
           setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1500);
         }, 1000);
       }
@@ -137,7 +137,7 @@ export function runGadget(stationId, onSuccess) {
         noiseBar.style.width = "0%";
         
         setTimeout(() => {
-          progressText.textContent = \`\${steps} / 5\`;
+          progressText.textContent = `${steps} / 5`;
           progressText.style.color = "#0f0";
         }, 2000);
       }

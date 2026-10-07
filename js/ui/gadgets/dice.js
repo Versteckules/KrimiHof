@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -11,8 +11,8 @@ export function runGadget(stationId, onSuccess) {
 
   overlay.innerHTML = `<div class="cl-gadget-wrapper" style="padding: 20px; width: 95vw; max-width: 400px; display: flex; flex-direction: column; align-items: center; text-align: center;">
     <div class="cl-gadget-screws"></div>
-    <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:var(--color-amber-glow);">Wirtshaus-Würfeln</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Tippe, um die alten Knochenwürfel zu werfen.<br>Du brauchst mehr als 10 Augen!</p>
+    <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:var(--color-amber-glow);">Wirtshaus-WÃ¼rfeln</h2>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Tippe, um die alten KnochenwÃ¼rfel zu werfen.<br>Du brauchst mehr als 10 Augen!</p>
     
     <div style="display:flex; gap:30px; margin-bottom:40px; perspective: 1000px; padding: 20px;">
       
@@ -32,7 +32,7 @@ export function runGadget(stationId, onSuccess) {
     <!-- Easter Egg Target -->
     <div id="wurstkessel-easter-egg" style="width:80px; height:60px; background:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%25%22 height=%22100%25%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23b87333%22 rx=%2210%22/><text x=%2215%22 y=%2235%22 fill=%22white%22 font-family=%22sans-serif%22 font-size=%2214%22>Kessel</text></svg>'); background-size:cover; margin-bottom:30px; cursor:pointer; opacity:0.8;"></div>
     
-    <button id="btn-dice-roll" class="btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">Würfeln</button>
+    <button id="btn-dice-roll" class="btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">WÃ¼rfeln</button>
   </div>`;
   overlay.style.display = 'flex';
 
@@ -44,7 +44,7 @@ export function runGadget(stationId, onSuccess) {
       FX.playSuccessWumms();
       const status = document.createElement('div');
       status.style = "position:absolute; top:20px; color:#0f0; font-family:var(--font-mono);";
-      status.textContent = "EASTER EGG GEFUNDEN! Wärschtlamo! (+50 Punkte)";
+      status.textContent = "EASTER EGG GEFUNDEN! WÃ¤rschtlamo! (+50 Punkte)";
       overlay.appendChild(status);
     }
   };
@@ -67,8 +67,8 @@ export function runGadget(stationId, onSuccess) {
     const spinX2 = Math.floor(Math.random() * 4 + 2) * 360;
     const spinY2 = Math.floor(Math.random() * 4 + 2) * 360;
 
-    d1.style.transform = \`rotateX(\${spinX1}deg) rotateY(\${spinY1}deg)\`;
-    d2.style.transform = \`rotateX(\${spinX2}deg) rotateY(\${spinY2}deg)\`;
+    d1.style.transform = `rotateX(${spinX1}deg) rotateY(${spinY1}deg)`;
+    d2.style.transform = `rotateX(${spinX2}deg) rotateY(${spinY2}deg)`;
 
     face1.textContent = '';
     face2.textContent = '';
@@ -85,7 +85,7 @@ export function runGadget(stationId, onSuccess) {
       if (v1 + v2 > 10) {
         solved = true;
         setTimeout(() => {
-          overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Gewonnen!</h2></div>\`;
+          overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Gewonnen!</h2></div>`;
           setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1500);
         }, 1000);
       } else {
@@ -97,7 +97,7 @@ export function runGadget(stationId, onSuccess) {
   };
   
   function getDiceDots(val) {
-    const dots = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+    const dots = ['âš€','âš','âš‚','âšƒ','âš„','âš…'];
     return dots[val-1] || '?';
   }
 }

@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -31,7 +31,7 @@ export function runGadget(stationId, onSuccess) {
       </div>
     </div>
 
-    <button id="btn-scanner-skip" class="btn-secondary hidden" style="align-self: center;">Sensor überspringen</button>
+    <button id="btn-scanner-skip" class="btn-secondary hidden" style="align-self: center;">Sensor Ã¼berspringen</button>
   </div>`;
   overlay.style.display = 'flex';
 
@@ -66,7 +66,7 @@ export function runGadget(stationId, onSuccess) {
     statusEl.style.color = "#fff";
     
     setTimeout(() => {
-      overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Spur gesichert!</h2></div>\`;
+      overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Spur gesichert!</h2></div>`;
       setTimeout(() => {
         overlay.remove();
         FX.playSuccessWumms().then(() => onSuccess());
@@ -84,7 +84,7 @@ export function runGadget(stationId, onSuccess) {
     solved = true;
     clearTimeout(skipTimeout);
     stopCamera();
-    overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Manuell umgangen!</h2></div>\`;
+    overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Manuell umgangen!</h2></div>`;
     setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1000);
   };
 
@@ -113,7 +113,7 @@ export function runGadget(stationId, onSuccess) {
             if (scanProgress >= 100) {
               finishScan();
             } else if (scanProgress % 20 === 0) {
-              statusEl.textContent = \`ANALYSIERE... \${scanProgress}%\`;
+              statusEl.textContent = `ANALYSIERE... ${scanProgress}%`;
             }
           }, 300);
         };
@@ -125,7 +125,7 @@ export function runGadget(stationId, onSuccess) {
         skipBtn.classList.remove('hidden');
       });
   } else {
-    statusEl.textContent = "SENSOR NICHT UNTERSTÜTZT";
+    statusEl.textContent = "SENSOR NICHT UNTERSTÃœTZT";
     statusEl.style.color = "red";
     skipBtn.classList.remove('hidden');
   }

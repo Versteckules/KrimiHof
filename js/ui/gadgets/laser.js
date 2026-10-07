@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -12,7 +12,7 @@ export function runGadget(stationId, onSuccess) {
   overlay.innerHTML = `<div class="cl-gadget-wrapper" style="border-color: #333; box-shadow: 0 0 30px #f00; padding: 20px;">
     <div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-mono); margin-bottom:10px; color:#f00; text-shadow: 0 0 10px #f00;">LASER PARCOURS</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Führe den Kern ins Ziel. Berühre nicht den Laser!</p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">FÃ¼hre den Kern ins Ziel. BerÃ¼hre nicht den Laser!</p>
     
     <div id="laser-area" style="position:relative; width:300px; height:400px; background:#050505; border:2px solid #222; border-radius: 5px; overflow:hidden; touch-action: none;">
       
@@ -74,8 +74,8 @@ export function runGadget(stationId, onSuccess) {
     x = Math.max(0, Math.min(x, 270));
     y = Math.max(0, Math.min(y, 370));
     
-    player.style.left = \`\${x}px\`;
-    player.style.top = \`\${y}px\`;
+    player.style.left = `${x}px`;
+    player.style.top = `${y}px`;
     
     // Collision Logic (Laser bounding boxes)
     // Laser 1: top 120, left 0, width 220, height 4
@@ -99,7 +99,7 @@ export function runGadget(stationId, onSuccess) {
       player.style.boxShadow = '0 0 30px #fff';
       FX.playHeavySnap();
       setTimeout(() => { 
-        overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Kern gesichert!</h2></div>\`;
+        overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Kern gesichert!</h2></div>`;
         setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1000);
       }, 1000);
     }

@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -12,10 +12,10 @@ export function runGadget(stationId, onSuccess) {
   overlay.innerHTML = `<div class="cl-gadget-wrapper" style="padding: 20px; width: 95vw; max-width: 400px; display: flex; flex-direction: column; align-items: center; text-align: center;">
     <div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:#d4af37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);">Sprach-Schloss</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:30px;">Das uralte Schloss reagiert auf Stimmvibrationen.<br><br>Flüstere das Passwort: <b>"Schlappenpakt"</b></p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:30px;">Das uralte Schloss reagiert auf Stimmvibrationen.<br><br>FlÃ¼stere das Passwort: <b>"Schlappenpakt"</b></p>
     
     <div style="position:relative; width:150px; height:150px; border-radius:50%; background: radial-gradient(circle, #2a2a2a, #0a0e17); border: 4px solid var(--color-brass-dark); display:flex; align-items:center; justify-content:center; margin-bottom:30px; box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.5);">
-      <div id="whisper-mic-icon" style="font-size: 4rem; opacity: 0.5; transition: all 0.2s;">🎤</div>
+      <div id="whisper-mic-icon" style="font-size: 4rem; opacity: 0.5; transition: all 0.2s;">ðŸŽ¤</div>
       <!-- Animated rings for listening feedback -->
       <div id="whisper-ring1" style="position:absolute; width:100%; height:100%; border-radius:50%; border: 2px solid rgba(212, 175, 55, 0); transform: scale(1); transition: all 0.5s ease-out;"></div>
       <div id="whisper-ring2" style="position:absolute; width:100%; height:100%; border-radius:50%; border: 2px solid rgba(212, 175, 55, 0); transform: scale(1); transition: all 0.5s ease-out;"></div>
@@ -23,7 +23,7 @@ export function runGadget(stationId, onSuccess) {
     
     <div id="whisper-status" style="font-family:var(--font-mono); font-size:0.9rem; color:var(--color-amber-glow); margin-bottom: 20px; height: 20px;">Initialisiere Mikrofon...</div>
     
-    <button id="btn-whisper-skip" class="btn-secondary hidden">Sensor überspringen</button>
+    <button id="btn-whisper-skip" class="btn-secondary hidden">Sensor Ã¼berspringen</button>
   </div>`;
   overlay.style.display = 'flex';
 
@@ -47,7 +47,7 @@ export function runGadget(stationId, onSuccess) {
     micIcon.style.textShadow = "0 0 20px #0f0";
     
     setTimeout(() => {
-      overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Panzertür geöffnet!</h2></div>\`;
+      overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">PanzertÃ¼r geÃ¶ffnet!</h2></div>`;
       setTimeout(() => {
         overlay.remove();
         FX.playSuccessWumms().then(() => onSuccess());
@@ -59,7 +59,7 @@ export function runGadget(stationId, onSuccess) {
     if (solved) return;
     solved = true;
     if (recognition) recognition.stop();
-    overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Manuell entriegelt!</h2></div>\`;
+    overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Manuell entriegelt!</h2></div>`;
     setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1000);
   }
 
@@ -79,7 +79,7 @@ export function runGadget(stationId, onSuccess) {
     recognition.maxAlternatives = 3;
 
     recognition.onstart = () => {
-      statusEl.textContent = "Höre zu... (bitte sprechen)";
+      statusEl.textContent = "HÃ¶re zu... (bitte sprechen)";
       micIcon.style.opacity = "1";
       ring1.style.borderColor = "rgba(212, 175, 55, 0.8)";
       ring1.style.transform = "scale(1.3)";
@@ -132,7 +132,7 @@ export function runGadget(stationId, onSuccess) {
 
   } else {
     // API not supported
-    statusEl.textContent = "Spracherkennung im Browser nicht unterstützt.";
+    statusEl.textContent = "Spracherkennung im Browser nicht unterstÃ¼tzt.";
     statusEl.style.color = "var(--color-blood-red)";
     skipBtn.classList.remove('hidden');
   }

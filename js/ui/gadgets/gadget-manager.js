@@ -1,5 +1,5 @@
-/**
- * gadget-manager.js - Zentraler Hub für die 17 Gadgets (AP9)
+﻿/**
+ * gadget-manager.js - Zentraler Hub fÃ¼r die 17 Gadgets (AP9)
  */
 
 import { onStationComplete } from '../station.js';
@@ -21,7 +21,7 @@ export function startGadget(gadgetId, stationId) {
     })
     .catch(err => {
       console.warn(`Gadget ${gadgetId} module not found, skipping to dialogue.`, err);
-      alert("Hinweis: Ein Mini-Spiel konnte nicht geladen werden! (" + err.message + ")\n\nFalls du das Spiel direkt von der Festplatte geöffnet hast (Doppelklick), blockiert der Browser die Spiele. Bitte starte das Spiel über die 'START.bat' Datei!");
+      alert("Hinweis: Ein Mini-Spiel konnte nicht geladen werden! (" + err.message + ")\n\nFalls du das Spiel direkt von der Festplatte geÃ¶ffnet hast (Doppelklick), blockiert der Browser die Spiele. Bitte starte das Spiel Ã¼ber die 'START.bat' Datei!");
       showPostGadgetDialogue(stationId, station);
     });
 }
@@ -33,7 +33,7 @@ function showPostGadgetDialogue(stationId, station) {
   if (stationDialogueTrees && stationDialogueTrees[stationId]) {
     import('../dialogue.js').then(mod => {
       mod.openDialogue(stationDialogueTrees[stationId], () => {
-        // Beim Beenden des Dialogs Beweis eintragen und Station abschließen
+        // Beim Beenden des Dialogs Beweis eintragen und Station abschlieÃŸen
         const evidence = (story.evidenceCatalog || []).find(e => e.stationId === stationId);
         if (evidence) {
           addInventoryItem(evidence.id);
@@ -54,7 +54,7 @@ function showPostGadgetDialogue(stationId, station) {
   }
   
   const isBonus = station.type === 'bonus';
-  const icon = isBonus ? '🏆' : '🔓';
+  const icon = isBonus ? 'ðŸ†' : 'ðŸ”“';
   const color = isBonus ? 'var(--color-amber-glow)' : 'var(--color-night-light)';
 
   // Build narrative HTML
@@ -69,7 +69,7 @@ function showPostGadgetDialogue(stationId, station) {
           <img src="${station.witness.image || 'assets/avatar.jpg'}" alt="Zeuge" style="width:100%; height:100%; object-fit:cover;">
         </div>
         <div>
-          <h3 style="color:var(--color-blood-red); margin-bottom:5px; font-size:1.1rem; font-family:var(--font-serif);">🗣️ ${station.witness.name}</h3>
+          <h3 style="color:var(--color-blood-red); margin-bottom:5px; font-size:1.1rem; font-family:var(--font-serif);">ðŸ—£ï¸ ${station.witness.name}</h3>
           <p style="color:var(--color-text-muted); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">${station.witness.role}</p>
           <p style="color:var(--color-text-main); font-size:1rem; font-style:italic; line-height:1.5;">${station.witness.dialogue}</p>
         </div>
@@ -80,7 +80,7 @@ function showPostGadgetDialogue(stationId, station) {
   if (isBonus && station.bonusReward) {
     html += `
       <div id="bonus-box" style="width:100%; max-width:500px; padding:var(--space-md); margin-bottom:var(--space-lg); border: 1px dashed var(--color-amber-glow); border-radius: 5px; opacity:0; transition:opacity 1s ease;">
-        <p style="color:var(--color-amber-glow); font-weight:bold;">🎁 Belohnung: ${station.bonusReward}</p>
+        <p style="color:var(--color-amber-glow); font-weight:bold;">ðŸŽ Belohnung: ${station.bonusReward}</p>
       </div>
     `;
   }

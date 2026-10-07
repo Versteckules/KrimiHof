@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -79,8 +79,8 @@ export function runGadget(stationId, onSuccess) {
     x = Math.max(-50, Math.min(x, areaRect.width - 60));
     y = Math.max(-50, Math.min(y, areaRect.height - 30));
     
-    activePiece.style.left = \`\${x}px\`;
-    activePiece.style.top = \`\${y}px\`;
+    activePiece.style.left = `${x}px`;
+    activePiece.style.top = `${y}px`;
   }
 
   function endDrag() {
@@ -95,8 +95,8 @@ export function runGadget(stationId, onSuccess) {
     
     if (dist < 30) {
       // Snap
-      activePiece.style.left = \`\${targetX}px\`;
-      activePiece.style.top = \`\${targetY}px\`;
+      activePiece.style.left = `${targetX}px`;
+      activePiece.style.top = `${targetY}px`;
       activePiece.style.transform = 'scale(1) rotate(0deg)';
       activePiece.classList.add('locked');
       activePiece.style.cursor = 'default';
@@ -107,13 +107,13 @@ export function runGadget(stationId, onSuccess) {
       
       if (solvedPieces === pieces.length) {
         setTimeout(() => {
-          overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px; text-align:center;">Beweis gesichert!</h2></div>\`;
+          overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px; text-align:center;">Beweis gesichert!</h2></div>`;
           setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1500);
         }, 1000);
       }
     } else {
       // Drop back down slightly rotated
-      activePiece.style.transform = \`scale(1) rotate(\${(Math.random() - 0.5) * 20}deg)\`;
+      activePiece.style.transform = `scale(1) rotate(${(Math.random() - 0.5) * 20}deg)`;
       activePiece.style.boxShadow = '2px 5px 10px rgba(0,0,0,0.8)';
       activePiece.style.cursor = 'grab';
     }

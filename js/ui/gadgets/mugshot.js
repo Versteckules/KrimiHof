@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -11,15 +11,15 @@ export function runGadget(stationId, onSuccess) {
 
   overlay.innerHTML = `<div class="cl-gadget-wrapper"><div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:10px;">Phantombild</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Baue das Gesicht des Verdächtigen nach.</p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Baue das Gesicht des VerdÃ¤chtigen nach.</p>
     
     <div style="width:280px; background:#d2ccb9; border: 4px solid #8b6508; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 20px rgba(0,0,0,0.8); border-radius:5px; padding:20px; display:flex; flex-direction:column; align-items:center; position:relative;">
       
       <!-- Photo Frame -->
       <div style="width: 150px; height: 180px; border: 2px solid #555; background: #eee; margin-bottom: 20px; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size: 3.5rem; line-height: 1.1; overflow:hidden;">
-         <div id="mug-hat" style="margin-top: 10px;">🎩</div>
-         <div id="mug-eyes">🕶️</div>
-         <div id="mug-mouth" style="margin-top: -10px;">🧔</div>
+         <div id="mug-hat" style="margin-top: 10px;">ðŸŽ©</div>
+         <div id="mug-eyes">ðŸ•¶ï¸</div>
+         <div id="mug-mouth" style="margin-top: -10px;">ðŸ§”</div>
       </div>
 
       <!-- Controls -->
@@ -42,18 +42,18 @@ export function runGadget(stationId, onSuccess) {
       </div>
     </div>
     
-    <button id="btn-mugshot-submit" class="btn-primary" style="margin-top:30px;">Identität bestätigen</button>
+    <button id="btn-mugshot-submit" class="btn-primary" style="margin-top:30px;">IdentitÃ¤t bestÃ¤tigen</button>
   </div>`;
   overlay.style.display = 'flex';
 
   const parts = {
-    hat: ['🎩', '🧢', '🕵️', '👷'],
-    eyes: ['🕶️', '😠', '😳', '🧐'],
-    mouth: ['🧔', '👄', '🥸', '😐']
+    hat: ['ðŸŽ©', 'ðŸ§¢', 'ðŸ•µï¸', 'ðŸ‘·'],
+    eyes: ['ðŸ•¶ï¸', 'ðŸ˜ ', 'ðŸ˜³', 'ðŸ§'],
+    mouth: ['ðŸ§”', 'ðŸ‘„', 'ðŸ¥¸', 'ðŸ˜']
   };
 
   let state = { hat: 0, eyes: 0, mouth: 0 };
-  const target = { hat: 2, eyes: 0, mouth: 2 }; // Target: 🕵️ 🕶️ 🥸
+  const target = { hat: 2, eyes: 0, mouth: 2 }; // Target: ðŸ•µï¸ ðŸ•¶ï¸ ðŸ¥¸
 
   function updateVisuals() {
     document.getElementById('mug-hat').textContent = parts.hat[state.hat];
@@ -78,7 +78,7 @@ export function runGadget(stationId, onSuccess) {
 
   document.getElementById('btn-mugshot-submit').onclick = () => {
     if (state.hat === target.hat && state.eyes === target.eyes && state.mouth === target.mouth) {
-      overlay.innerHTML = \`<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Übereinstimmung gefunden!</h2></div>\`;
+      overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Ãœbereinstimmung gefunden!</h2></div>`;
       setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1000);
     } else {
       FX.shakeElement(document.querySelector('.cl-gadget-wrapper'));

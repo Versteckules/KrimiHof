@@ -1,4 +1,4 @@
-import * as FX from '../../fx.js';
+﻿import * as FX from '../../fx.js';
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
@@ -65,7 +65,7 @@ export function runGadget(stationId, onSuccess) {
     let angle = getAngle(clientX, clientY);
     
     currentRotation = angle - startAngle;
-    innerRing.style.transform = \`rotate(\${currentRotation}deg)\`;
+    innerRing.style.transform = `rotate(${currentRotation}deg)`;
     
     // Snap and Check (A on M means 0 degrees rotation, since they start aligned at top)
     // Wait, M is at top of inner ring, A is at top of outer ring. 
@@ -74,12 +74,12 @@ export function runGadget(stationId, onSuccess) {
     let normalized = (currentRotation % 360 + 360) % 360;
     if (Math.abs(normalized - 180) < 10 && !solved) { // Snap to 180
       currentRotation = 180;
-      innerRing.style.transform = \`rotate(\${currentRotation}deg)\`;
+      innerRing.style.transform = `rotate(${currentRotation}deg)`;
       solved = true;
       innerRing.style.boxShadow = "0 0 30px #ffdf00, inset 0 0 20px #ffdf00";
       
       setTimeout(() => {
-        overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Code entschlüsselt!</h2>\`;
+        overlay.innerHTML = `<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Code entschlÃ¼sselt!</h2>`;
         setTimeout(() => {
           overlay.remove();
           FX.playSuccessWumms().then(() => onSuccess());
