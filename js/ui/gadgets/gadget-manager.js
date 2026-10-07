@@ -21,6 +21,7 @@ export function startGadget(gadgetId, stationId) {
     })
     .catch(err => {
       console.warn(`Gadget ${gadgetId} module not found, skipping to dialogue.`, err);
+      alert("Hinweis: Ein Mini-Spiel konnte nicht geladen werden! (" + err.message + ")\n\nFalls du das Spiel direkt von der Festplatte geöffnet hast (Doppelklick), blockiert der Browser die Spiele. Bitte starte das Spiel über die 'START.bat' Datei!");
       showPostGadgetDialogue(stationId, station);
     });
 }
@@ -48,7 +49,7 @@ function showPostGadgetDialogue(stationId, station) {
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.id = 'gadget-mock-overlay';
-    overlay.style = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(5, 8, 15, 0.98); z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:var(--space-md); overflow-y:auto;";
+    overlay.style.cssText = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(5, 8, 15, 0.98); z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:var(--space-md); overflow-y:auto;";
     document.body.appendChild(overlay);
   }
   

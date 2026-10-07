@@ -662,16 +662,37 @@
       {
         "id": "start",
         "speaker": "Wachmann Rolf",
-        "avatar": "assets/avatar.jpg",
+        "avatar": "assets/passant.jpg",
         "text": "He, Sie da! Stehenbleiben! Dies ist ein privater Kanzleihof. Was suchen Sie hier um diese Uhrzeit?",
         "choices": [
-          { "text": "Ermittler {PLAYER_NAME}. Ich suche Spuren zu Dr. Renger und den Dokumenten von 1823.", "next": "node_2", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Ich bin Ermittler {PLAYER_NAME}. Ich suche Spuren zu Dr. Renger und den Dokumenten von 1823.", "next": "node_2", "impact": {"suspect": "none", "value": 0} },
+          { "text": "[Aggressiv] Gehen Sie mir aus dem Weg, Rolf, sonst gibt's Ärger wegen Behinderung der Ermittlungen!", "next": "node_aggressiv", "impact": {"suspect": "none", "value": 0} },
+          { "text": "[Subtil] Ein harter Job, die ganze Nacht hier Wache zu schieben. Ich könnte Gesellschaft gebrauchen...", "next": "node_subtil", "impact": {"suspect": "none", "value": 0} }
+        ]
+      },
+      {
+        "id": "node_aggressiv",
+        "speaker": "Wachmann Rolf",
+        "avatar": "assets/passant.jpg",
+        "text": "Schon gut, schon gut! Legen Sie sich wieder hin. Wenn Sie wegen dem Archiv-Verrückten hier sind: Er war gestern Abend beim Notar. Kurz danach stürmte diese Immobilien-Tante, die Gipser, brüllend rein.",
+        "choices": [
+          { "text": "Stadträtin Gipser? Was wollte sie?", "next": "node_g", "impact": {"suspect": "gipser", "value": 10} },
+          { "text": "War sonst noch jemand hier?", "next": "node_hei", "impact": {"suspect": "heiden", "value": 5} }
+        ]
+      },
+      {
+        "id": "node_subtil",
+        "speaker": "Wachmann Rolf",
+        "avatar": "assets/passant.jpg",
+        "text": "Ach, wissen Sie, normalerweise passiert hier gar nichts. Aber gestern Abend... Da war dieser Archivar beim Notar. Und dann kam eine wütende Frau im teuren Wagen an.",
+        "choices": [
+          { "text": "Könnte das Katharina von Gipser gewesen sein?", "next": "node_g", "impact": {"suspect": "gipser", "value": 10} }
         ]
       },
       {
         "id": "node_2",
         "speaker": "Wachmann Rolf",
-        "avatar": "assets/avatar.jpg",
+        "avatar": "assets/passant.jpg",
         "text": "Renger? Ja, der war gestern Abend hier beim Notar. Kurz danach fuhr ein dicker Mercedes vor und eine wütende Frau stürmte herein.",
         "choices": [
           { "text": "Eine Frau im Mercedes? Katharina von Gipser!", "next": "node_g", "impact": {"suspect": "gipser", "value": 10} },
@@ -681,21 +702,21 @@
       {
         "id": "node_g",
         "speaker": "Wachmann Rolf",
-        "avatar": "assets/avatar.jpg",
+        "avatar": "assets/passant.jpg",
         "text": "Ja, die Stadträtin! Sie brüllte den Notar an, dass er keine Papiere von Renger beglaubigen dürfe.",
         "choices": [ { "text": "Gipser hat Renger massiv unter Druck gesetzt. Ich durchsuche den Hof.", "next": "end", "impact": {"suspect": "none", "value": 0} } ]
       },
       {
         "id": "node_hei",
         "speaker": "Wachmann Rolf",
-        "avatar": "assets/avatar.jpg",
+        "avatar": "assets/passant.jpg",
         "text": "Heiden? Der verrückte Organist? Nein, der lässt sich in diesem Nobelviertel nicht blicken.",
         "choices": [ { "text": "Verstehe. Lassen Sie mich den Bereich untersuchen.", "next": "end", "impact": {"suspect": "none", "value": 0} } ]
       },
       {
         "id": "end",
         "speaker": "Wachmann Rolf",
-        "avatar": "assets/avatar.jpg",
+        "avatar": "assets/passant.jpg",
         "text": "In Ordnung, aber fassen Sie nichts an, was den Notar verärgern könnte.",
         "isEnd": true
       }
@@ -1068,6 +1089,84 @@
         "speaker": "Schattenhafter Bote",
         "avatar": "assets/avatar.jpg",
         "text": "Der Scanner wird Ihnen nichts nützen! Die Strahlung ist zu stark!",
+        "isEnd": true
+      }
+    ],
+    "event_call_herold": [
+      {
+        "id": "start",
+        "speaker": "Valentin Herold (Telefon)",
+        "avatar": "assets/suspect_herold.webp",
+        "text": "Sie schnüffeln in meinen Geschäften! Ich habe nichts mit dem Brand zu tun! Jemand will mir das anhängen!",
+        "choices": [
+          { "text": "Wer sollte Ihnen etwas anhängen wollen?", "next": "node_2", "impact": {"suspect": "herold", "value": 5} },
+          { "text": "Ihre Ausreden ziehen bei mir nicht, Herold.", "next": "node_3", "impact": {"suspect": "herold", "value": 15} }
+        ]
+      },
+      {
+        "id": "node_2",
+        "speaker": "Valentin Herold (Telefon)",
+        "avatar": "assets/suspect_herold.webp",
+        "text": "Frau von Gipser! Sie will die Urkunden vernichten und mir den schwarzen Peter zuschieben. Halten Sie sich fern von mir!",
+        "isEnd": true
+      },
+      {
+        "id": "node_3",
+        "speaker": "Valentin Herold (Telefon)",
+        "avatar": "assets/suspect_herold.webp",
+        "text": "Sie begehen einen großen Fehler. Wir sind hier fertig!",
+        "isEnd": true
+      }
+    ],
+    "event_call_gipser": [
+      {
+        "id": "start",
+        "speaker": "Katharina von Gipser (Telefon)",
+        "avatar": "assets/suspect_gipser.webp",
+        "text": "Ihre Ermittlungen stören unsere Bauprojekte. Hören Sie auf, Gespenster zu jagen!",
+        "choices": [
+          { "text": "Die Gespenster von 1823 holen Sie gerade ein, Frau Stadträtin.", "next": "node_2", "impact": {"suspect": "gipser", "value": 15} },
+          { "text": "Haben Sie etwas zu verbergen?", "next": "node_3", "impact": {"suspect": "gipser", "value": 5} }
+        ]
+      },
+      {
+        "id": "node_2",
+        "speaker": "Katharina von Gipser (Telefon)",
+        "avatar": "assets/suspect_gipser.webp",
+        "text": "Pah! Meine Anwälte werden sich mit Ihnen in Verbindung setzen!",
+        "isEnd": true
+      },
+      {
+        "id": "node_3",
+        "speaker": "Katharina von Gipser (Telefon)",
+        "avatar": "assets/suspect_gipser.webp",
+        "text": "Ich bin eine vielbeschäftigte Frau. Belästigen Sie mich nicht weiter.",
+        "isEnd": true
+      }
+    ],
+    "event_call_heiden": [
+      {
+        "id": "start",
+        "speaker": "Severin Heiden (Telefon)",
+        "avatar": "assets/suspect_heiden.webp",
+        "text": "Das Feuer reinigt, Ermittler. Die Erben wachen über Hof. Stellen Sie sich nicht gegen das Schicksal!",
+        "choices": [
+          { "text": "Sie haben den Brand gelegt, geben Sie es zu!", "next": "node_2", "impact": {"suspect": "heiden", "value": 15} },
+          { "text": "Wo halten Sie Dr. Renger fest?", "next": "node_3", "impact": {"suspect": "heiden", "value": 5} }
+        ]
+      },
+      {
+        "id": "node_2",
+        "speaker": "Severin Heiden (Telefon)",
+        "avatar": "assets/suspect_heiden.webp",
+        "text": "Die Flammen werden uns alle richten...",
+        "isEnd": true
+      },
+      {
+        "id": "node_3",
+        "speaker": "Severin Heiden (Telefon)",
+        "avatar": "assets/suspect_heiden.webp",
+        "text": "Er ist dort, wo die Schatten am tiefsten sind...",
         "isEnd": true
       }
     ]

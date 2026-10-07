@@ -175,7 +175,13 @@ function updateDossier() {
         const modal = document.getElementById('modal-evidence');
         if (modal && evidenceData) {
           document.getElementById('evidence-title').innerText = evidenceData.name || 'Beweis';
-          document.getElementById('evidence-desc').innerText = evidenceData.description || '';
+          
+          let descHtml = evidenceData.description || '';
+          const genericIds = ['evidence_fire_dossier', 'evidence_tape_renger', 'evidence_charter_1432'];
+          if (genericIds.includes(id)) {
+            descHtml += '<br><br><em style="color:var(--color-amber-muted);">Hinweis der Spurensicherung: Dieser Beweis belegt lediglich das allgemeine Motiv, kann aber jedem Verdächtigen zugewiesen werden.</em>';
+          }
+          document.getElementById('evidence-desc').innerHTML = descHtml;
           
           // Reset feedback
           document.getElementById('evidence-assignment-feedback').innerText = '';
@@ -187,7 +193,15 @@ function updateDossier() {
             assignBtn.parentNode.replaceChild(newAssignBtn, assignBtn);
             
             newAssignBtn.addEventListener('click', () => {
+              if (state.assignedEvidence && state.assignedEvidence[id]) {
+                alert('Dieser Beweis wurde bereits zugewiesen!');
+                return;
+              }
               const suspectId = newAssignBtn.getAttribute('data-suspect');
+              const sName = getSuspectName(suspectId);
+              if (!confirm('Sind Sie sicher, dass Sie diesen Beweis ' + sName + ' zuweisen wollen? Diese Entscheidung kann nicht rückgängig gemacht werden!')) {
+                return;
+              }
               
               // Hardcoded mapping for which evidence belongs to whom
               const evidenceMapping = {
@@ -218,8 +232,21 @@ function updateDossier() {
                   updateDossier(); // Refresh UI behind modal
                 });
               }
+              
+              // Hide buttons after assignment
+              modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'none');
             });
           });
+
+          // Check if already assigned
+          const currentlyAssigned = state.assignedEvidence ? state.assignedEvidence[id] : null;
+          if (currentlyAssigned) {
+            document.getElementById('evidence-assignment-feedback').style.color = '#555';
+            document.getElementById('evidence-assignment-feedback').innerText = 'Bereits zugewiesen an: ' + getSuspectName(currentlyAssigned);
+            modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'none');
+          } else {
+            modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'block');
+          }
 
           modal.classList.remove('hidden');
         }

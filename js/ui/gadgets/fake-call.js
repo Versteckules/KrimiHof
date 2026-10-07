@@ -5,7 +5,7 @@ export function runGadget(stationId, onSuccess) {
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.id = 'gadget-fullscreen-overlay';
-    overlay.style = "position:fixed; top:0; left:0; width:100%; height:100%; background: #0a0a0a; z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff;";
+    overlay.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background: #0a0a0a; z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff;";
     document.body.appendChild(overlay);
   }
 

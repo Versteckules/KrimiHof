@@ -1,10 +1,10 @@
-﻿import * as FX from '../../fx.js';
+import * as FX from '../../fx.js';
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.id = 'gadget-fullscreen-overlay';
-    overlay.style = "position:fixed; top:0; left:0; width:100%; height:100%; background: #111; z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff;";
+    overlay.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background: #111; z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff;";
     document.body.appendChild(overlay);
   }
 
@@ -79,7 +79,7 @@ export function runGadget(stationId, onSuccess) {
       innerRing.style.boxShadow = "0 0 30px #ffdf00, inset 0 0 20px #ffdf00";
       
       setTimeout(() => {
-        overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Code entschlÃ¼sselt!</h2>\`;
+        overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Code entschlüsselt!</h2>\`;
         setTimeout(() => {
           overlay.remove();
           FX.playSuccessWumms().then(() => onSuccess());

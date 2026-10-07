@@ -81,6 +81,20 @@ function renderChoices(choices, isEnd, unlockSuspects) {
   const state = getState();
   const playerName = state.playerName || 'Ermittler';
   
+  const playerAvatarWrap = document.createElement('div');
+  playerAvatarWrap.style = "display:flex; align-items:flex-end; gap: 10px; margin-top: 15px;";
+  
+  const playerAvatar = document.createElement('img');
+  playerAvatar.src = 'assets/kommissar_stahl.jpg';
+  playerAvatar.style = "width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--color-amber-muted); object-fit: cover; flex-shrink: 0;";
+  
+  const choicesContainer = document.createElement('div');
+  choicesContainer.style = "display: flex; flex-direction: column; gap: 10px; flex-grow: 1;";
+
+  playerAvatarWrap.appendChild(playerAvatar);
+  playerAvatarWrap.appendChild(choicesContainer);
+  choicesEl.appendChild(playerAvatarWrap);
+  
   if (isEnd) {
     const btn = document.createElement('button');
     btn.className = 'btn-primary dialogue-btn';
@@ -95,11 +109,14 @@ function renderChoices(choices, isEnd, unlockSuspects) {
         showView('view-dashboard');
       }
     };
-    choicesEl.appendChild(btn);
+    choicesContainer.appendChild(btn);
     return;
   }
 
-  if (!choices || choices.length === 0) return;
+  if (!choices || choices.length === 0) {
+    playerAvatarWrap.style.display = 'none';
+    return;
+  }
 
   choices.forEach(choice => {
     // Check evidence requirement for dynamic branching
@@ -131,6 +148,6 @@ function renderChoices(choices, isEnd, unlockSuspects) {
         }
       }
     };
-    choicesEl.appendChild(btn);
+    choicesContainer.appendChild(btn);
   });
 }

@@ -190,7 +190,39 @@ export function onStationComplete(stationId) {
   const isBonus = stationId.startsWith('saale_') || stationId.startsWith('altstadt_');
   markStationSolved(stationId, { points: isBonus ? 15 : 10, isBonus });
   
-  // Prüfe Finale
+  if (stationId === 'rathaus') {
+    const suspectSlides = [
+      {
+        image: 'assets/suspect_herold.webp',
+        badge: 'HAUPTVERDÄCHTIGER 1',
+        title: 'Valentin Herold',
+        text: 'Antiquitätenhändler & Kunstsammler. Er wollte die unschätzbaren Original-Urkunden des Bundes von 1823 an einen internationalen Schattenmarkt veräußern.'
+      },
+      {
+        image: 'assets/suspect_gipser.webp',
+        badge: 'HAUPTVERDÄCHTIGE 2',
+        title: 'Katharina von Gipser',
+        text: 'Kommunalpolitikerin & Immobilieninvestorin. Die uralten Erbrechte im Bundespakt hätten ihre millionenschweren Bauprojekte am Saaleufer auf der Stelle blockiert.'
+      },
+      {
+        image: 'assets/suspect_heiden.webp',
+        badge: 'HAUPTVERDÄCHTIGER 3',
+        title: 'Severin Heiden',
+        text: 'Domorganist & Chorleiter an St. Michaelis. Ein fanatischer Traditionstreuer, der das Vermächtnis der Schlappen-Erben vor profaner Entweihung schützen wollte.'
+      }
+    ];
+    import('./intro.js').then(module => {
+      module.openIntro(() => {
+        checkFinalAndProceed();
+      }, suspectSlides);
+    });
+    return;
+  }
+  
+  checkFinalAndProceed();
+}
+
+function checkFinalAndProceed() {
   const state = getState();
   const mandatorySolved = state.solvedStations.filter(
     sid => !sid.startsWith('saale_') && !sid.startsWith('altstadt_')

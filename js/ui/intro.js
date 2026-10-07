@@ -67,15 +67,19 @@ export function initIntro() {
   }
 }
 
-export function openIntro(onComplete) {
+let currentSlides = [];
+
+export function openIntro(onComplete, customSlides) {
   currentSlideIndex = 0;
   onIntroCompleteCallback = onComplete || null;
+  currentSlides = customSlides || slides;
   renderSlide();
   showView('view-intro');
 }
 
 function renderSlide() {
-  const slide = slides[currentSlideIndex];
+  const slide = currentSlides[currentSlideIndex];
+
   const state = getState();
   const playerName = state.playerName || 'Ermittler';
 
@@ -115,7 +119,7 @@ function renderSlide() {
 
   if (dotsContainer) {
     dotsContainer.innerHTML = '';
-    slides.forEach((_, idx) => {
+    currentSlides.forEach((_, idx) => {
       const dot = document.createElement('span');
       dot.className = 'intro-dot' + (idx === currentSlideIndex ? ' active' : '');
       dot.onclick = () => {

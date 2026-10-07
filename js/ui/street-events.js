@@ -63,7 +63,7 @@ function triggerTrackableDiscovery(tbCode) {
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.id = 'event-mock-overlay';
-    overlay.style = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(5,8,15,0.98); z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:var(--space-lg);";
+    overlay.style.cssText = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(5,8,15,0.98); z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:var(--space-lg);";
     document.body.appendChild(overlay);
   }
   
@@ -92,7 +92,7 @@ function triggerStoryEvent(evt) {
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.id = 'event-mock-overlay';
-    overlay.style = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(5,8,15,0.98); z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:var(--space-lg);";
+    overlay.style.cssText = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(5,8,15,0.98); z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:var(--space-lg);";
     document.body.appendChild(overlay);
   }
   

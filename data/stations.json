@@ -61,7 +61,7 @@
         "id": "blume",
         "name": "Dr. Blume",
         "role": "Historiker",
-        "image": "assets/avatar.jpg"
+        "image": "assets/gehilfe.jpg"
       }
     ],
     "gadget": {
@@ -82,7 +82,7 @@
         "id": "klement",
         "name": "Pfarrer Klement",
         "role": "Geistlicher",
-        "image": "assets/avatar.jpg"
+        "image": "assets/kuester_franz.jpg"
       }
     ],
     "gadget": {
@@ -103,7 +103,7 @@
         "id": "erna",
         "name": "Schankwirtin Erna",
         "role": "Wirtin",
-        "image": "assets/avatar.jpg"
+        "image": "assets/helene.jpg"
       }
     ],
     "gadget": {
@@ -124,7 +124,7 @@
         "id": "rolf",
         "name": "Wachmann Rolf",
         "role": "Nachtwächter",
-        "image": "assets/avatar.jpg"
+        "image": "assets/passant.jpg"
       }
     ],
     "gadget": {
@@ -145,7 +145,7 @@
         "id": "kaeptn",
         "name": "Käpt'n",
         "role": "Obdachloser",
-        "image": "assets/avatar.jpg"
+        "image": "assets/flussschiffer.jpg"
       }
     ],
     "gadget": {
@@ -166,7 +166,7 @@
         "id": "lisa",
         "name": "Lisa",
         "role": "Fremdenführerin",
-        "image": "assets/avatar.jpg"
+        "image": "assets/informantin.jpg"
       }
     ],
     "gadget": {
@@ -187,7 +187,7 @@
         "id": "karl",
         "name": "Wärschtlamo Karl",
         "role": "Verkäufer",
-        "image": "assets/avatar.jpg"
+        "image": "assets/stammgast.jpg"
       }
     ],
     "gadget": {
@@ -208,7 +208,7 @@
         "id": "gertrud",
         "name": "Mesnerin Gertrud",
         "role": "Mesnerin",
-        "image": "assets/avatar.jpg"
+        "image": "assets/helene.jpg"
       }
     ],
     "gadget": {
@@ -229,7 +229,7 @@
         "id": "huber",
         "name": "Gärtner Huber",
         "role": "Friedhofswärter",
-        "image": "assets/avatar.jpg"
+        "image": "assets/fischer.jpg"
       }
     ],
     "gadget": {
@@ -250,7 +250,7 @@
         "id": "maria",
         "name": "Schwester Maria",
         "role": "Krankenschwester",
-        "image": "assets/avatar.jpg"
+        "image": "assets/informantin.jpg"
       }
     ],
     "gadget": {
@@ -294,7 +294,7 @@
         "id": "max",
         "name": "Archivgehilfe Max",
         "role": "Student",
-        "image": "assets/avatar.jpg"
+        "image": "assets/archivgehilfe_otto.jpg"
       }
     ],
     "gadget": {
@@ -316,7 +316,7 @@
         "id": "bote",
         "name": "Schattenhafter Bote",
         "role": "Kurier",
-        "image": "assets/avatar.jpg"
+        "image": "assets/geheimbund.jpg"
       }
     ],
     "gadget": {

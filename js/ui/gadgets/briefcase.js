@@ -1,10 +1,10 @@
-﻿import * as FX from '../../fx.js';
+import * as FX from '../../fx.js';
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.id = 'gadget-fullscreen-overlay';
-    overlay.style = "position:fixed; top:0; left:0; width:100%; height:100%; background: #1a1a1a; z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff;";
+    overlay.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background: #1a1a1a; z-index: 10000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff;";
     document.body.appendChild(overlay);
   }
 
@@ -18,7 +18,7 @@ export function runGadget(stationId, onSuccess) {
       <div style="position:absolute; bottom:10px; left:10px; width:10px; height:10px; background:#111; border-radius:50%;"></div>
       <div style="position:absolute; bottom:10px; right:10px; width:10px; height:10px; background:#111; border-radius:50%;"></div>
       
-      <!-- RÃ¤dchen -->
+      <!-- Rädchen -->
       <div class="dial-container" data-index="0" style="width:60px; height:100px; background:#000; border:2px solid #666; border-radius:5px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; cursor:ns-resize; user-select:none;">
         <div class="dial-val" style="font-family:var(--font-mono); font-size:3rem; color:#fff; font-weight:bold; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">0</div>
         <div style="position:absolute; top:0; width:100%; height:20px; background:linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); pointer-events:none;"></div>
@@ -92,7 +92,7 @@ export function runGadget(stationId, onSuccess) {
       let y = e.touches ? e.touches[0].clientY : e.clientY;
       let diff = startY - y;
       
-      if (Math.abs(diff) > 20) { // Schwelle fÃ¼r einen "Klick"
+      if (Math.abs(diff) > 20) { // Schwelle für einen "Klick"
         if (diff > 0) {
           currentCode[index] = (currentCode[index] + 1) % 10;
         } else {
@@ -129,7 +129,7 @@ export function runGadget(stationId, onSuccess) {
       solved = true;
       document.getElementById('btn-lock-open').style.transform = "translateX(10px)";
       setTimeout(() => {
-        overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Koffer geÃ¶ffnet!</h2>\`;
+        overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Koffer geöffnet!</h2>\`;
         setTimeout(() => {
           overlay.remove();
           FX.playSuccessWumms().then(() => onSuccess());
