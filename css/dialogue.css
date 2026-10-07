@@ -32,7 +32,7 @@
   border: 3px solid var(--color-amber-muted);
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
   object-fit: cover;
-  object-position: top center;
+  object-position: center 20%;
 }
 
 .dialogue-box {
