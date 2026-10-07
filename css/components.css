@@ -52,7 +52,7 @@
   max-width: 400px;
   box-shadow: var(--shadow-strong);
   position: relative;
-  background-image: url('../assets/texture_paper.webp'); /* Will add later if needed */
+  background: #fdf5e6;
   background-size: cover;
   transform: rotate(-2deg);
 }

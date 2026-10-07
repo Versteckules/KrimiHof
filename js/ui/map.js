@@ -254,7 +254,7 @@ function renderMarkers() {
                                     'heiden': 'music-cryptogram'
                                   };
                                   if (suspectGames[suspect.id]) {
-                                    import(\`./gadgets/\${suspectGames[suspect.id]}.js\`).then(gameMod => {
+                                    import(`./gadgets/${suspectGames[suspect.id]}.js`).then(gameMod => {
                                       gameMod.runGadget(suspect.id, () => {
                                         import('../main.js').then(m => m.showView('view-dashboard'));
                                       });
