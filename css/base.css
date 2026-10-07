@@ -85,3 +85,11 @@ button, input, select, textarea {
   position: relative;
   z-index: var(--z-base);
 }
+
+.view {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
