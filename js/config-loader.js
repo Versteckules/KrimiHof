@@ -66,7 +66,7 @@ export function validateStations(stations) {
       );
     }
 
-    if (!station.gadget || !station.gadget.id) {
+    if (station.type !== 'easteregg' && (!station.gadget || !station.gadget.id)) {
       throw new DataValidationError(`Station "${station.id}" besitzt kein zugewiesenes Gadget.`);
     }
 
