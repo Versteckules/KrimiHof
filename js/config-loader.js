@@ -66,18 +66,6 @@ export function validateStations(stations) {
       );
     }
 
-    if (!station.riddle || typeof station.riddle !== 'object') {
-      throw new DataValidationError(`Station "${station.id}" besitzt kein Rätsel-Objekt.`);
-    }
-
-    if (!station.riddle.question) {
-      throw new DataValidationError(`Station "${station.id}" besitzt keine Rätselfrage.`);
-    }
-
-    if (!Array.isArray(station.riddle.answers) || station.riddle.answers.length === 0) {
-      throw new DataValidationError(`Station "${station.id}" besitzt keine gültigen Antwortmöglichkeiten.`);
-    }
-
     if (!station.gadget || !station.gadget.id) {
       throw new DataValidationError(`Station "${station.id}" besitzt kein zugewiesenes Gadget.`);
     }

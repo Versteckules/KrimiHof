@@ -323,6 +323,25 @@
             Stationen</h3>
           <div id="dossier-stations" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px;"></div>
         </div>
+
+        <!-- OFFLINE TEST ANRUFE -->
+        <div
+          style="margin-top: var(--space-lg); background: rgba(255,0,0,0.1); border: 1px dashed red; padding: var(--space-md); border-radius: 8px; position: relative; z-index: 1;">
+          <h3 style="color: #ff6666; border-bottom: 1px solid #ff6666; padding-bottom: 5px;">OFFLINETEST: Anrufe</h3>
+          <p style="font-size: 0.8rem; color: #ff9999; margin-top: 5px; margin-bottom: 10px;">Diese Zufalls-Anrufe
+            kommen normalerweise während dem Laufen. Hier manuell testbar:</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <button class="btn-secondary"
+              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_herold'))">📞
+              Herold</button>
+            <button class="btn-secondary"
+              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_gipser'))">📞
+              Gipser</button>
+            <button class="btn-secondary"
+              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_heiden'))">📞
+              Heiden</button>
+          </div>
+        </div>
       </section>
     </main>
 
@@ -466,10 +485,16 @@
   </main>
 
   <!-- Custom Alert Modal (Noir Theme) -->
-  <div id="noir-alert-modal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
-    <div class="noir-alert-box" style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
-      <h3 id="noir-alert-title" style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px;">Zugriff Verweigert</h3>
-      <p id="noir-alert-message" style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;"></p>
+  <div id="noir-alert-modal" class="hidden"
+    style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+    <div class="noir-alert-box"
+      style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
+      <h3 id="noir-alert-title"
+        style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px;">
+        Zugriff Verweigert</h3>
+      <p id="noir-alert-message"
+        style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
+      </p>
       <button id="noir-alert-close" class="btn-primary" style="padding: 10px 20px; font-size: 1rem;">Verstanden</button>
     </div>
   </div>
