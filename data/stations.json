@@ -1,784 +1,327 @@
-﻿[
-    {
-        "id":  "rathaus",
-        "number":  1,
-        "name":  "Rathaus LudwigstraÃŸe",
-        "type":  "start",
-        "zone":  "altstadt",
-        "coords":  "N 50Â° 19.313 E 011Â° 55.121",
-        "radius":  20,
-        "description":  "Das Herz der Hofer Verwaltung. Das Portal des Rathauses ist verkohlt, Absperrband flattert im Wind. Es raucht noch. Die Polizei hat alles abgeriegelt.",
-        "isStoryEvent":  true,
-        "storyEventId":  "rathaus_fire",
-        "characters":  [
-                           {
-                               "id":  "polizist",
-                               "name":  "Kommissar Stahl",
-                               "role":  "Ermittlungsleiter Kriminalpolizei",
-                               "badge":  "Polizei Hof",
-                               "image":  "assets/kommissar_stahl.jpg",
-                               "dialogueKey":  "rathaus_fire_polizist",
-                               "description":  "Erfahrener Chefermittler am Brandort. Sichert das verkohlte Ratsportal."
-                           },
-                           {
-                               "id":  "reporter",
-                               "name":  "Paul Stift",
-                               "role":  "Chefreporter Hofer Anzeiger",
-                               "badge":  "Presse",
-                               "image":  "assets/reporter_stift.jpg",
-                               "dialogueKey":  "rathaus_fire_reporter",
-                               "description":  "Ehrgeiziger Journalist. War kurz nach dem Feueralarm am Sonnenplatz vor Ort."
-                           }
-                       ],
-        "riddle":  {
-                       "question":  "Untersuche den Tatort. Mit wem mÃ¶chtest du sprechen?",
-                       "answers":  [
-                                       "polizist",
-                                       "reporter",
-                                       "stahl",
-                                       "stift"
-                                   ],
-                       "hint":  "Klicke direkt auf die Personenkarte von Kommissar Stahl oder Reporter Paul Stift.",
-                       "solutionDebug":  "Polizist"
-                   },
-        "gadget":  {
-                       "id":  "time-slider",
-                       "name":  "Zeitreise-Slider (Rathaus 1823)",
-                       "description":  "Blende stufenlos zwischen dem Kupferstich der Feuersbrunst von 1823 und der heutigen Nachtansicht Ã¼ber."
-                   }
-    },
-    {
-        "id":  "hauptpost",
-        "number":  2,
-        "name":  "Rotary Brunnen",
-        "type":  "mandatory",
-        "zone":  "zentrum",
-        "coords":  "N 50Â° 19.123 E 011Â° 54.962",
-        "radius":  20,
-        "markerColor":  "red",
-        "description":  "Das wuchtige GebÃ¤ude der Hauptpost. Vor den leeren PostfÃ¤chern im Vorraum hat ein Informant einen der VerdÃ¤chtigen gesehen.",
-        "riddle":  {
-                       "question":  "Wie viele Briefschlitze befinden sich an der Ã¤uÃŸeren Postboxanlage?",
-                       "answers":  [
-                                       "3",
-                                       "drei"
-                                   ],
-                       "hint":  "ZÃ¤hle die goldenen Einwurfschlitze an der AuÃŸenwand.",
-                       "solutionDebug":  "3",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "3 Briefschlitze",
-                                           "value":  "3"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "1 Briefschlitz",
-                                           "value":  "1"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "5 Briefschlitze",
-                                           "value":  "5"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "2 Briefschlitze",
-                                           "value":  "2"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "polaroid",
-                       "name":  "Polaroid-SchÃ¼tteln \u0026 Phantombild",
-                       "description":  "SchÃ¼ttle dein Smartphone, um ein Foto aus dem Post-Vorraum im Entwicklerbad scharfzustellen."
-                   },
-        "witness":  {
-                        "name":  "Nachtkurier Sepp",
-                        "role":  "Kurierfahrer",
-                        "image":  "assets/kurier.jpg",
-                        "dialogue":  "â€žUm 23:15 Uhr stieg jemand mit Hut und Mantel hastig in ein Taxi. Er warf noch schnell einen Brief mit dem Siegel der Schlappen-Erben ein!â€œ"
-                    }
-    },
-    {
-        "id":  "obelisk",
-        "number":  3,
-        "name":  "Kriegerdenkmal an der Sophienschule",
-        "type":  "mandatory",
-        "zone":  "neustadt",
-        "coords":  "N 50Â° 18.728 E 011Â° 55.052",
-        "radius":  20,
-        "description":  "Ein stiller Parkwinkel vor der historischen Schule. Der Sandstein-Obelisk ragt wie ein stummer Zeuge vergangener Epochen in den Nachthimmel.",
-        "riddle":  {
-                       "question":  "Welche vorletzte vierstellige Jahreszahl ist auf der Inschrifttafel des Denkmals eingemeiÃŸelt?",
-                       "answers":  [
-                                       "1870",
-                                       "1871",
-                                       "1870/71"
-                                   ],
-                       "hint":  "Betrachte die eingemeiÃŸelten Gedenkjahre der Stele von oben nach unten.",
-                       "solutionDebug":  "1870",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "1870 (1870/71)",
-                                           "value":  "1870"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "1823",
-                                           "value":  "1823"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "1914",
-                                           "value":  "1914"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "1848",
-                                           "value":  "1848"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "briefcase",
-                       "name":  "Aktenkoffer-Zahlenschloss",
-                       "description":  "Drehe das 3-stellige Zahlenschloss des gefundenen Koffers. Feine Klick-GerÃ¤usche verraten die richtige Ziffer."
-                   },
-        "witness":  {
-                        "name":  "Dr. Sommer",
-                        "role":  "Gymnasiallehrer im Ruhestand",
-                        "dialogue":  "â€žDie Akte Ã¼ber die Erbfolge von 1823 war nie verschollen, {PLAYER_NAME}. Sie wurde absichtlich aus dem Archiv entwendet!â€œ",
-                        "image":  "assets/dr_sommer.jpg"
-                    }
-    },
-    {
-        "id":  "lorenzkirche",
-        "number":  4,
-        "name":  "St. Lorenzpark \u0026 Kirche",
-        "type":  "mandatory",
-        "zone":  "altstadt",
-        "coords":  "N 50Â° 18.893 E 011Â° 55.057",
-        "radius":  20,
-        "description":  "Die Ã¤lteste Pfarrkirche Hofs. Alte Grabplatten und hohe KastanienbÃ¤ume sÃ¤umen den Kirchhof. Das Laub raschelt unter deinen Schritten.",
-        "riddle":  {
-                       "question":  "Welcher Stand oder Titel steht neben dem Namen \u0027Rosina Richter\u0027 auf der historischen Gedenktafel?",
-                       "answers":  [
-                                       "bÃ¼rgerswitwe",
-                                       "buergerswitwe",
-                                       "witwe",
-                                       "stifterin"
-                                   ],
-                       "hint":  "Untersuche die verwitterte Sandsteintafel an der KirchenauÃŸenwand nahe dem Parkportal.",
-                       "solutionDebug":  "BÃ¼rgerswitwe",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "BÃ¼rgerswitwe",
-                                           "value":  "bÃ¼rgerswitwe"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "Ratsherrin",
-                                           "value":  "ratsherrin"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "Stifterin / Witwe",
-                                           "value":  "witwe"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "Handwerksmeisterin",
-                                           "value":  "meisterin"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "stealth",
-                       "name":  "Schleich-SchrittzÃ¤hler",
-                       "description":  "Schleiche 30 Schritte lautlos durch den Kirchhof. Dein Bewegungssensor schlÃ¤gt bei zu heftigen ErschÃ¼tterungen Alarm."
-                   },
-        "witness":  {
-                        "name":  "KÃ¼ster Franz",
-                        "role":  "Kirchendiener St. Lorenz",
-                        "dialogue":  "â€žOrganist Severin Heiden war gestern bis tief in die Nacht im Chorraum. Er spielte keine ChorÃ¤le, er suchte etwas hinter dem Altar!â€œ"
-                    }
-    },
-    {
-        "id":  "biengaesschen",
-        "number":  5,
-        "name":  "BiengÃ¤sschen",
-        "type":  "mandatory",
-        "zone":  "altstadt",
-        "coords":  "N 50Â° 18.907 E 011Â° 54.979",
-        "radius":  20,
-        "description":  "Die engste und verwinkeltste Gasse der Stadt. Hohe Fachwerkmauern ragen empor, das Kopfsteinpflaster glÃ¤nzt feucht im Schein deiner Lampe.",
-        "riddle":  {
-                       "question":  "Welche geometrische Form besitzt der schmiedeeiserne Wandanker am historischen Eckhaus?",
-                       "answers":  [
-                                       "s",
-                                       "s-form",
-                                       "spirale",
-                                       "s-anker"
-                                   ],
-                       "hint":  "Blicke in etwa 3 Metern HÃ¶he auf das Mauerwerk des alten EckgebÃ¤udes.",
-                       "solutionDebug":  "S-Form",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "S-Form (Maueranker)",
-                                           "value":  "s"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "X-Form",
-                                           "value":  "x"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "Rundanker",
-                                           "value":  "rund"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "T-TrÃ¤ger",
-                                           "value":  "t"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "laser",
-                       "name":  "Laser-Parcours \u0026 Schatten-Sprint",
-                       "description":  "Weiche den virtuellen Lichtschranken im engen GÃ¤sschen aus, um die verlorene Aktentasche zu bergen."
-                   },
-        "witness":  {
-                        "name":  "Erschrockener Passant",
-                        "role":  "Anwohner",
-                        "dialogue":  "â€žJemand rannte wie von Furien gehetzt um die Ecke! Er trug ein AntiquitÃ¤ten-Futteral aus Leder... ganz wie dieser HÃ¤ndler Valentin Herold!â€œ",
-                        "image":  "assets/passant.jpg"
-                    }
-    },
-    {
-        "id":  "ludwigstrasse",
-        "number":  6,
-        "name":  "LudwigstraÃŸe 18 \u0026 20",
-        "type":  "mandatory",
-        "zone":  "zentrum",
-        "coords":  "N 50Â° 19.168 E 011Â° 55.004",
-        "radius":  20,
-        "description":  "Der historische Brandherd. Am 4. September 1823 brach in der Scheune hinter Haus Nr. 18 das Feuer aus, das fast die gesamte Hofer Altstadt in Schutt und Asche legte.",
-        "riddle":  {
-                       "question":  "Welche Hausnummer trÃ¤gt die Tafel, die an den historischen Brandherd von 1823 erinnert?",
-                       "answers":  [
-                                       "18",
-                                       "hausnummer 18",
-                                       "nr. 18",
-                                       "nr 18"
-                                   ],
-                       "hint":  "Suche zwischen den Arkadenpfeilern nach der bronzenen Brandgedenktafel.",
-                       "solutionDebug":  "18",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "Hausnummer 18",
-                                           "value":  "18"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "Hausnummer 20",
-                                           "value":  "20"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "Hausnummer 12",
-                                           "value":  "12"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "Hausnummer 24",
-                                           "value":  "24"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "scratch",
-                       "name":  "RuÃŸ-Freirubbeln \u0026 Tonband",
-                       "description":  "Rubble mit dem Finger eine zentimeterdicke Schicht BrandruÃŸ auf dem Display frei, um Dr. Rengers Brandnotiz zu lesen."
-                   },
-        "witness":  {
-                        "name":  "Tonbandaufnahme Dr. Renger",
-                        "role":  "Vermisster Stadtarchivar",
-                        "dialogue":  "â€žWenn Sie dies hÃ¶ren, {PLAYER_NAME}, dann haben die Erben mich gefunden! Das Feuer von 1823 war kein Unfall â€“ es war ein gigantischer Versicherungsbetrug!â€œ",
-                        "image":  "assets/dr_renger.jpg"
-                    }
-    },
-    {
-        "id":  "karolinenstrasse",
-        "number":  7,
-        "name":  "KarolinenstraÃŸe (Nr. 12)",
-        "type":  "mandatory",
-        "zone":  "neustadt",
-        "coords":  "N 50Â° 19.306 E 011Â° 55.037",
-        "radius":  20,
-        "description":  "Prachtvolle Biedermeier- und GrÃ¼nderzeitfassaden sÃ¤umen den breiten Boulevard, der nach dem groÃŸen Brand planmÃ¤ÃŸig neu errichtet wurde.",
-        "riddle":  {
-                       "question":  "Wie viele geschnitzte Sandstein-Rosetten verzieren den Rundbogen des Portals von Haus Nr. 12?",
-                       "answers":  [
-                                       "6",
-                                       "sechs",
-                                       "8",
-                                       "acht"
-                                   ],
-                       "hint":  "ZÃ¤hle die runden BlÃ¼tenrosetten im Sandsteinbogen Ã¼ber der EingangstÃ¼r.",
-                       "solutionDebug":  "6",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "6 Rosetten",
-                                           "value":  "6"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "4 Rosetten",
-                                           "value":  "4"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "8 Rosetten",
-                                           "value":  "8"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "10 Rosetten",
-                                           "value":  "10"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "fake-call",
-                       "name":  "Klingelnde Telefonzelle",
-                       "description":  "Ein virtueller Notruf geht auf deinem Smartphone ein. Nimm ab und lausche der verzerrten Stimme!"
-                   },
-        "witness":  {
-                        "name":  "Anonyme Informantin",
-                        "role":  "Unbekannte Anruferin",
-                        "dialogue":  "â€žPassen Sie auf Frau von Gipser auf! Sie will das gesamte Saale-Viertel sanieren lassen und kauft heimlich alte Schuldscheine auf!â€œ",
-                        "image":  "assets/informantin.jpg"
-                    }
-    },
-    {
-        "id":  "schlossplatz",
-        "number":  8,
-        "name":  "SchloÃŸplatz 12b",
-        "type":  "mandatory",
-        "zone":  "altstadt",
-        "coords":  "N 50Â° 19.220 E 011Â° 54.950",
-        "radius":  20,
-        "description":  "Einst Standort des markgrÃ¤flichen Schlosses. In unmittelbarer NÃ¤he lebte der berÃ¼hmte Dichter Jean Paul. Alte Gaslaternen werfen lange Schatten.",
-        "riddle":  {
-                       "question":  "Welches Substantiv ist das dritte Wort in der ersten Zeile der Jean-Paul-Gedenktafel?",
-                       "answers":  [
-                                       "dichter",
-                                       "dichters",
-                                       "geburtshaus",
-                                       "leben"
-                                   ],
-                       "hint":  "Lies die bronzene Inschrift auf AugenhÃ¶he am EckgebÃ¤ude.",
-                       "solutionDebug":  "Dichter",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "Dichter",
-                                           "value":  "dichter"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "Geburtshaus",
-                                           "value":  "geburtshaus"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "Leben",
-                                           "value":  "leben"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "EhrenbÃ¼rger",
-                                           "value":  "ehrenbuerger"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "ambigram",
-                       "name":  "KopfÃ¼ber-Ambigramm (Gyroskop)",
-                       "description":  "Drehe dein Smartphone um 180 Grad auf den Kopf, damit die verborgene Spiegelschrift der Schlappen-Erben lesbar wird."
-                   },
-        "witness":  {
-                        "name":  "Antiquariats-Gehilfe",
-                        "role":  "Buchbinder",
-                        "dialogue":  "â€žJean Paul schrieb einst Ã¼ber DoppelgÃ¤nger... wer zwei Gesichter hat, fÃ¼hrt meist nichts Gutes im Schilde, {PLAYER_NAME}!â€œ",
-                        "image":  "assets/gehilfe.jpg"
-                    }
-    },
-    {
-        "id":  "sonnenplatz",
-        "number":  9,
-        "name":  "Sonnenplatz / WÃ¤rschtlamo",
-        "type":  "mandatory",
-        "zone":  "zentrum",
-        "coords":  "N 50Â° 18.981 E 011Â° 54.892",
-        "radius":  20,
-        "description":  "Das Bronzedenkmal des traditionellen Hofer WÃ¤rschtlamo. Mit Kessel und SchÃ¼rze steht er seit Generationen im Herzen der FuÃŸgÃ¤ngerzone.",
-        "riddle":  {
-                       "question":  "Welche beiden Initialen sind auf der RÃ¼ckseite des kupfernen Wurstkessels der Statue eingestanzt?",
-                       "answers":  [
-                                       "wh",
-                                       "w.h.",
-                                       "hw",
-                                       "h.w."
-                                   ],
-                       "hint":  "FÃ¼hre deine Taschenlampe an die RÃ¼ckseite des getragenen Kessels.",
-                       "solutionDebug":  "WH",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "Initialen WH",
-                                           "value":  "wh"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "Initialen HB",
-                                           "value":  "hb"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "Initialen VR",
-                                           "value":  "vr"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "Initialen KS",
-                                           "value":  "ks"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "dice",
-                       "name":  "Wirtshaus-WÃ¼rfeln",
-                       "description":  "SchÃ¼ttle dein Smartphone und wirf die WÃ¼rfel gegen den Informanten am Biertisch um das nÃ¤chste Geheimnis."
-                   },
-        "witness":  {
-                        "name":  "WÃ¤rschtlamo-Stammgast",
-                        "role":  "NachtschwÃ¤rmer",
-                        "image":  "assets/stammgast.jpg",
-                        "dialogue":  "â€žHeut Nacht schmecken die Wiener nach Pulverdampf... Valentin Herold saÃŸ bis eben drÃ¼ben und verhandelte Ã¼ber alte Braurechte!â€œ"
-                    }
-    },
-    {
-        "id":  "marienkirche",
-        "number":  10,
-        "name":  "St. Marien-Kirche",
-        "type":  "mandatory",
-        "zone":  "altstadt",
-        "coords":  "N 50Â° 19.321 E 011Â° 55.167",
-        "radius":  20,
-        "description":  "Die neugotische katholische Stadtkirche mit ihren markanten DoppeltÃ¼rmen. Nachts wirkt das massive Portal wie das Tor zu einer Trutzburg.",
-        "riddle":  {
-                       "question":  "Wie viele spitze Zacken besitzt das steinerne Stern-MaÃŸwerk Ã¼ber dem Westportal?",
-                       "answers":  [
-                                       "8",
-                                       "acht",
-                                       "achtzackig",
-                                       "achtzackiger stern"
-                                   ],
-                       "hint":  "Betrachte die steinerne MaÃŸwerk-Rose direkt Ã¼ber dem Portalbogen.",
-                       "solutionDebug":  "8",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "8 Zacken",
-                                           "value":  "8"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "6 Zacken",
-                                           "value":  "6"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "12 Zacken",
-                                           "value":  "12"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "5 Zacken",
-                                           "value":  "5"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "wiretap",
-                       "name":  "Virtuelles Richtmikrofon",
-                       "description":  "Richte dein Smartphone auf den TÃ¼rspalt. Ein animierter Equalizer fÃ¤ngt das geflÃ¼sterte GesprÃ¤ch zweier VerschwÃ¶rer ein."
-                   },
-        "witness":  {
-                        "name":  "Belauschte Geheimbund-Stimmen",
-                        "role":  "Zwei Schatten im Kirchenportal",
-                        "dialogue":  "â€žDas Privileg muss noch vor dem Morgengrauen vernichtet werden. Wenn {PLAYER_NAME} das Finale erreicht, ist alles vorbei!â€œ",
-                        "image":  "assets/geheimbund.jpg"
-                    }
-    },
-    {
-        "id":  "michaeliskirche",
-        "number":  11,
-        "name":  "St. Michaeliskirche",
-        "type":  "mandatory",
-        "zone":  "altstadt",
-        "coords":  "N 50Â° 19.321 E 011Â° 55.167",
-        "radius":  20,
-        "description":  "Die evangelische Hauptkirche Hofs auf dem Kirchplatz. Ihre mÃ¤chtigen TÃ¼rme Ã¼berragten schon 1823 das Flammenmeer der brennenden Altstadt.",
-        "riddle":  {
-                       "question":  "Welche letzte Ziffer trÃ¤gt die Bau- bzw. Renovierungs-Jahreszahl am Sockel des SÃ¼dturms?",
-                       "answers":  [
-                                       "4",
-                                       "vier",
-                                       "7",
-                                       "sieben"
-                                   ],
-                       "hint":  "Untersuche die eingemeiÃŸelten Ziffern am Sandsteinsockel des SÃ¼dturms.",
-                       "solutionDebug":  "4",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "Ziffer 4",
-                                           "value":  "4"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "Ziffer 7",
-                                           "value":  "7"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "Ziffer 1",
-                                           "value":  "1"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "Ziffer 9",
-                                           "value":  "9"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "cryptowheel",
-                       "name":  "Messing-Chiffrierscheibe",
-                       "description":  "Drehe zwei konzentrische Chiffrierscheiben mit authentischen Klick-Sounds, um den Geheimcode der Bruderschaft zu knacken."
-                   },
-        "witness":  {
-                        "name":  "ChorsÃ¤ngerin Helene",
-                        "role":  "Sopranistin an St. Michaelis",
-                        "image":  "assets/helene.jpg",
-                        "dialogue":  "â€žSeverin Heiden versteckt im Orgelprospekt alte Pergamente. Er schwÃ¶rt, dass die Schlappen-Erben die Stadt vor dem Ruin bewahren!â€œ"
-                    }
-    },
-    {
-        "id":  "hospitalkirche",
-        "number":  12,
-        "name":  "Hospitalkirche am Unteren Tor",
-        "type":  "mandatory",
-        "zone":  "saale",
-        "coords":  "N 50Â° 19.455 E 011Â° 55.147",
-        "radius":  20,
-        "description":  "Am Unteren Tor, nahe dem Fluss Saale. Die spÃ¤tgotische Hospitalkirche Ã¼berstand als eines der ganz wenigen GebÃ¤ude den groÃŸen Brand von 1823 unbeschadet.",
-        "riddle":  {
-                       "question":  "Wie viele kleine eingemeiÃŸelte Kreuzmotive zÃ¤hlst du auf der Saaleseite der Einfriedungsmauer?",
-                       "answers":  [
-                                       "5",
-                                       "fÃ¼nf",
-                                       "fuenf"
-                                   ],
-                       "hint":  "BefÃ¼hle die Steinquader der Mauerabdeckung zur Saale hin.",
-                       "solutionDebug":  "5",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "5 Kreuzmotive",
-                                           "value":  "5"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "3 Kreuzmotive",
-                                           "value":  "3"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "7 Kreuzmotive",
-                                           "value":  "7"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "1 Kreuzmotiv",
-                                           "value":  "1"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "uv-light",
-                       "name":  "Virtuelles UV-Schwarzlicht",
-                       "description":  "Schalte die UV-Lampe ein und wische Ã¼ber das Display, um die mit Geheimtinte geschriebene Losung an der Mauer aufzudecken."
-                   },
-        "witness":  {
-                        "name":  "Nachtfischer an der Saale",
-                        "role":  "Saale-Angler",
-                        "dialogue":  "â€žUm Mitternacht legte ein Kahn am Unteren Tor an. Eine Dame im feinen Mantel â€“ Frau von Gipser â€“ Ã¼bergab eine eiserne Kassette!â€œ",
-                        "image":  "assets/fischer.jpg"
-                    }
-    },
-    {
-        "id":  "saale_schmuggel",
-        "number":  "B1",
-        "name":  "Saaleufer-Schmuggelpfad",
-        "type":  "bonus",
-        "zone":  "saale",
-        "coords":  "N 50Â° 19.462 E 011Â° 55.272",
-        "radius":  20,
-        "description":  "[BONUS-ERMITTLUNG 1] Ein einsamer Treidelpfad entlang der Saale. Hier schmuggelten die Hofer Handwerker einst Rohstoffe an den stÃ¤dtischen ZÃ¶llnern vorbei.",
-        "riddle":  {
-                       "question":  "Wie viele rostige eiserne Festmach-Ringe sind in den Uferpollern verankert?",
-                       "answers":  [
-                                       "4",
-                                       "vier"
-                                   ],
-                       "hint":  "Leuchte den alten Treidelpfad direkt am Flussufer ab.",
-                       "solutionDebug":  "4",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "4 Festmach-Ringe",
-                                           "value":  "4"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "2 Ringe",
-                                           "value":  "2"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "6 Ringe",
-                                           "value":  "6"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "8 Ringe",
-                                           "value":  "8"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "letter",
-                       "name":  "Zerrissener Erpresserbrief",
-                       "description":  "FÃ¼ge 6 zerrissene Papierschnipsel auf dem Bildschirm zusammen, um den Drohbrief an Dr. Renger zu rekonstruieren."
-                   },
-        "witness":  {
-                        "name":  "Alter Flussschiffer",
-                        "role":  "Zeitzeuge der Saaleschifffahrt",
-                        "dialogue":  "â€žDie Schlappen-Erben nutzten diese Route seit 1823 als Fluchtweg! Hier, ich fand diesen zerrissenen Brief im Schilf...â€œ",
-                        "image":  "assets/flussschiffer.jpg"
-                    },
-        "bonusReward":  "+15 Detektiv-Punkte \u0026 Freischaltung des Meister-Detektiv-Titels"
-    },
-    {
-        "id":  "altstadt_archiv",
-        "number":  "B2",
-        "name":  "Altes Spital-Archiv",
-        "type":  "bonus",
-        "zone":  "altstadt",
-        "coords":  "N 50Â° 19.425 E 011Â° 55.215",
-        "radius":  20,
-        "description":  "[BONUS-ERMITTLUNG 2] Das verborgene KellergewÃ¶lbe des ehemaligen BÃ¼rgerspitals. Hinter verstaubten Folianten ruhen Akten aus dem 15. Jahrhundert.",
-        "riddle":  {
-                       "question":  "Welche vierstellige Jahreszahl ziert den Schlussstein im GewÃ¶lbebogen des ehemaligen Spital-Eingangs?",
-                       "answers":  [
-                                       "1432",
-                                       "1432 n.chr."
-                                   ],
-                       "hint":  "Richte deine Taschenlampe senkrecht nach oben in den Scheitelpunkt des Torbogens.",
-                       "solutionDebug":  "1432",
-                       "choices":  [
-                                       {
-                                           "id":  "c1",
-                                           "text":  "Jahreszahl 1432",
-                                           "value":  "1432"
-                                       },
-                                       {
-                                           "id":  "c2",
-                                           "text":  "Jahreszahl 1520",
-                                           "value":  "1520"
-                                       },
-                                       {
-                                           "id":  "c3",
-                                           "text":  "Jahreszahl 1823",
-                                           "value":  "1823"
-                                       },
-                                       {
-                                           "id":  "c4",
-                                           "text":  "Jahreszahl 1398",
-                                           "value":  "1398"
-                                       }
-                                   ]
-                   },
-        "gadget":  {
-                       "id":  "whisper",
-                       "name":  "FlÃ¼ster-Passwort (Web Speech)",
-                       "description":  "FlÃ¼stere das Losungswort \u0027Schlappenpakt\u0027 leise in dein Smartphone-Mikrofon, um die geheime PanzertÃ¼r zu entriegeln."
-                   },
-        "witness":  {
-                        "name":  "Archivgehilfe Otto",
-                        "role":  "Ehrenamtlicher Urkundenforscher",
-                        "image":  "assets/archivgehilfe_otto.jpg",
-                        "dialogue":  "â€žSie haben die uralte Bundessatzung von 1432 gefunden! Dies beweist die Existenz des Pakts zweifelsfrei, {PLAYER_NAME}! Ehrenwort!â€œ"
-                    },
-        "bonusReward":  "+15 Detektiv-Punkte \u0026 Goldenes Bundessiegel auf der Abschlussurkunde"
-    },
-    {
-        "zone":  "altstadt",
-        "id":  "geheimes_versteck",
-        "type":  "bonus",
-        "bonusReward":  "+20 Detektiv-Punkte \u0026 IR-Spezialist",
-        "number":  "B3",
-        "description":  "[BONUS-ERMITTLUNG 3] Ein unscheinbarer Hinterhof. Jemand meinte, hier gÃ¤be es Infrarot-Spuren.",
-        "riddle":  {
-                       "hint":  "Klicke einfach auf die Antwort-SchaltflÃ¤che oder Ã¶ffne das Gadget direkt.",
-                       "choices":  [
-                                       {
-                                           "value":  "fertig",
-                                           "id":  "c1",
-                                           "text":  "Scanner aktivieren!"
-                                       }
-                                   ],
-                       "answers":  [
-                                       "fertig",
-                                       "erledigt"
-                                   ],
-                       "solutionDebug":  "fertig",
-                       "question":  "Nutze den IR-Scanner, um die unsichtbare Markierung an der Wand zu finden."
-                   },
-        "gadget":  {
-                       "description":  "Nutze die Handykamera mit dem IR-Filter, um die versteckte Spur an der Wand zu entdecken.",
-                       "name":  "IR-Scanner",
-                       "id":  "scanner"
-                   },
-        "name":  "Geheimes Versteck (Scanner)",
-        "coords":  "N 50Â° 19.500 E 011Â° 55.300",
-        "witness":  {
-                        "image":  "assets/avatar.jpg",
-                        "name":  "NachtwÃ¤chter",
-                        "dialogue":  "â€žIch hab hier jemanden mit einer komischen Taschenlampe rumfuchteln sehen. Was haben Sie denn da auf dem Schirm gefunden?!â€œ",
-                        "role":  "Zeuge"
-                    },
-        "radius":  20
+[
+  {
+    "id": "rathaus",
+    "name": "Historisches Rathaus (Brandherd)",
+    "number": 1,
+    "type": "mandatory",
+    "coords": "N 50° 19.313 E 011° 55.121",
+    "description": "Die Luft riecht beißend nach verkohltem Holz und Löschwasser. Absperrbänder im Wind. Im Gewölbekeller befand sich das Stadtarchiv, in dem Dr. Renger die Urkunden entdeckte. Hier fängt alles an.",
+    "storyEventId": "rathaus_fire",
+    "characters": [
+      {
+        "id": "polizist",
+        "name": "Kommissar Stahl",
+        "role": "Einsatzleiter",
+        "image": "assets/kommissar_stahl.jpg",
+        "badge": "Polizei"
+      },
+      {
+        "id": "reporter",
+        "name": "Paul Stift",
+        "role": "Lokalreporter",
+        "image": "assets/reporter_stift.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "time-slider",
+      "requiredHardware": "none"
     }
+  },
+  {
+    "id": "hauptpost",
+    "name": "Alte Hauptpost (Verdächtige Fracht)",
+    "number": 2,
+    "type": "mandatory",
+    "coords": "N 50° 19.123 E 011° 54.962",
+    "description": "Am Hintereingang der historischen Poststelle herrscht rege Betriebsamkeit. Kurierfahrer verladen letzte Kisten. Dr. Renger hatte hier laut seinem Kalender ein Postfach, in dem er Beweise vor den Verdächtigen sichern wollte.",
+    "storyEventId": "post_kurier",
+    "characters": [
+      {
+        "id": "sepp",
+        "name": "Nachtkurier Sepp",
+        "role": "Kurierfahrer",
+        "image": "assets/kurier.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "polaroid",
+      "requiredHardware": "deviceorientation"
+    }
+  },
+  {
+    "id": "obelisk",
+    "name": "Wittelsbacher Park (Das Treffen)",
+    "number": 3,
+    "type": "mandatory",
+    "coords": "N 50° 19.412 E 011° 55.088",
+    "description": "Unter den alten Linden des Parks steht der verwitterte Obelisk. Laut Rengers Notizen fanden hier geheime Treffen der Schlappen-Erben statt. Die Laternen werfen unheimliche Schatten.",
+    "storyEventId": "obelisk_blume",
+    "characters": [
+      {
+        "id": "blume",
+        "name": "Dr. Blume",
+        "role": "Historiker",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "briefcase",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "lorenzkirche",
+    "name": "St. Lorenz (Die Gruft)",
+    "number": 4,
+    "type": "mandatory",
+    "coords": "N 50° 19.255 E 011° 55.301",
+    "description": "Die älteste Kirche Hofs überragt die Altstadt. In der Kirchenchronik sind Spenden verzeichnet, die Renger dem Pakt von 1823 zuordnete. Die Tür zum Seitenschiff steht einen Spalt offen.",
+    "storyEventId": "lorenz_klement",
+    "characters": [
+      {
+        "id": "klement",
+        "name": "Pfarrer Klement",
+        "role": "Geistlicher",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "stealth",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "biengaesschen",
+    "name": "Biengäßchen (Fluchtweg)",
+    "number": 5,
+    "type": "mandatory",
+    "coords": "N 50° 19.350 E 011° 55.150",
+    "description": "Eine schmale, kopfsteingepflasterte Gasse. Der Fluchtweg des Brandstifters führt genau hier entlang. Ein zerbrochenes Kellerfenster deutet auf ein Versteck hin.",
+    "storyEventId": "gasse_erna",
+    "characters": [
+      {
+        "id": "erna",
+        "name": "Schankwirtin Erna",
+        "role": "Wirtin",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "laser",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "ludwigstrasse",
+    "name": "Ludwigstraße (Der Notar)",
+    "number": 6,
+    "type": "mandatory",
+    "coords": "N 50° 19.280 E 011° 55.200",
+    "description": "Die Prachtstraße Hofs. Hier befand sich die Kanzlei jenes Notars, der 1823 die neuen Besitzurkunden ausstellte. Im Hinterhof liegt das alte Kanzleiarchiv.",
+    "storyEventId": "ludwig_rolf",
+    "characters": [
+      {
+        "id": "rolf",
+        "name": "Wachmann Rolf",
+        "role": "Nachtwächter",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "scratch",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "karolinenstrasse",
+    "name": "Karolinenstraße (Die Telefonzelle)",
+    "number": 7,
+    "type": "mandatory",
+    "coords": "N 50° 19.330 E 011° 55.100",
+    "description": "Die Straßenbeleuchtung flackert. An der Ecke steht eine der letzten gelben Telefonzellen. Hier wurde Dr. Rengers panische Sprachnachricht abgesetzt.",
+    "storyEventId": "karo_kaeptn",
+    "characters": [
+      {
+        "id": "kaeptn",
+        "name": "Käpt'n",
+        "role": "Obdachloser",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "fake-call",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "schlossplatz",
+    "name": "Schlossplatz (Die alte Residenz)",
+    "number": 8,
+    "type": "mandatory",
+    "coords": "N 50° 19.400 E 011° 55.250",
+    "description": "Das historische Zentrum der Macht. Die Fassaden der Adelshäuser spiegeln die Geheimnisse der Patrizier wider. In einem Schaufenster liegt ein merkwürdiges Pergament.",
+    "storyEventId": "schloss_lisa",
+    "characters": [
+      {
+        "id": "lisa",
+        "name": "Lisa",
+        "role": "Fremdenführerin",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "ambigram",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "sonnenplatz",
+    "name": "Sonnenplatz (Das Wirtshaus)",
+    "number": 9,
+    "type": "mandatory",
+    "coords": "N 50° 19.200 E 011° 55.050",
+    "description": "Vor dem Denkmal des Wärschtlamo steht das älteste Gasthaus der Stadt. Hier trafen sich die Zunftmeister. Jemand hat eilig eine Notiz auf dem Tisch liegengelassen.",
+    "storyEventId": "sonne_karl",
+    "characters": [
+      {
+        "id": "karl",
+        "name": "Wärschtlamo Karl",
+        "role": "Verkäufer",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "dice",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "marienkirche",
+    "name": "St. Marien (Die Predigt)",
+    "number": 10,
+    "type": "mandatory",
+    "coords": "N 50° 19.150 E 011° 55.150",
+    "description": "Die mächtigen Zwillingstürme der Marienkirche. In den Nischen der Fassade verbergen sich steinerne Zeugen. Durch die massiven Türen dringt schwacher Gesang.",
+    "storyEventId": "marien_gertrud",
+    "characters": [
+      {
+        "id": "gertrud",
+        "name": "Mesnerin Gertrud",
+        "role": "Mesnerin",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "wiretap",
+      "requiredHardware": "mic"
+    }
+  },
+  {
+    "id": "michaeliskirche",
+    "name": "St. Michaelis (Das Siegel)",
+    "number": 11,
+    "type": "mandatory",
+    "coords": "N 50° 19.100 E 011° 55.200",
+    "description": "Die Kapelle thront über der Stadt. Severin Heidens Reich. Der Friedhof davor birgt alte Familiengräber. Ein Messingrad an der Pforte blockiert den Zugang zum Turm.",
+    "storyEventId": "michael_huber",
+    "characters": [
+      {
+        "id": "huber",
+        "name": "Gärtner Huber",
+        "role": "Friedhofswärter",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "cryptowheel",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "hospitalkirche",
+    "name": "Hospitalkirche (Der Übergabeort)",
+    "number": 12,
+    "type": "mandatory",
+    "coords": "N 50° 19.050 E 011° 55.300",
+    "description": "Nahe am Flusslauf. Das alte Spital diente einst als Zuflucht. Heute Nacht soll hier die Übergabe der verbliebenen Originalverträge stattfinden.",
+    "storyEventId": "hospital_maria",
+    "characters": [
+      {
+        "id": "maria",
+        "name": "Schwester Maria",
+        "role": "Krankenschwester",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "uv-light",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "saale_schmuggel",
+    "name": "Saale-Ufer (Schmugglerpfad)",
+    "number": 13,
+    "type": "bonus",
+    "coords": "N 50° 19.450 E 011° 55.400",
+    "description": "Ein schlammiger Pfad am Flussufer. Nebel steigt von der Saale auf. Hier wurden illegale Güter über den Wasserweg verschoben.",
+    "bonusReward": "Zerrissener Drohbrief",
+    "storyEventId": "saale_jan",
+    "characters": [
+      {
+        "id": "jan",
+        "name": "Fischer Jan",
+        "role": "Angler",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "letter",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "altstadt_archiv",
+    "name": "Altes Spital (Geheimarchiv)",
+    "number": 14,
+    "type": "bonus",
+    "coords": "N 50° 19.380 E 011° 55.350",
+    "description": "Ein verlassenes Gemäuer in der Unteren Vorstadt. In den Mauerritzen verbergen sich Hinweise auf die Urkunden von 1432.",
+    "bonusReward": "Gründungsurkunde",
+    "storyEventId": "spital_max",
+    "characters": [
+      {
+        "id": "max",
+        "name": "Archivgehilfe Max",
+        "role": "Student",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "whisper",
+      "requiredHardware": "mic"
+    }
+  },
+  {
+    "id": "versteck_15",
+    "name": "Schlappen-Versteck",
+    "number": 15,
+    "type": "bonus",
+    "coords": "N 50° 19.500 E 011° 55.100",
+    "description": "Ein alter Bunker. Die Wände sind mit Bauplänen des Saale-Ufers plakatiert. Der Scanner schlägt auf radioaktive Isotope an.",
+    "bonusReward": "Geheimer Tresorschlüssel",
+    "storyEventId": "versteck_bote",
+    "characters": [
+      {
+        "id": "bote",
+        "name": "Schattenhafter Bote",
+        "role": "Kurier",
+        "image": "assets/avatar.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "scanner",
+      "requiredHardware": "none"
+    }
+  }
 ]

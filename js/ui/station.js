@@ -89,7 +89,31 @@ export function openStation(stationId) {
 
     if (manualWrap) manualWrap.classList.add('hidden');
   } 
-  // 2. Fallback: Direktes Starten des Gadgets (Keine Abfragen mehr, nur GPS-Trigger)
+  // 2. Fallback auf Rätsel (Riddle)
+  else if (station.riddle && station.riddle.choices && station.riddle.choices.length > 0) {
+    if (charsContainer) charsContainer.classList.add('hidden');
+    if (manualWrap) {
+      manualWrap.classList.remove('hidden');
+      
+      let html = `<h4 style="font-family: var(--font-mono); font-size: 1rem; color: #8b0000; margin-bottom: 15px;">${station.riddle.question}</h4>`;
+      html += `<div style="display: flex; flex-direction: column; gap: 10px;">`;
+      
+      station.riddle.choices.forEach(choice => {
+        html += `<button class="btn-secondary btn-riddle-choice" data-val="${choice.value}" style="text-align: left;">${choice.text}</button>`;
+      });
+      html += `</div>`;
+      
+      manualWrap.innerHTML = html;
+      
+      manualWrap.querySelectorAll('.btn-riddle-choice').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const val = e.target.getAttribute('data-val');
+          handleChoiceClick(station, { value: val }, e.target);
+        });
+      });
+    }
+  }
+  // 3. Letzter Fallback: Direktes Starten des Gadgets
   else {
     if (charsContainer) charsContainer.classList.add('hidden');
     if (manualWrap) {
