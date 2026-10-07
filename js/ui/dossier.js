@@ -205,7 +205,7 @@ function updateDossier() {
                 feedbackEl.style.color = '#006400';
                 feedbackEl.innerText = '📈 Passt perfekt! (Verdacht +15%)';
                 import('../state.js').then(mod => {
-                  mod.addSuspectImpact(suspectId, 2);
+                  mod.addSuspectImpact(suspectId, 15);
                   mod.assignEvidence(id, suspectId);
                   updateDossier(); // Refresh UI behind modal
                 });
@@ -213,7 +213,7 @@ function updateDossier() {
                 feedbackEl.style.color = '#8b0000';
                 feedbackEl.innerText = '📉 Ergibt wenig Sinn... (Verdacht -7%)';
                 import('../state.js').then(mod => {
-                  mod.addSuspectImpact(suspectId, -1);
+                  mod.addSuspectImpact(suspectId, -7);
                   mod.assignEvidence(id, suspectId);
                   updateDossier(); // Refresh UI behind modal
                 });

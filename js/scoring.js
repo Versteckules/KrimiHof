@@ -43,13 +43,20 @@ export function calculateFinalResult(state) {
     }
   }
 
-  const totalScore = scores.herold + scores.gipser + scores.heiden;
-  let percentages = { herold: 0, gipser: 0, heiden: 0 };
+  const base = 33;
+  let heroldPoints = Math.max(0, base + scores.herold);
+  let gipserPoints = Math.max(0, base + scores.gipser);
+  let heidenPoints = Math.max(0, base + scores.heiden);
   
-  if (totalScore > 0) {
-    percentages.herold = Math.round((scores.herold / totalScore) * 100);
-    percentages.gipser = Math.round((scores.gipser / totalScore) * 100);
-    percentages.heiden = Math.round((scores.heiden / totalScore) * 100);
+  const totalPoints = heroldPoints + gipserPoints + heidenPoints;
+  let percentages = { herold: 33, gipser: 33, heiden: 34 };
+  
+  if (totalPoints > 0) {
+    percentages.herold = Math.round((heroldPoints / totalPoints) * 100);
+    percentages.gipser = Math.round((gipserPoints / totalPoints) * 100);
+    percentages.heiden = 100 - percentages.herold - percentages.gipser;
+    
+    if (percentages.heiden < 0) percentages.heiden = 0;
   }
 
   return {

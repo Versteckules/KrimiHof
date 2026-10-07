@@ -32,7 +32,7 @@
     "name": "Alte Hauptpost (Verdächtige Fracht)",
     "number": 2,
     "type": "mandatory",
-    "coords": "N 50° 19.123 E 011° 54.962",
+    "coords": "N 50° 18.986 E 011° 54.898",
     "description": "Am Hintereingang der historischen Poststelle herrscht rege Betriebsamkeit. Kurierfahrer verladen letzte Kisten. Dr. Renger hatte hier laut seinem Kalender ein Postfach, in dem er Beweise vor den Verdächtigen sichern wollte.",
     "storyEventId": "post_kurier",
     "characters": [
@@ -53,7 +53,7 @@
     "name": "Wittelsbacher Park (Das Treffen)",
     "number": 3,
     "type": "mandatory",
-    "coords": "N 50° 19.412 E 011° 55.088",
+    "coords": "N 50° 18.728 E 011° 55.052",
     "description": "Unter den alten Linden des Parks steht der verwitterte Obelisk. Laut Rengers Notizen fanden hier geheime Treffen der Schlappen-Erben statt. Die Laternen werfen unheimliche Schatten.",
     "storyEventId": "obelisk_blume",
     "characters": [
@@ -74,7 +74,7 @@
     "name": "St. Lorenz (Die Gruft)",
     "number": 4,
     "type": "mandatory",
-    "coords": "N 50° 19.255 E 011° 55.301",
+    "coords": "N 50° 18.893 E 011° 55.057",
     "description": "Die älteste Kirche Hofs überragt die Altstadt. In der Kirchenchronik sind Spenden verzeichnet, die Renger dem Pakt von 1823 zuordnete. Die Tür zum Seitenschiff steht einen Spalt offen.",
     "storyEventId": "lorenz_klement",
     "characters": [
@@ -95,7 +95,7 @@
     "name": "Biengäßchen (Fluchtweg)",
     "number": 5,
     "type": "mandatory",
-    "coords": "N 50° 19.350 E 011° 55.150",
+    "coords": "N 50° 18.907 E 011° 54.979",
     "description": "Eine schmale, kopfsteingepflasterte Gasse. Der Fluchtweg des Brandstifters führt genau hier entlang. Ein zerbrochenes Kellerfenster deutet auf ein Versteck hin.",
     "storyEventId": "gasse_erna",
     "characters": [
@@ -116,7 +116,7 @@
     "name": "Ludwigstraße (Der Notar)",
     "number": 6,
     "type": "mandatory",
-    "coords": "N 50° 19.280 E 011° 55.200",
+    "coords": "N 50° 19.168 E 011° 55.004",
     "description": "Die Prachtstraße Hofs. Hier befand sich die Kanzlei jenes Notars, der 1823 die neuen Besitzurkunden ausstellte. Im Hinterhof liegt das alte Kanzleiarchiv.",
     "storyEventId": "ludwig_rolf",
     "characters": [
@@ -137,7 +137,7 @@
     "name": "Karolinenstraße (Die Telefonzelle)",
     "number": 7,
     "type": "mandatory",
-    "coords": "N 50° 19.330 E 011° 55.100",
+    "coords": "N 50° 19.306 E 011° 55.037",
     "description": "Die Straßenbeleuchtung flackert. An der Ecke steht eine der letzten gelben Telefonzellen. Hier wurde Dr. Rengers panische Sprachnachricht abgesetzt.",
     "storyEventId": "karo_kaeptn",
     "characters": [
@@ -158,7 +158,7 @@
     "name": "Schlossplatz (Die alte Residenz)",
     "number": 8,
     "type": "mandatory",
-    "coords": "N 50° 19.400 E 011° 55.250",
+    "coords": "N 50° 19.220 E 011° 54.950",
     "description": "Das historische Zentrum der Macht. Die Fassaden der Adelshäuser spiegeln die Geheimnisse der Patrizier wider. In einem Schaufenster liegt ein merkwürdiges Pergament.",
     "storyEventId": "schloss_lisa",
     "characters": [
@@ -179,7 +179,7 @@
     "name": "Sonnenplatz (Das Wirtshaus)",
     "number": 9,
     "type": "mandatory",
-    "coords": "N 50° 19.200 E 011° 55.050",
+    "coords": "N 50° 18.981 E 011° 54.892",
     "description": "Vor dem Denkmal des Wärschtlamo steht das älteste Gasthaus der Stadt. Hier trafen sich die Zunftmeister. Jemand hat eilig eine Notiz auf dem Tisch liegengelassen.",
     "storyEventId": "sonne_karl",
     "characters": [
@@ -200,7 +200,7 @@
     "name": "St. Marien (Die Predigt)",
     "number": 10,
     "type": "mandatory",
-    "coords": "N 50° 19.150 E 011° 55.150",
+    "coords": "N 50° 19.321 E 011° 55.167",
     "description": "Die mächtigen Zwillingstürme der Marienkirche. In den Nischen der Fassade verbergen sich steinerne Zeugen. Durch die massiven Türen dringt schwacher Gesang.",
     "storyEventId": "marien_gertrud",
     "characters": [
@@ -221,7 +221,7 @@
     "name": "St. Michaelis (Das Siegel)",
     "number": 11,
     "type": "mandatory",
-    "coords": "N 50° 19.100 E 011° 55.200",
+    "coords": "N 50° 19.321 E 011° 55.167",
     "description": "Die Kapelle thront über der Stadt. Severin Heidens Reich. Der Friedhof davor birgt alte Familiengräber. Ein Messingrad an der Pforte blockiert den Zugang zum Turm.",
     "storyEventId": "michael_huber",
     "characters": [
@@ -242,7 +242,7 @@
     "name": "Hospitalkirche (Der Übergabeort)",
     "number": 12,
     "type": "mandatory",
-    "coords": "N 50° 19.050 E 011° 55.300",
+    "coords": "N 50° 19.463 E 011° 55.164",
     "description": "Nahe am Flusslauf. Das alte Spital diente einst als Zuflucht. Heute Nacht soll hier die Übergabe der verbliebenen Originalverträge stattfinden.",
     "storyEventId": "hospital_maria",
     "characters": [
@@ -263,7 +263,7 @@
     "name": "Saale-Ufer (Schmugglerpfad)",
     "number": 13,
     "type": "bonus",
-    "coords": "N 50° 19.450 E 011° 55.400",
+    "coords": "N 50° 19.462 E 011° 55.272",
     "description": "Ein schlammiger Pfad am Flussufer. Nebel steigt von der Saale auf. Hier wurden illegale Güter über den Wasserweg verschoben.",
     "bonusReward": "Zerrissener Drohbrief",
     "storyEventId": "saale_jan",
@@ -272,7 +272,7 @@
         "id": "jan",
         "name": "Fischer Jan",
         "role": "Angler",
-        "image": "assets/avatar.jpg"
+        "image": "assets/fischer.jpg"
       }
     ],
     "gadget": {
@@ -285,7 +285,7 @@
     "name": "Altes Spital (Geheimarchiv)",
     "number": 14,
     "type": "bonus",
-    "coords": "N 50° 19.380 E 011° 55.350",
+    "coords": "N 50° 19.425 E 011° 55.215",
     "description": "Ein verlassenes Gemäuer in der Unteren Vorstadt. In den Mauerritzen verbergen sich Hinweise auf die Urkunden von 1432.",
     "bonusReward": "Gründungsurkunde",
     "storyEventId": "spital_max",

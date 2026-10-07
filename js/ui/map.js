@@ -86,7 +86,7 @@ function renderMarkers() {
     } else if (st.id === 'rathaus') {
       status = 'active'; // Immer aktiv, wenn nicht solved
     } else if (st.id.startsWith('saale_') || st.id.startsWith('altstadt_')) {
-      status = 'bonus';
+      status = startSolved ? 'bonus' : 'locked';
     } else if (startSolved) {
       status = 'active'; // Pflicht nach Rathaus frei
     }
