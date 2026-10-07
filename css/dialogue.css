@@ -3,7 +3,7 @@
   background: rgba(0, 0, 0, 0.9);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Keep at bottom, but prevent shifts */
+  justify-content: center; /* Prevent upward pushing on typewriter */
   align-items: center;
   padding: 20px;
   padding-bottom: env(safe-area-inset-bottom, 20px);

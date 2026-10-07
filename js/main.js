@@ -24,6 +24,13 @@ export function showView(viewId) {
     }
   });
   window.scrollTo(0, 0);
+  
+  // Fix Leaflet map sizing issue on mobile when container becomes visible
+  if (viewId === 'view-dashboard') {
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
+  }
 }
 
 export function showNoirAlert(message, title = 'HINWEIS') {
