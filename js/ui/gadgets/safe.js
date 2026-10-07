@@ -44,7 +44,7 @@ export function runGadget(stationId, onComplete) {
     valDisplay.innerText = currentVal.toString().padStart(2, '0');
     // Rotate dial (0-99 maps to 0-360 degrees)
     const deg = (currentVal / 100) * 360;
-    dial.style.transform = \`rotate(\${deg}deg)\`;
+    dial.style.transform = `rotate(${deg}deg)`;
   }
 
   // Buttons
@@ -81,7 +81,7 @@ export function runGadget(stationId, onComplete) {
   };
 
   function showInsideSafe() {
-    overlay.innerHTML = \`
+    overlay.innerHTML = `
       <h2 style="color:var(--color-amber-glow); margin-bottom:20px;">Tresor geöffnet!</h2>
       <div style="background:#222; border:1px solid #d4af37; padding:20px; text-align:left; max-width:300px; margin-bottom:20px;">
         <p style="color:#ddd; font-size:0.9rem;">Du findest brisante Überweisungsbelege aus dem Ausland, die direkt im Zusammenhang mit dem Notarvertrag stehen.</p>
@@ -92,7 +92,7 @@ export function runGadget(stationId, onComplete) {
         <button class="btn-primary suspect-choice" data-suspect="gipser" data-val="15">Von Gipser (+15% Schuld)</button>
         <button class="btn-primary suspect-choice" data-suspect="heiden" data-val="15">Heiden (+15% Schuld)</button>
       </div>
-    \`;
+    `;
 
     overlay.querySelectorAll('.suspect-choice').forEach(btn => {
       btn.onclick = () => {

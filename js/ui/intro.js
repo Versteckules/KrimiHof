@@ -42,7 +42,7 @@ export function initIntro() {
 
   if (btnNext) {
     btnNext.addEventListener('click', () => {
-      if (currentSlideIndex < slides.length - 1) {
+      if (currentSlideIndex < currentSlides.length - 1) {
         currentSlideIndex++;
         renderSlide();
       } else {
@@ -108,7 +108,7 @@ function renderSlide() {
   }
 
   if (btnNext) {
-    if (currentSlideIndex === slides.length - 1) {
+    if (currentSlideIndex === currentSlides.length - 1) {
       btnNext.innerHTML = '🔍 Ermittlung am Tatort aufnehmen';
       btnNext.classList.add('pulse');
     } else {

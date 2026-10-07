@@ -3,7 +3,7 @@ export function runGadget(stationId, onComplete) {
   overlay.id = 'gadget-fullscreen-overlay';
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:#111; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; color:white; font-family:sans-serif; text-align:center;';
 
-  overlay.innerHTML = \`
+  overlay.innerHTML = `
     <h2 style="color:var(--color-night-light); margin-bottom:10px;">Die Kamera des Reporters</h2>
     <p style="margin-bottom:20px; font-size:0.9rem;">Paul Stift leiht dir seine Kamera mit Teleobjektiv. Fokussiere das Objektiv auf den verbrannten Schreibtisch hinter der Polizeiabsperrung!</p>
     
@@ -20,7 +20,7 @@ export function runGadget(stationId, onComplete) {
     <input type="range" id="focus-slider" min="0" max="100" value="0" style="width:80%; max-width:300px; margin-bottom:20px;">
     
     <button class="btn-primary" id="btn-snap-photo" style="opacity:0.5; pointer-events:none;">📸 Foto schießen</button>
-  \`;
+  `;
 
   document.body.appendChild(overlay);
 
@@ -37,7 +37,7 @@ export function runGadget(stationId, onComplete) {
     
     // Blur ranges from 0px (perfect) to 20px (totally blurred)
     let blurAmt = (diff / 100) * 20;
-    viewfinder.style.filter = \`blur(\${blurAmt}px) grayscale(50%)\`;
+    viewfinder.style.filter = `blur(${blurAmt}px) grayscale(50%)`;
 
     if (diff < 5) {
       isFocused = true;
@@ -64,14 +64,14 @@ export function runGadget(stationId, onComplete) {
     setTimeout(() => { flash.style.opacity = '0'; }, 50);
 
     setTimeout(() => {
-      overlay.innerHTML = \`
+      overlay.innerHTML = `
         <h2 style="color:var(--color-amber-glow); margin-bottom:20px;">Beweis gesichert!</h2>
         <div style="background:#222; border:1px solid #d4af37; padding:20px; text-align:left; max-width:300px; margin-bottom:20px;">
           <p style="color:#ddd; font-size:0.9rem;">Gestochen scharf! Auf dem Foto erkennst du nicht nur Dokumente, sondern auch eine verdächtige schwarze Limousine, die hastig vom Tatort flüchtet. Das Kennzeichen: <b>HO-KG 1823</b>.</p>
           <p style="color:var(--color-blood-red); font-weight:bold; margin-top:10px; font-size:0.8rem;">Neuer Beweis: Foto der flüchtenden Limousine</p>
         </div>
         <button class="btn-primary" id="btn-camera-done">Zurück zur Tatort-Analyse</button>
-      \`;
+      `;
 
       document.getElementById('btn-camera-done').onclick = () => {
         import('../../state.js').then(mod => {

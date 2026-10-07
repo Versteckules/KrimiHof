@@ -5,7 +5,7 @@ export function runGadget(stationId, onComplete) {
   overlay.id = 'gadget-fullscreen-overlay';
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e17; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; color:white; font-family:serif; text-align:center;';
 
-  overlay.innerHTML = \`
+  overlay.innerHTML = `
     <h2 style="color:#a89f91; margin-bottom:10px;">Die Orgelempore</h2>
     <p style="margin-bottom:20px; font-size:0.9rem; font-family:sans-serif;">Ein uraltes Notenblatt zeigt ein Motiv, das in der Musikgeschichte berühmt ist (Vier Töne).</p>
     
@@ -21,7 +21,7 @@ export function runGadget(stationId, onComplete) {
     </div>
     
     <div id="notes-display" style="font-family:monospace; font-size:1.5rem; letter-spacing:5px; height:30px; color:#d4af37;"></div>
-  \`;
+  `;
 
   document.body.appendChild(overlay);
 
@@ -33,13 +33,13 @@ export function runGadget(stationId, onComplete) {
     if (!audioCtx) audioCtx = new AudioContext();
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
-    
+
     oscillator.type = 'triangle';
     oscillator.frequency.value = frequency;
-    
+
     oscillator.connect(gainNode);
     gainNode.connect(audioCtx.destination);
-    
+
     oscillator.start();
     gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 1);
     oscillator.stop(audioCtx.currentTime + 1);
@@ -62,18 +62,18 @@ export function runGadget(stationId, onComplete) {
   overlay.querySelectorAll('.piano-key').forEach(key => {
     key.onclick = () => {
       const note = key.getAttribute('data-note');
-      
+
       // Visual feedback
       key.style.background = '#ccc';
       setTimeout(() => key.style.background = 'white', 150);
-      
+
       playNoteFreq(noteFrequencies[note]);
-      
+
       entered.push(note);
       if (entered.length > 4) entered.shift(); // keep last 4
-      
+
       display.innerText = entered.join(' ');
-      
+
       if (entered.length === 4 && entered.join('') === targetSequence.join('')) {
         setTimeout(startPhase2, 500);
       }
@@ -81,14 +81,14 @@ export function runGadget(stationId, onComplete) {
   });
 
   function startPhase2() {
-    overlay.innerHTML = \`
+    overlay.innerHTML = `
       <h2 style="color:#d4af37; margin-bottom:10px;">Ein Kryptex fährt aus der Wand!</h2>
       <p style="margin-bottom:20px; font-size:0.9rem; font-family:sans-serif;">Die Orgelmechanik gibt ein 4-stelliges Worträtsel frei. Wie nennt sich das geheime Bündnis?</p>
       
       <input type="text" id="kryptex-input" maxlength="4" style="font-size:2rem; width:120px; text-align:center; text-transform:uppercase; letter-spacing:10px; background:#222; color:#fff; border:2px solid #555; border-radius:5px; margin-bottom:20px;">
       <br>
       <button class="btn-primary" id="btn-kryptex-check">Öffnen</button>
-    \`;
+    `;
 
     document.getElementById('btn-kryptex-check').onclick = () => {
       const val = document.getElementById('kryptex-input').value.toUpperCase();
@@ -101,7 +101,7 @@ export function runGadget(stationId, onComplete) {
   }
 
   function showPhase3() {
-    overlay.innerHTML = \`
+    overlay.innerHTML = `
       <h2 style="color:var(--color-amber-glow); margin-bottom:20px;">Das Kryptex ist offen!</h2>
       <div style="background:#222; border:1px solid #d4af37; padding:20px; text-align:left; max-width:300px; margin-bottom:20px; font-family:sans-serif;">
         <p style="color:#ddd; font-size:0.9rem;">Du findest brisante theologische Aufzeichnungen, die eine Fanatisierung belegen.</p>
@@ -112,7 +112,7 @@ export function runGadget(stationId, onComplete) {
         <button class="btn-primary suspect-choice" data-suspect="gipser" data-val="15">Von Gipser (+15% Schuld)</button>
         <button class="btn-primary suspect-choice" data-suspect="heiden" data-val="15">Heiden (+15% Schuld)</button>
       </div>
-    \`;
+    `;
 
     overlay.querySelectorAll('.suspect-choice').forEach(btn => {
       btn.onclick = () => {
