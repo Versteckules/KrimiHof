@@ -4,7 +4,7 @@
 
 import { getStationById, getConfig, getStory } from '../config-loader.js';
 import { checkAnswer } from '../answers.js';
-import { showView } from '../main.js';
+import { showView, showNoirAlert } from '../main.js';
 import { markStationSolved, getState } from '../state.js';
 import { startGadget } from './gadgets/gadget-manager.js';
 import { openDialogue } from './dialogue.js';
@@ -15,7 +15,7 @@ let wrongAttempts = 0;
 export function openStation(stationId) {
   const state = getState();
   if (state.solvedStations && state.solvedStations.includes(stationId)) {
-    alert('Du hast diesen Tatort bereits vollständig untersucht. Die Beteiligten lehnen weitere Gespräche ohne ihren Anwalt ab!');
+    showNoirAlert('Du hast diesen Tatort bereits vollständig untersucht. Die Beteiligten lehnen weitere Gespräche ohne ihren Anwalt ab!', 'Bereits untersucht');
     showView('view-dashboard');
     return;
   }

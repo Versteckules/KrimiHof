@@ -26,6 +26,29 @@ export function showView(viewId) {
   window.scrollTo(0, 0);
 }
 
+export function showNoirAlert(message, title = 'HINWEIS') {
+  const modal = document.getElementById('noir-alert-modal');
+  const titleEl = document.getElementById('noir-alert-title');
+  const msgEl = document.getElementById('noir-alert-message');
+  const btnClose = document.getElementById('noir-alert-close');
+
+  if (modal && titleEl && msgEl && btnClose) {
+    titleEl.textContent = title;
+    msgEl.textContent = message;
+    modal.classList.remove('hidden');
+
+    const closeModal = () => {
+      modal.classList.add('hidden');
+      btnClose.removeEventListener('click', closeModal);
+    };
+    btnClose.addEventListener('click', closeModal);
+  } else {
+    // Fallback falls modal nicht im DOM
+    alert(`${title}\n\n${message}`);
+  }
+}
+
+
 export function checkRouting() {
   const state = getState();
   if (state.gameStarted) {

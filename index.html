@@ -464,6 +464,15 @@
     </div>
   </main>
 
+  <!-- Custom Alert Modal (Noir Theme) -->
+  <div id="noir-alert-modal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+    <div class="noir-alert-box" style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
+      <h3 id="noir-alert-title" style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px;">Zugriff Verweigert</h3>
+      <p id="noir-alert-message" style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;"></p>
+      <button id="noir-alert-close" class="btn-primary" style="padding: 10px 20px; font-size: 1rem;">Verstanden</button>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="vendor/leaflet/leaflet.js"></script>
   <script src="vendor/suncalc.js"></script>

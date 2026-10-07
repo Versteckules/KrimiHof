@@ -4,6 +4,7 @@
 
 import { getStations, getConfig } from '../config-loader.js';
 import { getState, subscribe, isStationSolved } from '../state.js';
+import { showNoirAlert } from '../main.js';
 
 let map = null;
 let markers = {};
@@ -21,11 +22,14 @@ export function initMap() {
   const config = getConfig();
   const { lat, lng } = config.referenceLocation;
 
-  // Leaflet Karte initialisieren
+  // Leaflet Karte initialisieren, Zoom auf Mobile anpassen
+  const isMobile = window.innerWidth < 768;
+  const initialZoom = isMobile ? 16 : 15;
+  
   map = L.map('map-container', {
     zoomControl: false,
     attributionControl: false
-  }).setView([lat, lng], 15);
+  }).setView([lat, lng], initialZoom);
 
   // OpenStreetMap mit Dark-Filter (siehe CSS) anstelle von Carto (API Key nötig)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -108,9 +112,9 @@ function renderMarkers() {
             });
           }
         } else if (currentStatus === 'locked') {
-          alert('Löse zuerst das Rätsel am Rathaus, bevor du hierher kommst.');
+          showNoirAlert('Löse zuerst das Rätsel am Rathaus, bevor du hierher kommst.', 'Gesperrt');
         } else if (currentStatus === 'solved') {
-          alert('Diese Station hast du bereits abgeschlossen.');
+          showNoirAlert('Diese Station hast du bereits abgeschlossen.', 'Abgeschlossen');
         }
       });
       

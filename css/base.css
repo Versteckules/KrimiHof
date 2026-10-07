@@ -19,7 +19,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  min-height: 100vh;
+  height: 100dvh; /* Use dvh for mobile browsers */
+  min-height: 100vh; /* Fallback */
   display: flex;
   flex-direction: column;
 }
