@@ -29,10 +29,10 @@
   },
   {
     "id": "hauptpost",
-    "name": "Alte Hauptpost (Verdächtige Fracht)",
+    "name": "Rotary Brunnen",
     "number": 2,
     "type": "mandatory",
-    "coords": "N 50° 19.123 E 011° 54.955",
+    "coords": "N 50° 19.123 E 011° 54.962",
     "description": "Am Hintereingang der historischen Poststelle herrscht rege Betriebsamkeit. Kurierfahrer verladen letzte Kisten. Dr. Renger hatte hier laut seinem Kalender ein Postfach, in dem er Beweise vor den Verdächtigen sichern wollte.",
     "storyEventId": "post_kurier",
     "characters": [
@@ -242,7 +242,7 @@
     "name": "Hospitalkirche (Der Übergabeort)",
     "number": 12,
     "type": "mandatory",
-    "coords": "N 50° 19.463 E 011° 55.164",
+    "coords": "N 50° 19.455 E 011° 55.147",
     "description": "Nahe am Flusslauf. Das alte Spital diente einst als Zuflucht. Heute Nacht soll hier die Übergabe der verbliebenen Originalverträge stattfinden.",
     "storyEventId": "hospital_maria",
     "characters": [

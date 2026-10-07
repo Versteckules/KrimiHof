@@ -1,0 +1,16 @@
+﻿rathaus | Historisches Rathaus (Brandherd) | N 50Â° 19.313 E 011Â° 55.121
+hauptpost | Rotary Brunnen | N 50Â° 19.123 E 011Â° 54.962
+obelisk | Wittelsbacher Park (Das Treffen) | N 50Â° 18.728 E 011Â° 55.052
+lorenzkirche | St. Lorenz (Die Gruft) | N 50Â° 18.893 E 011Â° 55.057
+biengaesschen | BiengÃ¤ÃŸchen (Fluchtweg) | N 50Â° 18.907 E 011Â° 54.979
+ludwigstrasse | LudwigstraÃŸe (Der Notar) | N 50Â° 19.168 E 011Â° 55.004
+karolinenstrasse | KarolinenstraÃŸe (Die Telefonzelle) | N 50Â° 19.306 E 011Â° 55.037
+schlossplatz | Schlossplatz (Die alte Residenz) | N 50Â° 19.220 E 011Â° 54.950
+sonnenplatz | Sonnenplatz (Das Wirtshaus) | N 50Â° 18.981 E 011Â° 54.892
+marienkirche | St. Marien (Die Predigt) | N 50Â° 19.321 E 011Â° 55.167
+michaeliskirche | St. Michaelis (Das Siegel) | N 50Â° 19.321 E 011Â° 55.167
+hospitalkirche | Hospitalkirche (Der Ãœbergabeort) | N 50Â° 19.455 E 011Â° 55.147
+saale_schmuggel | Saale-Ufer (Schmugglerpfad) | N 50Â° 19.462 E 011Â° 55.272
+altstadt_archiv | Altes Spital (Geheimarchiv) | N 50Â° 19.425 E 011Â° 55.215
+versteck_15 | Schlappen-Versteck | N 50Â° 19.500 E 011Â° 55.100
+jean_paul | Jean Pauls Geist | N 50Â° 19.035 E 011Â° 54.924
