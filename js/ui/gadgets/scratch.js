@@ -1,3 +1,4 @@
+﻿import * as FX from '../../fx.js';
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
@@ -7,9 +8,9 @@ export function runGadget(stationId, onSuccess) {
     document.body.appendChild(overlay);
   }
 
-  overlay.innerHTML = `
+  overlay.innerHTML = `<div class="cl-gadget-wrapper"><div class="cl-gadget-screws"></div>
     <h2 style="color:#fff; font-family:var(--font-serif); margin-bottom:10px;">Brandspuren freilegen</h2>
-    <p style="color:var(--color-text-muted); margin-bottom:20px;">Rubbel den dicken Ruß weg, um den Text zu lesen.</p>
+    <p style="color:var(--color-text-muted); margin-bottom:20px;">Rubbel den dicken RuÃŸ weg, um den Text zu lesen.</p>
     
     <div style="position:relative; width:300px; height:400px; background:#fff; border-radius:5px; overflow:hidden;">
       <div style="position:absolute; width:100%; height:100%; background:#fdf5e6; color:#000; font-family:var(--font-mono); font-size:1.2rem; font-weight:bold; padding:20px; box-sizing:border-box;">
@@ -17,17 +18,17 @@ export function runGadget(stationId, onSuccess) {
       </div>
       <canvas id="scratch-canvas" width="300" height="400" style="position:absolute; top:0; left:0; cursor:pointer; touch-action:none;"></canvas>
     </div>
-  `;
+  </div>`;
   overlay.style.display = 'flex';
 
   const canvas = document.getElementById('scratch-canvas');
   const ctx = canvas.getContext('2d');
   
-  // Fülle den Canvas mit "Ruß" (Dunkelgrau/Schwarz Textur-Simulation)
+  // FÃ¼lle den Canvas mit "RuÃŸ" (Dunkelgrau/Schwarz Textur-Simulation)
   ctx.fillStyle = "#1a1a1a";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   
-  // Bisschen Rauschen hinzufügen
+  // Bisschen Rauschen hinzufÃ¼gen
   for (let i = 0; i < 5000; i++) {
     ctx.fillStyle = Math.random() > 0.5 ? "#2a2a2a" : "#0f0f0f";
     ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 2);
@@ -77,12 +78,12 @@ export function runGadget(stationId, onSuccess) {
   window.addEventListener('touchend', () => isDrawing = false);
 
   function checkSolved() {
-    // Stichproben-Überprüfung der Pixel für Performance
+    // Stichproben-ÃœberprÃ¼fung der Pixel fÃ¼r Performance
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const pixels = imageData.data;
     let transparent = 0;
     
-    // Prüfe jeden 40. Pixel
+    // PrÃ¼fe jeden 40. Pixel
     for (let i = 3; i < pixels.length; i += 40) {
       if (pixels[i] === 0) transparent++;
     }
@@ -98,7 +99,7 @@ export function runGadget(stationId, onSuccess) {
         overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Beweis gesichert!</h2>\`;
         setTimeout(() => {
           overlay.remove();
-          onSuccess();
+          FX.playSuccessWumms().then(() => onSuccess());
         }, 1500);
       }, 1500);
     }

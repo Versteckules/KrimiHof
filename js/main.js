@@ -121,6 +121,10 @@ async function boot() {
 
   // Kern-Module & Startseite (funktionieren auch ohne Spieldaten)
   safeInit('Audio', initAudio);
+  
+  import('./fx.js').then(fx => {
+    fx.attachGlobalHaptics();
+  });
   safeInit('EasterEggs', initEasterEggs);
   safeInit('Landing', initLanding);
   safeInit('Intro', initIntro);

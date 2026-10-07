@@ -1,3 +1,4 @@
+﻿import * as FX from '../../fx.js';
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
@@ -7,7 +8,7 @@ export function runGadget(stationId, onSuccess) {
     document.body.appendChild(overlay);
   }
 
-  overlay.innerHTML = `
+  overlay.innerHTML = `<div class="cl-gadget-wrapper"><div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:30px; color:var(--color-amber-muted);">Chiffrierscheibe</h2>
     
     <div style="position:relative; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle, #8a733f, #3e3215); box-shadow:0 10px 30px rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; border: 4px solid #b89947;">
@@ -32,7 +33,7 @@ export function runGadget(stationId, onSuccess) {
       
     </div>
     <p style="color:var(--color-text-muted); margin-top:30px; font-size:0.9rem;">Drehe den inneren Ring. Richte 'A' auf 'M' aus.</p>
-  `;
+  </div>`;
   overlay.style.display = 'flex';
 
   const innerRing = document.getElementById('crypto-inner-ring');
@@ -78,10 +79,10 @@ export function runGadget(stationId, onSuccess) {
       innerRing.style.boxShadow = "0 0 30px #ffdf00, inset 0 0 20px #ffdf00";
       
       setTimeout(() => {
-        overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Code entschlüsselt!</h2>\`;
+        overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Code entschlÃ¼sselt!</h2>\`;
         setTimeout(() => {
           overlay.remove();
-          onSuccess();
+          FX.playSuccessWumms().then(() => onSuccess());
         }, 1500);
       }, 1000);
     }

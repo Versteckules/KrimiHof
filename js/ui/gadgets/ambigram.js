@@ -1,3 +1,4 @@
+﻿import * as FX from '../../fx.js';
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
@@ -7,18 +8,18 @@ export function runGadget(stationId, onSuccess) {
     document.body.appendChild(overlay);
   }
 
-  overlay.innerHTML = `
-    <h2 style="color:#fff; font-family:var(--font-serif); margin-bottom:20px;">Das Kopfüber-Ambigramm</h2>
+  overlay.innerHTML = `<div class="cl-gadget-wrapper"><div class="cl-gadget-screws"></div>
+    <h2 style="color:#fff; font-family:var(--font-serif); margin-bottom:20px;">Das KopfÃ¼ber-Ambigramm</h2>
     <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:40px;">Es gibt Dinge, die nur aus einem anderen Blickwinkel Sinn ergeben.</p>
     
     <div id="ambigram-canvas" style="width:280px; height:400px; background:#fdf5e6; border-radius:3px; box-shadow:0 0 20px rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; transition: all 1s ease-in-out; position:relative;">
       
-      <!-- Unlesbare Runen (verschwinden bei Lösung) -->
+      <!-- Unlesbare Runen (verschwinden bei LÃ¶sung) -->
       <div id="ambigram-runes" style="font-family:var(--font-mono); font-size:3rem; font-weight:bold; color:#8b0000; transform: rotate(180deg); transition: opacity 1s;">
         W3HCA N38R3 3I0
       </div>
       
-      <!-- Lesbarer Text (erscheint bei Lösung) -->
+      <!-- Lesbarer Text (erscheint bei LÃ¶sung) -->
       <div id="ambigram-text" style="font-family:var(--font-serif); font-size:2rem; font-weight:bold; color:#d4af37; text-align:center; position:absolute; opacity:0; transition: opacity 1s;">
         DIE ERBEN<br>WACHEN
       </div>
@@ -26,7 +27,7 @@ export function runGadget(stationId, onSuccess) {
     </div>
     
     <button id="btn-ambigram-fallback" class="btn-secondary" style="margin-top:40px;">(PC) Bild umdrehen</button>
-  `;
+  </div>`;
   overlay.style.display = 'flex';
 
   let solved = false;
@@ -45,10 +46,10 @@ export function runGadget(stationId, onSuccess) {
     window.removeEventListener('deviceorientation', handleOrientation);
     
     setTimeout(() => {
-      overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Botschaft entschlüsselt!</h2>\`;
+      overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Botschaft entschlÃ¼sselt!</h2>\`;
       setTimeout(() => {
         overlay.remove();
-        onSuccess();
+        FX.playSuccessWumms().then(() => onSuccess());
       }, 1500);
     }, 2500);
   }

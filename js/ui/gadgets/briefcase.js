@@ -1,3 +1,4 @@
+﻿import * as FX from '../../fx.js';
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
@@ -7,7 +8,7 @@ export function runGadget(stationId, onSuccess) {
     document.body.appendChild(overlay);
   }
 
-  overlay.innerHTML = `
+  overlay.innerHTML = `<div class="cl-gadget-wrapper"><div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:30px;">Zahlenschloss knacken</h2>
     
     <div style="background: linear-gradient(135deg, #444, #222); padding: 40px 20px; border-radius: 10px; border: 2px solid #555; box-shadow: 0 10px 30px rgba(0,0,0,0.8); display:flex; gap:10px; position:relative;">
@@ -17,7 +18,7 @@ export function runGadget(stationId, onSuccess) {
       <div style="position:absolute; bottom:10px; left:10px; width:10px; height:10px; background:#111; border-radius:50%;"></div>
       <div style="position:absolute; bottom:10px; right:10px; width:10px; height:10px; background:#111; border-radius:50%;"></div>
       
-      <!-- Rädchen -->
+      <!-- RÃ¤dchen -->
       <div class="dial-container" data-index="0" style="width:60px; height:100px; background:#000; border:2px solid #666; border-radius:5px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; cursor:ns-resize; user-select:none;">
         <div class="dial-val" style="font-family:var(--font-mono); font-size:3rem; color:#fff; font-weight:bold; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">0</div>
         <div style="position:absolute; top:0; width:100%; height:20px; background:linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); pointer-events:none;"></div>
@@ -42,7 +43,7 @@ export function runGadget(stationId, onSuccess) {
       </div>
     </div>
     <p id="briefcase-hint" style="color:var(--color-text-muted); margin-top:20px; font-size:0.9rem;">Wische nach oben/unten.</p>
-  `;
+  </div>`;
   overlay.style.display = 'flex';
 
   const TARGET_CODE = [8, 7, 0]; // 1870 -> 870
@@ -91,7 +92,7 @@ export function runGadget(stationId, onSuccess) {
       let y = e.touches ? e.touches[0].clientY : e.clientY;
       let diff = startY - y;
       
-      if (Math.abs(diff) > 20) { // Schwelle für einen "Klick"
+      if (Math.abs(diff) > 20) { // Schwelle fÃ¼r einen "Klick"
         if (diff > 0) {
           currentCode[index] = (currentCode[index] + 1) % 10;
         } else {
@@ -128,10 +129,10 @@ export function runGadget(stationId, onSuccess) {
       solved = true;
       document.getElementById('btn-lock-open').style.transform = "translateX(10px)";
       setTimeout(() => {
-        overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Koffer geöffnet!</h2>\`;
+        overlay.innerHTML = \`<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Koffer geÃ¶ffnet!</h2>\`;
         setTimeout(() => {
           overlay.remove();
-          onSuccess();
+          FX.playSuccessWumms().then(() => onSuccess());
         }, 1500);
       }, 500);
     } else {
