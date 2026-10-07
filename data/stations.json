@@ -32,7 +32,7 @@
     "name": "Alte Hauptpost (Verdächtige Fracht)",
     "number": 2,
     "type": "mandatory",
-    "coords": "N 50° 18.986 E 011° 54.898",
+    "coords": "N 50° 19.123 E 011° 54.955",
     "description": "Am Hintereingang der historischen Poststelle herrscht rege Betriebsamkeit. Kurierfahrer verladen letzte Kisten. Dr. Renger hatte hier laut seinem Kalender ein Postfach, in dem er Beweise vor den Verdächtigen sichern wollte.",
     "storyEventId": "post_kurier",
     "characters": [
@@ -323,5 +323,13 @@
       "id": "scanner",
       "requiredHardware": "none"
     }
+  },
+  {
+    "id": "jean_paul",
+    "name": "Jean Pauls Geist",
+    "number": 16,
+    "type": "easteregg",
+    "coords": "N 50° 19.035 E 011° 54.924",
+    "description": "Easteregg"
   }
 ]

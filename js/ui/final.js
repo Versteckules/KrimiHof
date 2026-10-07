@@ -6,6 +6,7 @@ import { getState } from '../state.js';
 import { showView } from '../main.js';
 import { calculateFinalResult } from '../scoring.js';
 import { getConfig, getFinalCoords, getStory } from '../config-loader.js';
+import { openIntro } from './intro.js';
 
 let accusedSuspect = null;
 
@@ -59,46 +60,120 @@ function handleAccusation(suspectId) {
 
   const state = getState();
   const result = calculateFinalResult(state);
-
-  const resContainer = document.getElementById('final-result');
-  const title = document.getElementById('final-result-title');
-  const text = document.getElementById('final-result-text');
-  const coords = document.getElementById('final-coords');
-
-  resContainer.classList.remove('hidden');
-
   const accusedName = getSuspectName(suspectId);
   const realName = getSuspectName(result.murderer);
   const story = getStory();
   
-  let confessionHtml = "";
-  if (story && story.endings && story.endings[suspectId]) {
-     const ending = story.endings[suspectId];
-     const avatar = story.suspects && story.suspects[suspectId] ? story.suspects[suspectId].image : 'assets/avatar.jpg';
-     
-     confessionHtml = `
-       <div style="margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.6); border-left: 4px solid var(--color-blood-red); border-radius: 4px; display: flex; flex-direction: column; gap: 15px; align-items: center;">
-         <img src="${avatar}" alt="${accusedName}" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--color-amber-muted); object-fit: cover; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);">
-         <h3 style="color: var(--color-amber-glow); font-family: var(--font-serif); font-size: 1.4rem;">${ending.title || 'Das Geständnis'}</h3>
-         <p style="color: var(--color-text-main); font-size: 1.05rem; font-style: italic; line-height: 1.6; text-align: justify;">
-           ${ending.confession}
-         </p>
-       </div>
-     `;
-  }
+  const avatar = story.suspects && story.suspects[suspectId] ? story.suspects[suspectId].image : 'assets/avatar.jpg';
+  const realAvatar = story.suspects && story.suspects[result.murderer] ? story.suspects[result.murderer].image : 'assets/avatar.jpg';
+  const ending = story.endings && story.endings[suspectId] ? story.endings[suspectId] : { confession: 'Ich war es!' };
+  
+  const perc = result.percentages[result.murderer];
+  let outroSlides = [];
 
   if (suspectId === result.murderer) {
-    title.textContent = 'Korrekt!';
-    title.style.color = 'var(--color-green, #2e8b57)';
-    text.innerHTML = `Deine Beweisaufnahme war stichhaltig. Die Indizien verweisen mit <strong>${result.percentages[result.murderer]}%</strong> auf ${accusedName}!${confessionHtml}<br><br><span style="color: var(--color-night-light);">Die Akte ist geschlossen.</span>`;
+    if (perc >= 75) {
+      outroSlides = [
+        {
+          image: avatar,
+          badge: 'DIE ÜBERFÜHRUNG',
+          title: 'Die Falle schnappt zu!',
+          text: `Mit wasserdichten Beweisen (Beweislast: ${perc}%) konfrontierst du ${accusedName}. Unter der erdrückenden Last der Indizien bricht ${accusedName} schließlich zusammen.`
+        },
+        {
+          image: avatar,
+          badge: 'DAS GESTÄNDNIS',
+          title: 'Die Wahrheit kommt ans Licht',
+          text: `"${ending.confession}"`
+        },
+        {
+          image: 'assets/hero_hof_night.jpg',
+          badge: 'FALL GELÖST',
+          title: 'Hinter Gittern!',
+          text: 'Der Pakt der Schlappen-Erben ist endgültig zerschlagen! Der Drahtzieher wird dem Haftrichter vorgeführt und zu einer langen Freiheitsstrafe verurteilt. Die historischen Urkunden sind sichergestellt.'
+        }
+      ];
+    } else {
+      outroSlides = [
+        {
+          image: avatar,
+          badge: 'DIE ÜBERFÜHRUNG',
+          title: 'Zu wenig Beweise!',
+          text: `Du konfrontierst ${accusedName}. Zwar bricht ${accusedName} unter dem Druck zusammen und gesteht die Tat...`
+        },
+        {
+          image: avatar,
+          badge: 'DAS GESTÄNDNIS',
+          title: 'Die bittere Wahrheit',
+          text: `"${ending.confession}"`
+        },
+        {
+          image: 'assets/kommissar_stahl.jpg',
+          badge: 'FREISPRUCH',
+          title: 'Mangel an Beweisen!',
+          text: `Doch der Triumph ist von kurzer Dauer. Die Beweislast liegt nur bei ${perc}% (Benötigt: 75%). Ein teurer Staranwalt erwirkt einen Freispruch auf Kaution. ${accusedName} entkommt der Justiz! Der Fall ist gelöst, aber der Täter ist auf freiem Fuß.`
+        }
+      ];
+    }
   } else {
-    title.textContent = 'Ein fataler Irrtum!';
-    title.style.color = 'var(--color-blood-red)';
-    text.innerHTML = `Du hast den Falschen beschuldigt. Die Beweise (${result.percentages[result.murderer]}%) sprachen eigentlich gegen <strong>${realName}</strong>!${confessionHtml}<br><br><span style="color: var(--color-night-light);">Das Spiel ist dennoch vorbei. Die Koordinaten erhältst du trotzdem:</span>`;
+    outroSlides = [
+      {
+        image: avatar,
+        badge: 'EIN FATALER IRRTUM',
+        title: 'Du hast den Falschen!',
+        text: `Du konfrontierst ${accusedName} mit deinen Beweisen. Doch ${accusedName} lacht dich nur aus und weist jede Schuld souverän von sich. Deine Theorie bricht in sich zusammen.`
+      },
+      {
+        image: realAvatar,
+        badge: 'DER WAHRE TÄTER',
+        title: 'Eine verpasste Chance',
+        text: `Während du Zeit mit dem Falschen vergeudet hast, hat ${realName} die Gelegenheit genutzt, alle Spuren zu verwischen! Die Beweise hätten eindeutig gegen ${realName} gesprochen (${perc}%).`
+      },
+      {
+        image: 'assets/kommissar_stahl.jpg',
+        badge: 'FALL GESCHLOSSEN',
+        title: 'Der Pakt triumphiert',
+        text: 'Die Akte wird geschlossen. Die Urkunden sind verschwunden und der Pakt der Schlappen-Erben agiert weiter aus den Schatten. Du hast versagt!'
+      }
+    ];
   }
 
-  coords.innerHTML = formatFinalCoords();
+  // Set the accused state
   accusedSuspect = suspectId;
+
+  // Start Intro (Outro slides)
+  openIntro(() => {
+    // This callback runs when the Outro slides finish
+    showView('view-final');
+    
+    const resContainer = document.getElementById('final-result');
+    const title = document.getElementById('final-result-title');
+    const text = document.getElementById('final-result-text');
+    const coords = document.getElementById('final-coords');
+    
+    // Hide the suspect container now that we're showing results
+    const container = document.getElementById('final-suspects-container');
+    if (container) container.style.display = 'none';
+
+    resContainer.classList.remove('hidden');
+
+    if (suspectId === result.murderer) {
+      if (perc >= 75) {
+        title.textContent = 'Glückwunsch! Fall gelöst.';
+        title.style.color = 'var(--color-green, #2e8b57)';
+      } else {
+        title.textContent = 'Fall gelöst (aber Täter auf freiem Fuß)';
+        title.style.color = 'var(--color-amber-glow)';
+      }
+    } else {
+      title.textContent = 'Fall ungelöst!';
+      title.style.color = 'var(--color-blood-red)';
+    }
+
+    text.innerHTML = 'Hier sind die Koordinaten für die Final-Dose:';
+    coords.innerHTML = formatFinalCoords();
+
+  }, outroSlides);
 }
 
 export function startFinaleForSuspect(suspectId) {

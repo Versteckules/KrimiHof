@@ -128,10 +128,9 @@
         <!-- Owner Badge -->
         <div class="owner-badge">
           <div class="avatar-frame" title="Versteckules">
-            <img src="assets/kommissar_stahl.jpg" alt="Avatar von Versteckules" class="avatar-noir">
+            <img src="assets/Avatar.jpg" alt="Avatar von Versteckules" class="avatar-noir">
           </div>
           <div class="owner-text">
-            <span style="display: block; color: var(--color-amber-muted);">Geocache Owner</span>
             made by <strong>Versteckules</strong>
           </div>
         </div>
@@ -178,12 +177,7 @@
           <button id="btn-lockscreen-back" class="btn-secondary">Zurück zur Startseite</button>
         </div>
 
-        <div style="margin-top: var(--space-xl);">
-          <span class="owner-stamp">
-            <span class="avatar-frame avatar-frame--sm"><img src="assets/kommissar_stahl.jpg" alt="" class="avatar-noir"></span>
-            Akte verwahrt von <strong>Versteckules</strong>
-          </span>
-        </div>
+
       </section>
     </main>
 
@@ -209,12 +203,7 @@
           Hauptverdächtige</div>
       </div>
 
-      <!-- Dezentes Owner-Siegel auf der Karte -->
-      <div class="owner-stamp"
-        style="position: absolute; top: 12px; left: 12px; z-index: 1000; background: rgba(10,14,23,0.75); padding: 4px 10px 4px 4px; border-radius: 999px; border: 1px solid var(--color-glass-border);">
-        <span class="avatar-frame avatar-frame--sm"><img src="assets/kommissar_stahl.jpg" alt="" class="avatar-noir"></span>
-        <strong>Versteckules</strong>
-      </div>
+
 
       <!-- Bottom Navigator Bar (AP7) -->
       <div id="navigator-bar"
@@ -247,8 +236,11 @@
             style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 40px; height: 15px; background: rgba(0,0,0,0.2); border-radius: 2px;">
           </div> <!-- Clip -->
           <div
-            style="position: absolute; top: 10px; right: 15px; font-family: var(--font-mono); font-size: 0.7rem; color: #8b0000; font-weight: bold; transform: rotate(5deg); border: 1px solid #8b0000; padding: 2px 4px;">
-            AKTE: <span id="station-number-stamp">00</span></div>
+            style="position: absolute; top: 10px; right: 15px; font-family: var(--font-mono); font-size: 0.7rem; color: #8b0000; font-weight: bold; transform: rotate(5deg); border: 1px solid #8b0000; padding: 2px 4px; z-index: 2; background: rgba(253,245,230,0.8);">
+            AKTE: <span id="station-number-stamp">00</span>
+          </div>
+          <!-- Wasserzeichen Avatar.jpg -->
+          <img src="assets/Avatar.jpg" alt="" style="position: absolute; top: 10px; right: 10px; width: 80px; opacity: 0.15; z-index: 1; pointer-events: none; border-radius: 4px; filter: sepia(1) contrast(1.2);">
 
           <p id="station-description"
             style="font-size: 1.15rem; margin-bottom: var(--space-lg); line-height: 1.6; font-style: italic; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: var(--space-md);">
@@ -281,18 +273,13 @@
     <main id="view-dossier" class="view hidden">
       <section
         style="padding: var(--space-xl) var(--space-md); max-width: 800px; margin: 0 auto; color: var(--color-text); position: relative; overflow: hidden;">
-        <img src="assets/kommissar_stahl.jpg" alt="" class="avatar-watermark" style="right: -20px; bottom: -30px; width: 260px;">
+        <!-- watermark removed -->
         <div
           style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-glass-border); padding-bottom: var(--space-md); margin-bottom: var(--space-lg); position: relative; z-index: 1;">
           <div>
             <h2
               style="font-size: 2rem; font-family: var(--font-serif); color: var(--color-amber-glow); margin-bottom: var(--space-xs);">
               Ermittlungsakte</h2>
-            <span class="owner-stamp">
-              <span class="avatar-frame avatar-frame--sm"><img src="assets/kommissar_stahl.jpg" alt=""
-                  class="avatar-noir"></span>
-              Aktenführung: <strong>Versteckules</strong>
-            </span>
           </div>
           <div style="display: flex; gap: 10px; align-items: center;">
             <button id="btn-dossier-replay-intro" class="btn-secondary"
@@ -352,8 +339,10 @@
         <h2
           style="font-size: 2.5rem; font-family: var(--font-serif); color: var(--color-amber-glow); margin-bottom: var(--space-md);">
           Die Überführung</h2>
-        <p style="font-size: 1.1rem; margin-bottom: var(--space-xl);">Du hast alle Hinweise gesammelt. Wer ist der
-          Täter?</p>
+        <img src="assets/kommissar_stahl.jpg" alt="Kommissar Stahl" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--color-amber-muted); margin-bottom: 15px; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); object-fit: cover; object-position: top;">
+        <p style="font-size: 1.1rem; margin-bottom: var(--space-xl); font-style: italic; color: #ccc;">
+          "Das Warten hat ein Ende. Du hast alle Zeugen gehört und alle Beweise gesichert. Jetzt geht es ans Eingemachte! Wer ist der Täter?"
+        </p>
 
         <div id="final-suspects-container"
           style="display: flex; gap: var(--space-md); justify-content: center; margin-bottom: var(--space-xl);">
@@ -372,12 +361,7 @@
           <button id="btn-print-diploma" class="btn-primary">Diplom anzeigen / speichern</button>
         </div>
 
-        <div
-          style="display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); margin-top: var(--space-xl);">
-          <div class="avatar-frame avatar-frame--md"><img src="assets/kommissar_stahl.jpg" alt="Avatar von Versteckules"
-              class="avatar-noir"></div>
-          <span class="owner-stamp">Fall abgeschlossen · gezeichnet <strong>Versteckules</strong></span>
-        </div>
+
       </section>
     </main>
   </div>

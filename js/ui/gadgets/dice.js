@@ -1,4 +1,4 @@
-﻿import * as FX from '../../fx.js';
+import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -11,8 +11,8 @@ export function runGadget(stationId, onSuccess) {
 
   overlay.innerHTML = `<div class="cl-gadget-wrapper" style="padding: 20px; width: 95vw; max-width: 400px; display: flex; flex-direction: column; align-items: center; text-align: center;">
     <div class="cl-gadget-screws"></div>
-    <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:var(--color-amber-glow);">Wirtshaus-WÃ¼rfeln</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Tippe, um die alten KnochenwÃ¼rfel zu werfen.<br>Du brauchst mehr als 10 Augen!</p>
+    <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:var(--color-amber-glow);">Wirtshaus-Würfeln</h2>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Tippe, um die alten Knochenwürfel zu werfen.<br>Du brauchst mehr als 10 Augen!</p>
     
     <div style="display:flex; gap:30px; margin-bottom:40px; perspective: 1000px; padding: 20px;">
       
@@ -32,7 +32,7 @@ export function runGadget(stationId, onSuccess) {
     <!-- Easter Egg Target -->
     <div id="wurstkessel-easter-egg" style="width:80px; height:60px; background:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%25%22 height=%22100%25%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23b87333%22 rx=%2210%22/><text x=%2215%22 y=%2235%22 fill=%22white%22 font-family=%22sans-serif%22 font-size=%2214%22>Kessel</text></svg>'); background-size:cover; margin-bottom:30px; cursor:pointer; opacity:0.8;"></div>
     
-    <button id="btn-dice-roll" class="btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">WÃ¼rfeln</button>
+    <button id="btn-dice-roll" class="btn-primary" style="font-size: 1.2rem; padding: 15px 30px;">Würfeln</button>
   </div>`;
   overlay.style.display = 'flex';
 
@@ -50,6 +50,7 @@ export function runGadget(stationId, onSuccess) {
   };
 
   let solved = false;
+  let attempts = 0;
 
   document.getElementById('btn-dice-roll').onclick = () => {
     if (solved) return;
@@ -89,9 +90,27 @@ export function runGadget(stationId, onSuccess) {
           setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1500);
         }, 1000);
       } else {
-        setTimeout(() => {
-          FX.shakeElement(document.querySelector('.cl-gadget-wrapper'));
-        }, 500);
+        attempts++;
+        if (attempts >= 3) {
+           solved = true;
+           setTimeout(() => {
+             overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-blood-red); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">3x Pech!</h2><p>Du verlierst 50 Erfahrungspunkte.</p></div>`;
+             setTimeout(() => { 
+                import('../../state.js').then(stateMod => {
+                  const currentScore = stateMod.getState().score || 0;
+                  stateMod.saveState({ score: currentScore - 50 });
+                  overlay.remove();
+                  window.isGadgetRunning = false;
+                  import('../main.js').then(m => m.showView('view-dashboard'));
+                  import('../station.js').then(statMod => statMod.onStationComplete(stationId));
+                });
+             }, 2000);
+           }, 1000);
+        } else {
+          setTimeout(() => {
+            FX.shakeElement(document.querySelector('.cl-gadget-wrapper'));
+          }, 500);
+        }
       }
     }, 1000);
   };

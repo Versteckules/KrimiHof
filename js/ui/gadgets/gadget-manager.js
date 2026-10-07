@@ -1,4 +1,4 @@
-﻿/**
+/**
  * gadget-manager.js - Zentraler Hub fÃ¼r die 17 Gadgets (AP9)
  */
 
@@ -8,8 +8,41 @@ import { recordDecision, addInventoryItem } from '../../state.js';
 import { stationDialogueTrees } from '../../station-dialogues.js';
 
 export function startGadget(gadgetId, stationId) {
+  if (window.isGadgetRunning) return;
+  window.isGadgetRunning = true;
+  
   const station = getStationById(stationId);
-  if (!station) return;
+  if (!station) {
+    window.isGadgetRunning = false;
+    return;
+  }
+
+  // Inject skip button
+  const checkInterval = setInterval(() => {
+    let overlay = document.getElementById('gadget-fullscreen-overlay') || document.getElementById('gadget-canvas-overlay');
+    if (overlay && !document.getElementById('global-skip-btn')) {
+      const skipBtn = document.createElement('button');
+      skipBtn.id = 'global-skip-btn';
+      skipBtn.innerHTML = 'Rätsel Abbrechen<br><span style="font-size:0.7rem;">(-50 XP)</span>';
+      skipBtn.className = 'btn-danger';
+      skipBtn.style.cssText = 'position: absolute; top: 15px; right: 15px; z-index: 999999; padding: 5px 10px; font-size: 0.8rem; box-shadow: 0 0 10px black;';
+      skipBtn.onclick = () => {
+        if (confirm('Möchtest du das Rätsel wirklich überspringen? Dies kostet 50 Erfahrungspunkte und du erhältst keinen Beweis!')) {
+          import('../../state.js').then(stateMod => {
+            const currentScore = stateMod.getState().score || 0;
+            stateMod.saveState({ score: currentScore - 50 });
+            clearInterval(checkInterval);
+            overlay.remove();
+            window.isGadgetRunning = false;
+            import('../main.js').then(m => m.showView('view-dashboard'));
+            onStationComplete(stationId);
+          });
+        }
+      };
+      overlay.appendChild(skipBtn);
+    }
+    if (!window.isGadgetRunning) clearInterval(checkInterval);
+  }, 200);
 
   import(`./${gadgetId}.js`)
     .then(mod => {
@@ -21,7 +54,7 @@ export function startGadget(gadgetId, stationId) {
     })
     .catch(err => {
       console.warn(`Gadget ${gadgetId} module not found, skipping to dialogue.`, err);
-      alert("Hinweis: Ein Mini-Spiel konnte nicht geladen werden! (" + err.message + ")\n\nFalls du das Spiel direkt von der Festplatte geÃ¶ffnet hast (Doppelklick), blockiert der Browser die Spiele. Bitte starte das Spiel Ã¼ber die 'START.bat' Datei!");
+      alert("Hinweis: Ein Mini-Spiel konnte nicht geladen werden! (" + err.message + ")");
       showPostGadgetDialogue(stationId, station);
     });
 }
@@ -38,6 +71,7 @@ function showPostGadgetDialogue(stationId, station) {
         if (evidence) {
           addInventoryItem(evidence.id);
         }
+        window.isGadgetRunning = false;
         onStationComplete(stationId);
       });
     });
@@ -141,6 +175,7 @@ function showPostGadgetDialogue(stationId, station) {
           }
 
           overlay.style.display = 'none';
+          window.isGadgetRunning = false;
           onStationComplete(stationId);
         };
       });
@@ -154,6 +189,7 @@ function showPostGadgetDialogue(stationId, station) {
             addInventoryItem(evidence.id);
           }
           overlay.style.display = 'none';
+          window.isGadgetRunning = false;
           onStationComplete(stationId);
         };
       }

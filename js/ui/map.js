@@ -212,11 +212,14 @@ function renderMarkers() {
             
             // Easter Egg 5: Jean-Paul Geist (1% Chance, if not already found)
             if (!state.easterEggGhost && Math.random() < 0.1 && !markers['ghost_jean_paul']) {
-              // Position near Schloßplatz
-              const marker = L.marker([50.3208, 11.9160], {
-                icon: getIcon('locked', 'rgba(255,255,255,0.5)')
-              }).addTo(map);
-              marker.bindPopup("<b>Jean Paul's Geist</b><br>Du hast mich gefunden! (+50 Punkte)");
+              // Position from stations.json
+              import('../config-loader.js').then(cfg => {
+                const jpStation = cfg.getStationById('jean_paul');
+                if (jpStation && jpStation.coordsDecimal) {
+                  const marker = L.marker([jpStation.coordsDecimal.lat, jpStation.coordsDecimal.lng], {
+                    icon: getIcon('locked', 'rgba(255,255,255,0.5)')
+                  }).addTo(map);
+                  marker.bindPopup("<b>Jean Pauls Geist</b><br>Du hast mich gefunden! (+50 Punkte)");
               marker.on('click', () => {
                 import('../state.js').then(mod => {
                   alert("EASTER EGG GEFUNDEN! Jean Paul's Geist verblasst! (+50 Punkte)");
@@ -225,6 +228,8 @@ function renderMarkers() {
                 });
               });
               markers['ghost_jean_paul'] = marker;
+                }
+              });
             }
           });
        }

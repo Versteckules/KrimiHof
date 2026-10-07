@@ -12,7 +12,7 @@ export function runGadget(stationId, onSuccess) {
   overlay.innerHTML = `<div class="cl-gadget-wrapper" style="padding: 20px; width: 95vw; max-width: 500px; display: flex; flex-direction: column; align-items: center; text-align: center;">
     <div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:var(--color-amber-glow);">Zeitreise-Archiv</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Wische Ã¼ber das Bild, um die Brandspuren von 1823 mit der heutigen Ansicht abzugleichen.</p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Wische über das Bild, um die Brandherde von 1823 mit dem heutigen Infrarot-Scan der Wand abzugleichen.</p>
     
     <div id="time-slider-container" style="position:relative; width:100%; height:300px; max-width: 400px; border: 4px solid var(--color-brass-dark); border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); overflow:hidden; user-select: none; touch-action: none;">
       
@@ -21,10 +21,10 @@ export function runGadget(stationId, onSuccess) {
         <div style="position:absolute; top:10px; left:10px; color:#fff; font-family:var(--font-serif); font-size: 1.2rem; opacity: 0.7; text-shadow: 1px 1px 2px #000;">1823</div>
       </div>
 
-      <!-- Overlay Image (Today) -->
+      <!-- Overlay Image (Today IR Scan) -->
       <div id="time-slider-overlay" style="position:absolute; top:0; left:0; width:50%; height:100%; overflow:hidden; border-right: 4px solid var(--color-amber-glow); box-shadow: 5px 0 15px rgba(0,0,0,0.5);">
-         <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: url('assets/hero_hof_night.jpg') center/cover; min-width: 400px;">
-           <div style="position:absolute; top:10px; right:10px; color:#fff; font-family:var(--font-sans); font-size: 1.2rem; opacity: 0.7; text-shadow: 1px 1px 2px #000;">HEUTE</div>
+         <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: url('assets/intro_fire_1823.jpg') center/cover; filter: grayscale(1) invert(0.8) brightness(0.6) contrast(2); min-width: 400px;">
+           <div style="position:absolute; top:10px; right:10px; color:#0f0; font-family:var(--font-mono); font-size: 1.2rem; opacity: 0.8; text-shadow: 1px 1px 2px #000;">IR-SCAN</div>
          </div>
          
          <!-- The Slider Handle -->
@@ -36,7 +36,7 @@ export function runGadget(stationId, onSuccess) {
 
     </div>
 
-    <div id="time-slider-hint" style="margin-top: 20px; font-family:var(--font-mono); color:var(--color-amber-glow); opacity:0; transition: opacity 0.5s;">Die Brandmuster stimmen Ã¼berein!</div>
+    <div id="time-slider-hint" style="margin-top: 20px; font-family:var(--font-mono); color:var(--color-amber-glow); opacity:0; transition: opacity 0.5s;">Die Brandmuster stimmen überein!</div>
     
     <button id="btn-time-slider-done" class="btn-primary" style="margin-top:20px; opacity: 0; pointer-events: none; transition: opacity 0.5s;">Akte aktualisieren</button>
   </div>`;

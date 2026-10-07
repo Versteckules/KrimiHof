@@ -159,7 +159,8 @@ function updateDossier() {
           const suspectName = getSuspectName(assignedTo);
           suffix = ` <span style="color:#888; font-size:0.8rem;">(&rarr; ${suspectName})</span>`;
         }
-        h += `<button class="btn-evidence" data-id="${id}" style="background: rgba(255,255,255,0.1); border: 1px solid var(--color-glass-border); padding: 8px; border-radius: 4px; color: var(--color-amber-glow); cursor: pointer; text-align: left; font-family: var(--font-serif); font-size: 1rem;">🔍 ${name}${suffix}</button>`;
+        let blinkClass = (!assignedTo && !['evidence_fire_dossier', 'evidence_tape_renger', 'evidence_charter_1432'].includes(id)) ? 'blink-animation' : '';
+        h += `<button class="btn-evidence ${blinkClass}" data-id="${id}" style="background: rgba(255,255,255,0.1); border: 1px solid var(--color-glass-border); padding: 8px; border-radius: 4px; color: var(--color-amber-glow); cursor: pointer; text-align: left; font-family: var(--font-serif); font-size: 1rem;">🔍 ${name}${suffix}</button>`;
       });
     } else {
       h += '<em>Leer</em>';
@@ -179,7 +180,10 @@ function updateDossier() {
           let descHtml = evidenceData.description || '';
           const genericIds = ['evidence_fire_dossier', 'evidence_tape_renger', 'evidence_charter_1432'];
           if (genericIds.includes(id)) {
-            descHtml += '<br><br><em style="color:var(--color-amber-muted);">Hinweis der Spurensicherung: Dieser Beweis belegt lediglich das allgemeine Motiv, kann aber jedem Verdächtigen zugewiesen werden.</em>';
+            descHtml += '<br><br><em style="color:var(--color-amber-muted);">Hinweis der Spurensicherung: Dieser Beweis belegt lediglich das allgemeine Motiv und kann niemandem spezifisch zugewiesen werden.</em>';
+            document.getElementById('evidence-assignment-ui').style.display = 'none';
+          } else {
+            document.getElementById('evidence-assignment-ui').style.display = 'block';
           }
           document.getElementById('evidence-desc').innerHTML = descHtml;
           
@@ -194,14 +198,43 @@ function updateDossier() {
             
             newAssignBtn.addEventListener('click', () => {
               if (state.assignedEvidence && state.assignedEvidence[id]) {
-                alert('Dieser Beweis wurde bereits zugewiesen!');
+                import('../main.js').then(m => m.showNoirAlert('Dieser Beweis wurde bereits zugewiesen!'));
                 return;
               }
               const suspectId = newAssignBtn.getAttribute('data-suspect');
               const sName = getSuspectName(suspectId);
-              if (!confirm('Sind Sie sicher, dass Sie diesen Beweis ' + sName + ' zuweisen wollen? Diese Entscheidung kann nicht rückgängig gemacht werden!')) {
-                return;
-              }
+              
+              // Custom Confirm
+              const confirmBox = document.createElement('div');
+              confirmBox.style.position = 'fixed';
+              confirmBox.style.top = '0'; confirmBox.style.left = '0'; confirmBox.style.width = '100vw'; confirmBox.style.height = '100vh';
+              confirmBox.style.backgroundColor = 'rgba(0,0,0,0.85)';
+              confirmBox.style.display = 'flex'; confirmBox.style.justifyContent = 'center'; confirmBox.style.alignItems = 'center';
+              confirmBox.style.zIndex = '99999';
+              confirmBox.innerHTML = `
+                <div style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
+                  <h3 style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">Beweis Zuweisen</h3>
+                  <p style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
+                    Sind Sie sicher, dass Sie diesen Beweis ${sName} zuweisen wollen? Diese Entscheidung kann nicht rückgängig gemacht werden!
+                  </p>
+                  <div style="display: flex; justify-content: space-around;">
+                    <button id="btn-assign-no" class="btn-secondary" style="padding: 10px 20px;">Abbrechen</button>
+                    <button id="btn-assign-yes" class="btn-primary" style="padding: 10px 20px; background: var(--color-blood-red); border:none;">Zuweisen</button>
+                  </div>
+                </div>
+              `;
+              document.body.appendChild(confirmBox);
+              
+              confirmBox.querySelector('#btn-assign-no').addEventListener('click', () => {
+                document.body.removeChild(confirmBox);
+              });
+              
+              confirmBox.querySelector('#btn-assign-yes').addEventListener('click', () => {
+                document.body.removeChild(confirmBox);
+                processAssignment(suspectId);
+              });
+              
+              function processAssignment(suspectId) {
               
               // Hardcoded mapping for which evidence belongs to whom
               const evidenceMapping = {
@@ -217,7 +250,20 @@ function updateDossier() {
               
               if ((evidenceMapping[suspectId] && evidenceMapping[suspectId].includes(id)) || generic.includes(id)) {
                 feedbackEl.style.color = '#006400';
-                feedbackEl.innerText = '📈 Passt perfekt! (Verdacht +15%)';
+                let reason = 'Passt perfekt! (Verdacht +15%)';
+                if (id === 'evidence_polaroid_station') reason = 'Das Polaroid beweist seine Anwesenheit am Bahnhof. (Verdacht +15%)';
+                if (id === 'evidence_cipher_paper') reason = 'Der Schuldschein belegt seine Schulden. (Verdacht +15%)';
+                if (id === 'evidence_briefcase_lock') reason = 'Der Kofferinhalt verbindet ihn mit den Geschäften. (Verdacht +15%)';
+                if (id === 'evidence_dice_gamble') reason = 'Die Spielsucht ist ein klares Motiv. (Verdacht +15%)';
+                if (id === 'evidence_rosina_note') reason = 'Die Stiftungsurkunde belastet sie direkt. (Verdacht +15%)';
+                if (id === 'evidence_wiretap_log') reason = 'Das Abhörprotokoll bestätigt die Verschwörung. (Verdacht +15%)';
+                if (id === 'evidence_phone_warning') reason = 'Die Warnung kam von diesem Anschluss. (Verdacht +15%)';
+                if (id === 'evidence_torn_letter') reason = 'Der Drohbrief stammt eindeutig von ihm. (Verdacht +15%)';
+                if (id === 'evidence_uv_formula') reason = 'Die Losung war nur Eingeweihten bekannt. (Verdacht +15%)';
+                if (id === 'evidence_ambigram_mirror') reason = 'Das Ambigramm ist sein Markenzeichen. (Verdacht +15%)';
+                if (id === 'evidence_brass_wheel') reason = 'Die entschlüsselte Botschaft führt zu ihm. (Verdacht +15%)';
+                if (generic.includes(id)) reason = 'Dieses allgemeine Motiv passt ins Bild. (Verdacht +15%)';
+                feedbackEl.innerText = '📈 ' + reason;
                 import('../state.js').then(mod => {
                   mod.addSuspectImpact(suspectId, 15);
                   mod.assignEvidence(id, suspectId);
@@ -225,7 +271,7 @@ function updateDossier() {
                 });
               } else {
                 feedbackEl.style.color = '#8b0000';
-                feedbackEl.innerText = '📉 Ergibt wenig Sinn... (Verdacht -7%)';
+                feedbackEl.innerText = '📉 Ergibt wenig Sinn... Dieser Beweis passt nicht zu dieser Person. (Verdacht -7%)';
                 import('../state.js').then(mod => {
                   mod.addSuspectImpact(suspectId, -7);
                   mod.assignEvidence(id, suspectId);
@@ -235,6 +281,7 @@ function updateDossier() {
               
               // Hide buttons after assignment
               modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'none');
+              } // end processAssignment
             });
           });
 
@@ -243,6 +290,10 @@ function updateDossier() {
           if (currentlyAssigned) {
             document.getElementById('evidence-assignment-feedback').style.color = '#555';
             document.getElementById('evidence-assignment-feedback').innerText = 'Bereits zugewiesen an: ' + getSuspectName(currentlyAssigned);
+            modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'none');
+          } else if (genericIds.includes(id)) {
+            document.getElementById('evidence-assignment-feedback').style.color = '#8b0000';
+            document.getElementById('evidence-assignment-feedback').innerText = 'Dieser allgemeine Beweis kann nicht zugewiesen werden.';
             modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'none');
           } else {
             modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'block');

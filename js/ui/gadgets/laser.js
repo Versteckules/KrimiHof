@@ -1,4 +1,4 @@
-﻿import * as FX from '../../fx.js';
+import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -19,10 +19,11 @@ export function runGadget(stationId, onSuccess) {
       <!-- Grid Background -->
       <div style="position:absolute; width:100%; height:100%; background: linear-gradient(0deg, transparent 24%, rgba(255, 0, 0, .05) 25%, rgba(255, 0, 0, .05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, .05) 75%, rgba(255, 0, 0, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 0, 0, .05) 25%, rgba(255, 0, 0, .05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, .05) 75%, rgba(255, 0, 0, .05) 76%, transparent 77%, transparent); background-size:30px 30px; pointer-events:none;"></div>
       
-      <!-- Lasers -->
-      <div class="laser-beam" style="position:absolute; top:120px; left:0; width:220px; height:4px; background:#f00; box-shadow:0 0 15px #f00, 0 0 5px #fff; border-radius: 2px;"></div>
-      <div class="laser-beam" style="position:absolute; top:260px; right:0; width:220px; height:4px; background:#f00; box-shadow:0 0 15px #f00, 0 0 5px #fff; border-radius: 2px;"></div>
-      <div class="laser-beam" style="position:absolute; top:120px; left:220px; width:4px; height:144px; background:#f00; box-shadow:0 0 15px #f00, 0 0 5px #fff; border-radius: 2px;"></div>
+      <!-- Lasers (Schwereres Labyrinth) -->
+      <div class="laser-beam" style="position:absolute; top:80px; left:0; width:220px; height:4px; background:#f00; box-shadow:0 0 15px #f00, 0 0 5px #fff; border-radius: 2px;"></div>
+      <div class="laser-beam" style="position:absolute; top:160px; right:0; width:220px; height:4px; background:#f00; box-shadow:0 0 15px #f00, 0 0 5px #fff; border-radius: 2px;"></div>
+      <div class="laser-beam" style="position:absolute; top:240px; left:0; width:220px; height:4px; background:#f00; box-shadow:0 0 15px #f00, 0 0 5px #fff; border-radius: 2px;"></div>
+      <div class="laser-beam" style="position:absolute; top:320px; right:0; width:150px; height:4px; background:#f00; box-shadow:0 0 15px #f00, 0 0 5px #fff; border-radius: 2px;"></div>
       
       <!-- Player -->
       <div id="laser-player" style="position:absolute; bottom:15px; left:135px; width:30px; height:30px; background:radial-gradient(circle, #fff, #0f0); border-radius:50%; box-shadow:0 0 15px #0f0, 0 0 5px #fff; cursor:grab; z-index: 10;"></div>
@@ -77,19 +78,15 @@ export function runGadget(stationId, onSuccess) {
     player.style.left = `${x}px`;
     player.style.top = `${y}px`;
     
-    // Collision Logic (Laser bounding boxes)
-    // Laser 1: top 120, left 0, width 220, height 4
-    if (x < 220 && y > 95 && y < 125) {
-      resetPlayer(); return;
-    }
-    // Laser 2: top 260, right 0 (left 80 to 300), width 220, height 4
-    if (x > 60 && y > 235 && y < 265) {
-      resetPlayer(); return;
-    }
-    // Laser 3: vertical top 120, left 220, width 4, height 144
-    if (x > 195 && x < 225 && y > 120 && y < 260) {
-      resetPlayer(); return;
-    }
+    // Collision Logic (Laser bounding boxes for new layout)
+    // Laser 1: top 80, left 0, width 220
+    if (x < 220 && y > 55 && y < 85) { resetPlayer(); return; }
+    // Laser 2: top 160, right 0 (left 80 to 300), width 220
+    if (x > 50 && y > 135 && y < 165) { resetPlayer(); return; }
+    // Laser 3: top 240, left 0, width 220
+    if (x < 220 && y > 215 && y < 245) { resetPlayer(); return; }
+    // Laser 4: top 320, right 0, width 150
+    if (x > 120 && y > 295 && y < 325) { resetPlayer(); return; }
     
     // Check target (top: 15, left: 100, width: 100, height: 50)
     if (y < 60 && x > 85 && x < 185) {

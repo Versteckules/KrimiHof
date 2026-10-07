@@ -186,7 +186,7 @@
   height: 100%;
   max-width: none;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: top;
   filter: sepia(0.2) contrast(1.1);
   user-select: none;
   -webkit-user-drag: none;
@@ -745,3 +745,6 @@
   animation: pulseGlow 2s infinite ease-in-out;
 }
 
+
+.blink-animation { animation: blinker 1s linear infinite; }
+@keyframes blinker { 50% { opacity: 0.5; } }
