@@ -89,7 +89,7 @@ export function parseCoords(coordStr) {
   // Gruppe 4: Hemi Lng (E/O/W)
   // Gruppe 5: Grad Lng
   // Gruppe 6: Minuten Lng
-  const dmmRegex = /([NS])\s*(\d{1,2})[°\s]+(\d{1,2}(?:[.,]\d+)?)\s*['′]?\s*[,/]?\s*([EOW])\s*(\d{1,3})[°\s]+(\d{1,2}(?:[.,]\d+)?)\s*['′]?/i;
+  const dmmRegex = /([NS])\s*(\d{1,2})[^0-9.,]+(\d{1,2}(?:[.,]\d+)?)[^A-Z0-9]+([EOW])\s*(\d{1,3})[^0-9.,]+(\d{1,2}(?:[.,]\d+)?)/i;
   const match = clean.match(dmmRegex);
 
   if (match) {
