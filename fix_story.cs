@@ -8,17 +8,17 @@ public class FixerStory {
         
         string text = File.ReadAllText(path, Encoding.UTF8);
         
-        text = text.Replace("ÃŸ", "ß");
-        text = text.Replace("Ã¤", "ä");
-        text = text.Replace("Ã¼", "ü");
-        text = text.Replace("Ã¶", "ö");
-        text = text.Replace("Ã–", "Ö");
-        text = text.Replace("Ã„", "Ä");
-        text = text.Replace("Ãœ", "Ü");
-        text = text.Replace("â€ž", "„");
-        text = text.Replace("â€œ", "“");
-        text = text.Replace("â€“", "–");
-        text = text.Replace("Â°", "°");
+        text = text.Replace("ß", "ß");
+        text = text.Replace("ä", "ä");
+        text = text.Replace("ü", "ü");
+        text = text.Replace("ö", "ö");
+        text = text.Replace("Ö", "Ö");
+        text = text.Replace("Ä", "Ä");
+        text = text.Replace("Ü", "Ü");
+        text = text.Replace("„", "„");
+        text = text.Replace("“", "“");
+        text = text.Replace("–", "–");
+        text = text.Replace("°", "°");
         
         File.WriteAllText(path, text, new UTF8Encoding(false));
         Console.WriteLine("Fixed story.json");

@@ -1,4 +1,4 @@
-﻿import * as FX from '../../fx.js';
+import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -31,7 +31,7 @@ export function runGadget(stationId, onSuccess) {
       </div>
     </div>
 
-    <button id="btn-scanner-skip" class="btn-secondary hidden" style="align-self: center;">Sensor Ã¼berspringen</button>
+    <button id="btn-scanner-skip" class="btn-secondary hidden" style="align-self: center;">Sensor überspringen</button>
   </div>`;
   overlay.style.display = 'flex';
 
@@ -125,7 +125,7 @@ export function runGadget(stationId, onSuccess) {
         skipBtn.classList.remove('hidden');
       });
   } else {
-    statusEl.textContent = "SENSOR NICHT UNTERSTÃœTZT";
+    statusEl.textContent = "SENSOR NICHT UNTERSTÜTZT";
     statusEl.style.color = "red";
     skipBtn.classList.remove('hidden');
   }

@@ -73,10 +73,11 @@ export function runGadget(stationId, onSuccess) {
     
     // Snap and Check (A on M means 0 degrees rotation, since they start aligned at top)
     // Wait, M is at top of inner ring, A is at top of outer ring. 
-    // M is 0. R is 5 letters away -> 5 * 30 = 150 degrees.
+    // M is 0. R is 5 letters away -> 150 degrees.
+    // To align R with A (0 degrees), we need to rotate by -150 degrees, which is 210 degrees.
     let normalized = (currentRotation % 360 + 360) % 360;
-    if (Math.abs(normalized - 150) < 10 && !solved) { // Snap to 150
-      currentRotation = 150;
+    if (Math.abs(normalized - 210) < 15 && !solved) { // Snap to 210
+      currentRotation = 210;
       innerRing.style.transform = `rotate(${currentRotation}deg)`;
       solved = true;
       innerRing.style.boxShadow = "0 0 30px #ffdf00, inset 0 0 20px #ffdf00";

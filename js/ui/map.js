@@ -198,7 +198,7 @@ function renderMarkers() {
                   popupDiv.innerHTML = `
                     <div style="width: 220px; font-family: sans-serif; color: #fff;">
                       <div style="position: relative; width: 100%; height: 130px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; border: 1px solid rgba(212, 175, 55, 0.4);">
-                        <img src="${suspect.image}" alt="${suspect.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <img src="${suspect.image}" alt="${suspect.name}" style="width: 100%; height: 100%; object-fit: cover; object-position: top;">
                         <span style="position: absolute; top: 6px; right: 6px; background: rgba(10, 14, 23, 0.85); border: 1px solid #8b0000; color: #ff5555; font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; font-weight: bold; letter-spacing: 1px;">HAUPTVERDACHT</span>
                       </div>
                       <div style="font-family: serif; font-size: 1.15rem; color: #d4af37; font-weight: bold; margin-bottom: 2px;">${suspect.name}</div>

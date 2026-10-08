@@ -1,16 +1,16 @@
 $path = "..\data\stations.json"
 $content = Get-Content -Path $path -Raw -Encoding UTF8
 
-$content = $content.Replace("Ã¤", "ä")
-$content = $content.Replace("Ã¼", "ü")
-$content = $content.Replace("Ã¶", "ö")
-$content = $content.Replace("ÃŸ", "ß")
-$content = $content.Replace("Ã„", "Ä")
-$content = $content.Replace("Ãœ", "Ü")
-$content = $content.Replace("Ã–", "Ö")
-$content = $content.Replace("Ã©", "é")
-$content = $content.Replace("Ã³", "ó")
-$content = $content.Replace("Â°", "°")
+$content = $content.Replace("ä", "ä")
+$content = $content.Replace("ü", "ü")
+$content = $content.Replace("ö", "ö")
+$content = $content.Replace("ß", "ß")
+$content = $content.Replace("Ä", "Ä")
+$content = $content.Replace("Ü", "Ü")
+$content = $content.Replace("Ö", "Ö")
+$content = $content.Replace("é", "é")
+$content = $content.Replace("ó", "ó")
+$content = $content.Replace("°", "°")
 
 Set-Content -Path $path -Value $content -Encoding UTF8
 Write-Host "Fixed stations.json!"

@@ -6,16 +6,16 @@ let content = fs.readFileSync(filePath, 'utf8');
 
 // UTF-8 double encoding fixes
 const fixes = {
-  'Ã¤': 'ä',
-  'Ã¼': 'ü',
-  'Ã¶': 'ö',
-  'ÃŸ': 'ß',
-  'Ã„': 'Ä',
-  'Ãœ': 'Ü',
-  'Ã–': 'Ö',
-  'Ã©': 'é',
-  'Ã³': 'ó',
-  'Â°': '°'
+  'ä': 'ä',
+  'ü': 'ü',
+  'ö': 'ö',
+  'ß': 'ß',
+  'Ä': 'Ä',
+  'Ü': 'Ü',
+  'Ö': 'Ö',
+  'é': 'é',
+  'ó': 'ó',
+  '°': '°'
 };
 
 for (const [bad, good] of Object.entries(fixes)) {

@@ -43,6 +43,9 @@ export function initDossier() {
       document.getElementById('modal-evidence').classList.add('hidden');
     });
   }
+
+  // Aktualisiere sofort die UI, um den Button bei fehlender Freischaltung zu verstecken
+  updateDossier();
 }
 
 function updateDossier() {
@@ -51,11 +54,25 @@ function updateDossier() {
   const story = getStory();
   const result = calculateFinalResult(state);
   
+  const openBtn = document.getElementById('btn-open-dossier');
+  if (openBtn) {
+    if (state.suspectsUnlocked) {
+      openBtn.classList.remove('hidden');
+      openBtn.style.display = '';
+    } else {
+      openBtn.classList.add('hidden');
+      openBtn.style.display = 'none';
+    }
+  }
+  
   // 1. Verdächtige aktualisieren (mit Bildern und Verhör-Buttons!)
   const suspContainer = document.getElementById('dossier-suspects');
   if (suspContainer) {
-    let html = '';
-    const storySuspects = (story && story.suspects) ? story.suspects : {};
+    if (!state.suspectsUnlocked) {
+      suspContainer.innerHTML = '<p style="color:var(--color-text-muted); font-style:italic; font-size:0.9rem;">Noch keine Verdächtigen identifiziert. Sprechen Sie mit Zeugen.</p>';
+    } else {
+      let html = '';
+      const storySuspects = (story && story.suspects) ? story.suspects : {};
 
     const pflichtCount = (state.solvedStations || []).filter(sid => !sid.startsWith('saale_') && !sid.startsWith('altstadt_')).length;
     const isAllStationsSolved = pflichtCount >= 12;
@@ -74,7 +91,7 @@ function updateDossier() {
         <div class="dossier-suspect-card" style="background: rgba(10, 14, 23, 0.85); border: 1px solid var(--color-glass-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
           <div style="display: flex; gap: 12px; align-items: center;">
             <div style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 2px solid var(--color-amber-muted); flex-shrink: 0; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-              <img src="${img}" alt="${getSuspectName(s.id)}" style="width: 100%; height: 100%; object-fit: cover;">
+              <img src="${img}" alt="${getSuspectName(s.id)}" style="width: 100%; height: 100%; object-fit: cover; object-position: top;">
             </div>
             <div style="flex-grow: 1;">
               <div style="font-family: var(--font-serif); font-weight: bold; color: var(--color-amber-glow); font-size: 1.05rem;">
@@ -116,12 +133,17 @@ function updateDossier() {
       btn.addEventListener('click', () => {
         if (btn.hasAttribute('disabled')) return;
         const suspectId = btn.getAttribute('data-suspect-id');
-        if (confirm('Bist du sicher, dass du diesen Verdächtigen verhaften willst? Dies beendet die Ermittlung!')) {
-          // Trigger finale logic directly for this suspect
-          import('./final.js').then(mod => mod.startFinaleForSuspect(suspectId));
+        const msg = 'Bist du sicher, dass du diesen Verdächtigen verhaften willst? Dies beendet die Ermittlung!';
+        const doArrest = () => import('./final.js').then(mod => mod.startFinaleForSuspect(suspectId));
+        
+        if (window.showNoirConfirm) {
+          window.showNoirConfirm(msg, doArrest, 'Verhaften');
+        } else if (confirm(msg)) {
+          doArrest();
         }
       });
     });
+    }
   }
 
   // 2. Inventar & TBs

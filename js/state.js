@@ -169,6 +169,11 @@ export function saveState(partialUpdate = null) {
       partialUpdate.decisions = Object.assign({}, _currentState.decisions, partialUpdate.decisions);
     }
     Object.assign(_currentState, partialUpdate);
+    
+    // Verhindere, dass Erfahrungspunkte unter 0 fallen
+    if (typeof _currentState.score === 'number' && _currentState.score < 0) {
+      _currentState.score = 0;
+    }
   }
 
   _currentState.lastSaved = new Date().toISOString();

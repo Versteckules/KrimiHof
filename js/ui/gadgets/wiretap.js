@@ -1,4 +1,4 @@
-﻿import * as FX from '../../fx.js';
+import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -12,7 +12,7 @@ export function runGadget(stationId, onSuccess) {
   overlay.innerHTML = `<div class="cl-gadget-wrapper" style="width:100%; max-width:400px; padding:20px;">
     <div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-mono); margin-bottom:10px; color:#0f0; text-shadow: 0 0 10px #0f0;">REC - SIGNAL SUCHE</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:40px;">Bewege das GerÃ¤t im Raum, um die Wanzen-Frequenz zu finden.</p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:40px;">Bewege das Gerät im Raum, um die Wanzen-Frequenz zu finden.</p>
     
     <div style="width:100%; height:120px; display:flex; align-items:flex-end; justify-content:center; gap:5px; margin-bottom:30px; background: rgba(0,255,0,0.05); border: 1px solid #222; border-radius: 5px; padding: 10px;">
       <!-- EQ Bars -->
@@ -116,7 +116,7 @@ export function runGadget(stationId, onSuccess) {
         stopAudio();
         window.removeEventListener('deviceorientation', handleOrientation);
         FX.playSuccessWumms().then(() => {
-          overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:#0f0; font-family:var(--font-serif); font-size:2rem; margin-top:50px;">AbhÃ¶rmaÃŸnahme erfolgreich!</h2></div>`;
+          overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:#0f0; font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Abhörmaßnahme erfolgreich!</h2></div>`;
           setTimeout(() => { overlay.remove(); onSuccess(); }, 1500);
         });
       }

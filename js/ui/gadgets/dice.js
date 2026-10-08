@@ -44,7 +44,7 @@ export function runGadget(stationId, onSuccess) {
       FX.playSuccessWumms();
       const status = document.createElement('div');
       status.style = "position:absolute; top:20px; color:#0f0; font-family:var(--font-mono);";
-      status.textContent = "EASTER EGG GEFUNDEN! WÃ¤rschtlamo! (+50 Punkte)";
+      status.textContent = "EASTER EGG GEFUNDEN! Wärschtlamo! (+50 Punkte)";
       overlay.appendChild(status);
     }
   };

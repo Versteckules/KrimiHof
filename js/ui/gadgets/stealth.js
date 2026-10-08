@@ -1,4 +1,4 @@
-﻿import * as FX from '../../fx.js';
+import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -12,12 +12,12 @@ export function runGadget(stationId, onSuccess) {
   overlay.innerHTML = `<div class="cl-gadget-wrapper" style="padding: 20px; width: 95vw; max-width: 400px; display: flex; flex-direction: column; align-items: center; text-align: center; border-color: #333;">
     <div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:#555; text-shadow: 0 0 10px #000;">Schleich-Modus</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Tippe exakt dann, wenn der Puls-Ring den weiÃŸen Kreis berÃ¼hrt. <br>Mach keinen LÃ¤rm!</p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Tippe exakt dann, wenn der Puls-Ring den weißen Kreis berührt. <br>Mach keinen Lärm!</p>
     
-    <!-- LÃ¤rm-Meter -->
+    <!-- Lärm-Meter -->
     <div style="width: 100%; height: 10px; background: #111; border: 1px solid #333; margin-bottom: 30px; position: relative;">
        <div id="stealth-noise-bar" style="height: 100%; width: 0%; background: #f00; transition: width 0.3s;"></div>
-       <div style="position: absolute; top: -20px; right: 0; font-size: 0.7rem; color: #f00;">LÃ„RM</div>
+       <div style="position: absolute; top: -20px; right: 0; font-size: 0.7rem; color: #f00;">LÄRM</div>
     </div>
 
     <!-- Radar / Rhythm Area -->

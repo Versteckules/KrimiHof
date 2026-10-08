@@ -1,5 +1,5 @@
 /**
- * gadget-manager.js - Zentraler Hub fÃ¼r die 17 Gadgets (AP9)
+ * gadget-manager.js - Zentraler Hub für die 17 Gadgets (AP9)
  */
 
 import { onStationComplete } from '../station.js';
@@ -27,14 +27,21 @@ export function startGadget(gadgetId, stationId) {
       skipBtn.className = 'btn-danger';
       skipBtn.style.cssText = 'position: absolute; top: 15px; right: 15px; z-index: 999999; padding: 5px 10px; font-size: 0.8rem; box-shadow: 0 0 10px black;';
       skipBtn.onclick = () => {
-        if (confirm('Möchtest du das Rätsel wirklich überspringen? Dies kostet 50 Erfahrungspunkte und du erhältst keinen Beweis!')) {
+        const msg = 'Möchtest du das Rätsel wirklich überspringen? Dies kostet 50 Erfahrungspunkte und du erhältst keinen Beweis!';
+        if (window.showNoirConfirm) {
+          window.showNoirConfirm(msg, doSkip, 'Rätsel abbrechen');
+        } else if (confirm(msg)) {
+          doSkip();
+        }
+        
+        function doSkip() {
           import('../../state.js').then(stateMod => {
             const currentScore = stateMod.getState().score || 0;
             stateMod.saveState({ score: currentScore - 50 });
             clearInterval(checkInterval);
             overlay.remove();
             window.isGadgetRunning = false;
-            import('../main.js').then(m => m.showView('view-dashboard'));
+            import('../../main.js').then(m => m.showView('view-dashboard'));
             onStationComplete(stationId);
           });
         }
@@ -66,7 +73,7 @@ function showPostGadgetDialogue(stationId, station) {
   if (stationDialogueTrees && stationDialogueTrees[stationId]) {
     import('../dialogue.js').then(mod => {
       mod.openDialogue(stationDialogueTrees[stationId], () => {
-        // Beim Beenden des Dialogs Beweis eintragen und Station abschlieÃŸen
+        // Beim Beenden des Dialogs Beweis eintragen und Station abschließen
         const evidence = (story.evidenceCatalog || []).find(e => e.stationId === stationId);
         if (evidence) {
           addInventoryItem(evidence.id);

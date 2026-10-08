@@ -77,6 +77,38 @@ export function checkRouting() {
   }
 }
 
+window.showNoirConfirm = function(message, onConfirm, confirmText = 'Bestätigen') {
+  const modal = document.getElementById('noir-confirm-modal');
+  if (!modal) {
+    if (confirm(message)) onConfirm();
+    return;
+  }
+  const msgEl = document.getElementById('noir-confirm-message');
+  msgEl.textContent = message;
+  
+  const btnYes = document.getElementById('noir-confirm-yes');
+  const btnNo = document.getElementById('noir-confirm-no');
+  
+  btnYes.textContent = confirmText;
+  
+  modal.classList.remove('hidden');
+
+  const cleanup = () => {
+    modal.classList.add('hidden');
+    btnYes.onclick = null;
+    btnNo.onclick = null;
+  };
+
+  btnYes.onclick = () => {
+    cleanup();
+    onConfirm();
+  };
+
+  btnNo.onclick = () => {
+    cleanup();
+  };
+};
+
 /**
  * Zeigt einen gut sichtbaren Fehlerhinweis auf der Startseite an
  * (statt nur stumm in der Konsole zu scheitern).

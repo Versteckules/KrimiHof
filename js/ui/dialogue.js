@@ -106,7 +106,7 @@ function renderChoices(choices, isEnd, unlockSuspects) {
   
   const playerAvatar = document.createElement('img');
   playerAvatar.src = 'assets/kommissar_stahl.jpg';
-  playerAvatar.style = "width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--color-amber-muted); object-fit: cover; flex-shrink: 0;";
+  playerAvatar.style = "width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--color-amber-muted); object-fit: cover; object-position: top; flex-shrink: 0;";
   
   const choicesContainer = document.createElement('div');
   choicesContainer.style = "display: flex; flex-direction: column; gap: 10px; flex-grow: 1;";
