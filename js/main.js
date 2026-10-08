@@ -29,6 +29,15 @@ export function showView(viewId) {
   if (viewId === 'view-dashboard') {
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
+      
+      // Fix iOS Safari Repaint Bug for navigator-bar flex children
+      const navBar = document.getElementById('navigator-bar');
+      if (navBar) {
+        const currentDisplay = navBar.style.display;
+        navBar.style.display = 'none';
+        navBar.offsetHeight; // force reflow
+        navBar.style.display = currentDisplay;
+      }
     }, 100);
   }
 }

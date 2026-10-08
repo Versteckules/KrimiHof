@@ -176,6 +176,17 @@ body.glass-crack::after {
   transform: scale(0.96);
 }
 
+@keyframes attentionPulse {
+  0% { box-shadow: 0 0 5px rgba(220, 38, 38, 0.4); transform: scale(1); }
+  50% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.9); transform: scale(1.03); background-color: rgba(139, 0, 0, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(220, 38, 38, 0.4); transform: scale(1); }
+}
+
+.blink-animation {
+  animation: attentionPulse 1.5s ease-in-out infinite !important;
+  border-color: rgba(220, 38, 38, 0.8) !important;
+}
+
 .modal-box {
   animation: fadeInSlide 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }

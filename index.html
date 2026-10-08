@@ -43,7 +43,7 @@
         <div class="hero-content">
           <img src="assets/seal_schlappen.jpg" alt="Schlappen-Erben Siegel" class="seal-img">
           <h1 class="hero-title">Der Pakt der<br>Schlappen-Erben</h1>
-          <p class="hero-subtitle">Ein Nacht-Krimi in Hof (Saale) Â· GCBYXW0</p>
+          <p class="hero-subtitle">Ein Nacht-Krimi in Hof (Saale) &middot; GCBYXW0</p>
         </div>
       </section>
 
@@ -81,7 +81,7 @@
         <div
           style="display: flex; gap: var(--space-md); justify-content: center; margin-top: var(--space-lg); flex-wrap: wrap;">
           <button id="btn-open-reset" class="btn-danger" title="Gesamten Spielstand löschen">
-            🗑️ Akte Schreddern
+            🗑️ Akte Schreddern
           </button>
         </div>
 
@@ -184,19 +184,6 @@
     <!-- Dashboard View (Map & Dossier) (AP6) -->
     <main id="view-dashboard" class="view hidden">
       <div id="map-container" style="position: absolute; top: 0; bottom: 80px; left: 0; right: 0;"></div>
-
-      <!-- Rank & Points Overlay -->
-      <div id="player-rank-display" style="position: absolute; top: 12px; left: 12px; z-index: 1000; background: rgba(10,14,23,0.85); padding: 10px; border-radius: 8px; border: 1px solid var(--color-glass-border); font-family: var(--font-mono); font-size: 0.9rem; pointer-events: auto; color: #d4af37; display: flex; justify-content: space-between; align-items: center; min-width: 140px;">
-        <div>
-          <div style="font-size:0.7rem; color:#aaa; margin-bottom:2px;">Rang (<span id="player-score-val">0</span> Pkt)</div>
-          <strong id="player-rank-name">Streifenpolizist</strong>
-        </div>
-        <button id="btn-rank-info" style="background:transparent; border:1px solid #d4af37; color:#d4af37; border-radius:50%; width:22px; height:22px; font-size:12px; cursor:pointer; margin-left: 10px;">i</button>
-      </div>
-
-      <!-- Sherlock Hint Button -->
-      <button id="btn-sherlock-hint" class="hidden" style="position: absolute; top: 12px; right: 12px; z-index: 1000; background: #8b0000; padding: 10px 15px; box-shadow: 0 0 15px rgba(139,0,0,0.8); border:1px solid #ff4444; border-radius: 5px; color:white; font-family:var(--font-mono); cursor:pointer;">🔎 Sherlock-Tipp
-      </button>
 
       <!-- Map Legend Overlay -->
       <div class="map-legend"
@@ -302,6 +289,19 @@
               style="font-size: 0.85rem; padding: 6px 12px;">📖 Fall-Prolog</button>
             <button id="btn-close-dossier" class="btn-secondary">Schließen</button>
           </div>
+        </div>
+
+        <!-- Rank & Sherlock Hint in Dossier -->
+        <div style="display: flex; gap: var(--space-md); margin-bottom: var(--space-lg); flex-wrap: wrap;">
+          <div id="player-rank-display" style="background: rgba(10,14,23,0.85); padding: 10px; border-radius: 8px; border: 1px solid var(--color-glass-border); font-family: var(--font-mono); font-size: 0.9rem; color: #d4af37; display: flex; justify-content: space-between; align-items: center; min-width: 140px; flex-grow: 1;">
+            <div>
+              <div style="font-size:0.7rem; color:#aaa; margin-bottom:2px;">Rang (<span id="player-score-val">0</span> Pkt)</div>
+              <strong id="player-rank-name">Streifenpolizist</strong>
+            </div>
+            <button id="btn-rank-info" style="background:transparent; border:1px solid #d4af37; color:#d4af37; border-radius:50%; width:22px; height:22px; font-size:12px; cursor:pointer; margin-left: 10px;">i</button>
+          </div>
+          
+          <button id="btn-sherlock-hint" class="hidden" style="background: #8b0000; padding: 10px 15px; box-shadow: 0 0 15px rgba(139,0,0,0.8); border:1px solid #ff4444; border-radius: 5px; color:white; font-family:var(--font-mono); cursor:pointer; flex-grow: 1;">🔎 Sherlock-Tipp</button>
         </div>
 
         <div class="dossier-grid"
@@ -595,4 +595,5 @@
 </body>
 
 </html>
+
 
