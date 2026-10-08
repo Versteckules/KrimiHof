@@ -37,6 +37,7 @@ export function runGadget(stationId, onSuccess) {
       
     </div>
     <p style="color:var(--color-text-muted); margin-top:30px; font-size:0.9rem;">Drehe den inneren Ring. Richte 'A' auf 'R' aus.</p>
+    <button class="btn-secondary" id="btn-crypto-abort" style="margin-top: 20px;">Schloss umgehen</button>
   </div>`;
   overlay.style.display = 'flex';
 
@@ -104,4 +105,25 @@ export function runGadget(stationId, onSuccess) {
   innerRing.addEventListener('touchstart', startDrag, {passive: true});
   window.addEventListener('touchmove', moveDrag, {passive: true});
   window.addEventListener('touchend', endDrag);
+
+  document.getElementById('btn-crypto-abort').addEventListener('click', () => {
+    if (solved) return;
+    if (window.showNoirConfirm) {
+      window.showNoirConfirm("Schloss aufbrechen?", "Möchtest du das Kryptorad gewaltsam öffnen? (-10 Punkte)", () => {
+        solved = true;
+        import('../../state.js').then(m => m.addScore(-10));
+        import('../../main.js').then(m => m.showNoirAlert('Rätsel gewaltsam gelöst (-10 Punkte)', 'Punkteabzug'));
+        overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px; text-align:center;">Rad aufgebrochen!</h2></div>`;
+        setTimeout(() => {
+          overlay.remove();
+          FX.playSuccessWumms().then(() => onSuccess());
+        }, 1500);
+      });
+    } else {
+      solved = true;
+      import('../../state.js').then(m => m.addScore(-10));
+      overlay.remove();
+      FX.playSuccessWumms().then(() => onSuccess());
+    }
+  });
 }

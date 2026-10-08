@@ -100,17 +100,15 @@ export function runGadget(stationId, onSuccess) {
     glowLayer.style.webkitMaskPosition = `${x - 100}px ${y - 100}px`;
     glowLayer.style.opacity = '1';
     
-    // Check if hovering over the text (center of the box approx)
+    // Text is wide, so use a rectangular bounding box instead of a small circle
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const dist = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+    const dx = Math.abs(x - centerX);
+    const dy = Math.abs(y - centerY);
     
-    if (dist < 80) {
+    if (dx < 160 && dy < 80) {
       charge += 2;
-    } else {
-      charge -= 1;
     }
-    if (charge < 0) charge = 0;
     
     if (charge > 100 && !solved) {
       solved = true;

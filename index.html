@@ -195,8 +195,7 @@
       </div>
 
       <!-- Sherlock Hint Button -->
-      <button id="btn-sherlock-hint" class="hidden" style="position: absolute; top: 12px; right: 12px; z-index: 1000; background: #8b0000; padding: 10px 15px; box-shadow: 0 0 15px rgba(139,0,0,0.8); border:1px solid #ff4444; border-radius: 5px; color:white; font-family:var(--font-mono); cursor:pointer;">
-        ðŸ” Sherlock-Tipp
+      <button id="btn-sherlock-hint" class="hidden" style="position: absolute; top: 12px; right: 12px; z-index: 1000; background: #8b0000; padding: 10px 15px; box-shadow: 0 0 15px rgba(139,0,0,0.8); border:1px solid #ff4444; border-radius: 5px; color:white; font-family:var(--font-mono); cursor:pointer;">🔎 Sherlock-Tipp
       </button>
 
       <!-- Map Legend Overlay -->
@@ -212,9 +211,12 @@
         <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;"><span
             style="display:inline-block; width:10px; height:10px; background:red; border-radius:50%;"></span> Wichtiger
           Beweis</div>
-        <div style="display: flex; align-items: center; gap: 5px;"><span
+        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;"><span
             style="display:inline-block; width:10px; height:10px; background:#3b82f6; border-radius:50%;"></span>
           Hauptverdächtige</div>
+        <div style="display: flex; align-items: center; gap: 5px;"><span
+            style="display:inline-block; width:10px; height:10px; background:#8b008b; border-radius:50%;"></span>
+          Geheimnis (Easter Egg)</div>
       </div>
 
 
@@ -297,7 +299,7 @@
           </div>
           <div style="display: flex; gap: 10px; align-items: center;">
             <button id="btn-dossier-replay-intro" class="btn-secondary"
-              style="font-size: 0.85rem; padding: 6px 12px;">ðŸ“– Fall-Prolog</button>
+              style="font-size: 0.85rem; padding: 6px 12px;">📖 Fall-Prolog</button>
             <button id="btn-close-dossier" class="btn-secondary">Schließen</button>
           </div>
         </div>
@@ -333,13 +335,13 @@
             kommen normalerweise während dem Laufen. Hier manuell testbar:</p>
           <div style="display: flex; flex-wrap: wrap; gap: 10px;">
             <button class="btn-secondary"
-              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_herold'))">ðŸ“ž
+              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_herold'))">📞
               Herold</button>
             <button class="btn-secondary"
-              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_gipser'))">ðŸ“ž
+              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_gipser'))">📞
               Gipser</button>
             <button class="btn-secondary"
-              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_heiden'))">ðŸ“ž
+              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_heiden'))">📞
               Heiden</button>
           </div>
         </div>
@@ -353,7 +355,7 @@
         <h2
           style="font-size: 2.5rem; font-family: var(--font-serif); color: var(--color-amber-glow); margin-bottom: var(--space-md);">
           Die Überführung</h2>
-        <img src="assets/kommissar_stahl.jpg" alt="Kommissar Stahl" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--color-amber-muted); margin-bottom: 15px; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); object-fit: cover; object-position: top;">
+        <img src="assets/kommissar_stahl.jpg" alt="Kommissar Stahl" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--color-amber-muted); margin-bottom: 15px; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); object-fit: contain; background: #000;">
         <p style="font-size: 1.1rem; margin-bottom: var(--space-xl); font-style: italic; color: #ccc;">
           "Das Warten hat ein Ende. Du hast alle Zeugen gehört und alle Beweise gesichert. Jetzt geht es ans Eingemachte! Wer ist der Täter?"
         </p>

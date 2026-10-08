@@ -17,9 +17,9 @@ export function runGadget(stationId, onSuccess) {
       
       <!-- Photo Frame -->
       <div style="width: 150px; height: 180px; border: 2px solid #555; background: #eee; margin-bottom: 20px; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size: 3.5rem; line-height: 1.1; overflow:hidden;">
-         <div id="mug-hat" style="margin-top: 10px;">ðŸŽ©</div>
-         <div id="mug-eyes">ðŸ•¶ï¸</div>
-         <div id="mug-mouth" style="margin-top: -10px;">ðŸ§”</div>
+         <div id="mug-hat" style="margin-top: 10px;">🎩</div>
+         <div id="mug-eyes">🕶️</div>
+         <div id="mug-mouth" style="margin-top: -10px;">🧔</div>
       </div>
 
       <!-- Controls -->
@@ -47,13 +47,13 @@ export function runGadget(stationId, onSuccess) {
   overlay.style.display = 'flex';
 
   const parts = {
-    hat: ['ðŸŽ©', 'ðŸ§¢', 'ðŸ•µï¸', 'ðŸ‘·'],
-    eyes: ['ðŸ•¶ï¸', 'ðŸ˜ ', 'ðŸ˜³', 'ðŸ§'],
-    mouth: ['ðŸ§”', 'ðŸ‘„', 'ðŸ¥¸', 'ðŸ˜']
+    hat: ['🎩', '🧢', '🕵️', '👷'],
+    eyes: ['🕶️', '😠', '😳', '🧐'],
+    mouth: ['🧔', '👄', '🥺', '😐']
   };
 
   let state = { hat: 0, eyes: 0, mouth: 0 };
-  const target = { hat: 2, eyes: 0, mouth: 2 }; // Target: ðŸ•µï¸ ðŸ•¶ï¸ ðŸ¥¸
+  const target = { hat: 2, eyes: 0, mouth: 2 }; // Target: 🕵️ 🕶️ 🥺
 
   function updateVisuals() {
     document.getElementById('mug-hat').textContent = parts.hat[state.hat];

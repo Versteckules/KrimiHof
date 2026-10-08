@@ -56,12 +56,29 @@ function updateDossier() {
   
   const openBtn = document.getElementById('btn-open-dossier');
   if (openBtn) {
+    let hasUnassigned = false;
+    if (state.inventory && state.inventory.length > 0) {
+      const genericIds = ['evidence_fire_dossier', 'evidence_tape_renger', 'evidence_charter_1432'];
+      state.inventory.forEach(id => {
+        const assignedTo = state.assignedEvidence ? state.assignedEvidence[id] : null;
+        if (!assignedTo && !genericIds.includes(id)) {
+          hasUnassigned = true;
+        }
+      });
+    }
+
     if (state.suspectsUnlocked) {
       openBtn.classList.remove('hidden');
       openBtn.style.display = '';
+      if (hasUnassigned) {
+        openBtn.classList.add('blink-animation');
+      } else {
+        openBtn.classList.remove('blink-animation');
+      }
     } else {
       openBtn.classList.add('hidden');
       openBtn.style.display = 'none';
+      openBtn.classList.remove('blink-animation');
     }
   }
   
@@ -91,7 +108,7 @@ function updateDossier() {
         <div class="dossier-suspect-card" style="background: rgba(10, 14, 23, 0.85); border: 1px solid var(--color-glass-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
           <div style="display: flex; gap: 12px; align-items: center;">
             <div style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 2px solid var(--color-amber-muted); flex-shrink: 0; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-              <img src="${img}" alt="${getSuspectName(s.id)}" style="width: 100%; height: 100%; object-fit: cover; object-position: top;">
+              <img src="${img}" alt="${getSuspectName(s.id)}" style="width: 100%; height: 100%; object-fit: contain; background: #000;">
             </div>
             <div style="flex-grow: 1;">
               <div style="font-family: var(--font-serif); font-weight: bold; color: var(--color-amber-glow); font-size: 1.05rem;">

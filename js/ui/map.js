@@ -56,10 +56,81 @@ export function initMap() {
   if (hintBtn) {
     hintBtn.addEventListener('click', () => {
       const state = getState();
+
+      // Easter Egg Chance via Sherlock (15%)
+      if (playerMarker && Math.random() < 0.15) {
+        const eggs = [
+          { id: 'ghost_jean_paul', name: 'Jean Pauls Geist', desc: 'Du hast den Geist der Stadt gefunden! (+50 Punkte)', points: 50 },
+          { id: 'secret_donut', name: 'Versteckte Bäckerei', desc: 'Ein heißer Kaffee und frische Donuts! (+30 Punkte)', points: 30 },
+          { id: 'noir_cat', name: 'Schwarze Katze', desc: 'Sie schnurrt geheimnisvoll und verschwindet im Nebel... (+20 Punkte)', points: 20 },
+          { id: 'lost_badge', name: 'Verlorene Polizeimarke', desc: 'Du hast eine alte Marke im Laub gefunden! (+40 Punkte)', points: 40 }
+        ];
+        
+        const availableEggs = eggs.filter(e => !state['easterEgg_' + e.id] && !markers[e.id]);
+        
+        if (availableEggs.length > 0) {
+          const egg = availableEggs[Math.floor(Math.random() * availableEggs.length)];
+          
+          // Wir snappen das Easter Egg an eine existierende Station, um sicherzugehen,
+          // dass es auf einer Straße/öffentlich zugänglichen Fläche liegt.
+          const validStations = stations.filter(s => s.coordsDecimal);
+          const snapStation = validStations[Math.floor(Math.random() * validStations.length)];
+          
+          // Winziger Offset (ca. 10-15 Meter), damit der Pin nicht exakt über der Station liegt
+          const offsetLat = (Math.random() > 0.5 ? 1 : -1) * 0.00015;
+          const offsetLng = (Math.random() > 0.5 ? 1 : -1) * 0.00015;
+          
+          const eggLat = snapStation.coordsDecimal.lat + offsetLat;
+          const eggLng = snapStation.coordsDecimal.lng + offsetLng;
+          
+          const marker = L.marker([eggLat, eggLng], {
+            icon: getIcon('bonus', '#8b008b') // Lila Marker
+          }).addTo(map);
+          
+          marker.bindPopup(`<b>${egg.name}</b><br>Klicke hier, um es einzusammeln!`);
+          marker.on('click', () => {
+            import('../state.js').then(mod => {
+              const currentState = mod.getState();
+              alert(`EASTER EGG GEFUNDEN: ${egg.desc}`);
+              mod.saveState({ [`easterEgg_${egg.id}`]: true, score: (currentState.score || 0) + egg.points });
+              marker.remove();
+              delete markers[egg.id];
+              updateRankDisplay();
+            });
+          });
+          
+          markers[egg.id] = marker;
+          showNoirAlert(`Mein Spürsinn hat etwas Verstecktes ganz in der Nähe entdeckt! Sieh auf die Karte.`, 'Sherlock-Geheimnis');
+          return; // Beende den Klick, damit nur das Easter Egg getriggert wird
+        }
+      }
+
       const stations = getStations();
-      const unsolved = stations.find(s => !isStationSolved(s.id));
-      if (unsolved) {
-        showNoirAlert(`Mein Spürsinn sagt mir, wir sollten uns den Ort "${unsolved.name}" genauer ansehen.`, 'Sherlock-Tipp');
+      
+      // Finde alle Stationen, die aktuell auf der Karte 'active' oder 'bonus' sind
+      const available = stations.filter(s => {
+        const m = markers[s.id];
+        return m && (m.customStatus === 'active' || m.customStatus === 'bonus');
+      });
+
+      if (available.length > 0) {
+        let targetStation = available[0];
+        
+        // Finde die nächstgelegene Station per GPS
+        if (playerMarker) {
+          const playerPos = playerMarker.getLatLng();
+          let minDistance = Infinity;
+          
+          available.forEach(st => {
+            const dist = map.distance(playerPos, [st.coordsDecimal.lat, st.coordsDecimal.lng]);
+            if (dist < minDistance) {
+              minDistance = dist;
+              targetStation = st;
+            }
+          });
+        }
+        
+        showNoirAlert(`Mein Spürsinn sagt mir, wir sollten uns den Ort "${targetStation.name}" genauer ansehen.`, 'Sherlock-Tipp');
       } else {
         showNoirAlert('Es gibt aktuell keine neuen Orte zu untersuchen. Überprüfe dein Dossier!', 'Sherlock-Tipp');
       }
@@ -150,7 +221,7 @@ function renderMarkers() {
       }).addTo(map);
 
       marker.customStatus = status;
-      marker.bindPopup(`<b>${st.name}</b><br><small>${status.toUpperCase()}</small>`);
+      marker.bindPopup(`<b>${st.name}</b>`);
       
       marker.on('click', () => {
         const currentStatus = marker.customStatus;
@@ -175,30 +246,33 @@ function renderMarkers() {
     } else {
       markers[st.id].customStatus = status;
       markers[st.id].setIcon(getIcon(status, st.markerColor));
-      markers[st.id].setPopupContent(`<b>${st.name}</b><br><small>${status.toUpperCase()}</small>`);
+      markers[st.id].setPopupContent(`<b>${st.name}</b>`);
     }
   });
 
-    // Suspects rendern
+  // Suspects rendern
   if (state.suspectsUnlocked) {
     import('../config-loader.js').then(module => {
        const story = module.getStory();
        if(story && story.suspects) {
           import('../coords.js').then(coordsModule => {
             Object.values(story.suspects).forEach(suspect => {
-              if (suspect.coords && !markers['suspect_'+suspect.id]) {
-                const parsed = coordsModule.parseCoords(suspect.coords);
-                if (parsed) {
-                  const marker = L.marker([parsed.lat, parsed.lng], {
-                    icon: getIcon('suspect')
-                  }).addTo(map);
+              const suspicion = state.suspects ? (state.suspects[suspect.id] || 0) : 0;
+              
+              if (suspicion >= 25) {
+                if (suspect.coords && !markers['suspect_'+suspect.id]) {
+                  const parsed = coordsModule.parseCoords(suspect.coords);
+                  if (parsed) {
+                    const marker = L.marker([parsed.lat, parsed.lng], {
+                      icon: getIcon('suspect')
+                    }).addTo(map);
 
                   const popupDiv = document.createElement('div');
                   popupDiv.className = 'suspect-map-popup';
                   popupDiv.innerHTML = `
                     <div style="width: 220px; font-family: sans-serif; color: #fff;">
                       <div style="position: relative; width: 100%; height: 130px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; border: 1px solid rgba(212, 175, 55, 0.4);">
-                        <img src="${suspect.image}" alt="${suspect.name}" style="width: 100%; height: 100%; object-fit: cover; object-position: top;">
+                        <img src="${suspect.image}" alt="${suspect.name}" style="width: 100%; height: 100%; object-fit: contain; background: #000;">
                         <span style="position: absolute; top: 6px; right: 6px; background: rgba(10, 14, 23, 0.85); border: 1px solid #8b0000; color: #ff5555; font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; font-weight: bold; letter-spacing: 1px;">HAUPTVERDACHT</span>
                       </div>
                       <div style="font-family: serif; font-size: 1.15rem; color: #d4af37; font-weight: bold; margin-bottom: 2px;">${suspect.name}</div>
@@ -277,28 +351,12 @@ function renderMarkers() {
                   markers['suspect_'+suspect.id] = marker;
                 }
               }
-            });
-            
-            // Easter Egg 5: Jean-Paul Geist (1% Chance, if not already found)
-            if (!state.easterEggGhost && Math.random() < 0.1 && !markers['ghost_jean_paul']) {
-              // Position from stations.json
-              import('../config-loader.js').then(cfg => {
-                const jpStation = cfg.getStationById('jean_paul');
-                if (jpStation && jpStation.coordsDecimal) {
-                  const marker = L.marker([jpStation.coordsDecimal.lat, jpStation.coordsDecimal.lng], {
-                    icon: getIcon('locked', 'rgba(255,255,255,0.5)')
-                  }).addTo(map);
-                  marker.bindPopup("<b>Jean Pauls Geist</b><br>Du hast mich gefunden! (+50 Punkte)");
-              marker.on('click', () => {
-                import('../state.js').then(mod => {
-                  alert("EASTER EGG GEFUNDEN! Jean Paul's Geist verblasst! (+50 Punkte)");
-                  mod.saveState({ easterEggGhost: true, score: (state.score || 0) + 50 });
-                  marker.remove();
-                });
-              });
-              markers['ghost_jean_paul'] = marker;
-                }
-              });
+            } else {
+              // Hide marker if suspicion < 25
+              if (markers['suspect_'+suspect.id]) {
+                map.removeLayer(markers['suspect_'+suspect.id]);
+                delete markers['suspect_'+suspect.id];
+              }
             }
           });
        }

@@ -11,16 +11,19 @@ export function runGadget(stationId, onComplete) {
     
     <div id="piano" style="display:flex; justify-content:center; gap:2px; margin-bottom:20px;">
       <!-- White keys -->
-      <div class="piano-key" data-note="C" style="width:40px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">C</div>
-      <div class="piano-key" data-note="D" style="width:40px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">D</div>
-      <div class="piano-key" data-note="E" style="width:40px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">E</div>
-      <div class="piano-key" data-note="F" style="width:40px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">F</div>
-      <div class="piano-key" data-note="G" style="width:40px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">G</div>
-      <div class="piano-key" data-note="A" style="width:40px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">A</div>
-      <div class="piano-key" data-note="B" style="width:40px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">B/H</div>
+      <div class="piano-key" data-note="C" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">C</div>
+      <div class="piano-key" data-note="D" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">D</div>
+      <div class="piano-key" data-note="E" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">E</div>
+      <div class="piano-key" data-note="F" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">F</div>
+      <div class="piano-key" data-note="G" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">G</div>
+      <div class="piano-key" data-note="A" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">A</div>
+      <div class="piano-key" data-note="B" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">B</div>
+      <div class="piano-key" data-note="H" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">H</div>
     </div>
     
     <div id="notes-display" style="font-family:monospace; font-size:1.5rem; letter-spacing:5px; height:30px; color:#d4af37;"></div>
+    
+    <button class="btn-secondary" id="btn-music-abort1" style="margin-top: 30px;">Rätsel umgehen</button>
   `;
 
   document.body.appendChild(overlay);
@@ -52,10 +55,11 @@ export function runGadget(stationId, onComplete) {
     'F': 349.23,
     'G': 392.00,
     'A': 440.00,
-    'B': 493.88
+    'B': 466.16, // B flat
+    'H': 493.88  // B natural (H)
   };
 
-  const targetSequence = ['B', 'A', 'C', 'B']; // "BACH" using B/H key as B
+  const targetSequence = ['B', 'A', 'C', 'H'];
   let entered = [];
   const display = document.getElementById('notes-display');
 
@@ -80,6 +84,19 @@ export function runGadget(stationId, onComplete) {
     };
   });
 
+  document.getElementById('btn-music-abort1').onclick = () => {
+    if (window.showNoirConfirm) {
+      window.showNoirConfirm("Orgel knacken?", "Möchtest du das Notenrätsel überspringen? (-10 Punkte)", () => {
+        import('../../state.js').then(m => m.addScore(-10));
+        import('../../main.js').then(m => m.showNoirAlert('Rätsel gewaltsam gelöst (-10 Punkte)', 'Punkteabzug'));
+        startPhase2();
+      });
+    } else {
+      import('../../state.js').then(m => m.addScore(-10));
+      startPhase2();
+    }
+  };
+
   function startPhase2() {
     overlay.innerHTML = `
       <h2 style="color:#d4af37; margin-bottom:10px;">Ein Kryptex fährt aus der Wand!</h2>
@@ -87,7 +104,10 @@ export function runGadget(stationId, onComplete) {
       
       <input type="text" id="kryptex-input" maxlength="4" style="font-size:2rem; width:120px; text-align:center; text-transform:uppercase; letter-spacing:10px; background:#222; color:#fff; border:2px solid #555; border-radius:5px; margin-bottom:20px;">
       <br>
-      <button class="btn-primary" id="btn-kryptex-check">Öffnen</button>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-primary" id="btn-kryptex-check">Öffnen</button>
+        <button class="btn-secondary" id="btn-music-abort2">Kryptex aufbrechen</button>
+      </div>
     `;
 
     document.getElementById('btn-kryptex-check').onclick = () => {
@@ -96,6 +116,19 @@ export function runGadget(stationId, onComplete) {
         showPhase3();
       } else {
         alert("Falsches Wort. Das Kryptex klemmt.");
+      }
+    };
+
+    document.getElementById('btn-music-abort2').onclick = () => {
+      if (window.showNoirConfirm) {
+        window.showNoirConfirm("Kryptex aufbrechen?", "Möchtest du das Kryptex gewaltsam öffnen? (-10 Punkte)", () => {
+          import('../../state.js').then(m => m.addScore(-10));
+          import('../../main.js').then(m => m.showNoirAlert('Rätsel gewaltsam gelöst (-10 Punkte)', 'Punkteabzug'));
+          showPhase3();
+        });
+      } else {
+        import('../../state.js').then(m => m.addScore(-10));
+        showPhase3();
       }
     };
   }

@@ -95,7 +95,7 @@ function showPostGadgetDialogue(stationId, station) {
   }
   
   const isBonus = station.type === 'bonus';
-  const icon = isBonus ? 'ðŸ†' : 'ðŸ”“';
+  const icon = isBonus ? '🏆' : '🔓';
   const color = isBonus ? 'var(--color-amber-glow)' : 'var(--color-night-light)';
 
   // Build narrative HTML
@@ -110,7 +110,7 @@ function showPostGadgetDialogue(stationId, station) {
           <img src="${station.witness.image || 'assets/avatar.jpg'}" alt="Zeuge" style="width:100%; height:100%; object-fit:cover;">
         </div>
         <div>
-          <h3 style="color:var(--color-blood-red); margin-bottom:5px; font-size:1.1rem; font-family:var(--font-serif);">ðŸ—£ï¸ ${station.witness.name}</h3>
+          <h3 style="color:var(--color-blood-red); margin-bottom:5px; font-size:1.1rem; font-family:var(--font-serif);">🗣️ ${station.witness.name}</h3>
           <p style="color:var(--color-text-muted); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">${station.witness.role}</p>
           <p style="color:var(--color-text-main); font-size:1rem; font-style:italic; line-height:1.5;">${station.witness.dialogue}</p>
         </div>
@@ -121,7 +121,7 @@ function showPostGadgetDialogue(stationId, station) {
   if (isBonus && station.bonusReward) {
     html += `
       <div id="bonus-box" style="width:100%; max-width:500px; padding:var(--space-md); margin-bottom:var(--space-lg); border: 1px dashed var(--color-amber-glow); border-radius: 5px; opacity:0; transition:opacity 1s ease;">
-        <p style="color:var(--color-amber-glow); font-weight:bold;">ðŸŽ Belohnung: ${station.bonusReward}</p>
+        <p style="color:var(--color-amber-glow); font-weight:bold;">🎁 Belohnung: ${station.bonusReward}</p>
       </div>
     `;
   }

@@ -194,60 +194,8 @@ let currentThemeGain = null;
 
 export function playCharacterTheme(suspectId) {
   stopCharacterTheme();
-  const ctx = getAudioCtx();
-  currentThemeGain = ctx.createGain();
-  currentThemeGain.connect(ctx.destination);
-  
-  if (suspectId === 'herold') {
-    // Tiefe, dröhnende Frequenz (Gier, Macht, Dunkelheit)
-    currentThemeOsc = ctx.createOscillator();
-    currentThemeOsc.type = 'sine';
-    currentThemeOsc.frequency.setValueAtTime(45, ctx.currentTime);
-    currentThemeGain.gain.setValueAtTime(0, ctx.currentTime);
-    currentThemeGain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 2); // Fade in
-    currentThemeOsc.connect(currentThemeGain);
-    currentThemeOsc.start();
-  } else if (suspectId === 'gipser') {
-    // Kühler, elektronischer Herzschlag / Puls
-    currentThemeOsc = ctx.createOscillator();
-    currentThemeOsc.type = 'triangle';
-    currentThemeOsc.frequency.setValueAtTime(60, ctx.currentTime);
-    
-    // LFO für den Puls-Effekt
-    const lfo = ctx.createOscillator();
-    lfo.type = 'sine';
-    lfo.frequency.value = 1.5; // 1.5 Hz
-    const lfoGain = ctx.createGain();
-    lfoGain.gain.value = 0.3;
-    lfo.connect(lfoGain);
-    lfoGain.connect(currentThemeGain.gain);
-    
-    currentThemeGain.gain.setValueAtTime(0, ctx.currentTime);
-    currentThemeGain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 2);
-    
-    currentThemeOsc.connect(currentThemeGain);
-    currentThemeOsc.start();
-    lfo.start();
-    currentThemeOsc.lfo = lfo;
-  } else if (suspectId === 'heiden') {
-    // Unheimliche Kirchenorgel-Atmosphäre
-    currentThemeOsc = ctx.createOscillator();
-    currentThemeOsc.type = 'square';
-    currentThemeOsc.frequency.setValueAtTime(123.47, ctx.currentTime); // Low B
-    currentThemeGain.gain.setValueAtTime(0, ctx.currentTime);
-    currentThemeGain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 3);
-    
-    // Harmonische Frequenz dazu mischen
-    const harmonic = ctx.createOscillator();
-    harmonic.type = 'sine';
-    harmonic.frequency.setValueAtTime(246.94, ctx.currentTime);
-    harmonic.connect(currentThemeGain);
-    harmonic.start();
-    currentThemeOsc.harmonic = harmonic;
-    
-    currentThemeOsc.connect(currentThemeGain);
-    currentThemeOsc.start();
-  }
+  // Die vom Web Audio API generierten durchgehenden Oszillatoren (Brummen) 
+  // wurden entfernt, da sie störend wirkten.
 }
 
 export function stopCharacterTheme() {

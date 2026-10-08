@@ -59,11 +59,19 @@ export function runGadget(stationId, onSuccess) {
     if (solved) return;
     solved = true;
     if (recognition) recognition.stop();
+    import('../../state.js').then(m => m.addScore(-10));
+    import('../../main.js').then(m => m.showNoirAlert('Rätsel gewaltsam gelöst (-10 Punkte)', 'Punkteabzug'));
     overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Manuell entriegelt!</h2></div>`;
     setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1000);
   }
 
-  skipBtn.onclick = finishSkip;
+  skipBtn.onclick = () => {
+    if (window.showNoirConfirm) {
+      window.showNoirConfirm("Sensor umgehen?", "Möchtest du das Sprachschloss manuell knacken? (-10 Punkte)", finishSkip);
+    } else {
+      finishSkip();
+    }
+  };
 
   // Show skip button after 5 seconds
   const skipTimeout = setTimeout(() => {

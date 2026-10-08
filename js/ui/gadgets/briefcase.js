@@ -43,6 +43,7 @@ export function runGadget(stationId, onSuccess) {
       </div>
     </div>
     <p id="briefcase-hint" style="color:var(--color-text-muted); margin-top:20px; font-size:0.9rem;">Wische nach oben/unten.</p>
+    <button class="btn-secondary" id="btn-briefcase-abort" style="margin-top: 20px;">Schloss umgehen</button>
   </div>`;
   overlay.style.display = 'flex';
 
@@ -139,6 +140,27 @@ export function runGadget(stationId, onSuccess) {
       document.getElementById('briefcase-hint').textContent = "Das Schloss klemmt. (Tipp: Achte auf das laute Klicken!)";
       document.getElementById('briefcase-hint').style.color = "var(--color-blood-red)";
       setTimeout(() => { document.getElementById('briefcase-hint').style.color = "var(--color-text-muted)"; }, 1000);
+    }
+  });
+
+  document.getElementById('btn-briefcase-abort').addEventListener('click', () => {
+    if (solved) return;
+    if (window.showNoirConfirm) {
+      window.showNoirConfirm("Schloss aufbrechen?", "Möchtest du das Rätsel überspringen und den Koffer gewaltsam öffnen? (-10 Punkte)", () => {
+        solved = true;
+        import('../../state.js').then(m => m.addScore(-10));
+        import('../../main.js').then(m => m.showNoirAlert('Rätsel gewaltsam gelöst (-10 Punkte)', 'Punkteabzug'));
+        overlay.innerHTML = `<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Koffer aufgebrochen!</h2>`;
+        setTimeout(() => {
+          overlay.remove();
+          import('../../fx.js').then(FX => FX.playSuccessWumms().then(() => onSuccess()));
+        }, 1500);
+      });
+    } else {
+      solved = true;
+      import('../../state.js').then(m => m.addScore(-10));
+      overlay.remove();
+      import('../../fx.js').then(FX => FX.playSuccessWumms().then(() => onSuccess()));
     }
   });
 }

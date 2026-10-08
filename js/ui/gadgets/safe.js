@@ -25,6 +25,8 @@ export function runGadget(stationId, onComplete) {
     </div>
     
     <div id="safe-progress" style="font-family:monospace; font-size:1.2rem; letter-spacing:5px;">_ _ _</div>
+    
+    <button class="btn-secondary" id="btn-safe-abort" style="margin-top: 30px;">Schloss umgehen</button>
   `;
 
   document.body.appendChild(overlay);
@@ -50,6 +52,22 @@ export function runGadget(stationId, onComplete) {
   // Buttons
   document.getElementById('btn-dial-left').onclick = () => updateDial(currentVal - 1);
   document.getElementById('btn-dial-right').onclick = () => updateDial(currentVal + 1);
+
+  // Abort
+  document.getElementById('btn-safe-abort').onclick = () => {
+    if (window.showNoirConfirm) {
+      window.showNoirConfirm("Schloss aufbrechen?", "Möchtest du das Rätsel überspringen und den Tresor knacken? (-10 Punkte)", () => {
+        import('../../state.js').then(m => m.addScore(-10));
+        import('../../main.js').then(m => m.showNoirAlert('Rätsel gewaltsam gelöst (-10 Punkte)', 'Punkteabzug'));
+        window.removeEventListener('deviceorientation', handleOrientation);
+        showInsideSafe();
+      });
+    } else {
+      import('../../state.js').then(m => m.addScore(-10));
+      window.removeEventListener('deviceorientation', handleOrientation);
+      showInsideSafe();
+    }
+  };
 
   // Gyroscope
   function handleOrientation(event) {
