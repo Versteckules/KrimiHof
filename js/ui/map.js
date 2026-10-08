@@ -359,6 +359,7 @@ function renderMarkers() {
               }
             }
           });
+          });
        }
     });
   }
