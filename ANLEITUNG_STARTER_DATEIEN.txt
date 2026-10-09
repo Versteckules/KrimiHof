@@ -1,0 +1,73 @@
+======================================================================
+  ANLEITUNG: AUSFUEHRBARE DATEIEN (.BAT & .EXE)
+  Projekt: Der Pakt der Schlappen-Erben
+======================================================================
+
+Diese Anleitung erklaert dir genau, welche Dateien du selbst per
+Doppelklick starten kannst und wofuer sie da sind.
+
+
+----------------------------------------------------------------------
+1. DIE 3 DATEIEN, DIE DU SELBST AUSFUEHREN KANNST & SOLLST (.BAT)
+----------------------------------------------------------------------
+
+Alle drei Dateien liegen direkt im Hauptordner:
+
+1) START.bat
+   - ZWECK: Startet das Krimi-Spiel lokal.
+   - WAS PASSIERT: Startet den lokalen Webserver und oeffnet automatisch
+     deinen Webbrowser mit http://localhost:8080
+   - WANN NUTZEN: Immer, wenn du das Spiel spielen oder testen willst.
+   - HINWEIS: Das Konsolenfenster einfach im Hintergrund offen lassen.
+
+2) SPRACH_BACKUP_WIEDERHERSTELLEN.bat
+   - ZWECK: Dein Sicherheitsnetz! Stellt alle Texte, Dialogbaeume und
+     Audio-Verknuepfungen aus dem Backup-Ordner (backup/) wieder her.
+   - WAS PASSIERT: Fragt dich zur Sicherheit (J/N). Bei "J" werden
+     story.json, stations.json, events.json und final.json aus dem
+     gesicherten Zustand zurueckkopiert.
+   - WANN NUTZEN: Falls bei eigenen Bearbeitungen etwas an den Texten
+     oder Verhoeren kaputtgeht oder Sprachdateien nicht mehr abspielen.
+
+3) SPRACH_DATEIEN_AKTUALISIEREN.bat
+   - ZWECK: Erzeugt alle 248 Dialog-MP3s und 17 Story-Audios vollautomatisch
+     ueber die Edge-Neural-Stimmen neu (+25% Tempo).
+   - WANN NUTZEN: Nur falls du in Zukunft neue Dialogzeilen in story.json
+     schreibst und dafuer frische Audio-Dateien erzeugen moechtest.
+     (Fuer den aktuellen Betatest sind bereits alle 265 Dateien fertig!)
+
+
+----------------------------------------------------------------------
+2. ARCHIVIERTE DATEIEN (.EXE & ALTE ENTWICKLER-SKRIPTE)
+----------------------------------------------------------------------
+
+Saemtliche aelteren Hilfsprogramme, .exe-Dateien und Einmal-Skripte
+wurden sicher in den Unterordner "archiv\" verschoben. Sie stoeren
+dich im Hauptordner nicht mehr:
+
+- archiv\tools_alt\GenerateAllDialogues.exe
+  -> Liegt sicher im Archiv, damit nicht versehentlich darauf geklickt wird.
+
+- archiv\fix_encoding.exe, fix_quotes.exe, fix_quotes_2.exe
+  -> Fruehere Reparatur-Skripte.
+
+- archiv\*.cs, archiv\*.ps1
+  -> Entwickler-Skripte aus der Aufbauphase.
+
+
+----------------------------------------------------------------------
+3. SCHNELLE ZUSAMMENFASSUNG
+----------------------------------------------------------------------
+
+Spiel starten:
+  -> Doppelklick auf "START.bat"
+
+Backup zurueckholen (falls etwas kaputt ist):
+  -> Doppelklick auf "SPRACH_BACKUP_WIEDERHERSTELLEN.bat"
+
+Neue Sprachdateien aus Texten berechnen:
+  -> Doppelklick auf "SPRACH_DATEIEN_AKTUALISIEREN.bat"
+
+Alle .exe Dateien:
+  -> Einfach ignorieren.
+======================================================================

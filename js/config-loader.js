@@ -36,8 +36,8 @@ export function validateStations(stations) {
     throw new DataValidationError('Stationsdaten müssen ein Array sein.');
   }
 
-  if (stations.length !== 14) {
-    console.warn(`Warnung: Erwartet werden genau 14 Stationen (12 Pflicht + 2 Bonus), gefunden: ${stations.length}`);
+  if (stations.length < 12) {
+    console.warn(`Warnung: Erwartet werden mindestens 12 Stationen, gefunden: ${stations.length}`);
   }
 
   const seenIds = new Set();
@@ -131,8 +131,8 @@ export function validateEvents(events) {
     throw new DataValidationError('Events-Daten müssen ein Array sein.');
   }
 
-  if (events.length !== 11) {
-    console.warn(`Warnung: Erwartet werden genau 11 Weg-Events, gefunden: ${events.length}`);
+  if (events.length < 11) {
+    console.warn(`Warnung: Erwartet werden mindestens 11 Weg-Events, gefunden: ${events.length}`);
   }
 
   const seenIds = new Set();
