@@ -469,7 +469,10 @@
       <div class="dialogue-character">
         <img id="dialogue-avatar" src="" alt="Avatar" style="display:none;">
         <div class="dialogue-box">
-          <div id="dialogue-name"></div>
+          <div class="dialogue-box-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; margin-bottom: 8px;">
+            <div id="dialogue-name" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;"></div>
+            <button id="btn-toggle-voice" style="background: none; border: none; font-size: 1.15rem; cursor: pointer; color: var(--color-amber-muted); padding: 0 4px; line-height: 1;" title="Sprachausgabe (Stummschalten/Aktivieren)">🔊</button>
+          </div>
           <div id="dialogue-text"></div>
         </div>
       </div>

@@ -78,19 +78,22 @@ function handleAccusation(suspectId) {
           image: avatar,
           badge: 'DIE ÜBERFÜHRUNG',
           title: 'Die Falle schnappt zu!',
-          text: `Mit wasserdichten Beweisen (Beweislast: ${perc}%) konfrontierst du ${accusedName}. Unter der erdrückenden Last der Indizien bricht ${accusedName} schließlich zusammen.`
+          text: `Mit wasserdichten Beweisen (Beweislast: ${perc}%) konfrontierst du ${accusedName}. Unter der erdrückenden Last der Indizien bricht ${accusedName} schließlich zusammen.`,
+          audio: 'assets/audio/story/outro_win_ueberfuehrung.mp3'
         },
         {
           image: avatar,
           badge: 'DAS GESTÄNDNIS',
           title: 'Die Wahrheit kommt ans Licht',
-          text: `"${ending.confession}"`
+          text: `"${ending.confession}"`,
+          audio: `assets/audio/story/outro_confession_${suspectId}.mp3`
         },
         {
           image: 'assets/hero_hof_night.jpg',
           badge: 'FALL GELÖST',
           title: 'Hinter Gittern!',
-          text: 'Der Pakt der Schlappen-Erben ist endgültig zerschlagen! Der Drahtzieher wird dem Haftrichter vorgeführt und zu einer langen Freiheitsstrafe verurteilt. Die historischen Urkunden sind sichergestellt.'
+          text: 'Der Pakt der Schlappen-Erben ist endgültig zerschlagen! Der Drahtzieher wird dem Haftrichter vorgeführt und zu einer langen Freiheitsstrafe verurteilt. Die historischen Urkunden sind sichergestellt.',
+          audio: 'assets/audio/story/outro_win_abschluss.mp3'
         }
       ];
     } else {
@@ -99,19 +102,22 @@ function handleAccusation(suspectId) {
           image: avatar,
           badge: 'DIE ÜBERFÜHRUNG',
           title: 'Zu wenig Beweise!',
-          text: `Du konfrontierst ${accusedName}. Zwar bricht ${accusedName} unter dem Druck zusammen und gesteht die Tat...`
+          text: `Du konfrontierst ${accusedName}. Zwar bricht ${accusedName} unter dem Druck zusammen und gesteht die Tat...`,
+          audio: 'assets/audio/story/outro_insufficient_ueberfuehrung.mp3'
         },
         {
           image: avatar,
           badge: 'DAS GESTÄNDNIS',
           title: 'Die bittere Wahrheit',
-          text: `"${ending.confession}"`
+          text: `"${ending.confession}"`,
+          audio: `assets/audio/story/outro_confession_${suspectId}.mp3`
         },
         {
           image: 'assets/kommissar_stahl.jpg',
           badge: 'FREISPRUCH',
           title: 'Mangel an Beweisen!',
-          text: `Doch der Triumph ist von kurzer Dauer. Die Beweislast liegt nur bei ${perc}% (Benötigt: 75%). Ein teurer Staranwalt erwirkt einen Freispruch auf Kaution. ${accusedName} entkommt der Justiz! Der Fall ist gelöst, aber der Täter ist auf freiem Fuß.`
+          text: `Doch der Triumph ist von kurzer Dauer. Die Beweislast liegt nur bei ${perc}% (Benötigt: 75%). Ein teurer Staranwalt erwirkt einen Freispruch auf Kaution. ${accusedName} entkommt der Justiz! Der Fall ist gelöst, aber der Täter ist auf freiem Fuß.`,
+          audio: 'assets/audio/story/outro_insufficient_abschluss.mp3'
         }
       ];
     }
@@ -121,19 +127,22 @@ function handleAccusation(suspectId) {
         image: avatar,
         badge: 'EIN FATALER IRRTUM',
         title: 'Du hast den Falschen!',
-        text: `Du konfrontierst ${accusedName} mit deinen Beweisen. Doch ${accusedName} lacht dich nur aus und weist jede Schuld souverän von sich. Deine Theorie bricht in sich zusammen.`
+        text: `Du konfrontierst ${accusedName} mit deinen Beweisen. Doch ${accusedName} lacht dich nur aus und weist jede Schuld souverän von sich. Deine Theorie bricht in sich zusammen.`,
+        audio: 'assets/audio/story/outro_fail_irrtum.mp3'
       },
       {
         image: realAvatar,
         badge: 'DER WAHRE TÄTER',
         title: 'Eine verpasste Chance',
-        text: `Während du Zeit mit dem Falschen vergeudet hast, hat ${realName} die Gelegenheit genutzt, alle Spuren zu verwischen! Die Beweise hätten eindeutig gegen ${realName} gesprochen (${perc}%).`
+        text: `Während du Zeit mit dem Falschen vergeudet hast, hat ${realName} die Gelegenheit genutzt, alle Spuren zu verwischen! Die Beweise hätten eindeutig gegen ${realName} gesprochen (${perc}%).`,
+        audio: 'assets/audio/story/outro_fail_chance.mp3'
       },
       {
         image: 'assets/kommissar_stahl.jpg',
         badge: 'FALL GESCHLOSSEN',
         title: 'Der Pakt triumphiert',
-        text: 'Die Akte wird geschlossen. Die Urkunden sind verschwunden und der Pakt der Schlappen-Erben agiert weiter aus den Schatten. Du hast versagt!'
+        text: 'Die Akte wird geschlossen. Die Urkunden sind verschwunden und der Pakt der Schlappen-Erben agiert weiter aus den Schatten. Du hast versagt!',
+        audio: 'assets/audio/story/outro_fail_abschluss.mp3'
       }
     ];
   }

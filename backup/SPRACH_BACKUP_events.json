@@ -1,0 +1,159 @@
+[
+  {
+    "id": "event_shadow_sprint",
+    "number": 1,
+    "title": "Der fliehende Schatten",
+    "location": "Biengässchen / Altstadt",
+    "type": "timed_sprint",
+    "durationSeconds": 90,
+    "description": "Ein Schatten huscht im Augenwinkel durch die enge Gasse! Schritte hallen auf dem nassen Kopfsteinpflaster wider. Du hast 90 Sekunden Zeit, um die nächste Straßenecke zu erreichen und die fallengelassene Aktentasche zu sichern!",
+    "action": "Erreiche den nächsten Zielpunkt innerhalb des Countdowns.",
+    "reward": "Gefundener gravierter Siegelring (+10 Indizien-Punkte)"
+  },
+  {
+    "id": "event_nightwatchman",
+    "number": 2,
+    "title": "Der kauzige Hofer Nachtwächter",
+    "location": "Lorenzberg / St. Lorenz",
+    "type": "dialog",
+    "description": "Plötzlich blendet dich der warme Schein einer Petroleumlaterne. Ein alter Mann mit Hellebarde und Filzhut stellt sich dir in den Weg: 'Halt, wer schleicht hier zu nächtlicher Stund durch die Gassen von Hof?'",
+    "action": "Wähle die passende schlagfertige Antwort, um den Wächter milde zu stimmen.",
+    "options": [
+      { "text": "„Ich bin im geheimen Auftrag des Stadtrats unterwegs!“", "correct": false },
+      { "text": "„Im Namen von Dr. Renger – die Flammen von 1823 mahnen zur Wachsamkeit!“", "correct": true },
+      { "text": "„Nur ein harmloser Nachtspaziergänger auf dem Weg zum Bahnhof.“", "correct": false }
+    ],
+    "reward": "Nachtwächter Kilian überreicht dir eine historische Stadtkarte"
+  },
+  {
+    "id": "event_napkin_code",
+    "number": 3,
+    "title": "Der Wärschtlamo-Servietten-Code",
+    "location": "Sonnenplatz / Fußgängerzone",
+    "type": "scratch",
+    "description": "Am Fuß des Denkmals weht eine fettige Papierserviette im Wind. Jemand hat mit Bleistift Zahlen darauf gekritzelt, die von Senf- und Fettflecken verdeckt sind.",
+    "action": "Wische die Flecken auf dem Bildschirm mit dem Finger frei, um die Chiffre zu lesen.",
+    "code": "1823-HOF-SCHLAPPEN",
+    "reward": "Geheimcode für das Aktenkoffer-Zahlenschloss freigeschaltet"
+  },
+  {
+    "id": "event_phone_booth",
+    "number": 4,
+    "title": "Die klingelnde Telefonzelle",
+    "location": "Karolinenstraße",
+    "type": "call",
+    "description": "Ein schrilles, metallisches Klingeln zerschneidet die Stille der Nacht. Aus einer verlassenen Telefonzelle an der Straßenecke blinkt das matte Licht des Münzfernsprechers.",
+    "action": "Nimm den Hörer ab, bevor das Klingeln nach 15 Sekunden abbricht!",
+    "reward": "Sprachnachricht einer Informantin warnt vor Verrat"
+  },
+  {
+    "id": "event_lost_keys",
+    "number": 5,
+    "title": "Der verlorene Schlüsselbund",
+    "location": "Lorenzpark",
+    "type": "investigate",
+    "description": "Etwas metallisches glänzt im feuchten Herbstlaub unter einer mächtigen Platane. Im Schein deiner Taschenlampe entdeckst du einen schweren antiken Bund aus drei geschmiedeten Buntbartschlüsseln.",
+    "action": "Tippe auf den funkelnden Gegenstand im Lichtkegel.",
+    "reward": "Schlüssel zum Archivgewölbe ins Inventar aufgenommen"
+  },
+  {
+    "id": "event_muggle_pose",
+    "number": 6,
+    "title": "Die Muggel-Tarnpose",
+    "location": "Straßenkreuzung Altstadt / Neustadt",
+    "type": "pose",
+    "durationSeconds": 8,
+    "description": "Achtung! Eine Gruppe lauter Passanten biegt unerwartet um die Ecke. Schöpfen sie Verdacht, fliegt deine Ermittlung auf!",
+    "action": "Wähle blitzschnell innerhalb von 8 Sekunden eine unauffällige Tarnpose!",
+    "options": [
+      { "id": "shoe", "text": "In die Hocke gehen und Schnürsenkel binden", "success": true },
+      { "id": "facade", "text": "Faszinierte Blicke an die historische Hausfassade werfen", "success": true },
+      { "id": "cough", "text": "In den Ärmel husten und aufs Handy blicken", "success": true }
+    ],
+    "reward": "Tarnung gewahrt! Die Muggel ziehen ahnungslos vorüber."
+  },
+  {
+    "id": "event_chalk_symbols",
+    "number": 7,
+    "title": "Kreide-Symbole nachzeichnen",
+    "location": "Pflasterstein / Torbogen",
+    "type": "draw",
+    "description": "Auf einem rauen Granit-Pflasterstein ist mit weißer Kreide ein uraltes Geheimbund-Symbol gezeichnet – das Siegel der Schlappen-Erben in vereinfachter Strichführung.",
+    "action": "Fahre das Symbol mit einem durchgehenden Fingerstrich auf dem Display nach.",
+    "reward": "Geheimbund-Signatur dechiffriert (+10 Punkte)"
+  },
+  {
+    "id": "event_abandoned_bike",
+    "number": 8,
+    "title": "Das verlassene Fahrrad",
+    "location": "Saalebrücke / Uferpromenade",
+    "type": "investigate",
+    "description": "An ein rostiges Brückengeländer gelehnt steht ein herrenloses Hollandrad ohne Schloss. In den Vorderspeichen klemmt ein gefaltetes Zeitungspapier.",
+    "action": "Ziehe die Zeitung vorsichtig aus den Speichen.",
+    "reward": "Sonderausgabe der 'Hofer Brandnachrichten' von 1823 geborgen"
+  },
+  {
+    "id": "event_deadzone_signal",
+    "number": 9,
+    "title": "Funkloch-Signalsuche",
+    "location": "Enge Gassen / Lorenzberg",
+    "type": "signal",
+    "description": "Rauschen im Polizeifunk! Hohe Granitmauern schirmen das Signal ab. Die Peilung bricht ab und das Display flackert unruhig.",
+    "action": "Bewege dich mindestens 15 Meter weiter in offenes Gelände, um den Kontakt wiederherzustellen.",
+    "reward": "Signal stabilisiert, Peil-Sonar wieder voll einsatzbereit"
+  },
+  {
+    "id": "event_patrol_radar",
+    "number": 10,
+    "title": "Streifenwagen-Radar",
+    "location": "Ludwigstraße / Kreuzung",
+    "type": "stealth",
+    "durationSeconds": 10,
+    "description": "Ein unheilvolles Blinken auf dem Sonar-Radar: Eine Polizeistreife nähert sich langsam mit Suchscheinwerfer! Wenn sie dich mit dem Smartphone in der Hand am Portal erwischen, wirst du verhört.",
+    "action": "Halte dein Smartphone sofort für 10 Sekunden flach mit dem Display nach unten!",
+    "reward": "Streifenwagen biegt ab. Gefahr gebannt!"
+  },
+  {
+    "id": "event_stealth_creeping",
+    "number": 11,
+    "title": "Lautloses Anschleichen",
+    "location": "Friedhofsmauer St. Lorenz",
+    "type": "pedometer",
+    "description": "Vor dir am Tor steht eine verdächtige Gestalt im Mantel und flüstert mit jemandem im Schatten. Du musst dich auf Hörweite heranschleichen.",
+    "action": "Mache 20 vorsichtige Schritte, ohne dass der Bewegungssensor Erschütterungen meldet.",
+    "reward": "Gespräch belauscht: Hinweis auf Treffen am Unteren Tor"
+  },
+  {
+    "id": "event_call_herold",
+    "number": 12,
+    "title": "Unbekannter Anruf",
+    "location": "Handy",
+    "type": "suspect_call",
+    "suspectId": "herold",
+    "description": "Dein Telefon vibriert. 'Hier ist Herold! Sie schnüffeln in meinen Geschäften. Ich habe nichts mit dem Brand zu tun! Jemand will mir das anhängen!'",
+    "action": "Nimm den Anruf an und entscheide, wie du reagierst.",
+    "reward": "Neue Erkenntnisse über Valentin Herold"
+  },
+  {
+    "id": "event_call_gipser",
+    "number": 13,
+    "title": "Unterdrückte Nummer",
+    "location": "Handy",
+    "type": "suspect_call",
+    "suspectId": "gipser",
+    "description": "Eine kühle Frauenstimme: 'Hier spricht Katharina von Gipser. Ihre Ermittlungen stören unsere Bauprojekte. Hören Sie auf, Gespenster zu jagen!'",
+    "action": "Nimm den Anruf an und entscheide, wie du reagierst.",
+    "reward": "Neue Erkenntnisse über Katharina von Gipser"
+  },
+  {
+    "id": "event_call_heiden",
+    "number": 14,
+    "title": "Rauschen in der Leitung",
+    "location": "Handy",
+    "type": "suspect_call",
+    "suspectId": "heiden",
+    "description": "Orgelmusik im Hintergrund. 'Das Feuer reinigt, Ermittler. Die Erben wachen über Hof. Stellen Sie sich nicht gegen das Schicksal!'",
+    "action": "Nimm den Anruf an und entscheide, wie du reagierst.",
+    "reward": "Neue Erkenntnisse über Severin Heiden"
+  }
+]

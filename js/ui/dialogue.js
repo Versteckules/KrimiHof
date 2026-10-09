@@ -17,11 +17,58 @@ let currentSuspectId = null;
 
 export let currentTreeKey = null;
 
+let currentVoiceAudio = null;
+let isVoiceMuted = localStorage.getItem('krimi_voice_muted') === 'true';
+
+export function stopVoice() {
+  if (currentVoiceAudio) {
+    currentVoiceAudio.pause();
+    currentVoiceAudio = null;
+  }
+  duckBGM(false);
+}
+
+function playVoice(src) {
+  stopVoice();
+  if (isVoiceMuted || !src) return;
+
+  currentVoiceAudio = new Audio(src);
+  duckBGM(true);
+  currentVoiceAudio.play().catch(e => {
+    console.log('[Voice] Playback prevented or file error:', e);
+  });
+  currentVoiceAudio.onended = () => {
+    duckBGM(false);
+  };
+}
+
+function setupVoiceButton() {
+  const btn = document.getElementById('btn-toggle-voice');
+  if (btn) {
+    btn.textContent = isVoiceMuted ? '🔇' : '🔊';
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      isVoiceMuted = !isVoiceMuted;
+      localStorage.setItem('krimi_voice_muted', isVoiceMuted);
+      btn.textContent = isVoiceMuted ? '🔇' : '🔊';
+      if (isVoiceMuted) {
+        stopVoice();
+      } else {
+        const node = currentTree ? currentTree[currentNodeIndex] : null;
+        if (node && node.audio) {
+          playVoice(node.audio);
+        }
+      }
+    };
+  }
+}
+
 export function openDialogue(treeData, completeCallback, treeKey) {
   if (!treeData || !treeData.length) return;
   currentTreeKey = treeKey || (treeData && treeData[0] ? treeData[0].speaker : 'unknown');
   onDialogComplete = completeCallback;
   currentSuspectId = null;
+  setupVoiceButton();
 
   const state = getState();
   const locked = state.lockedDialogues || [];
@@ -86,6 +133,10 @@ function renderNode() {
   textEl.innerHTML = '';
   choicesEl.innerHTML = '';
   
+  // Voice Audio abspielen
+  const audioFile = node.audio || `assets/audio/dialogues/${(currentTreeKey || '').replace(/[^a-zA-Z0-9_]/g, '_')}_${(node.id || '').replace(/[^a-zA-Z0-9_]/g, '_')}.mp3`;
+  playVoice(audioFile);
+
   if (typewriterTimer) clearTimeout(typewriterTimer);
   isTyping = true;
   let charIndex = 0;
@@ -136,6 +187,7 @@ function renderChoices(choices, isEnd, unlockSuspects) {
   choicesEl.appendChild(playerAvatarWrap);
   
   const finishDialogue = () => {
+    stopVoice();
     if (currentSuspectId) {
       FX.stopCharacterTheme();
       duckBGM(false);
@@ -207,6 +259,7 @@ function renderChoices(choices, isEnd, unlockSuspects) {
     btn.className = 'btn-secondary dialogue-btn';
     btn.textContent = choice.text.replace(/{PLAYER_NAME}/g, playerName);
     btn.onclick = () => {
+      stopVoice();
       // Animation & Haptik
       btn.classList.add('shake-animation');
       setTimeout(() => btn.classList.remove('shake-animation'), 300);

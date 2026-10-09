@@ -221,19 +221,22 @@ export function onStationComplete(stationId) {
         image: 'assets/suspect_herold.webp',
         badge: 'HAUPTVERDÄCHTIGER 1',
         title: 'Valentin Herold',
-        text: 'Antiquitätenhändler & Kunstsammler. Er wollte die unschätzbaren Original-Urkunden des Bundes von 1823 an einen internationalen Schattenmarkt veräußern.'
+        text: 'Antiquitätenhändler & Kunstsammler. Er wollte die unschätzbaren Original-Urkunden des Bundes von 1823 an einen internationalen Schattenmarkt veräußern.',
+        audio: 'assets/audio/story/suspect_intro_herold.mp3'
       },
       {
         image: 'assets/suspect_gipser.webp',
         badge: 'HAUPTVERDÄCHTIGE 2',
         title: 'Katharina von Gipser',
-        text: 'Kommunalpolitikerin & Immobilieninvestorin. Die uralten Erbrechte im Bundespakt hätten ihre millionenschweren Bauprojekte am Saaleufer auf der Stelle blockiert.'
+        text: 'Kommunalpolitikerin & Immobilieninvestorin. Die uralten Erbrechte im Bundespakt hätten ihre millionenschweren Bauprojekte am Saaleufer auf der Stelle blockiert.',
+        audio: 'assets/audio/story/suspect_intro_gipser.mp3'
       },
       {
         image: 'assets/suspect_heiden.webp',
         badge: 'HAUPTVERDÄCHTIGER 3',
         title: 'Severin Heiden',
-        text: 'Domorganist & Chorleiter an St. Michaelis. Ein fanatischer Traditionstreuer, der das Vermächtnis der Schlappen-Erben vor profaner Entweihung schützen wollte.'
+        text: 'Domorganist & Chorleiter an St. Michaelis. Ein fanatischer Traditionstreuer, der das Vermächtnis der Schlappen-Erben vor profaner Entweihung schützen wollte.',
+        audio: 'assets/audio/story/suspect_intro_heiden.mp3'
       }
     ];
     import('./intro.js').then(module => {

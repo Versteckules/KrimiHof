@@ -1,0 +1,335 @@
+[
+  {
+    "id": "rathaus",
+    "name": "Historisches Rathaus (Brandherd)",
+    "number": 1,
+    "type": "mandatory",
+    "coords": "N 50° 19.313 E 011° 55.121",
+    "description": "Die Luft riecht beißend nach verkohltem Holz und Löschwasser. Absperrbänder im Wind. Im Gewölbekeller befand sich das Stadtarchiv, in dem Dr. Renger die Urkunden entdeckte. Hier fängt alles an.",
+    "storyEventId": "rathaus_fire",
+    "characters": [
+      {
+        "id": "polizist",
+        "name": "Kommissar Stahl",
+        "role": "Einsatzleiter",
+        "image": "assets/kommissar_stahl.jpg",
+        "badge": "Polizei"
+      },
+      {
+        "id": "reporter",
+        "name": "Paul Stift",
+        "role": "Lokalreporter",
+        "image": "assets/reporter_stift.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "time-slider",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "hauptpost",
+    "name": "Rotary Brunnen",
+    "number": 2,
+    "type": "mandatory",
+    "coords": "N 50° 19.123 E 011° 54.962",
+    "description": "Am Hintereingang der historischen Poststelle herrscht rege Betriebsamkeit. Kurierfahrer verladen letzte Kisten. Dr. Renger hatte hier laut seinem Kalender ein Postfach, in dem er Beweise vor den Verdächtigen sichern wollte.",
+    "storyEventId": "post_kurier",
+    "characters": [
+      {
+        "id": "sepp",
+        "name": "Nachtkurier Sepp",
+        "role": "Kurierfahrer",
+        "image": "assets/kurier.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "polaroid",
+      "requiredHardware": "deviceorientation"
+    }
+  },
+  {
+    "id": "obelisk",
+    "name": "Wittelsbacher Park (Das Treffen)",
+    "number": 3,
+    "type": "mandatory",
+    "coords": "N 50° 18.728 E 011° 55.052",
+    "description": "Unter den alten Linden des Parks steht der verwitterte Obelisk. Laut Rengers Notizen fanden hier geheime Treffen der Schlappen-Erben statt. Die Laternen werfen unheimliche Schatten.",
+    "storyEventId": "obelisk_blume",
+    "characters": [
+      {
+        "id": "blume",
+        "name": "Dr. Blume",
+        "role": "Historiker",
+        "image": "assets/gehilfe.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "briefcase",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "lorenzkirche",
+    "name": "St. Lorenz (Die Gruft)",
+    "number": 4,
+    "type": "mandatory",
+    "coords": "N 50° 18.893 E 011° 55.057",
+    "description": "Die älteste Kirche Hofs überragt die Altstadt. In der Kirchenchronik sind Spenden verzeichnet, die Renger dem Pakt von 1823 zuordnete. Die Tür zum Seitenschiff steht einen Spalt offen.",
+    "storyEventId": "lorenz_klement",
+    "characters": [
+      {
+        "id": "klement",
+        "name": "Pfarrer Klement",
+        "role": "Geistlicher",
+        "image": "assets/kuester_franz.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "stealth",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "biengaesschen",
+    "name": "Biengäßchen (Fluchtweg)",
+    "number": 5,
+    "type": "mandatory",
+    "coords": "N 50° 18.907 E 011° 54.979",
+    "description": "Eine schmale, kopfsteingepflasterte Gasse. Der Fluchtweg des Brandstifters führt genau hier entlang. Ein zerbrochenes Kellerfenster deutet auf ein Versteck hin.",
+    "storyEventId": "gasse_erna",
+    "characters": [
+      {
+        "id": "erna",
+        "name": "Schankwirtin Erna",
+        "role": "Wirtin",
+        "image": "assets/helene.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "laser",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "ludwigstrasse",
+    "name": "Ludwigstraße (Der Notar)",
+    "number": 6,
+    "type": "mandatory",
+    "coords": "N 50° 19.168 E 011° 55.004",
+    "description": "Die Prachtstraße Hofs. Hier befand sich die Kanzlei jenes Notars, der 1823 die neuen Besitzurkunden ausstellte. Im Hinterhof liegt das alte Kanzleiarchiv.",
+    "storyEventId": "ludwig_rolf",
+    "characters": [
+      {
+        "id": "rolf",
+        "name": "Wachmann Rolf",
+        "role": "Nachtwächter",
+        "image": "assets/passant.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "scratch",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "karolinenstrasse",
+    "name": "Karolinenstraße (Die Telefonzelle)",
+    "number": 7,
+    "type": "mandatory",
+    "coords": "N 50° 19.306 E 011° 55.037",
+    "description": "Die Straßenbeleuchtung flackert. An der Ecke steht eine der letzten gelben Telefonzellen. Hier wurde Dr. Rengers panische Sprachnachricht abgesetzt.",
+    "storyEventId": "karo_kaeptn",
+    "characters": [
+      {
+        "id": "kaeptn",
+        "name": "Käpt'n",
+        "role": "Obdachloser",
+        "image": "assets/flussschiffer.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "fake-call",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "schlossplatz",
+    "name": "Schlossplatz (Die alte Residenz)",
+    "number": 8,
+    "type": "mandatory",
+    "coords": "N 50° 19.220 E 011° 54.950",
+    "description": "Das historische Zentrum der Macht. Die Fassaden der Adelshäuser spiegeln die Geheimnisse der Patrizier wider. In einem Schaufenster liegt ein merkwürdiges Pergament.",
+    "storyEventId": "schloss_lisa",
+    "characters": [
+      {
+        "id": "lisa",
+        "name": "Lisa",
+        "role": "Fremdenführerin",
+        "image": "assets/informantin.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "ambigram",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "sonnenplatz",
+    "name": "Sonnenplatz (Das Wirtshaus)",
+    "number": 9,
+    "type": "mandatory",
+    "coords": "N 50° 18.981 E 011° 54.892",
+    "description": "Vor dem Denkmal des Wärschtlamo steht das älteste Gasthaus der Stadt. Hier trafen sich die Zunftmeister. Jemand hat eilig eine Notiz auf dem Tisch liegengelassen.",
+    "storyEventId": "sonne_karl",
+    "characters": [
+      {
+        "id": "karl",
+        "name": "Wärschtlamo Karl",
+        "role": "Verkäufer",
+        "image": "assets/stammgast.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "dice",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "marienkirche",
+    "name": "St. Marien (Die Predigt)",
+    "number": 10,
+    "type": "mandatory",
+    "coords": "N 50° 19.321 E 011° 55.167",
+    "description": "Die mächtigen Zwillingstürme der Marienkirche. In den Nischen der Fassade verbergen sich steinerne Zeugen. Durch die massiven Türen dringt schwacher Gesang.",
+    "storyEventId": "marien_gertrud",
+    "characters": [
+      {
+        "id": "gertrud",
+        "name": "Mesnerin Gertrud",
+        "role": "Mesnerin",
+        "image": "assets/helene.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "wiretap",
+      "requiredHardware": "mic"
+    }
+  },
+  {
+    "id": "michaeliskirche",
+    "name": "St. Michaelis (Das Siegel)",
+    "number": 11,
+    "type": "mandatory",
+    "coords": "N 50° 19.321 E 011° 55.167",
+    "description": "Die Kapelle thront über der Stadt. Severin Heidens Reich. Der Friedhof davor birgt alte Familiengräber. Ein Messingrad an der Pforte blockiert den Zugang zum Turm.",
+    "storyEventId": "michael_huber",
+    "characters": [
+      {
+        "id": "huber",
+        "name": "Gärtner Huber",
+        "role": "Friedhofswärter",
+        "image": "assets/fischer.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "cryptowheel",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "hospitalkirche",
+    "name": "Hospitalkirche (Der Übergabeort)",
+    "number": 12,
+    "type": "mandatory",
+    "coords": "N 50° 19.455 E 011° 55.147",
+    "description": "Nahe am Flusslauf. Das alte Spital diente einst als Zuflucht. Heute Nacht soll hier die Übergabe der verbliebenen Originalverträge stattfinden.",
+    "storyEventId": "hospital_maria",
+    "characters": [
+      {
+        "id": "maria",
+        "name": "Schwester Maria",
+        "role": "Krankenschwester",
+        "image": "assets/informantin.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "uv-light",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "saale_schmuggel",
+    "name": "Saale-Ufer (Schmugglerpfad)",
+    "number": 13,
+    "type": "bonus",
+    "coords": "N 50° 19.462 E 011° 55.272",
+    "description": "Ein schlammiger Pfad am Flussufer. Nebel steigt von der Saale auf. Hier wurden illegale Güter über den Wasserweg verschoben.",
+    "bonusReward": "Zerrissener Drohbrief",
+    "storyEventId": "saale_jan",
+    "characters": [
+      {
+        "id": "jan",
+        "name": "Fischer Jan",
+        "role": "Angler",
+        "image": "assets/fischer.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "letter",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "altstadt_archiv",
+    "name": "Altes Spital (Geheimarchiv)",
+    "number": 14,
+    "type": "bonus",
+    "coords": "N 50° 19.425 E 011° 55.215",
+    "description": "Ein verlassenes Gemäuer in der Unteren Vorstadt. In den Mauerritzen verbergen sich Hinweise auf die Urkunden von 1432.",
+    "bonusReward": "Gründungsurkunde",
+    "storyEventId": "spital_max",
+    "characters": [
+      {
+        "id": "max",
+        "name": "Archivgehilfe Max",
+        "role": "Student",
+        "image": "assets/archivgehilfe_otto.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "whisper",
+      "requiredHardware": "mic"
+    }
+  },
+  {
+    "id": "versteck_15",
+    "name": "Schlappen-Versteck",
+    "number": 15,
+    "type": "bonus",
+    "coords": "N 50° 19.500 E 011° 55.100",
+    "description": "Ein alter Bunker. Die Wände sind mit Bauplänen des Saale-Ufers plakatiert. Der Scanner schlägt auf radioaktive Isotope an.",
+    "bonusReward": "Geheimer Tresorschlüssel",
+    "storyEventId": "versteck_bote",
+    "characters": [
+      {
+        "id": "bote",
+        "name": "Schattenhafter Bote",
+        "role": "Kurier",
+        "image": "assets/geheimbund.jpg"
+      }
+    ],
+    "gadget": {
+      "id": "scanner",
+      "requiredHardware": "none"
+    }
+  },
+  {
+    "id": "jean_paul",
+    "name": "Jean Pauls Geist",
+    "number": 16,
+    "type": "easteregg",
+    "coords": "N 50° 19.035 E 011° 54.924",
+    "description": "Easteregg"
+  }
+]

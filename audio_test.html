@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vollständiges Stimmen-Casting (22 Charaktere + Story) - Der Pakt der Schlappen-Erben</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0a0e17;
+      --card-bg: rgba(18, 26, 43, 0.85);
+      --card-border: rgba(212, 163, 89, 0.25);
+      --card-hover-border: #d4a359;
+      --gold: #d4a359;
+      --gold-light: #f5d79e;
+      --gold-glow: rgba(212, 163, 89, 0.35);
+      --text-main: #f0f3f8;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(circle at 50% 20%, #151f33 0%, #080c14 100%);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      padding: 30px 15px 60px;
+    }
+
+    .container { max-width: 950px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .badge-top {
+      display: inline-block;
+      padding: 5px 14px;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid #10b981;
+      color: #6ee7b7;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.3rem;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 700px;
+      margin: 0 auto 15px;
+      line-height: 1.5;
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    .tab-btn:hover, .tab-btn.active {
+      background: var(--gold);
+      color: #000;
+      border-color: var(--gold);
+    }
+
+    .bgm-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      background: rgba(10, 14, 23, 0.7);
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 600px;
+      margin: 0 auto 25px;
+      flex-wrap: wrap;
+    }
+
+    .btn-toggle-bgm {
+      background: rgba(212, 163, 89, 0.2);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      padding: 5px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .btn-toggle-bgm:hover, .btn-toggle-bgm.active {
+      background: var(--gold);
+      color: #000;
+    }
+
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .character-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .character-card:hover {
+      border-color: var(--card-hover-border);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px var(--gold-glow);
+    }
+
+    .character-card.is-playing {
+      border-color: var(--gold);
+      background: rgba(24, 34, 56, 0.95);
+      box-shadow: 0 0 25px var(--gold-glow);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 78px;
+      height: 78px;
+      flex-shrink: 0;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top;
+      border: 2px solid var(--gold);
+    }
+
+    .gender-badge {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      border: 2px solid var(--bg-dark);
+      font-weight: bold;
+    }
+    .gender-m { background: #0284c7; color: white; }
+    .gender-f { background: #e11d48; color: white; }
+
+    .char-info { flex-grow: 1; }
+
+    .char-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+
+    .char-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .char-role {
+      font-size: 0.78rem;
+      color: var(--gold-light);
+      background: rgba(212, 163, 89, 0.15);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(212, 163, 89, 0.3);
+    }
+
+    .char-age {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .voice-tag {
+      font-size: 0.75rem;
+      color: #38bdf8;
+      font-family: 'Courier Prime', monospace;
+      margin-top: 2px;
+    }
+
+    .vibe-tag {
+      font-size: 0.75rem;
+      color: #a7f3d0;
+      font-style: italic;
+    }
+
+    .char-quote {
+      font-family: 'Courier Prime', monospace;
+      color: #cbd5e1;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: rgba(0, 0, 0, 0.35);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .audio-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      width: 75px;
+    }
+
+    .play-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold) 0%, #b8860b 100%);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0a0e17;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s ease;
+    }
+    .play-btn:hover { transform: scale(1.08); box-shadow: 0 6px 20px var(--gold-glow); }
+    .play-btn:active { transform: scale(0.95); }
+
+    .play-status {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .action-bar {
+      margin-top: 35px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn-main {
+      background: var(--gold);
+      color: #0a0e17;
+      border: none;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-main:hover { background: var(--gold-light); transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge-top">✓ Alle 248 Dialog-Zeilen &amp; 17 Story-Audios vertont</div>
+      <h1>Stimmen-Casting &amp; Hörproben</h1>
+      <p class="subtitle">
+        Jede Spielfigur besitzt eine maßgeschneiderte Charakterstimme (+25% Tempo). 
+        Zusätzlich sind <strong>Intro, Hauptverdächtigen-Präsentation und Outro mit einer sonoren Tagesschau- / Radiostimme</strong> vertont!
+      </p>
+
+      <div class="filter-bar">
+        <button class="tab-btn active" onclick="filterCategory('all')">Alle Stimmen</button>
+        <button class="tab-btn" onclick="filterCategory('story')">📻 Tagesschau / Radiostimme (Intro &amp; Outro)</button>
+        <button class="tab-btn" onclick="filterCategory('suspect')">Hauptverdächtige</button>
+        <button class="tab-btn" onclick="filterCategory('investigation')">Polizei &amp; Presse</button>
+        <button class="tab-btn" onclick="filterCategory('witness')">Hofer Zeugen</button>
+      </div>
+
+      <div class="bgm-bar">
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Atmosphärische Musik:</span>
+        <button id="btn-bgm" class="btn-toggle-bgm" onclick="toggleBGM()">▶ Musik starten</button>
+
+        <span style="font-size: 0.85rem; color: var(--text-muted); margin-left: 10px;">Zusätzliches Tempo:</span>
+        <button class="btn-toggle-bgm speed-btn active" id="spd-100" onclick="setSpeed(1.0)">1.0x</button>
+        <button class="btn-toggle-bgm speed-btn" id="spd-115" onclick="setSpeed(1.15)">1.15x</button>
+        <button class="btn-toggle-bgm speed-btn" id="spd-125" onclick="setSpeed(1.25)">1.25x</button>
+      </div>
+    </header>
+
+    <div class="grid" id="samples-container"></div>
+
+    <div class="action-bar">
+      <a href="index.html" class="btn-main">
+        🎮 Hauptspiel starten &amp; Intro anhören
+      </a>
+    </div>
+  </div>
+
+  <audio id="audio-bgm" src="assets/soundtrack.mp3" loop></audio>
+
+  <script>
+    const CHARACTERS = [
+  {
+    "id": "Valentin_Herold__Telefon_",
+    "name": "Valentin Herold (Telefon)",
+    "role": "Geheimer Telefonkontakt",
+    "gender": "m",
+    "category": "suspect",
+    "age": "58 Jahre",
+    "avatar": "assets/suspect_herold.webp",
+    "voiceDetails": "de-DE-FlorianMultilingual (-2Hz, +22%)",
+    "vibe": "Zynischer nächtlicher Anruf",
+    "quote": "Sie schnüffeln in meinen Geschäften! Ich habe nichts mit dem Brand zu tun! Jemand will mir das anhängen!",
+    "src": "assets/audio/dialogues/event_call_herold_start.mp3"
+  },
+  {
+    "id": "Katharina_von_Gipser__Telefon_",
+    "name": "Katharina von Gipser (Telefon)",
+    "role": "Geheimer Telefonkontakt",
+    "gender": "f",
+    "category": "suspect",
+    "age": "46 Jahre",
+    "avatar": "assets/suspect_gipser.webp",
+    "voiceDetails": "de-DE-KatjaNeural (+2Hz, +26%)",
+    "vibe": "Unterkühlt, distanziert am Hörer",
+    "quote": "Ihre Ermittlungen stören unsere Bauprojekte. Hören Sie auf, Gespenster zu jagen!",
+    "src": "assets/audio/dialogues/event_call_gipser_start.mp3"
+  },
+  {
+    "id": "Severin_Heiden__Telefon_",
+    "name": "Severin Heiden (Telefon)",
+    "role": "Geheimer Telefonkontakt",
+    "gender": "m",
+    "category": "suspect",
+    "age": "62 Jahre",
+    "avatar": "assets/suspect_heiden.webp",
+    "voiceDetails": "de-DE-ConradNeural (-8Hz, +20%)",
+    "vibe": "Unheilvolle Warnung per Telefon",
+    "quote": "Das Feuer reinigt, Ermittler. Die Erben wachen über Hof. Stellen Sie sich nicht gegen das Schicksal!",
+    "src": "assets/audio/dialogues/event_call_heiden_start.mp3"
+  },
+  {
+    "id": "Kommissar_Stahl",
+    "name": "Kommissar Stahl",
+    "role": "Einsatzleiter Polizei Hof",
+    "gender": "m",
+    "category": "investigation",
+    "age": "55 Jahre",
+    "avatar": "assets/kommissar_stahl.jpg",
+    "voiceDetails": "de-DE-ConradNeural (-4Hz, +25%)",
+    "vibe": "Übermüdet, streng, dienstliche Autorität",
+    "quote": "Ermittler Ermittler! Gut, dass Sie hier sind. Das Stadtarchiv steht unter Wasser und Schutt, von Dr. Renger fehlt jede Spur. Ich habe die Absperrungen dichtgemacht. Was ist Ihr Ermittlungsansatz?",
+    "src": "assets/audio/dialogues/rathaus_fire_polizist_start.mp3"
+  },
+  {
+    "id": "Paul_Stift",
+    "name": "Paul Stift",
+    "role": "Lokalreporter Frankenpost",
+    "gender": "m",
+    "category": "investigation",
+    "age": "30 Jahre",
+    "avatar": "assets/reporter_stift.jpg",
+    "voiceDetails": "de-DE-KillianNeural (+1Hz, +30%)",
+    "vibe": "Forsch, sensationsgierig, zackig",
+    "quote": "(Hält ein langes Teleobjektiv bereit) Nicht schubsen! Die Frankenpost zahlt für das Exklusivfoto. 'Flammeninferno vernichtet Jahrhunderte-Geheimnis'. Großartige Schlagzeile, was meinen Sie?",
+    "src": "assets/audio/dialogues/rathaus_fire_reporter_start.mp3"
+  },
+  {
+    "id": "Kurier_Sepp",
+    "name": "Kurier Sepp",
+    "role": "Nachtkurier Hauptpost",
+    "gender": "m",
+    "category": "witness",
+    "age": "40 Jahre",
+    "avatar": "assets/kurier.jpg",
+    "voiceDetails": "de-CH-JanNeural (-4Hz, +25%)",
+    "vibe": "Genervt, pragmatisch, wenig Worte",
+    "quote": "(Wuchtet schwer atmend Kisten auf die Ladefläche) Pst! Haben Sie keinen Feierabend? Um diese Zeit werden nur Eilaufträge verladen. Ich muss in zehn Minuten am Ufer sein, machen Sie den Weg frei!",
+    "src": "assets/audio/dialogues/post_kurier_sepp_start.mp3"
+  },
+  {
+    "id": "Dr__Blume",
+    "name": "Dr. Blume",
+    "role": "Amtsärztin / Gutachterin",
+    "gender": "f",
+    "category": "witness",
+    "age": "42 Jahre",
+    "avatar": "assets/gehilfe.jpg",
+    "voiceDetails": "de-DE-KatjaNeural (-2Hz, +25%)",
+    "vibe": "Analytisch, unbestechlich, sachlich",
+    "quote": "(Verbirgt zitternd eine Mappe unter seinem Mantel) Wer schleicht da im Park? Sind Sie von den Erben geschickt worden? Ich schwöre Ihnen, ich habe Renger gewarnt! Diese Dokumente sind verflucht!",
+    "src": "assets/audio/dialogues/obelisk_blume_blume_start.mp3"
+  },
+  {
+    "id": "Pfarrer_Klement",
+    "name": "Pfarrer Klement",
+    "role": "Geistlicher St. Lorenz",
+    "gender": "m",
+    "category": "witness",
+    "age": "66 Jahre",
+    "avatar": "assets/kuester_franz.jpg",
+    "voiceDetails": "de-DE-FlorianMultilingual (-7Hz, +18%)",
+    "vibe": "Würdevoll, väterlich, getragene Kanzelstimme",
+    "quote": "(Kniet am Altar, wendet sich langsam um) Der Friede sei mit Ihnen... auch wenn in dieser Nacht kein Friede über Hof liegt. Sie tragen Brandgeruch an Ihrer Kleidung. Was führt Sie zu dieser Stunde in St. Lorenz?",
+    "src": "assets/audio/dialogues/lorenz_klement_klement_start.mp3"
+  },
+  {
+    "id": "Schankwirtin_Erna",
+    "name": "Schankwirtin Erna",
+    "role": "Wirtin Schwarzer Kater",
+    "gender": "f",
+    "category": "witness",
+    "age": "56 Jahre",
+    "avatar": "assets/helene.jpg",
+    "voiceDetails": "de-AT-IngridNeural (-3Hz, +24%)",
+    "vibe": "Kernig, warmherzig, resolut",
+    "quote": "(Wischt mit einem Lappen die Holztheke) Hier gibt's um diese Zeit kein Bier mehr, Herr Inspektor. Sperrstunde war um Mitternacht. Und wer in mein Kellerfenster starrt, kriegt den Wischlappen ins Gesicht!",
+    "src": "assets/audio/dialogues/gasse_erna_erna_start.mp3"
+  },
+  {
+    "id": "Wachmann_Rolf",
+    "name": "Wachmann Rolf",
+    "role": "Rathaus-Wachmann (bestochen)",
+    "gender": "m",
+    "category": "investigation",
+    "age": "45 Jahre",
+    "avatar": "assets/passant.jpg",
+    "voiceDetails": "de-DE-FlorianMultilingual (-6Hz, +24%)",
+    "vibe": "Nervös, schuldbewusst, schwitzend",
+    "quote": "(Spielt nervös mit seiner Taschenlampe) Was wollen Sie hier? Das Kanzleiarchiv ist strengstens versiegelt. In der Brandnacht war hier niemand, darauf gebe ich mein Ehrenwort!",
+    "src": "assets/audio/dialogues/ludwig_rolf_rolf_start.mp3"
+  },
+  {
+    "id": "K_pt_n",
+    "name": "Käpt'n",
+    "role": "Ausflugsboot Untreusee",
+    "gender": "m",
+    "category": "witness",
+    "age": "64 Jahre",
+    "avatar": "assets/flussschiffer.jpg",
+    "voiceDetails": "de-DE-ConradNeural (-12Hz, +20%)",
+    "vibe": "Alter Seebär, bassig, brummig",
+    "quote": "(Hockt im Windschatten der gelben Telefonzelle, nippt an einer Thermoskanne) Ahoi, Landratte. Wenn du telefonieren willst: Der Apparat schluckt nur noch Groschen und spuckt Flüche aus. Ansonsten lass einen Seemann in Ruh'.",
+    "src": "assets/audio/dialogues/karo_kaeptn_kaeptn_start.mp3"
+  },
+  {
+    "id": "Lisa",
+    "name": "Lisa",
+    "role": "Studentin / Augenzeugin",
+    "gender": "f",
+    "category": "witness",
+    "age": "23 Jahre",
+    "avatar": "assets/informantin.jpg",
+    "voiceDetails": "de-DE-SeraphinaMultilingual (+4Hz, +27%)",
+    "vibe": "Jung, lebendig, aufgeregt",
+    "quote": "(Blättert in Stadtplänen unter der Laterne) Ein nächtlicher Besucher auf dem Schlossplatz. Suchen Sie die Spuren der Markgrafen oder das dunkle Geheimnis des Brandes von 1823?",
+    "src": "assets/audio/dialogues/schloss_lisa_lisa_start.mp3"
+  },
+  {
+    "id": "W_rschtlamo_Karl",
+    "name": "Wärschtlamo Karl",
+    "role": "Hofer Original · Sonnenplatz",
+    "gender": "m",
+    "category": "witness",
+    "age": "60 Jahre",
+    "avatar": "assets/stammgast.jpg",
+    "voiceDetails": "de-AT-JonasNeural (-5Hz, +25%)",
+    "vibe": "Fränkisch-gemütlich, volksnah, herzlich",
+    "quote": "(Dampf steigt aus dem Messingkessel) 'Wärschtla, haaß aus'n Kessel!' Grüß Gott, Herr Kommissar! Senf oder Kren? Wer nachts ermittelt, braucht was Warmes im Bauch.",
+    "src": "assets/audio/dialogues/sonne_karl_karl_start.mp3"
+  },
+  {
+    "id": "Mesnerin_Gertrud",
+    "name": "Mesnerin Gertrud",
+    "role": "Kirchenaufsicht St. Lorenz",
+    "gender": "f",
+    "category": "witness",
+    "age": "63 Jahre",
+    "avatar": "assets/helene.jpg",
+    "voiceDetails": "de-AT-IngridNeural (-6Hz, +20%)",
+    "vibe": "Streng, älter, skeptisch",
+    "quote": "(Schließt mit großem Schlüsselbund das Seitenportal auf) Was suchen Sie im Gotteshaus zur Unzeit? Die Andacht ist vorbei, die Lichter gelöscht. Stören Sie nicht den Frieden des Herrn.",
+    "src": "assets/audio/dialogues/marien_gertrud_gertrud_start.mp3"
+  },
+  {
+    "id": "G_rtner_Huber",
+    "name": "Gärtner Huber",
+    "role": "Parkgärtner Bürgerpark",
+    "gender": "m",
+    "category": "witness",
+    "age": "54 Jahre",
+    "avatar": "assets/fischer.jpg",
+    "voiceDetails": "de-AT-JonasNeural (-9Hz, +20%)",
+    "vibe": "Mürrisch, einsilbig, tief",
+    "quote": "(Zuckt erschrocken zusammen, lässt die Schere fallen) Herr im Himmel! Schleichen Sie nicht so herum wie ein Gespenst! Was treibt Sie um diese Zeit auf den Friedhof von St. Michaelis?",
+    "src": "assets/audio/dialogues/michael_huber_huber_start.mp3"
+  },
+  {
+    "id": "Schwester_Maria",
+    "name": "Schwester Maria",
+    "role": "Ordensschwester St. Lorenz",
+    "gender": "f",
+    "category": "witness",
+    "age": "35 Jahre",
+    "avatar": "assets/informantin.jpg",
+    "voiceDetails": "de-DE-AmalaNeural (+3Hz, +22%)",
+    "vibe": "Sanft, andächtig, gütig",
+    "quote": "(Hält sich den Finger an die Lippen) Pst! Bitte leise sprechen. Die Kranken im alten Spital schlafen unruhig. Durch die Fenster dringt schon genug Lärm vom Saaleufer herauf. Was führt die Polizei hierher?",
+    "src": "assets/audio/dialogues/hospital_maria_maria_start.mp3"
+  },
+  {
+    "id": "Fischer_Jan",
+    "name": "Fischer Jan",
+    "role": "Saale-Fischer am Unteren Tor",
+    "gender": "m",
+    "category": "witness",
+    "age": "52 Jahre",
+    "avatar": "assets/fischer.jpg",
+    "voiceDetails": "de-DE-ConradNeural (-7Hz, +22%)",
+    "vibe": "Wettergegerbt, knorrig, misstrauisch",
+    "quote": "(Kaut auf einer kalten Tabakspfeife, starrt ins Wasser) Petri Heil. Wenn du mir die Forellen verscheuchst mit deinen Stiefeln, fliegst du in die Saale. Was willst du am Fluss?",
+    "src": "assets/audio/dialogues/saale_jan_jan_start.mp3"
+  },
+  {
+    "id": "Archivgehilfe_Max",
+    "name": "Archivgehilfe Max",
+    "role": "Mitarbeiter Stadtarchiv",
+    "gender": "m",
+    "category": "investigation",
+    "age": "22 Jahre",
+    "avatar": "assets/archivgehilfe_otto.jpg",
+    "voiceDetails": "de-DE-KillianNeural (+5Hz, +28%)",
+    "vibe": "Jung, hastig, eingeschüchtert",
+    "quote": "(Kniet zitternd zwischen verstaubten Folianten im Keller) Wer ist da?! Kommen Sie nicht näher! Ich habe die Gründungsurkunde von 1432 gesichert... Sie dürfen sie nicht verbrennen!",
+    "src": "assets/audio/dialogues/spital_max_max_start.mp3"
+  },
+  {
+    "id": "Schattenhafter_Bote",
+    "name": "Schattenhafter Bote",
+    "role": "Geheimbund-Verbindungsmann",
+    "gender": "m",
+    "category": "witness",
+    "age": "Unbekannt",
+    "avatar": "assets/geheimbund.jpg",
+    "voiceDetails": "de-DE-ConradNeural (-14Hz, +16%)",
+    "vibe": "Gefährlich, unheimlich, abgründig",
+    "quote": "(Steht vermummt im Schutz des Bunkers, Hand an der Jackentasche) Sie haben die Fährte bis hierher verfolgt, Ermittler. Aber der Pakt von 1823 überdauert Jahrhunderte. Sie kommen zu spät, um die Verträge zu retten.",
+    "src": "assets/audio/dialogues/versteck_bote_bote_start.mp3"
+  },
+  {
+    "id": "Valentin_Herold",
+    "name": "Valentin Herold",
+    "role": "Antiquitätenhändler & Sammler",
+    "gender": "m",
+    "category": "suspect",
+    "age": "58 Jahre",
+    "avatar": "assets/suspect_herold.webp",
+    "voiceDetails": "de-DE-FlorianMultilingual (-3Hz, +20%)",
+    "vibe": "Aristokratisch, zynisch, geistig überlegen",
+    "quote": "(Sitzt im Ohrensessel, nippt an einem Cognac, stützt sich auf seinen Gehstock mit Löwenknauf) Ein Schnüffler um diese nachtschlafende Zeit? Wenn Sie antike Hofer Fayencen erwerben wollen, beehren Sie mich morgen zu den Geschäftszeiten. Was wollen Sie?",
+    "src": "assets/audio/dialogues/interrogate_herold_start.mp3"
+  },
+  {
+    "id": "Katharina_von_Gipser",
+    "name": "Katharina von Gipser",
+    "role": "Stadträtin & Investorin",
+    "gender": "f",
+    "category": "suspect",
+    "age": "46 Jahre",
+    "avatar": "assets/suspect_gipser.webp",
+    "voiceDetails": "de-DE-KatjaNeural (+1Hz, +24%)",
+    "vibe": "Kühl, geschäftsmäßig, schneidend",
+    "quote": "(Mustert Sie kühl im eleganten Kostüm) Sie haben genau zwei Minuten meiner Zeit. Ich koordiniere gerade ein millionenschweres Investoren-Konsortium für die Saaleufer-Sanierung. Machen Sie es kurz.",
+    "src": "assets/audio/dialogues/interrogate_gipser_start.mp3"
+  },
+  {
+    "id": "Severin_Heiden",
+    "name": "Severin Heiden",
+    "role": "Domorganist St. Michaelis",
+    "gender": "m",
+    "category": "suspect",
+    "age": "62 Jahre",
+    "avatar": "assets/suspect_heiden.webp",
+    "voiceDetails": "de-DE-ConradNeural (-9Hz, +18%)",
+    "vibe": "Asketisch, düster, getragen, fanatisch",
+    "quote": "(Steht am Orgel-Spieltisch von St. Michaelis, dreht sich langsam mit glühenden Augen um) Sie wandeln in der Finsternis, Suchender. Hören Sie, wie das Holz knarrt? Die Sünde von 1823 lastet auf diesem Boden. Was wollen Sie vor dem Angesicht des Herrn?",
+    "src": "assets/audio/dialogues/interrogate_heiden_start.mp3"
+  },
+  {
+    "id": "story_intro_1",
+    "name": "Intro • Kapitel 1: Historie",
+    "role": "Tagesschau / Radiostimme (Erzähler)",
+    "gender": "m",
+    "category": "story",
+    "age": "Radiosprecher",
+    "avatar": "assets/intro_fire_1823.jpg",
+    "voiceDetails": "de-DE-Conrad (+1Hz, +25%) - Seriös & Sonor",
+    "vibe": "Klassische Dokumentar- & Nachrichtensprecher-Stimme",
+    "quote": "4. September 1823. Die Flammen von Hof. Ein verheerendes Feuer vernichtet über zweihundert Häuser der Hofer Altstadt...",
+    "src": "assets/audio/story/intro_slide_1.mp3"
+  },
+  {
+    "id": "story_intro_4",
+    "name": "Intro • Kapitel 4: Der Auftrag",
+    "role": "Tagesschau / Radiostimme (Erzähler)",
+    "gender": "m",
+    "category": "story",
+    "age": "Radiosprecher",
+    "avatar": "assets/hero_hof_night.jpg",
+    "voiceDetails": "de-DE-Conrad (+1Hz, +25%) - Seriös & Sonor",
+    "vibe": "Aufbruch zur nächtlichen Ermittlung",
+    "quote": "Ermittler, übernehmen Sie! Deine Jagd beginnt am Rathaus. Sichere Spuren an zwölf Stationen quer durch das nächtliche Hof...",
+    "src": "assets/audio/story/intro_slide_4.mp3"
+  },
+  {
+    "id": "story_suspect_herold",
+    "name": "Rathaus-Abschluss • Valentin Herold",
+    "role": "Tagesschau / Radiostimme (Erzähler)",
+    "gender": "m",
+    "category": "story",
+    "age": "Radiosprecher",
+    "avatar": "assets/suspect_herold.webp",
+    "voiceDetails": "de-DE-Conrad (+1Hz, +25%) - Seriös & Sonor",
+    "vibe": "Profil-Präsentation Hauptverdächtiger 1",
+    "quote": "Hauptverdächtiger 1: Valentin Herold. Antiquitätenhändler und Kunstsammler. Er wollte die unschätzbaren Original-Urkunden des Bundes von 1823 an einen internationalen Schattenmarkt veräußern.",
+    "src": "assets/audio/story/suspect_intro_herold.mp3"
+  },
+  {
+    "id": "story_suspect_gipser",
+    "name": "Rathaus-Abschluss • Katharina von Gipser",
+    "role": "Tagesschau / Radiostimme (Erzähler)",
+    "gender": "m",
+    "category": "story",
+    "age": "Radiosprecher",
+    "avatar": "assets/suspect_gipser.webp",
+    "voiceDetails": "de-DE-Conrad (+1Hz, +25%) - Seriös & Sonor",
+    "vibe": "Profil-Präsentation Hauptverdächtige 2",
+    "quote": "Hauptverdächtige 2: Katharina von Gipser. Kommunalpolitikerin und Immobilieninvestorin. Die uralten Erbrechte im Bundespakt hätten ihre millionenschweren Bauprojekte am Saaleufer auf der Stelle blockiert.",
+    "src": "assets/audio/story/suspect_intro_gipser.mp3"
+  },
+  {
+    "id": "story_suspect_heiden",
+    "name": "Rathaus-Abschluss • Severin Heiden",
+    "role": "Tagesschau / Radiostimme (Erzähler)",
+    "gender": "m",
+    "category": "story",
+    "age": "Radiosprecher",
+    "avatar": "assets/suspect_heiden.webp",
+    "voiceDetails": "de-DE-Conrad (+1Hz, +25%) - Seriös & Sonor",
+    "vibe": "Profil-Präsentation Hauptverdächtiger 3",
+    "quote": "Hauptverdächtiger 3: Severin Heiden. Domorganist und Chorleiter an St. Michaelis. Ein fanatischer Traditionstreuer, der das Vermächtnis der Schlappen-Erben vor profaner Entweihung schützen wollte.",
+    "src": "assets/audio/story/suspect_intro_heiden.mp3"
+  },
+  {
+    "id": "story_outro_win",
+    "name": "Outro • Die Falle schnappt zu (Sieg)",
+    "role": "Tagesschau / Radiostimme (Erzähler)",
+    "gender": "m",
+    "category": "story",
+    "age": "Radiosprecher",
+    "avatar": "assets/diploma_banner.jpg",
+    "voiceDetails": "de-DE-Conrad (+1Hz, +25%) - Seriös & Sonor",
+    "vibe": "Überführung des wahren Mörders",
+    "quote": "Die Falle schnappt zu! Mit wasserdichten Beweisen konfrontierst du den Verdächtigen. Unter der erdrückenden Last der Indizien bricht der Täter schließlich zusammen.",
+    "src": "assets/audio/story/outro_win_ueberfuehrung.mp3"
+  },
+  {
+    "id": "story_outro_confession_gipser",
+    "name": "Outro • Geständnis Katharina von Gipser",
+    "role": "Haupttäterin (Geständnis)",
+    "gender": "f",
+    "category": "story",
+    "age": "46 Jahre",
+    "avatar": "assets/suspect_gipser.webp",
+    "voiceDetails": "KatjaNeural (+1Hz, +24%)",
+    "vibe": "Verzweifeltes Geständnis im Finale",
+    "quote": "Sie begreifen gar nichts! Mein Bauprojekt hätte Hof in die Zukunft katapultiert! Diese verstaubten Rechte von 1823 hätten alles blockiert. Ich musste dieses Archiv zum Schweigen bringen!",
+    "src": "assets/audio/story/outro_confession_gipser.mp3"
+  },
+  {
+    "id": "story_outro_fail",
+    "name": "Outro • Ein fataler Irrtum (Niederlage)",
+    "role": "Tagesschau / Radiostimme (Erzähler)",
+    "gender": "m",
+    "category": "story",
+    "age": "Radiosprecher",
+    "avatar": "assets/kommissar_stahl.jpg",
+    "voiceDetails": "de-DE-Conrad (+1Hz, +25%) - Seriös & Sonor",
+    "vibe": "Der Täter entkommt ungestraft",
+    "quote": "Ein fataler Irrtum! Du hast den Falschen! Du konfrontierst die falsche Person. Doch sie lacht dich nur aus und weist jede Schuld souverän von sich. Deine Theorie bricht in sich zusammen.",
+    "src": "assets/audio/story/outro_fail_irrtum.mp3"
+  }
+];
+
+    let currentAudio = null;
+    let currentPlayingId = null;
+    let currentSpeed = 1.0;
+    let currentFilter = 'all';
+    const bgmAudio = document.getElementById('audio-bgm');
+    let isBgmPlaying = false;
+
+    function renderCards() {
+      const container = document.getElementById('samples-container');
+      container.innerHTML = '';
+
+      const filtered = CHARACTERS.filter(c => currentFilter === 'all' || c.category === currentFilter);
+
+      filtered.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'character-card';
+        card.id = 'card-' + c.id;
+
+        card.innerHTML = `
+          <div class="avatar-wrapper">
+            <img src="${c.avatar}" alt="${c.name}" class="avatar-img">
+            <span class="gender-badge ${c.gender === 'm' ? 'gender-m' : 'gender-f'}">
+              ${c.gender === 'm' ? '♂' : '♀'}
+            </span>
+          </div>
+
+          <div class="char-info">
+            <div class="char-header">
+              <span class="char-name">${c.name}</span>
+              <span class="char-role">${c.role}</span>
+              <span class="char-age">${c.age}</span>
+            </div>
+            <div class="voice-tag">Stimme: ${c.voiceDetails}</div>
+            <div class="vibe-tag">Charakter: ${c.vibe}</div>
+            <div class="char-quote">„${c.quote}“</div>
+          </div>
+
+          <div class="audio-controls">
+            <button class="play-btn" id="btn-${c.id}" onclick="togglePlay('${c.id}')">
+              ▶
+            </button>
+            <span class="play-status" id="status-${c.id}">Hören</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterCategory(cat) {
+      currentFilter = cat;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      renderCards();
+    }
+
+    function togglePlay(id) {
+      if (currentPlayingId === id && currentAudio && !currentAudio.paused) {
+        stopCurrent();
+        return;
+      }
+      stopCurrent();
+
+      const char = CHARACTERS.find(c => c.id === id);
+      if (!char) return;
+
+      currentAudio = new Audio(char.src + '?t=' + Date.now());
+      currentAudio.playbackRate = currentSpeed;
+      currentPlayingId = id;
+
+      const card = document.getElementById('card-' + id);
+      const btn = document.getElementById('btn-' + id);
+      const status = document.getElementById('status-' + id);
+
+      if (card) card.classList.add('is-playing');
+      if (btn) btn.textContent = '⏸';
+      if (status) status.textContent = 'Spielt';
+
+      duckBGM(true);
+
+      currentAudio.play().catch(e => console.error(e));
+      currentAudio.onended = () => stopCurrent();
+    }
+
+    function stopCurrent() {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
+      if (currentPlayingId) {
+        const card = document.getElementById('card-' + currentPlayingId);
+        const btn = document.getElementById('btn-' + currentPlayingId);
+        const status = document.getElementById('status-' + currentPlayingId);
+        if (card) card.classList.remove('is-playing');
+        if (btn) btn.textContent = '▶';
+        if (status) status.textContent = 'Hören';
+        currentPlayingId = null;
+      }
+      duckBGM(false);
+    }
+
+    function toggleBGM() {
+      const btn = document.getElementById('btn-bgm');
+      if (isBgmPlaying) {
+        bgmAudio.pause();
+        isBgmPlaying = false;
+        btn.textContent = '▶ Musik starten';
+      } else {
+        bgmAudio.volume = 0.35;
+        bgmAudio.play().then(() => {
+          isBgmPlaying = true;
+          btn.textContent = '⏸ Musik pausieren';
+        }).catch(e => console.warn(e));
+      }
+    }
+
+    function duckBGM(isDucking) {
+      if (!isBgmPlaying || !bgmAudio) return;
+      bgmAudio.volume = isDucking ? 0.08 : 0.35;
+    }
+
+    function setSpeed(spd) {
+      currentSpeed = spd;
+      document.querySelectorAll('.speed-btn').forEach(b => {
+        b.classList.remove('active');
+        b.style.background = '';
+        b.style.color = '';
+      });
+      const activeBtn = document.getElementById('spd-' + Math.round(spd * 100));
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.style.background = 'var(--gold)';
+        activeBtn.style.color = '#000';
+      }
+      if (currentAudio) {
+        currentAudio.playbackRate = spd;
+      }
+    }
+
+    renderCards();
+  </script>
+</body>
+</html>

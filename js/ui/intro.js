@@ -4,34 +4,63 @@
 
 import { getState } from '../state.js';
 import { showView } from '../main.js';
+import { duckBGM } from '../audio.js';
 
 let currentSlideIndex = 0;
 let onIntroCompleteCallback = null;
+let currentIntroAudio = null;
+
+export function stopSlideAudio() {
+  if (currentIntroAudio) {
+    currentIntroAudio.pause();
+    currentIntroAudio = null;
+  }
+  duckBGM(false);
+}
+
+function playSlideAudio(audioSrc) {
+  stopSlideAudio();
+  const isMuted = localStorage.getItem('krimi_voice_muted') === 'true';
+  if (!audioSrc || isMuted) return;
+
+  currentIntroAudio = new Audio(audioSrc);
+  duckBGM(true);
+  currentIntroAudio.play().catch(e => {
+    console.log('[Intro Audio] Playback prevented:', e);
+  });
+  currentIntroAudio.onended = () => {
+    duckBGM(false);
+  };
+}
 
 const slides = [
   {
     image: 'assets/intro_fire_1823.jpg',
     badge: 'KAPITEL 1 • HISTORIE',
     title: '4. September 1823 — Die Flammen von Hof',
-    text: 'Ein verheerendes Feuer vernichtet über zweihundert Häuser der Hofer Altstadt. Was die Chroniken als tragisches Unglück verzeichneten, war in Wahrheit der Deckmantel für einen ruchlosen Geheimvertrag: Den <strong>„Pakt der Schlappen-Erben“</strong>. Einflussreiche Patrizier nutzten die Feuersbrunst, um sich heimlich wertvollste Ländereien und Privilegien anzueignen.'
+    text: 'Ein verheerendes Feuer vernichtet über zweihundert Häuser der Hofer Altstadt. Was die Chroniken als tragisches Unglück verzeichneten, war in Wahrheit der Deckmantel für einen ruchlosen Geheimvertrag: Den <strong>„Pakt der Schlappen-Erben“</strong>. Einflussreiche Patrizier nutzten die Feuersbrunst, um sich heimlich wertvollste Ländereien und Privilegien anzueignen.',
+    audio: 'assets/audio/story/intro_slide_1.mp3'
   },
   {
     image: 'assets/intro_archive.jpg',
     badge: 'KAPITEL 2 • DAS GEHEIMNIS',
     title: 'Gestern Abend — Der Fund im Kellergewölbe',
-    text: 'Zwei Jahrhunderte später stieß der Hofer Stadtarchivar Dr. Renger im Gewölbe unter dem Rathaus auf die originalen Urkunden des Pakts. Doch bevor er die Beweise vorlegen konnte, wurde sein Büro verwüstet, die Geheimakten geraubt – und von Dr. Renger fehlt jede Spur! Nur eine panische Sprachnachricht blieb auf deinem Anrufbeantworter.'
+    text: 'Zwei Jahrhunderte später stieß der Hofer Stadtarchivar Dr. Renger im Gewölbe unter dem Rathaus auf die originalen Urkunden des Pakts. Doch bevor er die Beweise vorlegen konnte, wurde sein Büro verwüstet, die Geheimakten geraubt – und von Dr. Renger fehlt jede Spur! Nur eine panische Sprachnachricht blieb auf deinem Anrufbeantworter.',
+    audio: 'assets/audio/story/intro_slide_2.mp3'
   },
   {
     image: 'assets/intro_crime_scene.jpg',
     badge: 'KAPITEL 3 • DER ANSCHLAG',
     title: 'Heute Nacht — Tatort Rathaus',
-    text: 'Feueralarm im Rathaus! Dichter Rauch quillt aus dem Portal, Blaulicht zerschneidet den Regen, Absperrband flattert im Wind. Brandbeschleuniger wurde am Eichenportal verschüttet! Jemand will um jeden Preis verhindern, dass die Wahrheit über die Schlappen-Erben ans Tageslicht gelangt.'
+    text: 'Feueralarm im Rathaus! Dichter Rauch quillt aus dem Portal, Blaulicht zerschneidet den Regen, Absperrband flattert im Wind. Brandbeschleuniger wurde am Eichenportal verschüttet! Jemand will um jeden Preis verhindern, dass die Wahrheit über die Schlappen-Erben ans Tageslicht gelangt.',
+    audio: 'assets/audio/story/intro_slide_3.mp3'
   },
   {
     image: 'assets/hero_hof_night.jpg',
     badge: 'DEIN AUFTRAG • JETZT ERMITTELN',
     title: 'Ermittler {PLAYER_NAME}, übernehmen Sie!',
-    text: 'Deine Jagd beginnt am Rathaus. Sichere Spuren an 12 Stationen quer durch das nächtliche Hof, befrage Zeugen und konfrontiere die drei Hauptverdächtigen. Entlarve den wahren Täter vor dem Morgengrauen – bevor alle Spuren für immer verglimmen!'
+    text: 'Deine Jagd beginnt am Rathaus. Sichere Spuren an 12 Stationen quer durch das nächtliche Hof, befrage Zeugen und konfrontiere die drei Hauptverdächtigen. Entlarve den wahren Täter vor dem Morgengrauen – bevor alle Spuren für immer verglimmen!',
+    audio: 'assets/audio/story/intro_slide_4.mp3'
   }
 ];
 
@@ -42,6 +71,7 @@ export function initIntro() {
 
   if (btnNext) {
     btnNext.addEventListener('click', () => {
+      stopSlideAudio();
       if (currentSlideIndex < currentSlides.length - 1) {
         currentSlideIndex++;
         renderSlide();
@@ -53,6 +83,7 @@ export function initIntro() {
 
   if (btnPrev) {
     btnPrev.addEventListener('click', () => {
+      stopSlideAudio();
       if (currentSlideIndex > 0) {
         currentSlideIndex--;
         renderSlide();
@@ -62,6 +93,7 @@ export function initIntro() {
 
   if (btnSkip) {
     btnSkip.addEventListener('click', () => {
+      stopSlideAudio();
       finishIntro();
     });
   }
@@ -123,15 +155,24 @@ function renderSlide() {
       const dot = document.createElement('span');
       dot.className = 'intro-dot' + (idx === currentSlideIndex ? ' active' : '');
       dot.onclick = () => {
+        stopSlideAudio();
         currentSlideIndex = idx;
         renderSlide();
       };
       dotsContainer.appendChild(dot);
     });
   }
+
+  // Audio für aktuellen Slide abspielen
+  if (slide.audio) {
+    playSlideAudio(slide.audio);
+  } else {
+    stopSlideAudio();
+  }
 }
 
 function finishIntro() {
+  stopSlideAudio();
   if (onIntroCompleteCallback) {
     onIntroCompleteCallback();
   } else {
