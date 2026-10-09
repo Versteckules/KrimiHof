@@ -328,7 +328,30 @@ function generateDiploma() {
   const bannerUrl = new URL('assets/diploma_banner.jpg', window.location.href).href;
   
   bannerWrapper.innerHTML = `
-    <h3 style="color: var(--color-amber-glow); font-size: 1.2rem; margin-bottom: 15px;">Dein Geocaching-Banner (GCBYXW0)</h3>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px;">
+      <div class="praegesiegel praegesiegel-dark" style="width: 58px; height: 58px;" title="Offizielles Meister-Siegel">
+        <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
+          <defs>
+            <path id="seal-path-diploma" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
+            <clipPath id="seal-clip-diploma">
+              <circle cx="50" cy="50" r="24.5" />
+            </clipPath>
+          </defs>
+          <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
+          <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
+          <circle cx="50" cy="50" r="42" class="seal-inner-line" />
+          <text class="seal-text">
+            <textPath href="#seal-path-diploma" startOffset="50%" text-anchor="middle">
+              ★ VERSTECKULES • MEISTER-DIPLOM ★
+            </textPath>
+          </text>
+          <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
+          <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-diploma)" class="seal-avatar" />
+          <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
+        </svg>
+      </div>
+      <h3 style="color: var(--color-amber-glow); font-size: 1.25rem; margin: 0;">Dein Geocaching-Banner (GCBYXW0)</h3>
+    </div>
     <img src="${bannerUrl}" alt="Diplom Banner" style="width: 100%; max-width: 600px; border-radius: 8px; border: 2px solid var(--color-amber-muted); margin-bottom: 15px;">
     <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 10px;">Füge diesen Code in dein Geocaching-Profil ein:</p>
     <textarea readonly style="width: 100%; height: 60px; background: rgba(0,0,0,0.5); color: #fff; font-family: monospace; border: 1px solid var(--color-glass-border); padding: 10px; border-radius: 4px; resize: none;"><a href="${window.location.origin}${window.location.pathname}"><img src="${bannerUrl}" alt="Der Pakt der Schlappen-Erben - Meister-Ermittler" /></a></textarea>

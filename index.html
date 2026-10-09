@@ -60,9 +60,32 @@
         </p>
 
         <!-- Dienstausweis -->
-        <div class="badge-card">
-          <input type="text" id="player-name-input" placeholder="Name des Ermittlers..." autocomplete="off">
-          <p style="font-size: 0.8rem; color: var(--color-night-light);">OFFIZIELLE ERMITTLUNGSAKTE</p>
+        <div class="badge-card" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 14px 20px;">
+          <div style="flex-grow: 1; text-align: left;">
+            <input type="text" id="player-name-input" placeholder="Name des Ermittlers..." autocomplete="off">
+            <p style="font-size: 0.78rem; color: var(--color-night-light); margin-top: 4px;">OFFIZIELLE ERMITTLUNGSAKTE &middot; KRIMINALPOLIZEI HOF</p>
+          </div>
+          <div class="praegesiegel praegesiegel-dark" style="width: 58px; height: 58px;" title="Dienstsiegel • Versteckules">
+            <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
+              <defs>
+                <path id="seal-path-badge" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
+                <clipPath id="seal-clip-badge">
+                  <circle cx="50" cy="50" r="24.5" />
+                </clipPath>
+              </defs>
+              <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
+              <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
+              <circle cx="50" cy="50" r="42" class="seal-inner-line" />
+              <text class="seal-text">
+                <textPath href="#seal-path-badge" startOffset="50%" text-anchor="middle">
+                  ★ VERSTECKULES • DIENSTAUSWEIS ★
+                </textPath>
+              </text>
+              <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
+              <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-badge)" class="seal-avatar" />
+              <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
+            </svg>
+          </div>
         </div>
 
         <!-- Start Button & Action Controls -->
@@ -239,9 +262,6 @@
             style="position: absolute; top: 10px; right: 15px; font-family: var(--font-mono); font-size: 0.7rem; color: #8b0000; font-weight: bold; transform: rotate(5deg); border: 1px solid #8b0000; padding: 2px 4px; z-index: 2; background: rgba(253,245,230,0.8);">
             AKTE: <span id="station-number-stamp">00</span>
           </div>
-          <!-- Wasserzeichen Avatar.jpg -->
-          <img src="assets/avatar.jpg" alt="" style="position: absolute; top: 10px; right: 10px; width: 80px; opacity: 0.15; z-index: 1; pointer-events: none; border-radius: 4px; filter: sepia(1) contrast(1.2);">
-
           <p id="station-description"
             style="font-size: 1.15rem; margin-bottom: var(--space-lg); line-height: 1.6; font-style: italic; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: var(--space-md);">
             Beschreibung lädt...</p>
@@ -261,6 +281,35 @@
               style="margin-top: 15px; background: rgba(0,0,0,0.05); padding: 10px; border-left: 3px solid #555; font-size: 0.9rem; font-style: italic;">
             </div>
           </div>
+
+          <!-- Offizieller Akten-Abschluss mit antikem Prägesiegel (Überlagert nichts) -->
+          <div class="paper-note-seal-footer">
+            <div>
+              <div class="seal-caption-dept">Kriminalinspektion Hof &middot; Aktenstelle</div>
+              <div class="seal-caption-sub">Amtlich beglaubigtes Dokument &middot; Pakt von 1823</div>
+            </div>
+            <div class="praegesiegel praegesiegel-paper" title="Amtliches Prägesiegel • Versteckules">
+              <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
+                <defs>
+                  <path id="seal-path-station" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
+                  <clipPath id="seal-clip-station">
+                    <circle cx="50" cy="50" r="24.5" />
+                  </clipPath>
+                </defs>
+                <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
+                <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
+                <circle cx="50" cy="50" r="42" class="seal-inner-line" />
+                <text class="seal-text">
+                  <textPath href="#seal-path-station" startOffset="50%" text-anchor="middle">
+                    ★ VERSTECKULES • KRIMINALAKTE HOF ★
+                  </textPath>
+                </text>
+                <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
+                <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-station)" class="seal-avatar" />
+                <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
+              </svg>
+            </div>
+          </div>
         </div>
 
         <div style="display: flex; justify-content: center;">
@@ -276,10 +325,36 @@
         <!-- watermark removed -->
         <div
           style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-glass-border); padding-bottom: var(--space-md); margin-bottom: var(--space-lg); position: relative; z-index: 1;">
-          <div>
-            <h2
-              style="font-size: 2rem; font-family: var(--font-serif); color: var(--color-amber-glow); margin-bottom: var(--space-xs);">
-              Ermittlungsakte</h2>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div class="praegesiegel praegesiegel-dark" style="width: 62px; height: 62px;" title="Amtliches Dienstsiegel • Versteckules">
+              <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
+                <defs>
+                  <path id="seal-path-dossier" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
+                  <clipPath id="seal-clip-dossier">
+                    <circle cx="50" cy="50" r="24.5" />
+                  </clipPath>
+                </defs>
+                <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
+                <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
+                <circle cx="50" cy="50" r="42" class="seal-inner-line" />
+                <text class="seal-text">
+                  <textPath href="#seal-path-dossier" startOffset="50%" text-anchor="middle">
+                    ★ VERSTECKULES • ERMITTLUNGSAKTE ★
+                  </textPath>
+                </text>
+                <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
+                <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-dossier)" class="seal-avatar" />
+                <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
+              </svg>
+            </div>
+            <div>
+              <h2
+                style="font-size: 2rem; font-family: var(--font-serif); color: var(--color-amber-glow); margin-bottom: 2px;">
+                Ermittlungsakte</h2>
+              <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-amber-muted); letter-spacing: 1px; text-transform: uppercase;">
+                Amtlich beglaubigt &middot; Versteckules
+              </div>
+            </div>
           </div>
           <div style="display: flex; gap: 10px; align-items: center;">
             <button id="btn-dossier-replay-intro" class="btn-secondary"
@@ -459,6 +534,35 @@
         </div>
         <div id="evidence-assignment-feedback"
           style="margin-top: 15px; font-size: 0.95rem; font-weight: bold; text-align: center; height: 20px; color: #8b0000;">
+        </div>
+      </div>
+
+      <!-- Offizieller Asservaten-Abschluss mit Prägesiegel (Überlagert nichts) -->
+      <div class="paper-note-seal-footer" style="margin-top: 15px; padding-top: 10px;">
+        <div>
+          <div class="seal-caption-dept">Asservatenkammer &middot; Beweisakte</div>
+          <div class="seal-caption-sub">Originalbeweis amtlich registriert &middot; Stadt Hof</div>
+        </div>
+        <div class="praegesiegel praegesiegel-paper" style="width: 62px; height: 62px;" title="Amtliches Asservaten-Siegel • Versteckules">
+          <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
+            <defs>
+              <path id="seal-path-evidence" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
+              <clipPath id="seal-clip-evidence">
+                <circle cx="50" cy="50" r="24.5" />
+              </clipPath>
+            </defs>
+            <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
+            <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
+            <circle cx="50" cy="50" r="42" class="seal-inner-line" />
+            <text class="seal-text">
+              <textPath href="#seal-path-evidence" startOffset="50%" text-anchor="middle">
+                ★ VERSTECKULES • AMTLICHE AKTE ★
+              </textPath>
+            </text>
+            <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
+            <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-evidence)" class="seal-avatar" />
+            <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
+          </svg>
         </div>
       </div>
 

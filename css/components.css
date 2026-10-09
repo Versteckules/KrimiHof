@@ -212,7 +212,166 @@
   -webkit-user-drag: none;
 }
 
-/* Dezentes Wasserzeichen (Hintergrund von Karten, Akten, Overlays) */
+/* ============================================================
+   HISTORISCHES PRÄGESIEGEL (BLINDPRÄGUNG / TROCKENSIEGEL)
+   Authentischer Prägestempel nach historischem Vorbild auf Akten.
+   Versteckules Avatar als Relief, so platziert, dass nichts überlagert wird.
+   ============================================================ */
+
+.praegesiegel {
+  display: inline-block;
+  position: relative;
+  width: 76px;
+  height: 76px;
+  flex-shrink: 0;
+  pointer-events: none;
+  user-select: none;
+  border-radius: 50%;
+  transform: rotate(-6deg);
+  transition: transform 0.3s ease;
+}
+
+.praegesiegel-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
+
+/* --- Variante: Auf hellem Papier / Aktennotiz (.paper-note) --- */
+.praegesiegel-paper {
+  /* Blindprägung im Papier: Subtiler Schatten unten-rechts, Glanzkante oben-links */
+  filter: drop-shadow(1px 2px 2px rgba(139, 90, 43, 0.2))
+          drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.9));
+}
+
+.praegesiegel-paper .seal-outer-ring {
+  fill: rgba(253, 245, 230, 0.5);
+  stroke: rgba(139, 90, 43, 0.35);
+  stroke-width: 1.2;
+}
+
+.praegesiegel-paper .seal-beaded-ring {
+  fill: none;
+  stroke: rgba(139, 90, 43, 0.3);
+  stroke-width: 1.5;
+  stroke-dasharray: 2.2 2.6;
+}
+
+.praegesiegel-paper .seal-inner-line {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 0.9;
+}
+
+.praegesiegel-paper .seal-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 7.2px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  fill: rgba(120, 75, 30, 0.55);
+}
+
+.praegesiegel-paper .seal-medallion-border {
+  fill: none;
+  stroke: rgba(139, 90, 43, 0.4);
+  stroke-width: 1.2;
+}
+
+.praegesiegel-paper .seal-avatar {
+  /* Trocken-Prägung im Papier: Sepia-Relief mit Papier-Multiplikation */
+  filter: grayscale(1) sepia(0.4) contrast(1.4) brightness(0.92);
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+
+.praegesiegel-paper .seal-bevel-rim {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 1.2;
+}
+
+/* --- Variante: Auf dunklem Hintergrund (Dossier, Dienstausweis) --- */
+.praegesiegel-dark {
+  /* Edles golden-bronzefarbenes Amtssiegel */
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 12px rgba(212, 175, 55, 0.25));
+}
+
+.praegesiegel-dark .seal-outer-ring {
+  fill: rgba(10, 14, 23, 0.7);
+  stroke: rgba(212, 175, 55, 0.55);
+  stroke-width: 1.4;
+}
+
+.praegesiegel-dark .seal-beaded-ring {
+  fill: none;
+  stroke: rgba(212, 175, 55, 0.45);
+  stroke-width: 1.5;
+  stroke-dasharray: 2.2 2.6;
+}
+
+.praegesiegel-dark .seal-inner-line {
+  fill: none;
+  stroke: rgba(245, 215, 158, 0.45);
+  stroke-width: 0.9;
+}
+
+.praegesiegel-dark .seal-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 7.2px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  fill: rgba(245, 215, 158, 0.85);
+}
+
+.praegesiegel-dark .seal-medallion-border {
+  fill: none;
+  stroke: rgba(212, 175, 55, 0.55);
+  stroke-width: 1.2;
+}
+
+.praegesiegel-dark .seal-avatar {
+  filter: grayscale(1) sepia(0.7) contrast(1.25) brightness(0.85);
+  opacity: 0.75;
+}
+
+.praegesiegel-dark .seal-bevel-rim {
+  fill: none;
+  stroke: rgba(245, 215, 158, 0.4);
+  stroke-width: 1.2;
+}
+
+/* Footer-Zeile am Fuß von Papier-Akten: Garantiert kein Überlagern */
+.paper-note-seal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: 1px dashed rgba(139, 90, 43, 0.25);
+  position: relative;
+  z-index: 1;
+}
+
+.paper-note-seal-footer .seal-caption-dept {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8b5a2b;
+}
+
+.paper-note-seal-footer .seal-caption-sub {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-style: italic;
+  color: #a07850;
+  margin-top: 2px;
+}
+
+/* Dezentes Wasserzeichen (Hintergrund von Karten, Overlays) */
 .avatar-watermark {
   position: absolute;
   pointer-events: none;
