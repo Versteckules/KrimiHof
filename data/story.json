@@ -193,7 +193,7 @@
           "avatar": "assets/passant.jpg",
           "text": "Was suchen Sie hier? Das Kanzleiarchiv ist störengstens abgeriegelt. In der Brandnacht war hier niemand, darauf gebe ich mein Wort!",
           "choices": [
-            { "text": "[Subtil] Ein Wachmann hat ein hartes Leben. War die Nachtschicht anstörengend–, "next": "rolf_subtle" },
+            { "text": "[Subtil] Ein Wachmann hat ein hartes Leben. War die Nachtschicht anstörengend?", "next": "rolf_subtle" },
             { "text": "[Direkt] Wirklich niemand? Zeugen berichten von einem Fluchtauto.", "next": "rolf_direct" },
             { "text": "[Aggressiv] Sie lügen! Wenn Sie das Archiv nicht geschützt haben, sind Sie mitschuldig!", "next": "rolf_aggress" }
           ]
@@ -204,8 +204,8 @@
           "avatar": "assets/passant.jpg",
           "text": "Anstörengend? Eher ruhig... bis zu dem Feueralarm. Ich war gerade... äh, auf einem Kontrollgang auf der anderen Seite des Geländes.",
           "choices": [
-            { "text": "[Direkt] Auf der anderen Seite? So weit weg, dass Sie die Flammen nicht rochen–, "next": "rolf_direct" },
-            { "text": "[Beweis vorlegen] Was ist das für eine teure, antike Uhr an Ihrem Handgelenk? Hat man Sie bezahlt–, "requiresItem": "beweis_antike_uhr", "next": "rolf_evidence" }
+            { "text": "[Direkt] Auf der anderen Seite? So weit weg, dass Sie die Flammen nicht rochen?", "next": "rolf_direct" },
+            { "text": "[Beweis vorlegen] Was ist das für eine teure, antike Uhr an Ihrem Handgelenk? Hat man Sie bezahlt?", "requiresItem": "beweis_antike_uhr", "next": "rolf_evidence" }
           ]
         },
         {
@@ -214,7 +214,7 @@
           "avatar": "assets/passant.jpg",
           "text": "Ich... ich kann nicht überall gleichzeitig sein! Da war ein Wagen, ja. Eine dunkle Limousine. Aber ich konnte das Kennzeichen nicht sehen!",
           "choices": [
-            { "text": "[Beweis vorlegen] Eine dunkle Limousine wie auf diesem Foto? Das Auto von Frau von Gipser–, "requiresItem": "foto_gipser_auto", "next": "rolf_evidence2" },
+            { "text": "[Beweis vorlegen] Eine dunkle Limousine wie auf diesem Foto? Das Auto von Frau von Gipser?", "requiresItem": "foto_gipser_auto", "next": "rolf_evidence2" },
             { "text": "Sie verdecken etwas. Aber ich finde die Wahrheit schon heraus.", "isEnd": true }
           ]
         },
@@ -224,7 +224,7 @@
           "avatar": "assets/passant.jpg",
           "text": "(Erschrocken) Mitschuldig? Nein! Ich schwöre, ich habe das Feuer nicht gelegt! Ich habe nur... weggesehen. Für einen Moment!",
           "choices": [
-            { "text": "Wer hat Sie dafür bezahlt wegzusehen? Herold–, "next": "rolf_confess" }
+            { "text": "Wer hat Sie dafür bezahlt wegzusehen? Herold?", "next": "rolf_confess" }
           ]
         },
         {
@@ -263,7 +263,7 @@
           "text": "Habe heute keine Zeit zum Quatschen. Muss die Fracht zum Hafen bringen, Auftrag vom Stadtrat! Machen Sie Platz!",
           "choices": [
             { "text": "[Subtil] Ein wichtiger Auftrag vom Stadtrat um diese Uhrzeit? Das muss gut bezahlt sein.", "next": "sepp_subtle" },
-            { "text": "[Direkt] Was genau transportieren Sie da, Sepp–, "next": "sepp_direct" },
+            { "text": "[Direkt] Was genau transportieren Sie da, Sepp?", "next": "sepp_direct" },
             { "text": "[Aggressiv] Halt! Polizeiliche Ermittlung. Ööffnen Sie die Frachtpapiere sofort!", "next": "sepp_aggress" }
           ]
         },
@@ -273,7 +273,7 @@
           "avatar": "assets/passant.jpg",
           "text": "(Grinst) Kann man so sagen. Frau von Gipser zahlt für Diskretion. Und schnelle Räumungen.",
           "choices": [
-            { "text": "[Direkt] Räumungen aus dem Archiv–, "next": "sepp_direct" },
+            { "text": "[Direkt] Räumungen aus dem Archiv?", "next": "sepp_direct" },
             { "text": "[Beweis vorlegen] Diese Frachtpapiere hier beweisen, dass Sie Beweismaterial vernichten!", "requiresItem": "beweis_frachtpapiere", "next": "sepp_evidence" }
           ]
         },
@@ -291,7 +291,7 @@
           "id": "sepp_aggress",
           "speaker": "Kurier Sepp",
           "avatar": "assets/passant.jpg",
-          "text": "(Tritt zurück) Hey, ganz ruhig! Ich mach nur meinen Job! Gipser hat die Entsorgung beauftragt. Ist das mein Problem, wenn da Papiere von 1823 dabei sind–,
+          "text": "(Tritt zurück) Hey, ganz ruhig! Ich mach nur meinen Job! Gipser hat die Entsorgung beauftragt. Ist das mein Problem, wenn da Papiere von 1823 dabei sind?",
           "choices": [
             { "text": "Übergeben Sie mir die Frachtpapiere.", "isEnd": true }
           ]
@@ -311,11 +311,11 @@
           "id": "start",
           "speaker": "Wirt Karl",
           "avatar": "assets/passant.jpg",
-          "text": "Was darf's sein? Ein kühles Helles? Oder suchen Sie etwa auch nach den Gespenstern von 1823, wie dieser Verrückte Heiden–,
+          "text": "Was darf's sein? Ein kühles Helles? Oder suchen Sie etwa auch nach den Gespenstern von 1823, wie dieser Verrückte Heiden?",
           "choices": [
             { "text": "[Subtil] Herr Heiden verkehrt hier? Erzählen Sie mir mehr.", "next": "karl_subtle" },
-            { "text": "[Direkt] Ich suche nach Valentin Herold. War er heute Abend hier–, "next": "karl_direct" },
-            { "text": "[Aggressiv] Kein Bier. Ich will Antworten. Wer hat sich hier konspiriert–, "next": "karl_aggress" }
+            { "text": "[Direkt] Ich suche nach Valentin Herold. War er heute Abend hier?", "next": "karl_direct" },
+            { "text": "[Aggressiv] Kein Bier. Ich will Antworten. Wer hat sich hier konspiriert?", "next": "karl_aggress" }
           ]
         },
         {
@@ -324,8 +324,8 @@
           "avatar": "assets/passant.jpg",
           "text": "Heiden sitzt oft in der Ecke und starrt auf seine alten Schriften. Murmelt etwas von einer 'Läuterung'. Letzte Woche hatte er einen üblen Streit mit Frau von Gipser.",
           "choices": [
-            { "text": "[Direkt] Worüber haben sie gestritten–, "next": "karl_direct_heiden" },
-            { "text": "[Beweis vorlegen] Hatten sie sich wegen dieses zerrissenen Drohbriefs in den Haaren–, "requiresItem": "evidence_torn_letter", "next": "karl_evidence" }
+            { "text": "[Direkt] Worüber haben sie gestritten?", "next": "karl_direct_heiden" },
+            { "text": "[Beweis vorlegen] Hatten sie sich wegen dieses zerrissenen Drohbriefs in den Haaren?", "requiresItem": "evidence_torn_letter", "next": "karl_evidence" }
           ]
         },
         {
@@ -379,7 +379,7 @@
         "id": "start",
         "speaker": "Pfarrer Klement",
         "avatar": "assets/kuester_franz.jpg",
-        "text": "Gottes Segen, mein Kind. Suchen Sie Zuflucht in dieser dunklen Nacht–,
+        "text": "Gottes Segen, mein Kind. Suchen Sie Zuflucht in dieser dunklen Nacht?",
         "choices": [
           { "text": "Ich suche Antworten. Zu den heimlichen Stiftungs-Spenden von 1823.", "next": "klement_2" },
           { "text": "Ja, etwas Ruhe. Danke.", "isEnd": true }
@@ -408,7 +408,7 @@
         "id": "start",
         "speaker": "Kommissar Stahl",
         "avatar": "assets/kommissar_stahl.jpg",
-        "text": "Halt! Zurücktreten hinter das Absperrband. Das hier ist ein aktiver Tatort, kein Spielplatz für Schaulustige. Die Feuerwehr löscht drinnen noch letzte Glutnester. Wer sind Sie überhaupt–,
+        "text": "Halt! Zurücktreten hinter das Absperrband. Das hier ist ein aktiver Tatort, kein Spielplatz für Schaulustige. Die Feuerwehr löscht drinnen noch letzte Glutnester. Wer sind Sie überhaupt?",
         "choices": [
           { "text": "Ich bin Ermittler {PLAYER_NAME}. Stadtarchivar Dr. Renger bat mich um Hilfe.", "next": "polizist_2", "impact": {"suspect": "none", "value": 0} }
         ]
@@ -417,7 +417,7 @@
         "id": "polizist_2",
         "speaker": "Kommissar Stahl",
         "avatar": "assets/kommissar_stahl.jpg",
-        "text": "Dr. Renger? Der Archivar ist seit gestern abgängig. In seiner Wohnung herrschte Chaos, und sein Schreibtisch hier im Keller wurde aufgebrochen. Wissen Sie mehr–,
+        "text": "Dr. Renger? Der Archivar ist seit gestern abgängig. In seiner Wohnung herrschte Chaos, und sein Schreibtisch hier im Keller wurde aufgebrochen. Wissen Sie mehr?",
         "choices": [
           { "text": "Er erwähnte brisante Urkunden über den 'Pakt der Schlappen-Erben' von 1823.", "next": "polizist_3", "impact": {"suspect": "none", "value": 0} }
         ]
@@ -428,7 +428,7 @@
         "avatar": "assets/kommissar_stahl.jpg",
         "text": "Der Schlappen-Pakt... Davon habe ich gehört. Wenn das stimmt, geht es um alte Eigentumsrechte. Der Tresor im Gewölbe war jedenfalls komplett leergeräumt. Es riecht nach Vertuschung.",
         "choices": [
-          { "text": "Haben Sie bereits Verdächtige im Visier, Kommissar–, "next": "polizist_4", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Haben Sie bereits Verdächtige im Visier, Kommissar?", "next": "polizist_4", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -456,7 +456,7 @@
         "avatar": "assets/reporter_stift.jpg",
         "text": "Hey! Psst, rüber zum Laternenpfahl! Sie sind doch der Ermittler, den Dr. Renger eingeschaltet hat, richtig? Ich bin Paul Stift vom Hofer Anzeiger.",
         "choices": [
-          { "text": "Woher wissen Sie von meiner Verbindung zu Dr. Renger–, "next": "reporter_2", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Woher wissen Sie von meiner Verbindung zu Dr. Renger?", "next": "reporter_2", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -465,7 +465,7 @@
         "avatar": "assets/reporter_stift.jpg",
         "text": "Renger hat mir vor drei Tagen eine Notiz zugesteckt: 'Wenn mir etwas zustößt, suchen Sie nach den Schlappen-Erben.'",
         "choices": [
-          { "text": "Was haben Sie kurz vor dem Brand beobachtet–, "next": "reporter_3", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Was haben Sie kurz vor dem Brand beobachtet?", "next": "reporter_3", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -474,7 +474,7 @@
         "avatar": "assets/reporter_stift.jpg",
         "text": "Ich stand am Sonnenplatz, als die Sirenen heulten. Sekunden zuvor hastete ein Mann mit einem teuren Leder-Antiquitätenkoffer aus dem Biengässchen!",
         "choices": [
-          { "text": "Klingt nach Valentin Herold. Gab es noch andere–, "next": "reporter_4", "impact": {"suspect": "herold", "value": 15} }
+          { "text": "Klingt nach Valentin Herold. Gab es noch andere?", "next": "reporter_4", "impact": {"suspect": "herold", "value": 15} }
         ]
       },
       {
@@ -500,9 +500,9 @@
           "id": "start",
           "speaker": "Valentin Herold",
           "avatar": "assets/suspect_herold.webp",
-          "text": "Ein Schnüffler um diese nachtschlafende Zeit? Wenn Sie antike Hofer Fayencen erwerben möchten, beehren Sie mich morgen zu den Geschäftszeiten. Was wollen Sie–,
+          "text": "Ein Schnüffler um diese nachtschlafende Zeit? Wenn Sie antike Hofer Fayencen erwerben möchten, beehren Sie mich morgen zu den Geschäftszeiten. Was wollen Sie?",
           "choices": [
-            { "text": "[Subtil] Herr Herold, die Altstadt ist heute sehr unruhig. Haben Sie etwas vom Feuer am Rathaus mitbekommen–, "next": "h_subtle_1", "impact": {"suspect": "herold", "value": 2} },
+            { "text": "[Subtil] Herr Herold, die Altstadt ist heute sehr unruhig. Haben Sie etwas vom Feuer am Rathaus mitbekommen?", "next": "h_subtle_1", "impact": {"suspect": "herold", "value": 2} },
             { "text": "[Direkt] Wo waren Sie in der letzten Stunde? Ein Zeuge hat Sie in Rathausnähe gesehen.", "next": "h_direct_1", "impact": {"suspect": "herold", "value": 5} },
             { "text": "[Aggressiv] Sparen Sie sich das Schauspiel! Sie haben das Archiv angezündet, um Ihre Spuren zu verwischen!", "next": "h_aggress_1", "impact": {"suspect": "herold", "value": 10} }
           ]
@@ -514,7 +514,7 @@
           "text": "Feuer? Bedauerlich für die historische Substanz, aber meine Sammlungen ruhen sicher in meinem Gewölbe. Mehr weiß ich nicht.",
           "choices": [
             { "text": "[Subtil] Dr. Renger sprach neulich von alten Verträgen, die Ihren Kunsthandel ruinieren könnten...", "next": "h_subtle_2", "impact": {"suspect": "herold", "value": 5} },
-            { "text": "[Beweis vorlegen] Wie erklären Sie sich dann diese antike Taschenuhr, die beim Wachmann gefunden wurde–, "requiresItem": "beweis_antike_uhr", "next": "h_evidence_1", "impact": {"suspect": "herold", "value": 20} },
+            { "text": "[Beweis vorlegen] Wie erklären Sie sich dann diese antike Taschenuhr, die beim Wachmann gefunden wurde?", "requiresItem": "beweis_antike_uhr", "next": "h_evidence_1", "impact": {"suspect": "herold", "value": 20} },
             { "text": "[Direkt] Sie weichen aus. Es geht hier um Brandstiftung und Entführung!", "next": "h_direct_2", "impact": {"suspect": "herold", "value": 5} }
           ]
         },
@@ -525,7 +525,7 @@
           "text": "Ich? In Rathausnähe? Ihr Zeuge muss betrunken gewesen sein. Ich habe den Abend beim Lesen einer Erstausgabe von Jean Paul verbracht. Alleine.",
           "choices": [
             { "text": "[Subtil] Komisch, vorhin sagten Sie noch, Sie wären im Gasthaus am Sonnenplatz gewesen...", "next": "h_lie_caught", "impact": {"suspect": "herold", "value": 15} },
-            { "text": "[Beweis vorlegen] Und warum zeigt dieses unscharfe Polaroid einen Mann mit Ihrem ledernen Futteral auf der Flucht–, "requiresItem": "evidence_polaroid_station", "next": "h_evidence_2", "impact": {"suspect": "herold", "value": 25} }
+            { "text": "[Beweis vorlegen] Und warum zeigt dieses unscharfe Polaroid einen Mann mit Ihrem ledernen Futteral auf der Flucht?", "requiresItem": "evidence_polaroid_station", "next": "h_evidence_2", "impact": {"suspect": "herold", "value": 25} }
           ]
         },
         {
@@ -545,8 +545,8 @@
           "avatar": "assets/suspect_herold.webp",
           "text": "(Er schwitzt leicht) Sie verdrehen meine Worte! Gut, ich war kurz draußen. Aber nur um frische Luft zu schnappen!",
           "choices": [
-            { "text": "[Aggressiv] Geben Sie es auf. Sie wollten die Akten des Schlappen-Pakts vor Gipser retten, oder–, "next": "h_confess_1", "impact": {"suspect": "herold", "value": 15} },
-            { "text": "[Direkt] Frau von Gipser profitiert am meisten. Arbeiten Sie zusammen–, "next": "h_blame_gipser", "impact": {"suspect": "gipser", "value": 10} }
+            { "text": "[Aggressiv] Geben Sie es auf. Sie wollten die Akten des Schlappen-Pakts vor Gipser retten, oder?", "next": "h_confess_1", "impact": {"suspect": "herold", "value": 15} },
+            { "text": "[Direkt] Frau von Gipser profitiert am meisten. Arbeiten Sie zusammen?", "next": "h_blame_gipser", "impact": {"suspect": "gipser", "value": 10} }
           ]
         },
         {
@@ -555,7 +555,7 @@
           "avatar": "assets/suspect_herold.webp",
           "text": "Das... das ist ein Erbstück meiner Familie! Wie kommen Sie daran?! Rolf hat sie mir gestern gestohlen! Ein elender Dieb!",
           "choices": [
-            { "text": "[Direkt] Oder es war ein Bestechungsgeld, damit er wegsieht–, "next": "h_confess_1", "impact": {"suspect": "herold", "value": 15} }
+            { "text": "[Direkt] Oder es war ein Bestechungsgeld, damit er wegsieht?", "next": "h_confess_1", "impact": {"suspect": "herold", "value": 15} }
           ]
         },
         {
@@ -565,7 +565,7 @@
           "text": "Das beweist gar nichts! Jeder trägt nachts dunkle Mäntel. Aber... gut. Ja, ich war am Rathaus. Ich musste Dr. Rengers Dokumente vor den Baggern der Gipser retten!",
           "choices": [
             { "text": "[Aggressiv] Retten? Um sie an dubiose Sammler zu verscherbeln!", "next": "h_confess_2", "impact": {"suspect": "herold", "value": 15} },
-            { "text": "[Subtil] Dann haben Sie das Feuer nicht gelegt? Wer dann–, "next": "h_blame_gipser", "impact": {"suspect": "gipser", "value": 10} }
+            { "text": "[Subtil] Dann haben Sie das Feuer nicht gelegt? Wer dann?", "next": "h_blame_gipser", "impact": {"suspect": "gipser", "value": 10} }
           ]
         },
         {
@@ -574,7 +574,7 @@
           "avatar": "assets/suspect_herold.webp",
           "text": "Gipser hat Millionen in Bauland am Saaleufer gesteckt. Hätte Renger die alten Urkunden publiziert, wären ihre Genehmigungen Makulatur gewesen. Sie schreckt vor nichts zurück.",
           "choices": [
-            { "text": "[Direkt] Und Heiden? Hat der Orgelspieler ein Motiv–, "next": "h_blame_heiden", "impact": {"suspect": "heiden", "value": 10} },
+            { "text": "[Direkt] Und Heiden? Hat der Orgelspieler ein Motiv?", "next": "h_blame_heiden", "impact": {"suspect": "heiden", "value": 10} },
             { "text": "Ich werde Gipser befragen.", "isEnd": true }
           ]
         },
@@ -593,7 +593,7 @@
           "avatar": "assets/suspect_herold.webp",
           "text": "(Eingeschüchtert) Hören Sie... Der Pakt der Schlappen-Erben ist zu wertvoll für ein staubiges Archiv. Er gehört in die Hände von Liebhabern. Aber ich schwöre bei meinem Leben: Ich habe das Feuer nicht gelegt und Renger nicht entführt!",
           "choices": [
-            { "text": "Wer hat es dann getan–, "next": "h_blame_gipser", "impact": {"suspect": "herold", "value": -5} }
+            { "text": "Wer hat es dann getan?", "next": "h_blame_gipser", "impact": {"suspect": "herold", "value": -5} }
           ]
         },
         {
@@ -624,7 +624,7 @@
           "avatar": "assets/suspect_gipser.webp",
           "text": "(Ihre Augen verengen sich) Alte Eigentumsverhältnisse sind irrelevant. Die Stadt braucht Fortschritt. Wer sich dem Fortschritt in den Weg stellt, bleibt auf der Strecke.",
           "choices": [
-            { "text": "[Direkt] So wie Dr. Renger auf der Strecke blieb–, "next": "g_direct_1", "impact": {"suspect": "gipser", "value": 5} },
+            { "text": "[Direkt] So wie Dr. Renger auf der Strecke blieb?", "next": "g_direct_1", "impact": {"suspect": "gipser", "value": 5} },
             { "text": "[Beweis vorlegen] Dann erklären Sie mir diese brisanten Frachtpapiere mit Ihrem Siegel!", "requiresItem": "beweis_frachtpapiere", "next": "g_evidence_1", "impact": {"suspect": "gipser", "value": 25} }
           ]
         },
@@ -644,8 +644,8 @@
           "avatar": "assets/suspect_gipser.webp",
           "text": "Vorsicht! Meine Anwälte werden Sie in Grund und Boden klagen, wenn Sie solche absurden Behauptungen äußern. Sie haben keinerlei Beweise!",
           "choices": [
-            { "text": "[Beweis vorlegen] Was ist mit dem Foto Ihrer schwarzen Limousine am Tatort–, "requiresItem": "foto_gipser_auto", "next": "g_evidence_2", "impact": {"suspect": "gipser", "value": 25} },
-            { "text": "[Einlenken] Gut, vielleicht war ich zu vorschnell. Aber wer könnte es gewesen sein–, "next": "g_blame_herold", "impact": {"suspect": "gipser", "value": -5} }
+            { "text": "[Beweis vorlegen] Was ist mit dem Foto Ihrer schwarzen Limousine am Tatort?", "requiresItem": "foto_gipser_auto", "next": "g_evidence_2", "impact": {"suspect": "gipser", "value": 25} },
+            { "text": "[Einlenken] Gut, vielleicht war ich zu vorschnell. Aber wer könnte es gewesen sein?", "next": "g_blame_herold", "impact": {"suspect": "gipser", "value": -5} }
           ]
         },
         {
@@ -654,7 +654,7 @@
           "avatar": "assets/suspect_gipser.webp",
           "text": "Es nützt der ganzen Stadt! Endlich können wir moderne Komplexe bauen, statt in der Vergangenheit zu leben. Das macht mich aber nicht zur Brandstifterin!",
           "choices": [
-            { "text": "[Direkt] Wer hätte sonst ein Motiv–, "next": "g_blame_herold", "impact": {"suspect": "herold", "value": 5} }
+            { "text": "[Direkt] Wer hätte sonst ein Motiv?", "next": "g_blame_herold", "impact": {"suspect": "herold", "value": 5} }
           ]
         },
         {
@@ -672,7 +672,7 @@
           "avatar": "assets/suspect_gipser.webp",
           "text": "(Sie presst die Lippen zusammen) Mein Chauffeur hat Renger lediglich einen Hausbesuch abgestattet. Um ihm ein Angebot zu machen, das er nicht ablehnen konnte. Aber er war nicht zuhause!",
           "choices": [
-            { "text": "[Subtil] Oder Ihr Chauffeur hat das Problem 'permanent' gelöst–, "next": "g_confess_1", "impact": {"suspect": "gipser", "value": 15} }
+            { "text": "[Subtil] Oder Ihr Chauffeur hat das Problem 'permanent' gelöst?", "next": "g_confess_1", "impact": {"suspect": "gipser", "value": 15} }
           ]
         },
         {
@@ -690,7 +690,7 @@
           "avatar": "assets/suspect_gipser.webp",
           "text": "(Leise) Na schön. Ich wollte Renger einschüchtern. Ich habe meine Leute hingeschickt, um die Akten zu 'bereinigen'. Aber als sie ankamen, war das Gewölbe bereits aufgebrochen und Renger weg. Jemand ist mir zuvorgekommen.",
           "choices": [
-            { "text": "Wer könnte Ihnen zuvorgekommen sein–, "next": "g_blame_herold", "impact": {"suspect": "gipser", "value": 0} },
+            { "text": "Wer könnte Ihnen zuvorgekommen sein?", "next": "g_blame_herold", "impact": {"suspect": "gipser", "value": 0} },
             { "text": "Das glaube ich Ihnen nicht. Wir sind hier fertig.", "isEnd": true }
           ]
         }
@@ -702,8 +702,8 @@
           "avatar": "assets/suspect_heiden.webp",
           "text": "(Er blickt starr auf die Orgel) Die Flammen sind ein Zeichen. Das Vermächtnis von 1823 fordert seinen Tribut. Treten Sie nicht näher, Ungläubiger.",
           "choices": [
-            { "text": "[Subtil] Ein Zeichen? Meinen Sie damit den Brand im Rathaus–, "next": "hei_subtle_1", "impact": {"suspect": "heiden", "value": 5} },
-            { "text": "[Direkt] Herr Heiden, wo haben Sie Dr. Renger versteckt–, "next": "hei_direct_1", "impact": {"suspect": "heiden", "value": 10} },
+            { "text": "[Subtil] Ein Zeichen? Meinen Sie damit den Brand im Rathaus?", "next": "hei_subtle_1", "impact": {"suspect": "heiden", "value": 5} },
+            { "text": "[Direkt] Herr Heiden, wo haben Sie Dr. Renger versteckt?", "next": "hei_direct_1", "impact": {"suspect": "heiden", "value": 10} },
             { "text": "[Aggressiv] Sie fanatischer Irrer haben das Feuer gelegt und den Archivar entführt!", "next": "hei_aggress_1", "impact": {"suspect": "heiden", "value": 15} }
           ]
         },
@@ -713,7 +713,7 @@
           "avatar": "assets/suspect_heiden.webp",
           "text": "Dr. Renger wagte es, die heiligen Siegel zu brechen! Die Geheimnisse der Schlappen-Erben sind nicht für die profanen Augen der Öffentlichkeit bestimmt!",
           "choices": [
-            { "text": "[Direkt] Deshalb haben Sie ihn zum Schweigen gebracht–, "next": "hei_direct_1", "impact": {"suspect": "heiden", "value": 10} },
+            { "text": "[Direkt] Deshalb haben Sie ihn zum Schweigen gebracht?", "next": "hei_direct_1", "impact": {"suspect": "heiden", "value": 10} },
             { "text": "[Beweis vorlegen] Ich habe Ihre Notizen gefunden. Dieses Notenblatt spricht Bände.", "requiresItem": "notenblatt_heiden", "next": "hei_evidence_1", "impact": {"suspect": "heiden", "value": 25} }
           ]
         },
@@ -723,7 +723,7 @@
           "avatar": "assets/suspect_heiden.webp",
           "text": "Ich verberge nichts. Ich bin der Wächter! Die wahre Schuld tragen die Gierschlunde, die aus Hof einen Parkplatz machen wollen. Gipser und Konsorten!",
           "choices": [
-            { "text": "[Subtil] Dann schützen Sie Renger also vor Gipser–, "next": "hei_subtle_2", "impact": {"suspect": "heiden", "value": -5} },
+            { "text": "[Subtil] Dann schützen Sie Renger also vor Gipser?", "next": "hei_subtle_2", "impact": {"suspect": "heiden", "value": -5} },
             { "text": "[Beweis vorlegen] Dieses Chiffrierpapier beweist, dass Sie den Pakt manipulieren!", "requiresItem": "evidence_cipher_paper", "next": "hei_evidence_2", "impact": {"suspect": "heiden", "value": 20} }
           ]
         },
@@ -743,7 +743,7 @@
           "avatar": "assets/suspect_heiden.webp",
           "text": "Ich schütze das Erbe! Aber Renger... Renger hat uns alle verraten. Er wollte die Schande öffentlich machen.",
           "choices": [
-            { "text": "Welche Schande? Den Pakt–, "next": "hei_confess_1", "impact": {"suspect": "heiden", "value": 10} }
+            { "text": "Welche Schande? Den Pakt?", "next": "hei_confess_1", "impact": {"suspect": "heiden", "value": 10} }
           ]
         },
         {
@@ -770,7 +770,7 @@
           "avatar": "assets/suspect_heiden.webp",
           "text": "Vielleicht haben Sie Recht. Ich bin der Letzte. Aber als ich ins Gewölbe kam, stank es bereits nach Benzin. Ein Schatten floh in die Dunkelheit, und die Akten brannten bereits.",
           "choices": [
-            { "text": "Ein Schatten? Konnten Sie ihn erkennen–, "next": "hei_blame_others", "impact": {"suspect": "heiden", "value": -5} },
+            { "text": "Ein Schatten? Konnten Sie ihn erkennen?", "next": "hei_blame_others", "impact": {"suspect": "heiden", "value": -5} },
             { "text": "Ich glaube Ihnen kein Wort.", "isEnd": true }
           ]
         },
@@ -791,7 +791,7 @@
         "avatar": "assets/suspect_heiden.webp",
         "text": "Ich suchte nach dem heiligen Bundessiegel! Der Pakt der Schlappen-Erben war ein heiliger Eid unserer Vorfahren. Renger wollte ihn entweihen!",
         "choices": [
-          { "text": "Haben Sie Dr. Renger bedroht–, "next": "heiden_3", "impact": {"suspect": "heiden", "value": 15} }
+          { "text": "Haben Sie Dr. Renger bedroht?", "next": "heiden_3", "impact": {"suspect": "heiden", "value": 15} }
         ]
       },
       {
@@ -809,7 +809,7 @@
         "avatar": "assets/suspect_heiden.webp",
         "text": "Feuer läutert! Die Heuchlerin Gipser mit ihrem Beton und der Wucherer Herold wollten den Pakt verraten. Wenn Asche übrig bleibt, so ist es der Wille der Erben!",
         "choices": [
-          { "text": "Wo ist Dr. Renger eingesperrt–, "next": "heiden_5", "impact": {"suspect": "heiden", "value": 15} }
+          { "text": "Wo ist Dr. Renger eingesperrt?", "next": "heiden_5", "impact": {"suspect": "heiden", "value": 15} }
         ]
       },
       {
@@ -818,7 +818,7 @@
         "avatar": "assets/suspect_heiden.webp",
         "text": "Er weilt an einem Ort, wo kein weltlicher Lärm ihn stört... Suchen Sie ruhig, Detektiv, ehe die Morgensonne über Hof aufgeht!",
         "choices": [
-          { "text": "Was bedeutet der Code 'ORDO SCHLAPPIS 1823'–, "next": "heiden_6", "impact": {"suspect": "heiden", "value": 10} }
+          { "text": "Was bedeutet der Code 'ORDO SCHLAPPIS 1823'?", "next": "heiden_6", "impact": {"suspect": "heiden", "value": 10} }
         ]
       },
       {
@@ -837,7 +837,7 @@
         "avatar": "assets/suspect_heiden.webp",
         "text": "Ich leugne meine Handschrift nicht. Aber es war eine Prophezeiung, keine Drohung! Wer den Pakt bricht, ruft das Feuer herbei.",
         "choices": [
-          { "text": "Sie haben das Feuer also selbst gelegt–, "next": "heiden_8", "impact": {"suspect": "heiden", "value": 15} }
+          { "text": "Sie haben das Feuer also selbst gelegt?", "next": "heiden_8", "impact": {"suspect": "heiden", "value": 15} }
         ]
       },
       {
@@ -873,7 +873,7 @@
         "avatar": "assets/gehilfe.jpg",
         "text": "Renger! Ja, er war hier. Er wirkte gehetzt. Er murmelte, dass die Schlappen-Erben hinter ihm her seien. Jemand habe seine Forschung sabotiert.",
         "choices": [
-          { "text": "Sabotiert? Meinen Sie Valentin Herold–, "next": "node_h", "impact": {"suspect": "herold", "value": 5} },
+          { "text": "Sabotiert? Meinen Sie Valentin Herold?", "next": "node_h", "impact": {"suspect": "herold", "value": 5} },
           { "text": "Vielleicht Frau von Gipser? Die Urkunden bedrohen ihre Bauprojekte.", "next": "node_g", "impact": {"suspect": "gipser", "value": 10} }
         ]
       },
@@ -906,7 +906,7 @@
         "avatar": "assets/helene.jpg",
         "text": "Was schleichen Sie hier im Biengäßchen rum? Die Kneipe hat längst zu. Wenn Sie ein Bier wollen, kommen Sie morgen wieder.",
         "choices": [
-          { "text": "Ist Ihnen heute Nacht jemand Verdächtiges aufgefallen? Ein Mann auf der Flucht–, "next": "node_2", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Ist Ihnen heute Nacht jemand Verdächtiges aufgefallen? Ein Mann auf der Flucht?", "next": "node_2", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -916,7 +916,7 @@
         "text": "Einer? Hier rannten gleich mehrere vorbei! Einer roch extrem nach teurem Zigarrenrauch, ein anderer hatte eine Aktentasche, die nach modrigem Archiv roch.",
         "choices": [
           { "text": "Zigarrenrauch? Das muss Valentin Herold sein.", "next": "node_h", "impact": {"suspect": "herold", "value": 10} },
-          { "text": "Hat zufällig Stadträtin Gipser hier geparkt–, "next": "node_g", "impact": {"suspect": "gipser", "value": 5} }
+          { "text": "Hat zufällig Stadträtin Gipser hier geparkt?", "next": "node_g", "impact": {"suspect": "gipser", "value": 5} }
         ]
       },
       {
@@ -948,7 +948,7 @@
         "avatar": "assets/passant.jpg",
         "text": "Hast 'nen Euro für'n Käpt'n? Die Nacht ist kalt, und die Leute hier haben keine Zeit mehr für alte Seebären wie mich.",
         "choices": [
-          { "text": "Hier ist etwas Kleingeld. Haben Sie jemand an dieser Telefonzelle gesehen–, "next": "node_2", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Hier ist etwas Kleingeld. Haben Sie jemand an dieser Telefonzelle gesehen?", "next": "node_2", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -958,7 +958,7 @@
         "text": "Danke, Kumpel! Ja, da war einer. Dünn, wirres graues Haar. Hat wie ein Verrückter in den Hörer geschrien, was von 'reinigendem Feuer'.",
         "choices": [
           { "text": "Das muss Severin Heiden gewesen sein!", "next": "node_hei", "impact": {"suspect": "heiden", "value": 10} },
-          { "text": "Sind Sie sicher, dass es nicht der Kunsthändler Herold war–, "next": "node_h", "impact": {"suspect": "herold", "value": 5} }
+          { "text": "Sind Sie sicher, dass es nicht der Kunsthändler Herold war?", "next": "node_h", "impact": {"suspect": "herold", "value": 5} }
         ]
       },
       {
@@ -988,7 +988,7 @@
         "id": "start",
         "speaker": "Fremdenführerin Lisa",
         "avatar": "assets/passant.jpg",
-        "text": "Guten Abend! Die historischen Führungen sind für heute leider schon vorbei. Hof bei Nacht ist aber besonders schön, nicht wahr–,
+        "text": "Guten Abend! Die historischen Führungen sind für heute leider schon vorbei. Hof bei Nacht ist aber besonders schön, nicht wahr?",
         "choices": [
           { "text": "Ich bin dienstlich hier. Es geht um den Brand am Rathaus und Dr. Renger.", "next": "node_2", "impact": {"suspect": "none", "value": 0} }
         ]
@@ -999,8 +999,8 @@
         "avatar": "assets/passant.jpg",
         "text": "Oh, wie schrecklich! Dr. Renger ist unser bester Mann für Stadtgeschichte. Vorhin stritt er sich hier heftig mit einem Antiquitätenhändler.",
         "choices": [
-          { "text": "Mit Valentin Herold? Worum ging es–, "next": "node_h", "impact": {"suspect": "herold", "value": 10} },
-          { "text": "War Frau von Gipser auch anwesend–, "next": "node_g", "impact": {"suspect": "gipser", "value": 5} }
+          { "text": "Mit Valentin Herold? Worum ging es?", "next": "node_h", "impact": {"suspect": "herold", "value": 10} },
+          { "text": "War Frau von Gipser auch anwesend?", "next": "node_g", "impact": {"suspect": "gipser", "value": 5} }
         ]
       },
       {
@@ -1042,7 +1042,7 @@
         "text": "Herr Heiden? Ja, er war völlig verstört. Er meinte, das Fegefeuer würde über Hof hereinbrechen und nur die Erben könnten es stoppen.",
         "choices": [
           { "text": "Heiden scheint völlig den Verstand verloren zu haben.", "next": "node_hei", "impact": {"suspect": "heiden", "value": 10} },
-          { "text": "Hat er etwas von Valentin Herold gesagt–, "next": "node_h", "impact": {"suspect": "herold", "value": 5} }
+          { "text": "Hat er etwas von Valentin Herold gesagt?", "next": "node_h", "impact": {"suspect": "herold", "value": 5} }
         ]
       },
       {
@@ -1072,11 +1072,11 @@
         "id": "start",
         "speaker": "Gärtner Huber",
         "avatar": "assets/fischer.jpg",
-        "text": "(Zuckt zusammen und lässt eine Gartenschere fallen) Herr im Himmel! Sie schleichen herum wie ein Geist auf Heimaturlaub. Was treibt Sie um diese Uhrzeit auf den Friedhof–,
+        "text": "(Zuckt zusammen und lässt eine Gartenschere fallen) Herr im Himmel! Sie schleichen herum wie ein Geist auf Heimaturlaub. Was treibt Sie um diese Uhrzeit auf den Friedhof?",
         "choices": [
-          { "text": "[Direkt] Das Messingrad an der Pforte wurde manipuliert. Wer war das–, "next": "node_defensive", "impact": {"suspect": "none", "value": 0} },
+          { "text": "[Direkt] Das Messingrad an der Pforte wurde manipuliert. Wer war das?", "next": "node_defensive", "impact": {"suspect": "none", "value": 0} },
           { "text": "[Beruhigend] Keine Sorge. Ich suche nur nach Hinweisen zu den Vorfällen in der Kirche.", "next": "node_trust", "impact": {"suspect": "none", "value": 0} },
-          { "text": "[Einschüchternd] Antworten Sie lieber schnell. Was wissen Sie über den blockierten Turm–, "next": "node_fear", "impact": {"suspect": "none", "value": 0} }
+          { "text": "[Einschüchternd] Antworten Sie lieber schnell. Was wissen Sie über den blockierten Turm?", "next": "node_fear", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -1085,7 +1085,7 @@
         "avatar": "assets/fischer.jpg",
         "text": "Manipuliert? Ich kümmere mich um die Rosen, nicht um die Mechanik! Aber... (er blickt sich nervös um) ...der Organist, Herr Heiden, war vorhin hier. Er wirkte völlig rastlos.",
         "choices": [
-          { "text": "Heiden? Was genau hat er am Turm gemacht–, "next": "node_heiden_details", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Heiden? Was genau hat er am Turm gemacht?", "next": "node_heiden_details", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -1094,7 +1094,7 @@
         "avatar": "assets/fischer.jpg",
         "text": "(Atmet auf) Eine dunkle Nacht für die Gemeinde. Wissen Sie, ich beobachte die Leute hier. Herr Heiden, der Organist... er hat einen alten, rostigen Schlüssel in das Rad gesteckt und unverständliches Zeug gemurmelt.",
         "choices": [
-          { "text": "Ein Schlüssel? Hat er den Zugang absichtlich blockiert–, "next": "node_heiden_details", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Ein Schlüssel? Hat er den Zugang absichtlich blockiert?", "next": "node_heiden_details", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -1103,7 +1103,7 @@
         "avatar": "assets/fischer.jpg",
         "text": "Ich... ich will keinen Ärger! Es war Herr Heiden! Er hat geflucht, dass die 'Akte' gereinigt werden müsse. Er ist ein Fanatiker!",
         "choices": [
-          { "text": "Beruhigen Sie sich. Was wissen Sie noch über Heidens Vorhaben–, "next": "node_heiden_details", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Beruhigen Sie sich. Was wissen Sie noch über Heidens Vorhaben?", "next": "node_heiden_details", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -1112,7 +1112,7 @@
         "avatar": "assets/fischer.jpg",
         "text": "Er murmelte etwas von Verrat am wahren Glauben. Ich wette, er hat den entführten Archivar da oben im Turm eingesperrt! Er klang jedenfalls, als würde er sich auf einen Krieg vorbereiten.",
         "choices": [
-          { "text": "Könnte Gipser ihn für diese Sabotage bezahlt haben–, "next": "node_gipser", "impact": {"suspect": "gipser", "value": 5} },
+          { "text": "Könnte Gipser ihn für diese Sabotage bezahlt haben?", "next": "node_gipser", "impact": {"suspect": "gipser", "value": 5} },
           { "text": "Er versteckt dort etwas. Heiden ist brandgefährlich.", "next": "node_heiden_suspect", "impact": {"suspect": "heiden", "value": 10} }
         ]
       },
@@ -1159,7 +1159,7 @@
         "text": "Ja, ich habe aus dem Fenster geschaut. Ein feiner Herr mit Gehstock stand am Ufer und hat auf jemanden gewartet.",
         "choices": [
           { "text": "Ein feiner Herr mit Gehstock? Valentin Herold!", "next": "node_h", "impact": {"suspect": "herold", "value": 10} },
-          { "text": "Hat er auf Katharina von Gipser gewartet–, "next": "node_g", "impact": {"suspect": "gipser", "value": 5} }
+          { "text": "Hat er auf Katharina von Gipser gewartet?", "next": "node_g", "impact": {"suspect": "gipser", "value": 5} }
         ]
       },
       {
@@ -1191,7 +1191,7 @@
         "avatar": "assets/fischer.jpg",
         "text": "Petri Heil! Du verscheuchst mir noch die Fische mit deinem Herumtrampeln.",
         "choices": [
-          { "text": "Es tut mir leid. Haben Sie hier am Flussufer verdächtige Papiere gefunden–, "next": "node_2", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Es tut mir leid. Haben Sie hier am Flussufer verdächtige Papiere gefunden?", "next": "node_2", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -1201,7 +1201,7 @@
         "text": "Da schwammen vorhin Papierschnipsel den Fluss runter. Eine Frau im Hosenanzug stand am Ufer und riss wütend ein Dokument in Stücke.",
         "choices": [
           { "text": "Eine Frau im Hosenanzug? Katharina von Gipser!", "next": "node_g", "impact": {"suspect": "gipser", "value": 10} },
-          { "text": "War es nicht eher Herold, der Kunsthändler–, "next": "node_h", "impact": {"suspect": "herold", "value": 5} }
+          { "text": "War es nicht eher Herold, der Kunsthändler?", "next": "node_h", "impact": {"suspect": "herold", "value": 5} }
         ]
       },
       {
@@ -1233,7 +1233,7 @@
         "avatar": "assets/archivgehilfe_otto.jpg",
         "text": "Was machen Sie im Geheimarchiv? Das ist Sperrzone, seit Dr. Renger verschwunden ist!",
         "choices": [
-          { "text": "Ich ermittle in Dr. Rengers Fall. Wissen Sie, wer hinter ihm her war–, "next": "node_2", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Ich ermittle in Dr. Rengers Fall. Wissen Sie, wer hinter ihm her war?", "next": "node_2", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -1242,8 +1242,8 @@
         "avatar": "assets/archivgehilfe_otto.jpg",
         "text": "Er hat ständig leise vor sich hin geflüstert, dass Valentin Herold ihn ausrauben wolle.",
         "choices": [
-          { "text": "Herold also! Wollte er die mittelalterliche Gründungsurkunde stehlen–, "next": "node_h", "impact": {"suspect": "herold", "value": 10} },
-          { "text": "Oder war es Severin Heiden–, "next": "node_hei", "impact": {"suspect": "heiden", "value": 5} }
+          { "text": "Herold also! Wollte er die mittelalterliche Gründungsurkunde stehlen?", "next": "node_h", "impact": {"suspect": "herold", "value": 10} },
+          { "text": "Oder war es Severin Heiden?", "next": "node_hei", "impact": {"suspect": "heiden", "value": 5} }
         ]
       },
       {
@@ -1275,7 +1275,7 @@
         "avatar": "assets/geheimbund.jpg",
         "text": "Sie sind zu weit gegangen, Ermittler. Der Pakt duldet keine Eindringlinge.",
         "choices": [
-          { "text": "Für wen arbeiten Sie? Für Herold? Für Gipser–, "next": "node_2", "impact": {"suspect": "none", "value": 0} }
+          { "text": "Für wen arbeiten Sie? Für Herold? Für Gipser?", "next": "node_2", "impact": {"suspect": "none", "value": 0} }
         ]
       },
       {
@@ -1310,7 +1310,7 @@
         "avatar": "assets/suspect_herold.webp",
         "text": "Sie schnüffeln in meinen Geschäften! Ich habe nichts mit dem Brand zu tun! Jemand will mir das anhängen!",
         "choices": [
-          { "text": "Wer sollte Ihnen etwas anhängen wollen–, "next": "node_2", "impact": {"suspect": "herold", "value": 5} },
+          { "text": "Wer sollte Ihnen etwas anhängen wollen?", "next": "node_2", "impact": {"suspect": "herold", "value": 5} },
           { "text": "Ihre Ausreden ziehen bei mir nicht, Herold.", "next": "node_3", "impact": {"suspect": "herold", "value": 15} }
         ]
       },
@@ -1337,7 +1337,7 @@
         "text": "Ihre Ermittlungen stören unsere Bauprojekte. Hören Sie auf, Gespenster zu jagen!",
         "choices": [
           { "text": "Die Gespenster von 1823 holen Sie gerade ein, Frau Stadträtin.", "next": "node_2", "impact": {"suspect": "gipser", "value": 15} },
-          { "text": "Haben Sie etwas zu verbergen–, "next": "node_3", "impact": {"suspect": "gipser", "value": 5} }
+          { "text": "Haben Sie etwas zu verbergen?", "next": "node_3", "impact": {"suspect": "gipser", "value": 5} }
         ]
       },
       {
@@ -1363,7 +1363,7 @@
         "text": "Das Feuer reinigt, Ermittler. Die Erben wachen über Hof. Stellen Sie sich nicht gegen das Schicksal!",
         "choices": [
           { "text": "Sie haben den Brand gelegt, geben Sie es zu!", "next": "node_2", "impact": {"suspect": "heiden", "value": 15} },
-          { "text": "Wo halten Sie Dr. Renger fest–, "next": "node_3", "impact": {"suspect": "heiden", "value": 5} }
+          { "text": "Wo halten Sie Dr. Renger fest?", "next": "node_3", "impact": {"suspect": "heiden", "value": 5} }
         ]
       },
       {
