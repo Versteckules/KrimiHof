@@ -45,13 +45,22 @@
   },
   "endings": {
     "herold": {
-      "confession": "Verflucht noch mal! Ja, ich wollte die Urkunden! Sie gehören nicht in dieses feuchte Stadtarchiv, sie gehören in die Hände wahrer Kenner! Ich hätte Millionen dafür bekommen!"
+      "culpritId": "herold",
+      "culpritName": "Valentin Herold",
+      "title": "Das Geständnis des Antiquars",
+      "confession": "„Bravo, Ermittler {PLAYER_NAME}. Sie haben mich tatsächlich bis hierher verfolgt. Sehen Sie sich diese Dokumente an! Wissen Sie, was eine originale Brandurkunde von 1823 mit dem echten Ratssiegel einbringt? Ein Vermögen! Dr. Renger wollte sie dem Stadtmuseum schenken – welch sentimentale Verschwendung! Ich habe ihn im alten Eiskeller unter dem Lorenzberg festgesetzt. Keine Sorge, er lebt... aber der Pakt gehört mir!“"
     },
     "gipser": {
-      "confession": "Sie begreifen gar nichts! Mein Bauprojekt hätte Hof in die Zukunft katapultiert! Diese verstaubten Rechte von 1823 hätten alles blockiert. Ich musste dieses Archiv zum Schweigen bringen!"
+      "culpritId": "gipser",
+      "culpritName": "Katharina von Gipser",
+      "title": "Der Fall der Stadträtin",
+      "confession": "„Sie verstehen gar nichts, {PLAYER_NAME}! Hof braucht Zukunft, moderne Architektur, Investoren! Das Saaleufer liegt seit einem Jahrhundert brach, nur weil diese verstaubten Schlappen-Erben ein unkündbares Vorkaufsrecht besitzen! Ich musste Renger aufhalten! Ich habe die Urkunden in der Saale versenken lassen – so dachte ich jedenfalls. Mein politischer Untergang ist besiegelt.“"
     },
     "heiden": {
-      "confession": "Das Vermächtnis unserer Gründerväter ist heilig! Ihr wolltet es für billige Profite verschachern! Das Feuer war Gottes Wille und die gerechte Reinigung für diesen Frevel!"
+      "culpritId": "heiden",
+      "culpritName": "Severin Heiden",
+      "title": "Das Vermächtnis des Domorganisten",
+      "confession": "„Die Glocken läuten für die Wahrheit, {PLAYER_NAME}! Der Pakt der Schlappen-Erben war kein Verbrechen, er war das heilige Versprechen unserer Ahnen! Renger wollte unser Erbe profanieren, es der Sensationslust der Massen zum Fraß vorwerfen! Ich habe ihn im Glockenstuhl verwahrt, damit er die Erhabenheit unseres Schwurs begreift! Doch Ihre Beharrlichkeit zeigt mir: Der Bund hat einen neuen würdigen Hüter gefunden.“"
     }
   },
   "evidenceCatalog": [
@@ -6019,27 +6028,61 @@
         "reward": null,
         "audio": "assets/audio/dialogues/interrogate_heiden_end_heiden_d.mp3"
       }
+    ],
+    "jean_paul_dialogue": [
+      {
+        "id": "start",
+        "speaker": "Jean Pauls Geist",
+        "avatar": "assets/avatar.jpg",
+        "text": "Sei gegrüßt im Reich der Schatten, Ermittler {PLAYER_NAME}! Man nennt mich Jean Paul. Zweihundert Jahre wanderte ich durch diese Gassen... Du suchst die Wahrheit über den Pakt der Schlappen-Erben?",
+        "audio": "assets/audio/dialogues/jean_paul_dialogue_start.mp3",
+        "choices": [
+          {
+            "text": "Verehrter Meister! Welches Geheimnis verbirgt der Pakt?",
+            "next": "secret"
+          },
+          {
+            "text": "Ein Geist?! Ich glaube nur an handfeste Beweise!",
+            "next": "skeptic"
+          }
+        ]
+      },
+      {
+        "id": "secret",
+        "speaker": "Jean Pauls Geist",
+        "avatar": "assets/avatar.jpg",
+        "text": "Die Zeit heilt keine Wunden, sie deckt sie nur mit Asche zu. Hüte dich vor dem, der das Feuer am Rathaus gelegt hat – nicht aus Wut, sondern aus kaltem Kalkül! Empfange meinen Segen, scharfsinniger Sucher.",
+        "audio": "assets/audio/dialogues/jean_paul_dialogue_secret.mp3",
+        "choices": [
+          {
+            "text": "Ich danke Euch, Dichterfürst! (Geistersegen annehmen)",
+            "next": "end_success"
+          }
+        ]
+      },
+      {
+        "id": "skeptic",
+        "speaker": "Jean Pauls Geist",
+        "avatar": "assets/avatar.jpg",
+        "text": "Haha! Ein wahrer Kriminalist zweifelt an allem, selbst an seinen eigenen Augen! Schwindel ist die Poesie des Raumes. Du gefällst mir, kühner Ermittler. Nimm diesen Rat mit in die Nacht.",
+        "audio": "assets/audio/dialogues/jean_paul_dialogue_skeptic.mp3",
+        "choices": [
+          {
+            "text": "Verratet mir Euren Rat! (Geistersegen annehmen)",
+            "next": "end_success"
+          }
+        ]
+      },
+      {
+        "id": "end_success",
+        "speaker": "Jean Pauls Geist",
+        "avatar": "assets/avatar.jpg",
+        "text": "(Der Geist verbeugt sich feierlich und löst sich in blauem Sternenstaub auf) 'Bringe das Licht der Gerechtigkeit nach Hof! Die Toten werden deinen Sieg besingen.' [EASTER EGG GELÖST: +50 DETEKTIV-PUNKTE]",
+        "audio": "assets/audio/dialogues/jean_paul_dialogue_end_success.mp3",
+        "isEnd": true,
+        "outcome": "OUTCOME_A"
+      }
     ]
-  },
-  "endings": {
-    "herold": {
-      "culpritId": "herold",
-      "culpritName": "Valentin Herold",
-      "title": "Das Geständnis des Antiquars",
-      "confession": "„Bravo, Ermittler {PLAYER_NAME}. Sie haben mich tatsächlich bis hierher verfolgt. Sehen Sie sich diese Dokumente an! Wissen Sie, was eine originale Brandurkunde von 1823 mit dem echten Ratssiegel einbringt? Ein Vermögen! Dr. Renger wollte sie dem Stadtmuseum schenken – welch sentimentale Verschwendung! Ich habe ihn im alten Eiskeller unter dem Lorenzberg festgesetzt. Keine Sorge, er lebt... aber der Pakt gehört mir!“"
-    },
-    "gipser": {
-      "culpritId": "gipser",
-      "culpritName": "Katharina von Gipser",
-      "title": "Der Fall der Stadträtin",
-      "confession": "„Sie verstehen gar nichts, {PLAYER_NAME}! Hof braucht Zukunft, moderne Architektur, Investoren! Das Saaleufer liegt seit einem Jahrhundert brach, nur weil diese verstaubten Schlappen-Erben ein unkündbares Vorkaufsrecht besitzen! Ich musste Renger aufhalten! Ich habe die Urkunden in der Saale versenken lassen – so dachte ich jedenfalls. Mein politischer Untergang ist besiegelt.“"
-    },
-    "heiden": {
-      "culpritId": "heiden",
-      "culpritName": "Severin Heiden",
-      "title": "Das Vermächtnis des Domorganisten",
-      "confession": "„Die Glocken läuten für die Wahrheit, {PLAYER_NAME}! Der Pakt der Schlappen-Erben war kein Verbrechen, er war das heilige Versprechen unserer Ahnen! Renger wollte unser Erbe profanieren, es der Sensationslust der Massen zum Fraß vorwerfen! Ich habe ihn im Glockenstuhl verwahrt, damit er die Erhabenheit unseres Schwurs begreift! Doch Ihre Beharrlichkeit zeigt mir: Der Bund hat einen neuen würdigen Hüter gefunden.“"
-    }
   },
   "trackables": [
     {

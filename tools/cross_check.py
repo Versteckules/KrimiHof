@@ -86,7 +86,7 @@ for tree_key, nodes in trees.items():
                 missing_dialogue_audio += 1
 
 if missing_dialogue_audio == 0:
-    log(f"Sämtliche 248 Dialog-Audiodateien existieren auf der Festplatte und sind gültig!", "OK")
+    log(f"Sämtliche {total_nodes} Dialog-Audiodateien existieren auf der Festplatte und sind gültig!", "OK")
 
 # Prüfe Story-Audios (Intro, Suspects, Outro)
 story_audio_files = [

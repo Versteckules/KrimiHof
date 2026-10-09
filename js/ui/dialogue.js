@@ -273,9 +273,13 @@ function renderChoices(choices, isEnd, unlockSuspects) {
 
       // Impact verbuchen
       if (choice.impact && choice.impact.suspect && choice.impact.suspect !== 'none') {
+        const rank = getPlayerRank();
+        const rankMultiplier = 1 + (Math.max(1, rank.level) - 1) * 0.25;
+        const effectiveImpact = Math.round(choice.impact.value * rankMultiplier);
         addSuspectImpact(choice.impact.suspect, choice.impact.value);
         addScore(choice.impact.value); // Gleiche Menge an Kommissarpunkten wie Verdachts-Impact!
-        import('../main.js').then(m => m.showNoirAlert(`Clevere Deduktion! (+${choice.impact.value} Punkte)`, 'Treffer'));
+        const bonusTxt = rank.level > 1 ? ` (inkl. ${rank.name}-Bonus)` : '';
+        import('../main.js').then(m => m.showNoirAlert(`Clevere Deduktion! (+${effectiveImpact} Verdachtspunkte${bonusTxt})`, 'Treffer'));
         if (FX.playHeavySnap) FX.playHeavySnap(); // Audio feedback for important choices
       }
 

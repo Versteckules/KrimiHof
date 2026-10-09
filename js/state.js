@@ -138,8 +138,8 @@ export function loadState() {
         });
       }
 
-      // Auto-Repair: Sobald das Rathaus oder irgendeine Station gelöst ist, muss das Dossier freigeschaltet sein
-      if ((_currentState.solvedStations && (_currentState.solvedStations.includes('rathaus') || _currentState.solvedStations.length > 0)) && !_currentState.suspectsUnlocked) {
+      // Auto-Repair: Sobald das Rathaus oder irgendeine Station gelöst ist (oder im Testmodus), muss das Dossier freigeschaltet sein
+      if (((_currentState.solvedStations && (_currentState.solvedStations.includes('rathaus') || _currentState.solvedStations.length > 0)) || _currentState.isTestingMode) && !_currentState.suspectsUnlocked) {
         _currentState.suspectsUnlocked = true;
         saveState({ suspectsUnlocked: true });
       }
@@ -330,13 +330,21 @@ export function unlockSuspectsInState() {
 }
 
 /**
- * Fügt einem Verdächtigen Punkte (Prozente) hinzu
+ * Fügt einem Verdächtigen Punkte (Prozente) hinzu.
+ * Berücksichtigt den Kommissarrang: Höhere Ränge erzielen stärkere Verdachtswirkung!
  */
 export function addSuspectImpact(suspectId, value) {
   const state = getState();
   const suspectScores = { ...state.suspectScores };
   if (suspectId && suspectScores[suspectId] !== undefined) {
-    suspectScores[suspectId] += value;
+    let effectiveValue = value;
+    if (value > 0) {
+      const rank = getPlayerRank();
+      // Rang 1: 1.0x, Rang 2: 1.25x, Rang 3: 1.5x, Rang 4: 1.75x, Rang 5: 2.0x
+      const rankMultiplier = 1 + (Math.max(1, rank.level) - 1) * 0.25;
+      effectiveValue = Math.round(value * rankMultiplier);
+    }
+    suspectScores[suspectId] = Math.max(0, suspectScores[suspectId] + effectiveValue);
     saveState({ suspectScores });
   }
   return getState();

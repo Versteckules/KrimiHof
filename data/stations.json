@@ -330,6 +330,17 @@
     "number": 16,
     "type": "easteregg",
     "coords": "N 50° 19.035 E 011° 54.924",
-    "description": "Easteregg"
+    "description": "Am historischen Jean-Paul-Weg weht ein eisiger Nachtwind. Zwischen den alten Bäumen flackert ein übernatürlicher, violetter Schimmer: Der Geist des Hofer Dichterfürsten Jean Paul materialisiert sich vor deinen Augen!",
+    "characters": [
+      {
+        "id": "geist",
+        "name": "Jean Pauls Geist",
+        "role": "Dichterfürst von Hof",
+        "image": "assets/avatar.jpg",
+        "badge": "Geheimnis",
+        "dialogueKey": "jean_paul_dialogue",
+        "description": "Ein schemenhafter Geist im Frack von 1820 mit Schreibfeder und durchdringendem Blick."
+      }
+    ]
   }
 ]

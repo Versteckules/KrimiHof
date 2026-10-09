@@ -2,7 +2,7 @@
  * dossier.js - Die Ermittlungsakte mit Tatverdächtigen-Porträts, Verhören & Beweisen (AP12)
  */
 
-import { getState, subscribe } from '../state.js';
+import { getState, subscribe, getPlayerRank, recordInterrogation, saveState } from '../state.js';
 import { getStations, getStory } from '../config-loader.js';
 import { calculateFinalResult } from '../scoring.js';
 import { showView } from '../main.js';
@@ -145,7 +145,10 @@ export function updateDossier() {
           </div>
 
           <div style="display: flex; gap: 8px; margin-top: 8px;">
-            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="width: 100%; padding: 10px 12px; font-size: 0.9rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.5; filter: grayscale(1);'}">
+            <button class="btn-primary btn-interrogate" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; background: linear-gradient(135deg, #d4af37, #8c6d23); color: #05080f; font-weight: bold; border: 1px solid #d4af37; cursor: pointer;">
+              🗣️ Verhör starten
+            </button>
+            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.5; filter: grayscale(1);'}">
               🚨 Verhaften
             </button>
           </div>
@@ -154,6 +157,13 @@ export function updateDossier() {
     });
     suspContainer.innerHTML = html;
 
+    // Klick-Handler für Verhör
+    suspContainer.querySelectorAll('.btn-interrogate').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const suspectId = btn.getAttribute('data-suspect-id');
+        startSuspectInterrogation(suspectId);
+      });
+    });
 
     // Klick-Handler für Verhaftung
     suspContainer.querySelectorAll('.btn-arrest').forEach(btn => {
@@ -344,12 +354,15 @@ export function updateDossier() {
                 
                 if (isCorrect) {
                   feedbackEl.style.color = '#00aa00';
-                  let reason = (evidenceData && evidenceData.rewardReason) ? evidenceData.rewardReason : 'Passt perfekt! (Verdacht +15%)';
+                  const rank = getPlayerRank();
+                  const rankBonus = (rank.level - 1) * 3; // +0, +3, +6, +9, +12%
+                  const effectiveImpact = 15 + rankBonus;
+                  let reason = `Passt perfekt! (Verdacht +${effectiveImpact}% mit Rang-Bonus: ${rank.name})`;
                   if (isReassignedAttempt) reason += ' [Endgültige Zuordnung]';
                   feedbackEl.innerText = '📈 ' + reason;
                   import('../state.js').then(mod => {
-                    mod.addSuspectImpact(suspectId, 15);
-                    mod.assignEvidence(id, suspectId, 15, 0);
+                    mod.addSuspectImpact(suspectId, effectiveImpact);
+                    mod.assignEvidence(id, suspectId, effectiveImpact, 0);
                     updateDossier();
                   });
                 } else {
@@ -501,4 +514,52 @@ export function updateDossier() {
     });
     statContainer.innerHTML = sHtml;
   }
+}
+
+/**
+ * Startet ein Verhör mit einem Hauptverdächtigen
+ * @param {string} suspectId ('herold' | 'gipser' | 'heiden')
+ */
+export function startSuspectInterrogation(suspectId) {
+  const story = getStory();
+  const treeKey = 'interrogate_' + suspectId;
+  const state = getState();
+  const currentSolved = state.solvedStations ? state.solvedStations.length : 0;
+
+  recordInterrogation(suspectId, currentSolved);
+
+  // Falls der Dialog zuvor gesperrt wurde, für diesen erneuten Anlauf entsperren
+  if (state.lockedDialogues && state.lockedDialogues.includes(treeKey)) {
+    const updated = state.lockedDialogues.filter(k => k !== treeKey);
+    saveState({ lockedDialogues: updated });
+  }
+
+  import('./dialogue.js').then(dMod => {
+    if (story && story.dialogueTrees && story.dialogueTrees[treeKey]) {
+      dMod.openDialogue(story.dialogueTrees[treeKey], () => {
+        const suspectGames = {
+          'herold': 'safe',
+          'gipser': 'shredder',
+          'heiden': 'music-cryptogram'
+        };
+        if (suspectGames[suspectId]) {
+          import(`./gadgets/${suspectGames[suspectId]}.js`).then(gameMod => {
+            gameMod.runGadget(suspectId, () => {
+              import('../main.js').then(m => m.showView('view-dossier'));
+              updateDossier();
+            });
+          }).catch(err => {
+            console.error("Fehler beim Laden des Suspect-Minispiels:", err);
+            import('../main.js').then(m => m.showView('view-dossier'));
+            updateDossier();
+          });
+        } else {
+          import('../main.js').then(m => m.showView('view-dossier'));
+          updateDossier();
+        }
+      }, treeKey);
+    } else {
+      console.warn("Dialogbaum für Verdächtigen nicht gefunden:", treeKey);
+    }
+  });
 }

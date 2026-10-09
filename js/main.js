@@ -91,36 +91,70 @@ export function checkRouting() {
   }
 }
 
-window.showNoirConfirm = function(message, onConfirm, confirmText = 'Bestätigen') {
+window.showNoirConfirm = function(arg1, arg2, arg3, arg4) {
   const modal = document.getElementById('noir-confirm-modal');
+  let title = 'Bestätigung';
+  let message = '';
+  let onConfirm = null;
+  let confirmText = 'Ja, abbrechen';
+
+  if (typeof arg2 === 'function') {
+    // Aufruf: showNoirConfirm(message, onConfirm, confirmText)
+    message = arg1 || '';
+    onConfirm = arg2;
+    if (typeof arg3 === 'string' && arg3.trim()) {
+      confirmText = arg3;
+    }
+  } else {
+    // Aufruf: showNoirConfirm(title, message, onConfirm, confirmText)
+    title = arg1 || 'Bestätigung';
+    message = arg2 || '';
+    onConfirm = arg3;
+    if (typeof arg4 === 'string' && arg4.trim()) {
+      confirmText = arg4;
+    } else {
+      confirmText = 'Überspringen';
+    }
+  }
+
   if (!modal) {
-    if (confirm(message)) onConfirm();
+    if (confirm((title ? title + "\n\n" : "") + message)) {
+      if (typeof onConfirm === 'function') onConfirm();
+    }
     return;
   }
+
+  const titleEl = document.getElementById('noir-confirm-title');
   const msgEl = document.getElementById('noir-confirm-message');
-  msgEl.textContent = message;
-  
   const btnYes = document.getElementById('noir-confirm-yes');
   const btnNo = document.getElementById('noir-confirm-no');
-  
-  btnYes.textContent = confirmText;
-  
+
+  if (titleEl) titleEl.textContent = title;
+  if (msgEl) msgEl.textContent = message;
+  if (btnYes) btnYes.textContent = confirmText;
+
   modal.classList.remove('hidden');
 
   const cleanup = () => {
     modal.classList.add('hidden');
-    btnYes.onclick = null;
-    btnNo.onclick = null;
+    if (btnYes) btnYes.onclick = null;
+    if (btnNo) btnNo.onclick = null;
   };
 
-  btnYes.onclick = () => {
-    cleanup();
-    onConfirm();
-  };
+  if (btnYes) {
+    btnYes.onclick = () => {
+      cleanup();
+      if (typeof onConfirm === 'function') {
+        onConfirm();
+      }
+    };
+  }
 
-  btnNo.onclick = () => {
-    cleanup();
-  };
+  if (btnNo) {
+    btnNo.onclick = () => {
+      cleanup();
+    };
+  }
 };
 
 /**

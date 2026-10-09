@@ -113,7 +113,31 @@ export function openStation(stationId) {
       });
     }
   }
-  // 3. Letzter Fallback: Direktes Starten des Gadgets
+  // 3. Spezielles Easter Egg ohne Gadget (z.B. Jean Pauls Geist)
+  else if (station.type === 'easteregg' || station.id === 'jean_paul') {
+    if (charsContainer) charsContainer.classList.add('hidden');
+    if (manualWrap) {
+      manualWrap.classList.remove('hidden');
+      manualWrap.innerHTML = `
+        <div style="background: rgba(139,0,139,0.15); border: 1px solid #8b008b; border-radius: 8px; padding: 20px; text-align: center; margin-top: 15px;">
+          <h3 style="color: #da70d6; font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: 10px;">🌟 Geheimes Easter Egg</h3>
+          <p style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">Die Luft flimmert violett... Eine geisterhafte Präsenz offenbart sich!</p>
+          <button class="btn-primary" id="btn-jean-paul-trigger" style="background: #8b008b; border-color: #ba55d3; width: 100%; padding: 12px; font-size: 1.1rem;">
+            👻 Jean Pauls Geist befragen
+          </button>
+        </div>
+      `;
+      document.getElementById('btn-jean-paul-trigger').addEventListener('click', () => {
+        const story = getStory();
+        if (story && story.dialogueTrees && story.dialogueTrees['jean_paul_dialogue']) {
+          openDialogue(story.dialogueTrees['jean_paul_dialogue'], () => onStationComplete('jean_paul'), 'jean_paul_dialogue');
+        } else {
+          onStationComplete('jean_paul');
+        }
+      });
+    }
+  }
+  // 4. Letzter Fallback: Direktes Starten des Gadgets
   else {
     if (charsContainer) charsContainer.classList.add('hidden');
     if (manualWrap) {
@@ -124,7 +148,11 @@ export function openStation(stationId) {
         </button>
       `;
       document.getElementById('btn-station-direct-gadget').addEventListener('click', () => {
-        startGadget(station.gadget.id, currentStationId);
+        if (station.gadget && station.gadget.id) {
+          startGadget(station.gadget.id, currentStationId);
+        } else {
+          onStationComplete(station.id);
+        }
       });
     }
   }
@@ -155,10 +183,14 @@ function handleCharacterClick(station, char) {
         console.error(err);
         onStationComplete(station.id);
       });
-    } else {
+    } else if (station.type === 'easteregg' || station.id === 'jean_paul') {
+      onStationComplete(station.id);
+    } else if (station.gadget && station.gadget.id) {
       startGadget(station.gadget.id, currentStationId, () => {
         onStationComplete(station.id);
       });
+    } else {
+      onStationComplete(station.id);
     }
   };
 
@@ -211,7 +243,23 @@ export function initStationView() {
  * Wird nach erfolgreichem Gadget/Dialog aufgerufen (AP9 Hook)
  */
 export function onStationComplete(stationId) {
-  const isBonus = stationId.startsWith('saale_') || stationId.startsWith('altstadt_');
+  if (stationId === 'jean_paul') {
+    markStationSolved(stationId, { points: 50, isBonus: true });
+    import('../state.js').then(mod => {
+      const state = mod.getState();
+      mod.saveState({ easterEgg_jean_paul: true, score: (state.score || 0) + 50 });
+      import('../main.js').then(m => {
+        m.showNoirAlert('🌟 GEHEIMES EASTER EGG GELÖST!\nDu hast Jean Pauls Geist gefunden und seinen poetischen Geistersegen empfangen! (+50 Detektiv-Punkte)', 'Meisterleistung');
+        showView('view-dashboard');
+      });
+      import('../fx.js').then(FX => {
+        if (FX.playSuccessWumms) FX.playSuccessWumms();
+      });
+    });
+    return;
+  }
+
+  const isBonus = stationId.startsWith('saale_') || stationId.startsWith('altstadt_') || stationId.startsWith('versteck_');
   markStationSolved(stationId, { points: isBonus ? 15 : 10, isBonus });
   
   if (stationId === 'rathaus') {

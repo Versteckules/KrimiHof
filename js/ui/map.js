@@ -177,6 +177,7 @@ function getIcon(status, customColor) {
   if (status === 'locked') color = '#555555';
   if (status === 'solved') color = '#2e8b57'; // Green
   if (status === 'bonus') color = '#c0c0c0'; // Silver
+  if (status === 'easteregg') color = '#8b008b'; // Purple (Geheimnis / Easter Egg, identisch zur Legende)
   if (status === 'suspect') color = '#3b82f6'; // Blue
   if (customColor) color = customColor;
 
@@ -209,7 +210,9 @@ function renderMarkers() {
       status = 'solved';
     } else if (st.id === 'rathaus') {
       status = 'active'; // Immer aktiv, wenn nicht solved
-    } else if (st.id.startsWith('saale_') || st.id.startsWith('altstadt_')) {
+    } else if (st.type === 'easteregg' || st.id === 'jean_paul') {
+      status = startSolved ? 'easteregg' : 'locked';
+    } else if (st.id.startsWith('saale_') || st.id.startsWith('altstadt_') || st.id.startsWith('versteck_')) {
       status = startSolved ? 'bonus' : 'locked';
     } else if (startSolved) {
       status = 'active'; // Pflicht nach Rathaus frei
@@ -225,7 +228,7 @@ function renderMarkers() {
       
       marker.on('click', () => {
         const currentStatus = marker.customStatus;
-        if (currentStatus === 'active' || currentStatus === 'bonus') {
+        if (currentStatus === 'active' || currentStatus === 'bonus' || currentStatus === 'easteregg') {
           setActiveTarget(st.id);
           
           const currentState = getState();
@@ -253,7 +256,8 @@ function renderMarkers() {
   // Suspects rendern
   const suspectsUnlockedOnMap = Boolean(
     state.suspectsUnlocked || 
-    (state.solvedStations && (state.solvedStations.includes('rathaus') || state.solvedStations.length > 0))
+    (state.solvedStations && (state.solvedStations.includes('rathaus') || state.solvedStations.length > 0)) ||
+    state.isTestingMode
   );
   if (suspectsUnlockedOnMap) {
     import('../config-loader.js').then(module => {
@@ -261,15 +265,12 @@ function renderMarkers() {
        if(story && story.suspects) {
           import('../coords.js').then(coordsModule => {
             Object.values(story.suspects).forEach(suspect => {
-              const suspicion = state.suspects ? (state.suspects[suspect.id] || 0) : 0;
-              
-              if (suspicion >= 25) {
-                if (suspect.coords && !markers['suspect_'+suspect.id]) {
-                  const parsed = coordsModule.parseCoords(suspect.coords);
-                  if (parsed) {
-                    const marker = L.marker([parsed.lat, parsed.lng], {
-                      icon: getIcon('suspect')
-                    }).addTo(map);
+              if (suspect.coords && !markers['suspect_' + suspect.id]) {
+                const parsed = coordsModule.parseCoords(suspect.coords);
+                if (parsed) {
+                  const marker = L.marker([parsed.lat, parsed.lng], {
+                    icon: getIcon('suspect')
+                  }).addTo(map);
 
                   const popupDiv = document.createElement('div');
                   popupDiv.className = 'suspect-map-popup';
@@ -290,79 +291,19 @@ function renderMarkers() {
                   marker.on('popupopen', () => {
                     const btn = document.getElementById(`btn-interrogate-map-${suspect.id}`);
                     if (btn) {
-                      import('../state.js').then(st => {
-                        const currentState = st.getState();
-                        const treeKey = 'interrogate_' + suspect.id;
-                        const interrogations = currentState.interrogations ? currentState.interrogations[suspect.id] : [];
-                        
-                        let canInterrogate = true;
-                        let blockReason = "";
-
-                        if (interrogations && interrogations.length > 0) {
-                          if (interrogations.length >= 2) {
-                            canInterrogate = false;
-                            blockReason = "Keine weiteren Verhöre";
-                          } else {
-                            const lastCount = interrogations[interrogations.length - 1];
-                            const currentSolved = currentState.solvedStations ? currentState.solvedStations.length : 0;
-                            if (currentSolved < lastCount + 3) {
-                              canInterrogate = false;
-                              const left = (lastCount + 3) - currentSolved;
-                              blockReason = `Noch ${left} Station(en) lösen`;
-                            }
-                          }
-                        }
-
-                        if (!canInterrogate) {
-                          btn.innerText = blockReason;
-                          btn.style.opacity = "0.5";
-                          btn.style.cursor = "not-allowed";
-                          btn.onclick = null;
-                        } else {
-                          btn.onclick = () => {
-                            marker.closePopup();
-                            const currentSolved = currentState.solvedStations ? currentState.solvedStations.length : 0;
-                            st.recordInterrogation(suspect.id, currentSolved);
-                            import('./dialogue.js').then(dMod => {
-                              if (story.dialogueTrees && story.dialogueTrees[treeKey]) {
-                                dMod.openDialogue(story.dialogueTrees[treeKey], () => {
-                                  const suspectGames = {
-                                    'herold': 'safe',
-                                    'gipser': 'shredder',
-                                    'heiden': 'music-cryptogram'
-                                  };
-                                  if (suspectGames[suspect.id]) {
-                                    import(`./gadgets/${suspectGames[suspect.id]}.js`).then(gameMod => {
-                                      gameMod.runGadget(suspect.id, () => {
-                                        import('../main.js').then(m => m.showView('view-dashboard'));
-                                      });
-                                    }).catch(err => {
-                                      console.error("Fehler beim Laden des Suspect-Minispiels:", err);
-                                      import('../main.js').then(m => m.showView('view-dashboard'));
-                                    });
-                                  } else {
-                                    import('../main.js').then(m => m.showView('view-dashboard'));
-                                  }
-                                }, treeKey);
-                              }
-                            });
-                          };
-                        }
-                      });
+                      btn.onclick = () => {
+                        marker.closePopup();
+                        import('./dossier.js').then(dossierMod => {
+                          dossierMod.startSuspectInterrogation(suspect.id);
+                        });
+                      };
                     }
                   });
 
-                  markers['suspect_'+suspect.id] = marker;
+                  markers['suspect_' + suspect.id] = marker;
                 }
               }
-            } else {
-              // Hide marker if suspicion < 25
-              if (markers['suspect_'+suspect.id]) {
-                map.removeLayer(markers['suspect_'+suspect.id]);
-                delete markers['suspect_'+suspect.id];
-              }
-            }
-          });
+            });
           });
        }
     });

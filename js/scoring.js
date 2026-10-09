@@ -5,6 +5,8 @@
  * um den finalen Täter zu bestimmen.
  */
 
+import { getPlayerRank } from './state.js';
+
 export function calculateFinalResult(state) {
   const scores = state.suspectScores || { herold: 0, gipser: 0, heiden: 0 };
   
@@ -43,10 +45,22 @@ export function calculateFinalResult(state) {
     }
   }
 
-  const base = 33;
-  let heroldPoints = Math.max(0, base + scores.herold);
-  let gipserPoints = Math.max(0, base + scores.gipser);
-  let heidenPoints = Math.max(0, base + scores.heiden);
+  // Kommissarrang einbeziehen:
+  // Mit steigendem Rang schärft sich der Ermittlerfokus (Grundrauschen base sinkt)
+  // und der Hauptverdächtige wird dank akkurater Deduktion stärker überführt.
+  const rank = getPlayerRank();
+  const rankLevel = (rank && rank.level) ? rank.level : 1;
+
+  // Grundunschärfe nimmt mit Rang ab (von 28 bei Rang 1 bis 8 bei Rang 5)
+  const base = Math.max(8, 28 - (rankLevel - 1) * 5);
+
+  // Ermittlungs-Fokusbonus für den führenden Verdächtigen
+  const topSuspectId = suspects[0].id;
+  const rankFocusBonus = (rankLevel - 1) * 8; // Bis zu +32 Punkte bei Rang 5
+
+  let heroldPoints = Math.max(0, base + scores.herold + (topSuspectId === 'herold' ? rankFocusBonus : 0));
+  let gipserPoints = Math.max(0, base + scores.gipser + (topSuspectId === 'gipser' ? rankFocusBonus : 0));
+  let heidenPoints = Math.max(0, base + scores.heiden + (topSuspectId === 'heiden' ? rankFocusBonus : 0));
   
   const totalPoints = heroldPoints + gipserPoints + heidenPoints;
   let percentages = { herold: 33, gipser: 33, heiden: 34 };
@@ -54,15 +68,14 @@ export function calculateFinalResult(state) {
   if (totalPoints > 0) {
     percentages.herold = Math.round((heroldPoints / totalPoints) * 100);
     percentages.gipser = Math.round((gipserPoints / totalPoints) * 100);
-    percentages.heiden = 100 - percentages.herold - percentages.gipser;
-    
-    if (percentages.heiden < 0) percentages.heiden = 0;
+    percentages.heiden = Math.max(0, 100 - percentages.herold - percentages.gipser);
   }
 
   return {
     murderer,
     suspects,
     percentages,
-    totalScore: state.score || 0
+    totalScore: state.score || 0,
+    rank
   };
 }
