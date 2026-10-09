@@ -48,7 +48,7 @@ export function initDossier() {
   updateDossier();
 }
 
-function updateDossier() {
+export function updateDossier() {
   const state = getState();
   const stations = getStations() || [];
   const story = getStory();
@@ -67,9 +67,15 @@ function updateDossier() {
       });
     }
 
-    if (state.suspectsUnlocked) {
+    const isUnlocked = Boolean(
+      state.suspectsUnlocked || 
+      (state.solvedStations && (state.solvedStations.includes('rathaus') || state.solvedStations.length > 0))
+    );
+
+    if (isUnlocked) {
       openBtn.classList.remove('hidden');
-      openBtn.style.display = '';
+      openBtn.style.display = 'inline-flex';
+      openBtn.innerHTML = '📁 Dossier';
       if (hasUnassigned) {
         openBtn.classList.add('blink-animation');
       } else {
@@ -85,7 +91,11 @@ function updateDossier() {
   // 1. Verdächtige aktualisieren (mit Bildern und Verhör-Buttons!)
   const suspContainer = document.getElementById('dossier-suspects');
   if (suspContainer) {
-    if (!state.suspectsUnlocked) {
+    const suspectsAreUnlocked = Boolean(
+      state.suspectsUnlocked || 
+      (state.solvedStations && (state.solvedStations.includes('rathaus') || state.solvedStations.length > 0))
+    );
+    if (!suspectsAreUnlocked) {
       suspContainer.innerHTML = '<p style="color:var(--color-text-muted); font-style:italic; font-size:0.9rem;">Noch keine Verdächtigen identifiziert. Sprechen Sie mit Zeugen.</p>';
     } else {
       let html = '';
@@ -169,36 +179,47 @@ function updateDossier() {
     const tbs = state.unlockedTrackables || [];
     const inv = state.inventory || [];
     let h = `<strong>Trackables (${tbs.length}/4):</strong><br>`;
-    const itemNames = {
-      'evidence_fire_dossier': 'Brandnotiz von Dr. Renger',
+    
+    const fallbackItemNames = {
+      'beweis_antike_uhr': 'Gravierte Taschenuhr',
+      'beweis_frachtpapiere': 'Brisante Frachtpapiere',
+      'beweis_chorknaben_notiz': 'Lateinische Chor-Notiz',
+      'beweis_pakt_ring': 'Orden-Siegelring',
+      'foto_gipser_auto': 'Foto der flüchtenden Limousine',
+      'notenblatt_heiden': 'Rußiges Partiturblatt',
+      'evidence_fire_dossier': 'Brandbericht der Löschkommission',
       'evidence_polaroid_station': 'Überwachungs-Polaroid',
       'evidence_cipher_paper': 'Chiffrierter Schuldschein',
-      'evidence_rosina_note': 'Rosina-Stiftungsurkunde',
-      'evidence_briefcase_lock': 'Geknackter Aktenkoffer',
-      'evidence_tape_renger': 'Tonbandaufnahme Renger',
-      'evidence_phone_warning': 'Anonyme Warn-Nachricht',
-      'evidence_ambigram_mirror': 'Geheimes Ambigramm',
-      'evidence_dice_gamble': 'Gezinkte Würfel vom Wärschtlamo',
-      'evidence_wiretap_log': 'Abhörprotokoll Geheimbund',
-      'evidence_brass_wheel': 'Entschlüsselte Botschaft',
-      'evidence_uv_formula': 'Fluoreszierende Losung',
+      'evidence_rosina_note': 'Historische Stiftungsurkunde',
+      'evidence_briefcase_lock': 'Wappenring der Tuchmacher',
+      'evidence_tape_renger': 'Dr. Rengers Tonbandaufnahme',
+      'evidence_phone_warning': 'Münzfernsprecher-Aufnahme',
+      'evidence_ambigram_mirror': 'Spiegelschrift-Dokument',
+      'evidence_dice_gamble': 'Wirtshaus-Abrechnung',
+      'evidence_wiretap_log': 'Abhörprotokoll St. Marien',
+      'evidence_brass_wheel': 'Kryptorad-Botschaft',
+      'evidence_uv_formula': 'Fluoreszierende Ordenslosung',
       'evidence_torn_letter': 'Zerrissener Drohbrief',
-      'evidence_charter_1432': 'Historische Gründungsurkunde'
+      'evidence_charter_1432': 'Bundessatzung von 1432'
     };
+
+    const storyCatalog = (story && story.evidenceCatalog) || [];
+    const genericIds = ['evidence_fire_dossier', 'evidence_tape_renger', 'evidence_charter_1432'];
     
     h += tbs.length > 0 ? tbs.join(', ') : '<em>Noch keine</em>';
     h += `<br><br><strong>Gegenstände (${inv.length}):</strong><br><div style="display:flex; flex-direction:column; gap:8px; margin-top:5px;">`;
     
     if (inv.length > 0) {
       inv.forEach(id => {
-        const name = itemNames[id] || id;
+        const evData = storyCatalog.find(e => e.id === id);
+        const name = (evData && evData.name) ? evData.name : (fallbackItemNames[id] || 'Beweismittel');
         const assignedTo = state.assignedEvidence ? state.assignedEvidence[id] : null;
         let suffix = '';
         if (assignedTo) {
           const suspectName = getSuspectName(assignedTo);
           suffix = ` <span style="color:#888; font-size:0.8rem;">(&rarr; ${suspectName})</span>`;
         }
-        let blinkClass = (!assignedTo && !['evidence_fire_dossier', 'evidence_tape_renger', 'evidence_charter_1432'].includes(id)) ? 'blink-animation' : '';
+        let blinkClass = (!assignedTo && !genericIds.includes(id)) ? 'blink-animation' : '';
         h += `<button class="btn-evidence ${blinkClass}" data-id="${id}" style="background: rgba(255,255,255,0.1); border: 1px solid var(--color-glass-border); padding: 8px; border-radius: 4px; color: var(--color-amber-glow); cursor: pointer; text-align: left; font-family: var(--font-serif); font-size: 1rem;">🔍 ${name}${suffix}</button>`;
       });
     } else {
@@ -211,16 +232,25 @@ function updateDossier() {
     invContainer.querySelectorAll('.btn-evidence').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
-        const evidenceData = (story.evidenceCatalog || []).find(e => e.id === id);
+        const evData = storyCatalog.find(e => e.id === id);
+        const evidenceData = evData || {
+          id: id,
+          name: fallbackItemNames[id] || 'Beweismittel',
+          description: 'Ein gesichertes Indiz aus den laufenden Ermittlungen.',
+          targetSuspect: null
+        };
         const modal = document.getElementById('modal-evidence');
-        if (modal && evidenceData) {
-          document.getElementById('evidence-title').innerText = evidenceData.name || 'Beweis';
+        if (modal) {
+          document.getElementById('evidence-title').innerText = evidenceData.name;
           
           let descHtml = evidenceData.description || '';
-          const genericIds = ['evidence_fire_dossier', 'evidence_tape_renger', 'evidence_charter_1432'];
-          if (genericIds.includes(id)) {
-            descHtml += '<br><br><em style="color:var(--color-amber-muted);">Hinweis der Spurensicherung: Dieser Beweis belegt lediglich das allgemeine Motiv und kann niemandem spezifisch zugewiesen werden.</em>';
-            document.getElementById('evidence-assignment-ui').style.display = 'none';
+          if (genericIds.includes(id) || evidenceData.targetSuspect === null && !['herold','gipser','heiden'].includes(evidenceData.targetSuspect)) {
+            if (genericIds.includes(id)) {
+              descHtml += '<br><br><em style="color:var(--color-amber-muted);">Hinweis der Spurensicherung: Dieser Beweis belegt das allgemeine Tatgeschehen und kann keinem Verdächtigen spezifisch zugewiesen werden.</em>';
+              document.getElementById('evidence-assignment-ui').style.display = 'none';
+            } else {
+              document.getElementById('evidence-assignment-ui').style.display = 'block';
+            }
           } else {
             document.getElementById('evidence-assignment-ui').style.display = 'block';
           }
@@ -244,6 +274,11 @@ function updateDossier() {
               const sName = getSuspectName(suspectId);
               
               // Custom Confirm
+              const isReassignedAttempt = !!(state.reassignedEvidence && state.reassignedEvidence[id]);
+              const confirmText = isReassignedAttempt
+                ? `Sind Sie sicher, dass Sie diesen Beweis <b>${sName}</b> zuweisen wollen?<br><br><span style="color:var(--color-blood-red); font-weight:bold;">⚠️ Letzte Chance: Dies ist Ihre finale Neuzuordnung für diesen Beweis! Diese Entscheidung ist unumstößlich und endgültig.</span>`
+                : `Sind Sie sicher, dass Sie diesen Beweis <b>${sName}</b> zuweisen wollen?<br><br><span style="color:var(--color-amber-muted); font-size:0.9rem;">Hinweis: Sollten Sie sich irren, steht Ihnen für diesen Beweis später genau EINE einmalige Neuzuordnung zur Verfügung.</span>`;
+
               const confirmBox = document.createElement('div');
               confirmBox.style.position = 'fixed';
               confirmBox.style.top = '0'; confirmBox.style.left = '0'; confirmBox.style.width = '100vw'; confirmBox.style.height = '100vh';
@@ -251,10 +286,10 @@ function updateDossier() {
               confirmBox.style.display = 'flex'; confirmBox.style.justifyContent = 'center'; confirmBox.style.alignItems = 'center';
               confirmBox.style.zIndex = '99999';
               confirmBox.innerHTML = `
-                <div style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
-                  <h3 style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">Beweis Zuweisen</h3>
-                  <p style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
-                    Sind Sie sicher, dass Sie diesen Beweis ${sName} zuweisen wollen? Diese Entscheidung kann nicht rückgängig gemacht werden!
+                <div style="background: var(--color-night-dark); border: 2px solid ${isReassignedAttempt ? 'var(--color-blood-red)' : 'var(--color-amber-muted)'}; border-radius: 8px; padding: 25px; max-width: 420px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
+                  <h3 style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 1px;">Beweis Zuweisen</h3>
+                  <p style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1rem; line-height: 1.5; margin-bottom: 25px;">
+                    ${confirmText}
                   </p>
                   <div style="display: flex; justify-content: space-around;">
                     <button id="btn-assign-no" class="btn-secondary" style="padding: 10px 20px;">Abbrechen</button>
@@ -274,69 +309,159 @@ function updateDossier() {
               });
               
               function processAssignment(suspectId) {
-              
-              // Hardcoded mapping for which evidence belongs to whom
-              const evidenceMapping = {
-                'herold': ['evidence_polaroid_station', 'evidence_cipher_paper', 'evidence_briefcase_lock', 'evidence_dice_gamble'],
-                'gipser': ['evidence_rosina_note', 'evidence_wiretap_log', 'evidence_phone_warning'],
-                'heiden': ['evidence_torn_letter', 'evidence_uv_formula', 'evidence_ambigram_mirror', 'evidence_brass_wheel']
-              };
-              
-              const feedbackEl = document.getElementById('evidence-assignment-feedback');
-              
-              // Generic evidence fits everyone slightly
-              const generic = ['evidence_fire_dossier', 'evidence_tape_renger', 'evidence_charter_1432'];
-              
-              if ((evidenceMapping[suspectId] && evidenceMapping[suspectId].includes(id)) || generic.includes(id)) {
-                feedbackEl.style.color = '#006400';
-                let reason = 'Passt perfekt! (Verdacht +15%)';
-                if (id === 'evidence_polaroid_station') reason = 'Das Polaroid beweist seine Anwesenheit am Bahnhof. (Verdacht +15%)';
-                if (id === 'evidence_cipher_paper') reason = 'Der Schuldschein belegt seine Schulden. (Verdacht +15%)';
-                if (id === 'evidence_briefcase_lock') reason = 'Der Kofferinhalt verbindet ihn mit den Geschäften. (Verdacht +15%)';
-                if (id === 'evidence_dice_gamble') reason = 'Die Spielsucht ist ein klares Motiv. (Verdacht +15%)';
-                if (id === 'evidence_rosina_note') reason = 'Die Stiftungsurkunde belastet sie direkt. (Verdacht +15%)';
-                if (id === 'evidence_wiretap_log') reason = 'Das Abhörprotokoll bestätigt die Verschwörung. (Verdacht +15%)';
-                if (id === 'evidence_phone_warning') reason = 'Die Warnung kam von diesem Anschluss. (Verdacht +15%)';
-                if (id === 'evidence_torn_letter') reason = 'Der Drohbrief stammt eindeutig von ihm. (Verdacht +15%)';
-                if (id === 'evidence_uv_formula') reason = 'Die Losung war nur Eingeweihten bekannt. (Verdacht +15%)';
-                if (id === 'evidence_ambigram_mirror') reason = 'Das Ambigramm ist sein Markenzeichen. (Verdacht +15%)';
-                if (id === 'evidence_brass_wheel') reason = 'Die entschlüsselte Botschaft führt zu ihm. (Verdacht +15%)';
-                if (generic.includes(id)) reason = 'Dieses allgemeine Motiv passt ins Bild. (Verdacht +15%)';
-                feedbackEl.innerText = '📈 ' + reason;
-                import('../state.js').then(mod => {
-                  mod.addSuspectImpact(suspectId, 15);
-                  mod.assignEvidence(id, suspectId);
-                  updateDossier(); // Refresh UI behind modal
-                });
-              } else {
-                feedbackEl.style.color = '#8b0000';
-                feedbackEl.innerText = '📉 Ergibt wenig Sinn... Dieser Beweis passt nicht zu dieser Person. (Verdacht -7%, -5 Kommissarpunkte)';
-                import('../state.js').then(mod => {
-                  mod.addSuspectImpact(suspectId, -7);
-                  mod.addScore(-5); // Punktabzug für falsche Zuordnung!
-                  mod.assignEvidence(id, suspectId);
-                  updateDossier(); // Refresh UI behind modal
-                });
-              }
-              
-              // Hide buttons after assignment
-              modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'none');
+                // Autoritatives Mapping für alle 20 Beweise
+                const evidenceMapping = {
+                  'herold': [
+                    'beweis_antike_uhr',
+                    'evidence_polaroid_station',
+                    'evidence_cipher_paper',
+                    'evidence_briefcase_lock',
+                    'evidence_dice_gamble'
+                  ],
+                  'gipser': [
+                    'foto_gipser_auto',
+                    'beweis_frachtpapiere',
+                    'evidence_rosina_note',
+                    'evidence_phone_warning',
+                    'evidence_wiretap_log'
+                  ],
+                  'heiden': [
+                    'notenblatt_heiden',
+                    'beweis_chorknaben_notiz',
+                    'beweis_pakt_ring',
+                    'evidence_brass_wheel',
+                    'evidence_uv_formula',
+                    'evidence_ambigram_mirror',
+                    'evidence_torn_letter'
+                  ]
+                };
+                
+                const targetSuspect = evidenceData ? evidenceData.targetSuspect : null;
+                const isCorrect = (targetSuspect && targetSuspect === suspectId) || 
+                                  (evidenceMapping[suspectId] && evidenceMapping[suspectId].includes(id));
+                
+                const feedbackEl = document.getElementById('evidence-assignment-feedback');
+                
+                if (isCorrect) {
+                  feedbackEl.style.color = '#00aa00';
+                  let reason = (evidenceData && evidenceData.rewardReason) ? evidenceData.rewardReason : 'Passt perfekt! (Verdacht +15%)';
+                  if (isReassignedAttempt) reason += ' [Endgültige Zuordnung]';
+                  feedbackEl.innerText = '📈 ' + reason;
+                  import('../state.js').then(mod => {
+                    mod.addSuspectImpact(suspectId, 15);
+                    mod.assignEvidence(id, suspectId, 15, 0);
+                    updateDossier();
+                  });
+                } else {
+                  feedbackEl.style.color = '#ff4444';
+                  let failReason = '📉 Ergibt wenig Sinn... Dieser Beweis passt nicht zu dieser Person. (Verdacht -7%, -5 Kommissarpunkte)';
+                  if (isReassignedAttempt) failReason += ' [Endgültige Zuordnung]';
+                  feedbackEl.innerText = failReason;
+                  import('../state.js').then(mod => {
+                    mod.addSuspectImpact(suspectId, -7);
+                    mod.addScore(-5);
+                    mod.assignEvidence(id, suspectId, -7, -5);
+                    updateDossier();
+                  });
+                }
+                
+                // Hide assignment buttons after assignment
+                modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'none');
               } // end processAssignment
             });
           });
 
-          // Check if already assigned
+          // Check if already assigned & Einmalige Reset-Möglichkeit
+          const assignUi = document.getElementById('evidence-assignment-ui');
+          let resetBtn = document.getElementById('btn-reset-evidence-assign');
+          if (!resetBtn && assignUi) {
+            resetBtn = document.createElement('button');
+            resetBtn.id = 'btn-reset-evidence-assign';
+            resetBtn.className = 'btn-secondary';
+            resetBtn.style.cssText = 'margin-top: 12px; width: 100%; font-size: 0.85rem; padding: 8px; border: 1px dashed var(--color-amber-muted);';
+            assignUi.appendChild(resetBtn);
+          }
+
           const currentlyAssigned = state.assignedEvidence ? state.assignedEvidence[id] : null;
+          const hasAlreadyReassigned = !!(state.reassignedEvidence && state.reassignedEvidence[id]);
+
           if (currentlyAssigned) {
-            document.getElementById('evidence-assignment-feedback').style.color = '#555';
-            document.getElementById('evidence-assignment-feedback').innerText = 'Bereits zugewiesen an: ' + getSuspectName(currentlyAssigned);
+            document.getElementById('evidence-assignment-feedback').style.color = '#e2e8f0';
+            const suffix = hasAlreadyReassigned ? ' (Endgültig festgelegt)' : '';
+            document.getElementById('evidence-assignment-feedback').innerText = 'Aktuell zugewiesen an: ' + getSuspectName(currentlyAssigned) + suffix;
             modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'none');
+            
+            if (resetBtn) {
+              resetBtn.style.display = 'block';
+              if (hasAlreadyReassigned) {
+                resetBtn.innerText = '🔒 Endgültig zugeordnet (Neuzuordnung bereits verbraucht)';
+                resetBtn.style.opacity = '0.5';
+                resetBtn.style.cursor = 'not-allowed';
+                resetBtn.style.borderColor = '#555';
+                resetBtn.onclick = () => {
+                  import('../main.js').then(m => m.showNoirAlert('Für diesen Beweis wurde die einmalige Neuzuordnung bereits genutzt! Diese Festlegung ist dauerhaft endgültig.', 'Keine Neuzuordnung möglich'));
+                };
+              } else {
+                resetBtn.innerText = '🔄 Einmalige Neuzuordnung nutzen (Nur 1x möglich!)';
+                resetBtn.style.opacity = '1';
+                resetBtn.style.cursor = 'pointer';
+                resetBtn.style.borderColor = 'var(--color-blood-red)';
+                resetBtn.onclick = () => {
+                  // Bestätigungsdialog mit expliziter Warnung
+                  const confirmBox = document.createElement('div');
+                  confirmBox.style.position = 'fixed';
+                  confirmBox.style.top = '0'; confirmBox.style.left = '0'; confirmBox.style.width = '100vw'; confirmBox.style.height = '100vh';
+                  confirmBox.style.backgroundColor = 'rgba(0,0,0,0.85)';
+                  confirmBox.style.display = 'flex'; confirmBox.style.justifyContent = 'center'; confirmBox.style.alignItems = 'center';
+                  confirmBox.style.zIndex = '99999';
+                  confirmBox.innerHTML = `
+                    <div style="background: var(--color-night-dark); border: 2px solid var(--color-blood-red); border-radius: 8px; padding: 25px; max-width: 420px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
+                      <h3 style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 1px;">⚠️ Einmalige Neuzuordnung</h3>
+                      <p style="color: #e2e8f0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.5; margin-bottom: 25px; text-align: left;">
+                        Achtung, Kommissar!<br><br>
+                        Eine Neuzuordnung ist für jedes Beweisstück <b>nur ein einziges Mal im gesamten Fall</b> gestattet.
+                        Ihre nächste Zuordnung für diesen Beweis ist <b>dauerhaft endgültig</b> und kann danach unter keinen Umständen mehr geändert werden.<br><br>
+                        Möchten Sie die bisherige Zuordnung jetzt aufheben?
+                      </p>
+                      <div style="display: flex; justify-content: space-around;">
+                        <button id="btn-reassign-no" class="btn-secondary" style="padding: 10px 20px;">Abbrechen</button>
+                        <button id="btn-reassign-yes" class="btn-primary" style="padding: 10px 20px; background: var(--color-blood-red); border:none;">Ja, einmalig neu zuordnen</button>
+                      </div>
+                    </div>
+                  `;
+                  document.body.appendChild(confirmBox);
+
+                  confirmBox.querySelector('#btn-reassign-no').addEventListener('click', () => {
+                    document.body.removeChild(confirmBox);
+                  });
+
+                  confirmBox.querySelector('#btn-reassign-yes').addEventListener('click', () => {
+                    document.body.removeChild(confirmBox);
+                    import('../state.js').then(mod => {
+                      const success = mod.resetEvidenceAssignment(id);
+                      if (success) {
+                        import('../main.js').then(m => m.showNoirAlert('Zuordnung aufgehoben! Sie können diesen Beweis nun genau EINMAL neu zuweisen. Diese Entscheidung ist danach unumstößlich.', 'Einmalige Chance'));
+                        updateDossier();
+                        document.getElementById('evidence-assignment-feedback').style.color = 'var(--color-amber-glow)';
+                        document.getElementById('evidence-assignment-feedback').innerText = '⚠️ Sie haben noch genau 1 Neuzuordnung für dieses Beweisstück!';
+                        resetBtn.style.display = 'none';
+                        modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'block');
+                      } else {
+                        import('../main.js').then(m => m.showNoirAlert('Für diesen Beweis wurde die einmalige Neuzuordnung bereits verbraucht!', 'Gesperrt'));
+                      }
+                    });
+                  });
+                };
+              }
+            }
           } else if (genericIds.includes(id)) {
             document.getElementById('evidence-assignment-feedback').style.color = '#8b0000';
             document.getElementById('evidence-assignment-feedback').innerText = 'Dieser allgemeine Beweis kann nicht zugewiesen werden.';
             modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'none');
+            if (resetBtn) resetBtn.style.display = 'none';
           } else {
             modal.querySelectorAll('.btn-assign-evidence').forEach(b => b.style.display = 'block');
+            if (resetBtn) resetBtn.style.display = 'none';
           }
 
           modal.classList.remove('hidden');

@@ -12,6 +12,7 @@ import { initEasterEggs } from './easter-eggs.js';
 import { loadAllData } from './config-loader.js';
 import { getState } from './state.js';
 import { initDebug } from './debug.js';
+import { attachGlobalHaptics } from './fx.js';
 
 let dataReady = false;
 
@@ -27,6 +28,10 @@ export function showView(viewId) {
   
   // Fix Leaflet map sizing issue on mobile when container becomes visible
   if (viewId === 'view-dashboard') {
+    import('./ui/dossier.js').then(m => {
+      if (m.updateDossier) m.updateDossier();
+    }).catch(() => {});
+
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
       
@@ -36,7 +41,7 @@ export function showView(viewId) {
         const currentDisplay = navBar.style.display;
         navBar.style.display = 'none';
         navBar.offsetHeight; // force reflow
-        navBar.style.display = currentDisplay;
+        navBar.style.display = currentDisplay || 'flex';
       }
     }, 100);
   }
@@ -169,10 +174,7 @@ async function boot() {
 
   // Kern-Module & Startseite (funktionieren auch ohne Spieldaten)
   safeInit('Audio', initAudio);
-  
-  import('./fx.js').then(fx => {
-    fx.attachGlobalHaptics();
-  });
+  safeInit('FX', attachGlobalHaptics);
   safeInit('EasterEggs', initEasterEggs);
   safeInit('Landing', initLanding);
   safeInit('Intro', initIntro);

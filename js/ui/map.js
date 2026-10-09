@@ -251,7 +251,11 @@ function renderMarkers() {
   });
 
   // Suspects rendern
-  if (state.suspectsUnlocked) {
+  const suspectsUnlockedOnMap = Boolean(
+    state.suspectsUnlocked || 
+    (state.solvedStations && (state.solvedStations.includes('rathaus') || state.solvedStations.length > 0))
+  );
+  if (suspectsUnlockedOnMap) {
     import('../config-loader.js').then(module => {
        const story = module.getStory();
        if(story && story.suspects) {
@@ -339,7 +343,7 @@ function renderMarkers() {
                                   } else {
                                     import('../main.js').then(m => m.showView('view-dashboard'));
                                   }
-                                });
+                                }, treeKey);
                               }
                             });
                           };

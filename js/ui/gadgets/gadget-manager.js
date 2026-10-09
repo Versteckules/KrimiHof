@@ -7,7 +7,7 @@ import { getStationById, getStory } from '../../config-loader.js';
 import { recordDecision, addInventoryItem } from '../../state.js';
 import { stationDialogueTrees } from '../../station-dialogues.js';
 
-export function startGadget(gadgetId, stationId) {
+export function startGadget(gadgetId, stationId, customOnComplete) {
   if (window.isGadgetRunning) return;
   window.isGadgetRunning = true;
   
@@ -42,7 +42,11 @@ export function startGadget(gadgetId, stationId) {
             overlay.remove();
             window.isGadgetRunning = false;
             import('../../main.js').then(m => m.showView('view-dashboard'));
-            onStationComplete(stationId);
+            if (customOnComplete) {
+              customOnComplete();
+            } else {
+              onStationComplete(stationId);
+            }
           });
         }
       };
@@ -51,18 +55,51 @@ export function startGadget(gadgetId, stationId) {
     if (!window.isGadgetRunning) clearInterval(checkInterval);
   }, 200);
 
+  const handleFinish = () => {
+    window.isGadgetRunning = false;
+    const story = getStory();
+    const gadgetEvidenceMap = {
+      'polaroid': 'evidence_polaroid_station',
+      'briefcase': 'evidence_cipher_paper',
+      'stealth': 'evidence_rosina_note',
+      'laser': 'evidence_briefcase_lock',
+      'scratch': 'evidence_tape_renger',
+      'fake-call': 'evidence_phone_warning',
+      'ambigram': 'evidence_ambigram_mirror',
+      'dice': 'evidence_dice_gamble',
+      'wiretap': 'evidence_wiretap_log',
+      'cryptowheel': 'evidence_brass_wheel',
+      'uv-light': 'evidence_uv_formula',
+      'letter': 'evidence_torn_letter',
+      'whisper': 'evidence_charter_1432',
+      'scanner': 'evidence_charter_1432'
+    };
+    const mappedId = gadgetEvidenceMap[gadgetId];
+    const evidence = mappedId 
+      ? (story && story.evidenceCatalog || []).find(e => e.id === mappedId)
+      : (story && story.evidenceCatalog || []).find(e => e.stationId === stationId);
+    if (evidence) {
+      addInventoryItem(evidence.id);
+    }
+
+    if (customOnComplete) {
+      customOnComplete();
+    } else {
+      showPostGadgetDialogue(stationId, station);
+    }
+  };
+
   import(`./${gadgetId}.js`)
     .then(mod => {
       if (mod && mod.runGadget) {
-        mod.runGadget(stationId, () => showPostGadgetDialogue(stationId, station));
+        mod.runGadget(stationId, handleFinish);
       } else {
-        showPostGadgetDialogue(stationId, station);
+        handleFinish();
       }
     })
     .catch(err => {
-      console.warn(`Gadget ${gadgetId} module not found, skipping to dialogue.`, err);
-      alert("Hinweis: Ein Mini-Spiel konnte nicht geladen werden! (" + err.message + ")");
-      showPostGadgetDialogue(stationId, station);
+      console.warn(`Gadget ${gadgetId} module not found, skipping.`, err);
+      handleFinish();
     });
 }
 
@@ -70,9 +107,14 @@ function showPostGadgetDialogue(stationId, station) {
   const story = getStory();
 
   // Wenn ein komplexer Dialogbaum existiert, nutze diesen!
-  if (stationDialogueTrees && stationDialogueTrees[stationId]) {
+  const treeKey = (station && station.characters && station.characters[0])
+    ? (station.storyEventId + "_" + station.characters[0].id)
+    : stationId;
+  const tree = (story && story.dialogueTrees && story.dialogueTrees[treeKey]) || (stationDialogueTrees && stationDialogueTrees[stationId]);
+
+  if (tree) {
     import('../dialogue.js').then(mod => {
-      mod.openDialogue(stationDialogueTrees[stationId], () => {
+      mod.openDialogue(tree, () => {
         // Beim Beenden des Dialogs Beweis eintragen und Station abschließen
         const evidence = (story.evidenceCatalog || []).find(e => e.stationId === stationId);
         if (evidence) {
@@ -80,7 +122,7 @@ function showPostGadgetDialogue(stationId, station) {
         }
         window.isGadgetRunning = false;
         onStationComplete(stationId);
-      });
+      }, treeKey);
     });
     return;
   }

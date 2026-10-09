@@ -5,7 +5,7 @@
 import { getStationById, getConfig, getStory } from '../config-loader.js';
 import { checkAnswer } from '../answers.js';
 import { showView, showNoirAlert } from '../main.js';
-import { markStationSolved, getState } from '../state.js';
+import { markStationSolved, getState, unlockSuspectsInState } from '../state.js';
 import { startGadget } from './gadgets/gadget-manager.js';
 import { openDialogue } from './dialogue.js';
 
@@ -140,28 +140,30 @@ function handleCharacterClick(station, char) {
     if (station.id === 'rathaus' && char.id === 'reporter') {
       import('./gadgets/reporter-camera.js').then(mod => {
         mod.runGadget(station.id, () => {
-          startGadget(station.gadget.id, currentStationId);
+          onStationComplete(station.id);
         });
       }).catch(err => {
         console.error(err);
-        startGadget(station.gadget.id, currentStationId);
+        onStationComplete(station.id);
       });
     } else if (station.id === 'rathaus' && char.id === 'polizist') {
       import('./gadgets/policeman-paper.js').then(mod => {
         mod.runGadget(station.id, () => {
-          startGadget(station.gadget.id, currentStationId);
+          onStationComplete(station.id);
         });
       }).catch(err => {
         console.error(err);
-        startGadget(station.gadget.id, currentStationId);
+        onStationComplete(station.id);
       });
     } else {
-      startGadget(station.gadget.id, currentStationId);
+      startGadget(station.gadget.id, currentStationId, () => {
+        onStationComplete(station.id);
+      });
     }
   };
 
   if (story && story.dialogueTrees && story.dialogueTrees[treeKey]) {
-    openDialogue(story.dialogueTrees[treeKey], postDialogueAction);
+    openDialogue(story.dialogueTrees[treeKey], postDialogueAction, treeKey);
   } else {
     // Fallback falls kein Dialog hinterlegt ist
     postDialogueAction();
@@ -213,6 +215,7 @@ export function onStationComplete(stationId) {
   markStationSolved(stationId, { points: isBonus ? 15 : 10, isBonus });
   
   if (stationId === 'rathaus') {
+    unlockSuspectsInState();
     const suspectSlides = [
       {
         image: 'assets/suspect_herold.webp',

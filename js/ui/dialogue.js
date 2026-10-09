@@ -15,18 +15,38 @@ let isTyping = false;
 let currentFullText = '';
 let currentSuspectId = null;
 
-export function openDialogue(treeData, completeCallback) {
+export let currentTreeKey = null;
+
+export function openDialogue(treeData, completeCallback, treeKey) {
   if (!treeData || !treeData.length) return;
-  currentTree = treeData;
-  currentNodeIndex = 0;
+  currentTreeKey = treeKey || (treeData && treeData[0] ? treeData[0].speaker : 'unknown');
   onDialogComplete = completeCallback;
   currentSuspectId = null;
 
+  const state = getState();
+  const locked = state.lockedDialogues || [];
+  if (locked.includes(currentTreeKey)) {
+    // Hardcore-Modus: Zeuge verweigert Aussage dauerhaft nach gescheitertem Verhör
+    currentTree = [
+      {
+        id: "locked_end",
+        speaker: treeData[0].speaker || "Zeuge",
+        avatar: treeData[0].avatar || "assets/avatar.jpg",
+        text: "(Mustert Sie kühl mit verschränkten Armen und feindseligem Blick) 'Ich habe Ihnen bereits alles gesagt: Verschwinden Sie! Ich sage kein einziges Wort mehr ohne meinen Anwalt.'",
+        isEnd: true
+      }
+    ];
+    currentNodeIndex = 0;
+  } else {
+    currentTree = treeData;
+    currentNodeIndex = 0;
+  }
+
   // Determine if this is a main suspect to play theme
-  const firstNode = treeData[0];
-  if (firstNode.speaker.includes('Herold')) currentSuspectId = 'herold';
-  if (firstNode.speaker.includes('Gipser')) currentSuspectId = 'gipser';
-  if (firstNode.speaker.includes('Heiden')) currentSuspectId = 'heiden';
+  const firstNode = currentTree[0];
+  if (firstNode.speaker && firstNode.speaker.includes('Herold')) currentSuspectId = 'herold';
+  if (firstNode.speaker && firstNode.speaker.includes('Gipser')) currentSuspectId = 'gipser';
+  if (firstNode.speaker && firstNode.speaker.includes('Heiden')) currentSuspectId = 'heiden';
   
   if (currentSuspectId) {
     FX.playCharacterTheme(currentSuspectId);
@@ -34,7 +54,7 @@ export function openDialogue(treeData, completeCallback) {
   }
 
   // Start particles if it's the rathaus (e.g. fire/ash)
-  if (firstNode.speaker.includes('Stahl') || firstNode.speaker.includes('Stift')) {
+  if (firstNode.speaker && (firstNode.speaker.includes('Stahl') || firstNode.speaker.includes('Stift'))) {
     FX.startAshParticles();
   }
 
@@ -126,13 +146,23 @@ function renderChoices(choices, isEnd, unlockSuspects) {
       unlockSuspectsInState();
     }
     const node = currentTree[currentNodeIndex];
-    if (node.reward) {
+    if (node && (node.outcome === 'OUTCOME_C' || node.isFailure)) {
+      import('../state.js').then(mod => {
+        const curLocked = mod.getState().lockedDialogues || [];
+        if (!curLocked.includes(currentTreeKey)) {
+          mod.saveState({ lockedDialogues: [...curLocked, currentTreeKey] });
+        }
+        import('../main.js').then(m => m.showNoirAlert('Verhör abgebrochen! Der Zeuge verweigert ab jetzt jede Aussage.', 'Gesperrt'));
+      });
+    }
+
+    if (node && node.reward) {
       import('../state.js').then(mod => {
         mod.addInventoryItem(node.reward);
         mod.addScore(15); // +15 Bonus Punkte für das Finden eines Beweises
         import('../main.js').then(m => m.showNoirAlert('Neuer Beweis gefunden! (+15 Kommissarpunkte)', 'Erfolg'));
       });
-    } else {
+    } else if (node && !node.isFailure) {
       addScore(10); // Standard +10 Punkte für ein abgeschlossenes Verhör
     }
     if (onDialogComplete) {
@@ -159,12 +189,17 @@ function renderChoices(choices, isEnd, unlockSuspects) {
   choices.forEach(choice => {
     // Check evidence requirement for dynamic branching
     if (choice.requires_evidence) {
+      const inv = state.inventory || [];
+      if (!inv.includes(choice.requires_evidence)) {
+        return; // Verstecke Option, wenn der Beweis fehlt
+      }
+    }
+
+    // Check rank requirement
+    if (choice.requires_rank) {
       const rank = getPlayerRank();
-      if (rank.level >= 3) {
-        const inv = state.inventory || [];
-        if (!inv.includes(choice.requires_evidence)) {
-          return; // Hide choice if evidence is missing (Disadvantage of high rank!)
-        }
+      if (rank.level < choice.requires_rank) {
+        return; // Verstecke Option, wenn Rang noch zu niedrig ist
       }
     }
 
@@ -176,6 +211,13 @@ function renderChoices(choices, isEnd, unlockSuspects) {
       btn.classList.add('shake-animation');
       setTimeout(() => btn.classList.remove('shake-animation'), 300);
       
+      // Widerspruch entlarvt
+      if (choice.contradiction_target) {
+        addScore(15);
+        import('../main.js').then(m => m.showNoirAlert('Widerspruch entlarvt! (+15 Kommissarpunkte)', 'Volltreffer'));
+        if (FX.playHeavySnap) FX.playHeavySnap();
+      }
+
       // Impact verbuchen
       if (choice.impact && choice.impact.suspect && choice.impact.suspect !== 'none') {
         addSuspectImpact(choice.impact.suspect, choice.impact.value);

@@ -57,6 +57,8 @@ function createDefaultState() {
     triggeredEvents: [],      // Array der Event-IDs (z.B. ['event_shadow_sprint'])
     inventory: [],            // Gesammelte Beweisstücke/Items
     assignedEvidence: {},     // { evidenceId: suspectId }
+    reassignedEvidence: {},   // { evidenceId: true } - Einmalige Neuzuordnung pro Beweis
+    evidenceImpactHistory: {},// { evidenceId: { suspectId, suspectImpact, scoreImpact } }
     interrogations: {},       // { suspectId: [solvedStationsCount] }
     
     // Die 4 Trackables (TBs)
@@ -120,6 +122,26 @@ export function loadState() {
         if (legacyName) {
           _currentState.playerName = legacyName.trim();
         }
+      }
+
+      // Auto-Repair: Falls 'foto_gipser_auto' zuvor durch alten Mapping-Bug fälschlicherweise als falsch gewertet wurde
+      if (_currentState.assignedEvidence && _currentState.assignedEvidence['foto_gipser_auto'] === 'gipser' && !_currentState._evidenceV2Repaired) {
+        _currentState._evidenceV2Repaired = true;
+        if (_currentState.suspectScores) {
+          _currentState.suspectScores.gipser = (_currentState.suspectScores.gipser || 0) + 22;
+        }
+        _currentState.score = (_currentState.score || 0) + 5;
+        saveState({
+          _evidenceV2Repaired: true,
+          suspectScores: _currentState.suspectScores,
+          score: _currentState.score
+        });
+      }
+
+      // Auto-Repair: Sobald das Rathaus oder irgendeine Station gelöst ist, muss das Dossier freigeschaltet sein
+      if ((_currentState.solvedStations && (_currentState.solvedStations.includes('rathaus') || _currentState.solvedStations.length > 0)) && !_currentState.suspectsUnlocked) {
+        _currentState.suspectsUnlocked = true;
+        saveState({ suspectsUnlocked: true });
       }
     } else {
       _currentState = createDefaultState();
@@ -258,6 +280,8 @@ export function markStationSolved(stationId, options = {}) {
       inventory.add(options.evidenceId);
     }
 
+    const shouldUnlockSuspects = state.suspectsUnlocked || stationId === 'rathaus';
+
     saveState({
       solvedStations: Array.from(solved),
       stationOrder: order,
@@ -265,7 +289,8 @@ export function markStationSolved(stationId, options = {}) {
       inventory: Array.from(inventory),
       zoneScores,
       score: (state.score || 0) + scoreDelta,
-      activeStationId: null
+      activeStationId: null,
+      suspectsUnlocked: shouldUnlockSuspects
     });
   }
 
@@ -320,12 +345,67 @@ export function addSuspectImpact(suspectId, value) {
 /**
  * Ordnet ein Beweisstück einem Verdächtigen zu
  */
-export function assignEvidence(evidenceId, suspectId) {
+export function assignEvidence(evidenceId, suspectId, suspectImpact = 0, scoreImpact = 0) {
   const state = getState();
-  const assigned = { ...state.assignedEvidence };
+  const assigned = { ...(state.assignedEvidence || {}) };
   assigned[evidenceId] = suspectId;
-  saveState({ assignedEvidence: assigned });
+  const history = { ...(state.evidenceImpactHistory || {}) };
+  history[evidenceId] = { suspectId, suspectImpact, scoreImpact };
+  saveState({ assignedEvidence: assigned, evidenceImpactHistory: history });
   return getState();
+}
+
+/**
+ * Prüft, ob ein Beweisstück noch einmal neu zugeordnet werden darf.
+ * Eine Neuzuordnung ist pro Beweisstück maximal 1 Mal erlaubt!
+ */
+export function canReassignEvidence(evidenceId) {
+  const state = getState();
+  return !(state.reassignedEvidence && state.reassignedEvidence[evidenceId]);
+}
+
+/**
+ * Hebt die Zuordnung eines Beweisstücks auf und markiert die einmalige Neuzuordnung als verbraucht.
+ * Revertiert den vorherigen Punkte-Einfluss.
+ * @returns {boolean} true wenn erfolgreich, false wenn Neuzuordnung bereits verbraucht war.
+ */
+export function resetEvidenceAssignment(evidenceId) {
+  const state = getState();
+  if (state.reassignedEvidence && state.reassignedEvidence[evidenceId]) {
+    return false; // Bereits einmal verbraucht!
+  }
+
+  const reassigned = { ...(state.reassignedEvidence || {}) };
+  reassigned[evidenceId] = true;
+
+  const assigned = { ...(state.assignedEvidence || {}) };
+  delete assigned[evidenceId];
+
+  const history = { ...(state.evidenceImpactHistory || {}) };
+  const prevImpact = history[evidenceId];
+  delete history[evidenceId];
+
+  const suspectScores = { ...(state.suspectScores || {}) };
+  let newScore = state.score || 0;
+
+  if (prevImpact) {
+    if (prevImpact.suspectId && prevImpact.suspectImpact && suspectScores[prevImpact.suspectId] !== undefined) {
+      suspectScores[prevImpact.suspectId] = Math.max(0, suspectScores[prevImpact.suspectId] - prevImpact.suspectImpact);
+    }
+    if (prevImpact.scoreImpact) {
+      newScore = Math.max(0, newScore - prevImpact.scoreImpact);
+    }
+  }
+
+  saveState({
+    reassignedEvidence: reassigned,
+    assignedEvidence: assigned,
+    evidenceImpactHistory: history,
+    suspectScores,
+    score: newScore
+  });
+
+  return true;
 }
 
 /**

@@ -108,7 +108,7 @@ export function runGadget(stationId, onSuccess) {
           <h2 style="color:var(--color-amber-glow); margin-bottom:20px;">Beweis gesichert!</h2>
           <div style="background:#222; border:1px solid #d4af37; padding:20px; text-align:left; max-width:300px; margin-bottom:20px;">
             <p style="color:#ddd; font-size:0.9rem;">Unter dem Ruß verbergen sich alte Musiknoten (B-A-C-H) und ein Verweis auf die Michaeliskirche. Das ist eine heiße Spur!</p>
-            <p style="color:var(--color-blood-red); font-weight:bold; margin-top:10px; font-size:0.8rem;">Neuer Beweis: Rußiges Notenblatt</p>
+            <p style="color:var(--color-blood-red); font-weight:bold; margin-top:10px; font-size:0.8rem;">Neuer Beweis: Rußiges Partiturblatt</p>
           </div>
           <button class="btn-primary" id="btn-paper-done">Zurück zur Tatort-Analyse</button>
         `;
