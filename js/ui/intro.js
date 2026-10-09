@@ -141,12 +141,23 @@ function renderSlide() {
 
   if (btnNext) {
     if (currentSlideIndex === currentSlides.length - 1) {
-      btnNext.innerHTML = '🔍 Ermittlung am Tatort aufnehmen';
+      if (slide.buttonText) {
+        btnNext.innerHTML = slide.buttonText;
+      } else if (currentSlides !== slides) {
+        btnNext.innerHTML = '🏁 Zum Urteil &amp; Final-Cache ›';
+      } else {
+        btnNext.innerHTML = '🔍 Ermittlung am Tatort aufnehmen';
+      }
       btnNext.classList.add('pulse');
     } else {
       btnNext.innerHTML = 'Weiter ›';
       btnNext.classList.remove('pulse');
     }
+  }
+
+  const btnSkip = document.getElementById('btn-intro-skip');
+  if (btnSkip) {
+    btnSkip.textContent = (currentSlides !== slides) ? 'Epilog überspringen' : 'Überspringen';
   }
 
   if (dotsContainer) {

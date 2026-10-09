@@ -160,18 +160,26 @@ export function validateFinal(finalData) {
     throw new DataValidationError('Finaldaten müssen ein Objekt sein.');
   }
 
-  if (!finalData.coordsDMM || typeof finalData.coordsDMM !== 'string') {
-    throw new DataValidationError('Finaldaten müssen einen coordsDMM-String besitzen.');
+  const standardCoords = (finalData.standardFinal && finalData.standardFinal.coordsDMM) || finalData.coordsDMM;
+  if (!standardCoords || typeof standardCoords !== 'string') {
+    throw new DataValidationError('Finaldaten müssen einen coordsDMM-String besitzen (z. B. in standardFinal.coordsDMM).');
   }
 
-  const parsed = parseCoords(finalData.coordsDMM);
+  const parsed = parseCoords(standardCoords);
   if (!parsed) {
-    throw new DataValidationError(`Ungültige Final-Koordinaten: "${finalData.coordsDMM}"`);
+    throw new DataValidationError(`Ungültige Final-Koordinaten: "${standardCoords}"`);
+  }
+
+  let parsedBonus = null;
+  if (finalData.bonusFinal && finalData.bonusFinal.coordsDMM) {
+    parsedBonus = parseCoords(finalData.bonusFinal.coordsDMM);
   }
 
   return {
     ...finalData,
-    coordsDecimal: parsed
+    coordsDMM: standardCoords,
+    coordsDecimal: parsed,
+    bonusCoordsDecimal: parsedBonus
   };
 }
 

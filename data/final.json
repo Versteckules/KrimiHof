@@ -1,7 +1,21 @@
 {
-  "cacheName": "Der Pakt der Schlappen-Erben – Final",
-  "cacheType": "Mystery / Unknown Cache (Nachtcache)",
-  "owner": "made by Versteckules",
+  "_anleitung": "HIER KANNST DU DIE KOORDINATEN BEARBEITEN. Format: N 50° 19.xxx E 011° 55.yyy",
+
+  "standardFinal": {
+    "title": "Haupt-Final (GCBYXW0)",
+    "coordsDMM": "N 50° 19.345 E 011° 55.412",
+    "hint": "Im Schutz der alten Kopfweide, magnetisch an der eisernen Uferbefestigung der Saale verankert. Etwa 1,5 Meter über dem Boden, nicht im Wasser.",
+    "spoilerDescription": "Schwarze Lock&Lock-Dose in wetterfester Tarnhülle mit offiziellem Geocaching-Aufkleber."
+  },
+
+  "bonusFinal": {
+    "title": "Bonus-Cache: Das Vermächtnis des Meisters",
+    "coordsDMM": "N 50° 19.510 E 011° 55.680",
+    "bonusCode": "SCHLAPPEN-1823-REX",
+    "hint": "Im alten Mauerwerk des Torbogens, hinter dem losen Sandsteinquader auf der Nordseite.",
+    "description": "Wird nur freigeschaltet, wenn der Täter mit mindestens 75% Beweislast überführt wurde und ins Gefängnis geht."
+  },
+
   "coordsDMM": "N 50° 19.345 E 011° 55.412",
   "coordsDecimal": {
     "lat": 50.322417,

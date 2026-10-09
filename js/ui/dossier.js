@@ -34,6 +34,18 @@ export function initDossier() {
     });
   }
 
+  // Replay Outro Button
+  const replayOutroBtn = document.getElementById('btn-dossier-replay-outro');
+  if (replayOutroBtn) {
+    replayOutroBtn.addEventListener('click', () => {
+      import('./final.js').then(fMod => {
+        const state = getState();
+        const res = calculateFinalResult(state);
+        fMod.handleAccusation(res.murderer);
+      });
+    });
+  }
+
   // Initiale Aktualisierung
   subscribe(updateDossier);
 
@@ -85,6 +97,17 @@ export function updateDossier() {
       openBtn.classList.add('hidden');
       openBtn.style.display = 'none';
       openBtn.classList.remove('blink-animation');
+    }
+  }
+
+  // Outro-Button im Dossier-Kopf anzeigen, wenn Endphase erreicht oder im Testmodus
+  const replayOutroBtn = document.getElementById('btn-dossier-replay-outro');
+  if (replayOutroBtn) {
+    const pflichtCount = (state.solvedStations || []).filter(sid => !sid.startsWith('saale_') && !sid.startsWith('altstadt_')).length;
+    if (pflichtCount >= 12 || state.isTestingMode || state.accusedSuspect) {
+      replayOutroBtn.classList.remove('hidden');
+    } else {
+      replayOutroBtn.classList.add('hidden');
     }
   }
   

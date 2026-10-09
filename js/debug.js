@@ -155,6 +155,16 @@ export function initDebug() {
         </div>
       </div>
 
+      <!-- Outro / Epilog Vorschau -->
+      <div class="debug-section">
+        <h4>Outro / Epilog Vorschau</h4>
+        <div class="debug-control" style="display:flex; flex-direction:column; gap:5px;">
+          <button id="btn-debug-outro-win" class="debug-btn" style="text-align:left;">🏆 Sieg (&gt;= 75% Hinter Gittern)</button>
+          <button id="btn-debug-outro-insufficient" class="debug-btn" style="text-align:left;">⚖️ Freispruch (&lt; 75% Spuren verwischt)</button>
+          <button id="btn-debug-outro-fail" class="debug-btn" style="text-align:left;">❌ Fataler Irrtum (Falscher Täter)</button>
+        </div>
+      </div>
+
     </div>
   `;
 
@@ -287,5 +297,27 @@ export function initDebug() {
   document.getElementById('btn-debug-egg-bell').addEventListener('click', () => {
     console.log('[Debug] Triggere Easter Egg: Mitternachts-Glockenschlag');
     document.dispatchEvent(new CustomEvent('easterEggBell'));
+  });
+
+  // Outro Previews
+  document.getElementById('btn-debug-outro-win').addEventListener('click', async () => {
+    const { handleAccusation } = await import('./ui/final.js');
+    const { saveState } = await import('./state.js');
+    saveState({ suspectScores: { herold: 140, gipser: 10, heiden: 10 }, score: 220 });
+    handleAccusation('herold');
+  });
+
+  document.getElementById('btn-debug-outro-insufficient').addEventListener('click', async () => {
+    const { handleAccusation } = await import('./ui/final.js');
+    const { saveState } = await import('./state.js');
+    saveState({ suspectScores: { herold: 35, gipser: 25, heiden: 20 }, score: 80 });
+    handleAccusation('herold');
+  });
+
+  document.getElementById('btn-debug-outro-fail').addEventListener('click', async () => {
+    const { handleAccusation } = await import('./ui/final.js');
+    const { saveState } = await import('./state.js');
+    saveState({ suspectScores: { herold: 80, gipser: 20, heiden: 10 }, score: 150 });
+    handleAccusation('heiden');
   });
 }
