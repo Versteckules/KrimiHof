@@ -604,6 +604,24 @@
           "choices": [
             { "text": "Ich werde Ihre Aussage überprüfen. Wagen Sie nicht, die Stadt zu verlassen.", "isEnd": true }
           ]
+        },
+        {
+          "id": "h_subtle_2",
+          "speaker": "Valentin Herold",
+          "avatar": "assets/suspect_herold.webp",
+          "text": "Unsinn! Meine Verträge sind absolut wasserdicht. Renger war ein ignoranter Schwätzer.",
+          "choices": [
+            { "text": "Ich werde das prüfen.", "next": "h_blame_gipser", "impact": {"suspect": "herold", "value": 5} }
+          ]
+        },
+        {
+          "id": "h_direct_2",
+          "speaker": "Valentin Herold",
+          "avatar": "assets/suspect_herold.webp",
+          "text": "Wie können Sie es wagen, mich so anzugehen?! Ich antworte auf diese absurden Fragen nicht mehr!",
+          "choices": [
+            { "text": "Wir sind noch nicht fertig.", "isEnd": true }
+          ]
         }
       ],
       "interrogate_gipser": [
@@ -783,80 +801,7 @@
             { "text": "Bleiben Sie hier. Wir sind noch nicht fertig.", "isEnd": true }
           ]
         }
-      ]
-      },
-      {
-        "id": "heiden_2",
-        "speaker": "Severin Heiden",
-        "avatar": "assets/suspect_heiden.webp",
-        "text": "Ich suchte nach dem heiligen Bundessiegel! Der Pakt der Schlappen-Erben war ein heiliger Eid unserer Vorfahren. Renger wollte ihn entweihen!",
-        "choices": [
-          { "text": "Haben Sie Dr. Renger bedroht?", "next": "heiden_3", "impact": {"suspect": "heiden", "value": 15} }
-        ]
-      },
-      {
-        "id": "heiden_3",
-        "speaker": "Severin Heiden",
-        "avatar": "assets/suspect_heiden.webp",
-        "text": "Ich habe ihn gewarnt vor dem Zorn des Himmels! 'Rühre nicht an den heiligen Bund, sonst wird Hof ein zweites Mal brennen!'",
-        "choices": [
-          { "text": "Ein zweites Mal brennen?! Ein direktes Geständnis für den Brand!", "next": "heiden_4", "impact": {"suspect": "heiden", "value": 20} }
-        ]
-      },
-      {
-        "id": "heiden_4",
-        "speaker": "Severin Heiden",
-        "avatar": "assets/suspect_heiden.webp",
-        "text": "Feuer läutert! Die Heuchlerin Gipser mit ihrem Beton und der Wucherer Herold wollten den Pakt verraten. Wenn Asche übrig bleibt, so ist es der Wille der Erben!",
-        "choices": [
-          { "text": "Wo ist Dr. Renger eingesperrt?", "next": "heiden_5", "impact": {"suspect": "heiden", "value": 15} }
-        ]
-      },
-      {
-        "id": "heiden_5",
-        "speaker": "Severin Heiden",
-        "avatar": "assets/suspect_heiden.webp",
-        "text": "Er weilt an einem Ort, wo kein weltlicher Lärm ihn stört... Suchen Sie ruhig, Detektiv, ehe die Morgensonne über Hof aufgeht!",
-        "choices": [
-          { "text": "Was bedeutet der Code 'ORDO SCHLAPPIS 1823'?", "next": "heiden_6", "impact": {"suspect": "heiden", "value": 10} }
-        ]
-      },
-      {
-        "id": "heiden_6",
-        "speaker": "Severin Heiden",
-        "avatar": "assets/suspect_heiden.webp",
-        "text": "Das ist die Losung der Ewigkeit! Verschlüsselt in den Registern der Orgeln! Nur die Auserwählten werden sie entziffern!",
-        "choices": [
-          { "text": "Ich habe hier Ihren zerrissenen Drohbrief gefunden! (Beweis vorlegen)", "requires_evidence": "evidence_torn_letter", "next": "heiden_7", "impact": {"suspect": "heiden", "value": 25} },
-          { "text": "Ich werde dem Wahnsinn ein Ende bereiten.", "next": "end_heiden", "impact": {"suspect": "heiden", "value": 0} }
-        ]
-      },
-      {
-        "id": "heiden_7",
-        "speaker": "Severin Heiden",
-        "avatar": "assets/suspect_heiden.webp",
-        "text": "Ich leugne meine Handschrift nicht. Aber es war eine Prophezeiung, keine Drohung! Wer den Pakt bricht, ruft das Feuer herbei.",
-        "choices": [
-          { "text": "Sie haben das Feuer also selbst gelegt?", "next": "heiden_8", "impact": {"suspect": "heiden", "value": 15} }
-        ]
-      },
-      {
-        "id": "heiden_8",
-        "speaker": "Severin Heiden",
-        "avatar": "assets/suspect_heiden.webp",
-        "text": "Ich bin nur das Werkzeug einer höheren Macht. Das Ritual ist bald vollendet. Gehen Sie, {PLAYER_NAME}, bevor auch Sie brennen!",
-        "choices": [
-          { "text": "Das Ritual endet hier und jetzt, Heiden.", "next": "end_heiden", "impact": {"suspect": "heiden", "value": 0} }
-        ]
-      },
-      {
-        "id": "end_heiden",
-        "speaker": "Severin Heiden",
-        "avatar": "assets/suspect_heiden.webp",
-        "text": "Weiche von mir! Die Finsternis bricht herein... und die Gerechten werden triumphieren!",
-        "isEnd": true
-      }
-    ],
+      ],
         "obelisk_blume_blume": [
       {
         "id": "start",
