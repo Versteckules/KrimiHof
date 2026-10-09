@@ -51,10 +51,10 @@ Diese drei `.bat`-Dateien befinden sich direkt im Hauptordner deines Projekts. D
 
 Sämtliche älteren Hilfsprogramme und `.exe`-Dateien wurden sicher in den Unterordner **`archiv/`** verschoben. Sie stören dich im Hauptordner nicht mehr:
 
-| Datei / Gruppe | Archiv-Pfad | Hintergrund |
+| Datei / Gruppe | Ordner | Hintergrund |
 | :--- | :--- | :--- |
+| **`fix_encoding.exe`** | Hauptordner | Reparatur-Werkzeug für Umlaute. Liegt griffbereit im Hauptordner, falls wider Erwarten Textkodierungen korrigiert werden müssen. |
 | **`GenerateAllDialogues.exe`** | `archiv\tools_alt\` | Alter C#-Generator vor der Vertonung. Liegt sicher im Archiv, damit nicht versehentlich darauf geklickt wird. |
-| **`fix_encoding.exe`**, `fix_quotes.exe` | `archiv\` | Frühere einmalige Reparatur-Werkzeuge für Umlaute und Sonderzeichen. |
 | **Alte Hilfsskripte** (`.cs`, `.ps1`) | `archiv\` & `archiv\tools_alt\` | Entwickler-Skripte aus der Aufbauphase. |
 
 ---

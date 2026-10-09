@@ -45,11 +45,11 @@ Saemtliche aelteren Hilfsprogramme, .exe-Dateien und Einmal-Skripte
 wurden sicher in den Unterordner "archiv\" verschoben. Sie stoeren
 dich im Hauptordner nicht mehr:
 
+- fix_encoding.exe (im Hauptordner)
+  -> Reparatur-Werkzeug fuer Umlaute. Liegt griffbereit im Hauptordner.
+
 - archiv\tools_alt\GenerateAllDialogues.exe
   -> Liegt sicher im Archiv, damit nicht versehentlich darauf geklickt wird.
-
-- archiv\fix_encoding.exe, fix_quotes.exe, fix_quotes_2.exe
-  -> Fruehere Reparatur-Skripte.
 
 - archiv\*.cs, archiv\*.ps1
   -> Entwickler-Skripte aus der Aufbauphase.
