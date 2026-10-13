@@ -117,6 +117,14 @@ export function runGadget(stationId, onSuccess) {
     window.removeEventListener('touchmove', moveDrag);
     window.removeEventListener('touchend', endDrag);
   }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      cleanup();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
   
   player.addEventListener('mousedown', startDrag);
   window.addEventListener('mousemove', moveDrag);

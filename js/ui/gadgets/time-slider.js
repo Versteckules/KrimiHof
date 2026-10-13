@@ -115,6 +115,14 @@ export function runGadget(stationId, onSuccess) {
     window.removeEventListener('touchend', endDrag);
   }
 
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      cleanup();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
+
   btnDone.onclick = () => {
     cleanup();
     overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Beweis gesichert!</h2></div>`;

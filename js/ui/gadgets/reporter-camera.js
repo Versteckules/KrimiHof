@@ -1,13 +1,14 @@
-export function runGadget(stationId, onComplete) {
+export function runGadget(stationId, onComplete, onCancel) {
   const overlay = document.createElement('div');
   overlay.id = 'gadget-fullscreen-overlay';
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:#111; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; color:white; font-family:sans-serif; text-align:center;';
 
   overlay.innerHTML = `
+    <button id="btn-camera-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
     <h2 style="color:var(--color-night-light); margin-bottom:10px;">Die Kamera des Reporters</h2>
     <p style="margin-bottom:20px; font-size:0.9rem;">Paul Stift leiht dir seine Kamera mit Teleobjektiv. Fokussiere das Objektiv auf den verbrannten Schreibtisch hinter der Polizeiabsperrung!</p>
     
-    <div style="position:relative; width:100%; max-width:400px; height:250px; background:#000; border:4px solid #333; border-radius:10px; overflow:hidden; margin-bottom:30px;">
+    <div style="position:relative; width:100%; max-width:400px; height:250px; background:#000; border:4px solid #333; border-radius:10px; overflow:hidden; margin-bottom:20px;">
       <div id="camera-viewfinder" style="position:absolute; top:0; left:0; width:100%; height:100%; background:url('assets/hero_hof_night.jpg') center/cover; filter:blur(15px) grayscale(50%); transition:filter 0.1s; transform:scale(1.2);"></div>
       
       <!-- Crosshair -->
@@ -17,12 +18,35 @@ export function runGadget(stationId, onComplete) {
     </div>
     
     <p style="font-size:0.8rem; color:#aaa; margin-bottom:10px;">Fokusring drehen:</p>
-    <input type="range" id="focus-slider" min="0" max="100" value="0" style="width:80%; max-width:300px; margin-bottom:20px;">
+    <input type="range" id="focus-slider" min="0" max="100" value="0" style="width:80%; max-width:300px; margin-bottom:15px;">
     
-    <button class="btn-primary" id="btn-snap-photo" style="opacity:0.5; pointer-events:none;">📸 Foto schießen</button>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; width:100%;">
+      <button class="btn-primary" id="btn-snap-photo" style="opacity:0.5; pointer-events:none; width:80%; max-width:280px;">📸 Foto schießen</button>
+      <button class="btn-secondary" id="btn-camera-abort" style="padding:6px 14px; font-size:0.8rem; border:1px solid #666; background:rgba(0,0,0,0.5); color:#bbb; border-radius:4px; cursor:pointer;">Fokussierung überspringen (-10 Pkt)</button>
+    </div>
   `;
 
   document.body.appendChild(overlay);
+
+  document.getElementById('btn-camera-cancel').onclick = () => {
+    overlay.remove();
+    if (onCancel) onCancel();
+  };
+
+  document.getElementById('btn-camera-abort').onclick = () => {
+    const doSkip = () => {
+      import('../../state.js').then(m => m.addScore(-10));
+      import('../../main.js').then(m => {
+        if (m.showNoirAlert) m.showNoirAlert('Kamera manuell justiert (-10 Kommissarpunkte)', 'Punkteabzug');
+      });
+      showSuccessView();
+    };
+    if (window.showNoirConfirm) {
+      window.showNoirConfirm("Fokus manuell erzwingen?", "Möchtest du das Rätsel überspringen? (-10 Punkte)", doSkip);
+    } else if (confirm("Möchtest du das Rätsel überspringen? (-10 Punkte)")) {
+      doSkip();
+    }
+  };
 
   const slider = document.getElementById('focus-slider');
   const viewfinder = document.getElementById('camera-viewfinder');
@@ -52,18 +76,7 @@ export function runGadget(stationId, onComplete) {
     }
   });
 
-  btnSnap.onclick = () => {
-    if (!isFocused) return;
-    
-    // Flash effect
-    const flash = document.createElement('div');
-    flash.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; background:white; z-index:10; pointer-events:none; opacity:1; transition:opacity 0.5s ease-out;';
-    viewfinder.appendChild(flash);
-    
-    // Play shutter sound (optional visual feedback)
-    setTimeout(() => { flash.style.opacity = '0'; }, 50);
-
-    setTimeout(() => {
+    function showSuccessView() {
       overlay.innerHTML = `
         <h2 style="color:var(--color-amber-glow); margin-bottom:20px;">Beweis gesichert!</h2>
         <div style="background:#222; border:1px solid #d4af37; padding:20px; text-align:left; max-width:300px; margin-bottom:20px;">
@@ -76,10 +89,24 @@ export function runGadget(stationId, onComplete) {
       document.getElementById('btn-camera-done').onclick = () => {
         import('../../state.js').then(mod => {
           mod.addInventoryItem('foto_gipser_auto');
-          document.body.removeChild(overlay);
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
           onComplete();
         });
       };
-    }, 800);
-  };
-}
+    }
+
+    btnSnap.onclick = () => {
+      if (!isFocused) return;
+      
+      // Flash effect
+      const flash = document.createElement('div');
+      flash.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; background:white; z-index:10; pointer-events:none; opacity:1; transition:opacity 0.5s ease-out;';
+      viewfinder.appendChild(flash);
+      
+      setTimeout(() => { flash.style.opacity = '0'; }, 50);
+
+      setTimeout(() => {
+        showSuccessView();
+      }, 800);
+    };
+  }

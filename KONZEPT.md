@@ -233,10 +233,10 @@ Die Hauptverdächtigen sind reale Personen im Stadtgebiet von Hof und können **
 * **Karten-Popup & Dossier:** Ein Verhör ist nur vor Ort am GPS-Punkt (Geofence $\le 25\text{ m}$) möglich (im `OFFLINETEST`-Modus auch remote).
 * **Maximal 2 Verhöre pro Hauptverdächtigem (Cooldown-System):**
   - **1. Erstverhör:** Erstes Vorfühlen am Standort.
-  - **3-Stationen-Sperre:** Nach dem 1. Verhör sperrt der Verdächtige ab. Erst nach Lösen von mindestens 3 weiteren Ermittlungsstationen schaltet neues Beweismaterial das 2. Verhör frei. UI zeigt: `⏳ Noch X Station(en) lösen`.
+  - **3-Stationen-Sperre:** Nach dem 1. Verhör sperrt der Verdächtige ab. Erst nach Lösen von mindestens 3 weiteren Ermittlungsstationen schaltet neues Beweismaterial das 2. Verhör frei. UI zeigt: `⏳ Noch X Station(en) lösen`. Im Endgame (nach Abschluss aller 12 Pflichtstationen) entfällt diese Mindest-Wartezeit automatisch, damit verbleibende Zweitverhöre vor der Verhaftung noch geführt werden können.
   - **2. Nachverhör:** Ermöglicht die Konfrontation mit den neu gesammelten Beweisen (z. B. Rolfs Taschenuhr, Frachtpapiere, UV-Chornoten).
   - **Aussageverweigerung:** Nach 2 Verhören verweigert der Verdächtige auf Anraten seines Anwalts jedes weitere Wort (`🚫 Aussage verweigert (Max. 2 Verhöre)`). Punkt- und Verdachts-Farming ist damit ausgeschlossen.
-  - **Boss-Minispiel-Schutz:** Jedes Boss-Minispiel (`safe.js`, `shredder.js`, `music-cryptogram.js`) kann nur einmalig gelöst werden; der Verdachtsbonus (+15 %) wird nicht doppelt gewertet.
+  - **Boss-Minispiel-Schutz:** Jedes Boss-Minispiel (`safe.js`, `shredder.js`, `music-cryptogram.js`) kann nur einmalig gelöst werden; der Verdachtsbonus (+15 %) wird nicht doppelt gewertet. Ein Abbruch mit dem „✕“-Button schließt das Fenster, ohne die Lösung dauerhaft zu sperren.
 
 ---
 
