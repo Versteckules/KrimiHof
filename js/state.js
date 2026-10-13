@@ -466,7 +466,13 @@ export function getInterrogationStatus(suspectId) {
   if (count === 1) {
     const lastSolved = history[0];
     const needed = lastSolved + 3;
-    if (currentSolved < needed) {
+    // Im Endgame (alle 12 Pflichtstationen gelöst) entfällt die Sperre für das 2. Verhör,
+    // da keine weiteren Pflichtstationen mehr gelöst werden können.
+    const isEndgame = state.solvedStations && state.solvedStations.filter(
+      sid => !(sid.startsWith('saale_') || sid.startsWith('altstadt_') || sid.startsWith('versteck_') || sid === 'jean_paul')
+    ).length >= 12;
+
+    if (currentSolved < needed && !isEndgame) {
       const remaining = needed - currentSolved;
       return {
         canInterrogate: false,

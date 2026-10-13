@@ -56,6 +56,7 @@ export function initMap() {
   if (hintBtn) {
     hintBtn.addEventListener('click', () => {
       const state = getState();
+      const stations = getStations();
 
       // Easter Egg Chance via Sherlock (15%)
       if (playerMarker && Math.random() < 0.15) {
@@ -104,8 +105,6 @@ export function initMap() {
           return; // Beende den Klick, damit nur das Easter Egg getriggert wird
         }
       }
-
-      const stations = getStations();
       
       // Finde alle Stationen, die aktuell auf der Karte 'active' oder 'bonus' sind
       const available = stations.filter(s => {
@@ -232,11 +231,20 @@ function renderMarkers() {
           setActiveTarget(st.id);
           
           const currentState = getState();
-          if (currentState.isTestingMode) {
-            console.log('[Testing] Öffne Station direkt ohne GPS (Test-Modus)');
+          let isNear = Boolean(currentState.isTestingMode);
+          if (playerMarker && st.coordsDecimal) {
+            const dist = map.distance(playerMarker.getLatLng(), [st.coordsDecimal.lat, st.coordsDecimal.lng]);
+            if (dist <= 35) {
+              isNear = true;
+            }
+          }
+
+          if (isNear) {
             import('./station.js').then(module => {
               module.openStation(st.id);
             });
+          } else {
+            showNoirAlert(`Ziel auf "${st.name}" gesetzt! Folge dem Kompass im Navigator.`, 'Ziel erfasst');
           }
         } else if (currentStatus === 'locked') {
           showNoirAlert('Löse zuerst das Rätsel am Rathaus, bevor du hierher kommst.', 'Gesperrt');

@@ -28,8 +28,6 @@ export function openStation(stationId) {
   const titleEl = document.getElementById('station-title');
   const numStampEl = document.getElementById('station-number-stamp');
   const descEl = document.getElementById('station-description');
-  const questionEl = document.getElementById('station-question');
-  const answerInput = document.getElementById('station-answer-input');
   const errorMsg = document.getElementById('station-error-msg');
   const hintBox = document.getElementById('station-hint-box');
 
