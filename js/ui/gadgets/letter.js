@@ -132,6 +132,14 @@ export function runGadget(stationId, onSuccess) {
     window.removeEventListener('touchend', endDrag);
   }
 
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      cleanup();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
+
   window.addEventListener('mousemove', moveDrag);
   window.addEventListener('mouseup', endDrag);
   window.addEventListener('touchmove', moveDrag, {passive: false});
