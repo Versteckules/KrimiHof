@@ -64,6 +64,18 @@ export function runGadget(stationId, onSuccess) {
     }
   }
 
+  function cleanup() {
+    window.removeEventListener('deviceorientation', handleOrientation);
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      cleanup();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
+
   // Request permission for iOS 13+
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
     DeviceOrientationEvent.requestPermission().then(state => {

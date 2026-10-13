@@ -144,4 +144,16 @@ export function runGadget(stationId, onSuccess) {
     statusEl.style.color = "var(--color-blood-red)";
     skipBtn.classList.remove('hidden');
   }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      solved = true;
+      if (recognition) {
+        try { recognition.stop(); } catch(e) {}
+      }
+      clearTimeout(skipTimeout);
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
 }

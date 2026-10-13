@@ -74,6 +74,14 @@ export function runGadget(stationId, onSuccess) {
     window.addEventListener('devicemotion', handleMotion);
   }
 
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      window.removeEventListener('devicemotion', handleMotion);
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
+
   document.getElementById('btn-polaroid-fallback').onclick = () => {
     const int = setInterval(() => {
       development += 5;

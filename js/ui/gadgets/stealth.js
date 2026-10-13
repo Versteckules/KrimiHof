@@ -143,4 +143,12 @@ export function runGadget(stationId, onSuccess) {
       }
     }
   });
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
 }

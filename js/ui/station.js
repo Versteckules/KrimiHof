@@ -167,6 +167,8 @@ function handleCharacterClick(station, char) {
       import('./gadgets/reporter-camera.js').then(mod => {
         mod.runGadget(station.id, () => {
           onStationComplete(station.id);
+        }, () => {
+          showView('view-station');
         });
       }).catch(err => {
         console.error(err);
@@ -176,6 +178,8 @@ function handleCharacterClick(station, char) {
       import('./gadgets/policeman-paper.js').then(mod => {
         mod.runGadget(station.id, () => {
           onStationComplete(station.id);
+        }, () => {
+          showView('view-station');
         });
       }).catch(err => {
         console.error(err);

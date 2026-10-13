@@ -139,6 +139,22 @@ export function runGadget(stationId, onSuccess) {
     // Audio will start on first event
   }
 
+  function cleanup() {
+    window.removeEventListener('deviceorientation', handleOrientation);
+    stopAudio();
+    if (audioCtx) {
+      try { audioCtx.close(); } catch(e) {}
+    }
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      cleanup();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
+
   document.getElementById('btn-wiretap-fallback').onclick = () => {
     initAudio();
     let simProg = 0;
@@ -148,7 +164,7 @@ export function runGadget(stationId, onSuccess) {
       document.getElementById('wiretap-progress').style.width = `${simProg}%`;
       if (simProg >= 100) {
         clearInterval(int);
-        stopAudio();
+        cleanup();
         FX.playSuccessWumms().then(() => {
           overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:#0f0; font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Signal gefunden!</h2></div>`;
           setTimeout(() => { overlay.remove(); onSuccess(); }, 1500);

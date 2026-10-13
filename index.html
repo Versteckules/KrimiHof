@@ -596,6 +596,30 @@
     </div>
   </div>
 
+  <!-- Modal Trackable Code Eingabe -->
+  <div id="tb-modal" class="modal-backdrop hidden">
+    <div class="modal-box paper-note"
+      style="position: relative; max-width: 90%; width: 380px; background: #1a1e29; color: #fdf5e6; text-align: center; border: 1px solid var(--color-gold); box-shadow: 0 8px 32px rgba(0,0,0,0.8); padding: 25px;">
+      <button id="modal-tb-close"
+        style="position: absolute; top: 12px; right: 15px; background: none; border: none; color: #888; font-size: 1.5rem; cursor: pointer;" title="Schließen">&times;</button>
+      <div style="font-size: 2.2rem; margin-bottom: 8px;">🏷️</div>
+      <h3
+        style="font-family: var(--font-serif); color: var(--color-amber-glow); font-size: 1.4rem; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
+        Trackable registrieren
+      </h3>
+      <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 15px; line-height: 1.4;">
+        Hast du vor Ort einen physischen Trackable (Geocoin / Travel Bug) entdeckt? Gib den Tracking-Code ein:
+      </p>
+      <input id="tb-code-input" type="text" maxlength="10" placeholder="z. B. HQZJCG" autocomplete="off" autocapitalize="characters"
+        style="width: 100%; box-sizing: border-box; text-align: center; text-transform: uppercase; font-family: monospace; font-size: 1.2rem; font-weight: bold; letter-spacing: 2px; padding: 10px; margin-bottom: 8px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid var(--color-glass-border); border-radius: 4px;">
+      <div id="tb-error-msg" style="min-height: 20px; font-size: 0.85rem; margin-bottom: 12px; font-weight: bold;"></div>
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button id="btn-tb-cancel" class="btn-secondary" style="padding: 8px 16px;">Abbrechen</button>
+        <button id="btn-tb-submit" class="btn-primary" style="padding: 8px 16px;">Prüfen</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Visual Novel Dialogue View -->
   <main id="view-dialogue" class="view hidden">
     <div class="dialogue-scene">

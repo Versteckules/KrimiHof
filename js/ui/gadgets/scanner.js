@@ -49,9 +49,19 @@ export function runGadget(stationId, onSuccess) {
   function stopCamera() {
     if (stream) {
       stream.getTracks().forEach(track => track.stop());
+      stream = null;
     }
     if (scanInterval) clearInterval(scanInterval);
   }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      stopCamera();
+      clearTimeout(skipTimeout);
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
 
   function finishScan() {
     if (solved) return;

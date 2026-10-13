@@ -69,13 +69,29 @@ export function runGadget(stationId, onSuccess) {
     checkSolved();
   }
 
+  const onMouseUp = () => isDrawing = false;
+  const onTouchEnd = () => isDrawing = false;
+
   canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
   canvas.addEventListener('mousemove', scratch);
-  window.addEventListener('mouseup', () => isDrawing = false);
+  window.addEventListener('mouseup', onMouseUp);
   
   canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
   canvas.addEventListener('touchmove', scratch);
-  window.addEventListener('touchend', () => isDrawing = false);
+  window.addEventListener('touchend', onTouchEnd);
+
+  function cleanup() {
+    window.removeEventListener('mouseup', onMouseUp);
+    window.removeEventListener('touchend', onTouchEnd);
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      cleanup();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
 
   function checkSolved() {
     // Stichproben-Überprüfung der Pixel für Performance

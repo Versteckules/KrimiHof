@@ -106,8 +106,24 @@ export function runGadget(stationId, onSuccess) {
   window.addEventListener('touchmove', moveDrag, {passive: true});
   window.addEventListener('touchend', endDrag);
 
+  function cleanup() {
+    window.removeEventListener('mousemove', moveDrag);
+    window.removeEventListener('mouseup', endDrag);
+    window.removeEventListener('touchmove', moveDrag);
+    window.removeEventListener('touchend', endDrag);
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      cleanup();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
+
   document.getElementById('btn-crypto-abort').addEventListener('click', () => {
     if (solved) return;
+    cleanup();
     if (window.showNoirConfirm) {
       window.showNoirConfirm("Schloss aufbrechen?", "Möchtest du das Kryptorad gewaltsam öffnen? (-10 Punkte)", () => {
         solved = true;

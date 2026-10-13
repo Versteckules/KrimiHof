@@ -1,7 +1,7 @@
 import * as FX from '../../fx.js';
 import { addInventoryItem } from '../../state.js';
 
-export function runGadget(stationId, onSuccess) {
+export function runGadget(stationId, onSuccess, onCancel) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -19,18 +19,42 @@ export function runGadget(stationId, onSuccess) {
     </div>
   `;
 
-  overlay.innerHTML = `<div class="cl-gadget-wrapper"><div class="cl-gadget-screws"></div>
+  overlay.innerHTML = `<div class="cl-gadget-wrapper">
+    <button id="btn-paper-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
+    <div class="cl-gadget-screws"></div>
     <h2 style="color:var(--color-night-light); font-family:sans-serif; margin-bottom:10px;">Angekokeltes Blatt</h2>
     <p style="color:#aaa; font-family:sans-serif; margin-bottom:20px; font-size:0.9rem;">Streiche über das scheinbar leere, rußige Papier...</p>
     
-    <div style="position:relative; width:300px; height:400px; background:#fff; border-radius:5px; overflow:hidden; border:2px solid #555;">
+    <div style="position:relative; width:300px; height:400px; background:#fff; border-radius:5px; overflow:hidden; border:2px solid #555; margin-bottom:15px;">
       <div style="position:absolute; width:100%; height:100%; background:#e0d8b0; display:flex; align-items:center; justify-content:center; box-sizing:border-box;">
         ${hiddenContent}
       </div>
       <canvas id="scratch-canvas2" width="300" height="400" style="position:absolute; top:0; left:0; cursor:pointer; touch-action:none;"></canvas>
     </div>
+    <button class="btn-secondary" id="btn-paper-abort" style="padding:6px 14px; font-size:0.8rem; border:1px solid #666; background:rgba(0,0,0,0.5); color:#bbb; border-radius:4px; cursor:pointer;">Ruß manuell entfernen (-10 Pkt)</button>
   </div>`;
   overlay.style.display = 'flex';
+
+  document.getElementById('btn-paper-cancel').onclick = () => {
+    cleanup();
+    overlay.remove();
+    if (onCancel) onCancel();
+  };
+
+  document.getElementById('btn-paper-abort').onclick = () => {
+    const doSkip = () => {
+      import('../../state.js').then(m => m.addScore(-10));
+      import('../../main.js').then(m => {
+        if (m.showNoirAlert) m.showNoirAlert('Ruß mit Bürste entfernt (-10 Kommissarpunkte)', 'Punkteabzug');
+      });
+      revealEvidence();
+    };
+    if (window.showNoirConfirm) {
+      window.showNoirConfirm("Ruß abkratzen überspringen?", "Möchtest du das Rätsel überspringen? (-10 Punkte)", doSkip);
+    } else if (confirm("Möchtest du das Rätsel überspringen? (-10 Punkte)")) {
+      doSkip();
+    }
+  };
 
   const canvas = document.getElementById('scratch-canvas2');
   const ctx = canvas.getContext('2d');
@@ -80,13 +104,51 @@ export function runGadget(stationId, onSuccess) {
     checkSolved();
   }
 
+  const onMouseUp = () => isDrawing = false;
+  const onTouchEnd = () => isDrawing = false;
+
   canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
   canvas.addEventListener('mousemove', scratch);
-  window.addEventListener('mouseup', () => isDrawing = false);
+  window.addEventListener('mouseup', onMouseUp);
   
   canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
   canvas.addEventListener('touchmove', scratch);
-  window.addEventListener('touchend', () => isDrawing = false);
+  window.addEventListener('touchend', onTouchEnd);
+
+  function cleanup() {
+    window.removeEventListener('mouseup', onMouseUp);
+    window.removeEventListener('touchend', onTouchEnd);
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      cleanup();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
+
+  function revealEvidence() {
+    cleanup();
+    overlay.innerHTML = `
+      <h2 style="color:var(--color-amber-glow); margin-bottom:20px;">Beweis gesichert!</h2>
+      <div style="background:#222; border:1px solid #d4af37; padding:20px; text-align:left; max-width:300px; margin-bottom:20px;">
+        <p style="color:#ddd; font-size:0.9rem;">Unter dem Ruß verbergen sich alte Musiknoten (B-A-C-H) und ein Verweis auf die Michaeliskirche. Das ist eine heiße Spur!</p>
+        <p style="color:var(--color-blood-red); font-weight:bold; margin-top:10px; font-size:0.8rem;">Neuer Beweis: Rußiges Partiturblatt</p>
+      </div>
+      <button class="btn-primary" id="btn-paper-done">Zurück zur Tatort-Analyse</button>
+    `;
+
+    document.getElementById('btn-paper-done').onclick = () => {
+      addInventoryItem('notenblatt_heiden');
+      overlay.remove();
+      if (FX.playSuccessWumms) {
+        FX.playSuccessWumms().then(() => onSuccess());
+      } else {
+        onSuccess();
+      }
+    };
+  }
 
   function checkSolved() {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -104,24 +166,7 @@ export function runGadget(stationId, onSuccess) {
       canvas.style.opacity = '0';
       
       setTimeout(() => {
-        overlay.innerHTML = `
-          <h2 style="color:var(--color-amber-glow); margin-bottom:20px;">Beweis gesichert!</h2>
-          <div style="background:#222; border:1px solid #d4af37; padding:20px; text-align:left; max-width:300px; margin-bottom:20px;">
-            <p style="color:#ddd; font-size:0.9rem;">Unter dem Ruß verbergen sich alte Musiknoten (B-A-C-H) und ein Verweis auf die Michaeliskirche. Das ist eine heiße Spur!</p>
-            <p style="color:var(--color-blood-red); font-weight:bold; margin-top:10px; font-size:0.8rem;">Neuer Beweis: Rußiges Partiturblatt</p>
-          </div>
-          <button class="btn-primary" id="btn-paper-done">Zurück zur Tatort-Analyse</button>
-        `;
-
-        document.getElementById('btn-paper-done').onclick = () => {
-          addInventoryItem('notenblatt_heiden');
-          overlay.remove();
-          if (FX.playSuccessWumms) {
-            FX.playSuccessWumms().then(() => onSuccess());
-          } else {
-            onSuccess();
-          }
-        };
+        revealEvidence();
       }, 1000);
     }
   }

@@ -120,7 +120,7 @@ export function updateDossier() {
   const replayOutroBtn = document.getElementById('btn-dossier-replay-outro');
   if (replayOutroBtn) {
     const pflichtCount = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
-    if (pflichtCount >= 12 || state.isTestingMode || state.accusedSuspect) {
+    if (pflichtCount >= 12 || state.isTestingMode || state.isOnsiteTestMode || state.accusedSuspect) {
       replayOutroBtn.classList.remove('hidden');
     } else {
       replayOutroBtn.classList.add('hidden');
@@ -331,7 +331,10 @@ export function updateDossier() {
   if (invContainer) {
     const tbs = state.unlockedTrackables || [];
     const inv = state.inventory || [];
-    let h = `<strong>Trackables (${tbs.length}/4):</strong><br>`;
+    let h = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+      <strong>Trackables (${tbs.length}/4):</strong>
+      <button id="btn-open-tb" class="btn-secondary" style="font-size:0.75rem; padding:2px 8px; cursor:pointer;" title="Trackable-Code eingeben">+ Code eingeben</button>
+    </div>`;
     
     const fallbackItemNames = {
       'beweis_antike_uhr': 'Gravierte Taschenuhr',
@@ -380,6 +383,18 @@ export function updateDossier() {
     }
     h += '</div>';
     invContainer.innerHTML = h;
+
+    const btnOpenTb = invContainer.querySelector('#btn-open-tb');
+    if (btnOpenTb) {
+      btnOpenTb.addEventListener('click', () => {
+        import('./trackables.js').then(m => {
+          if (m.openTrackableModal) m.openTrackableModal();
+        }).catch(() => {
+          const modal = document.getElementById('tb-modal');
+          if (modal) modal.classList.remove('hidden');
+        });
+      });
+    }
 
     // Klick-Handler für Beweisstücke
     invContainer.querySelectorAll('.btn-evidence').forEach(btn => {

@@ -77,57 +77,82 @@ export function runGadget(stationId, onSuccess) {
     } catch(e) {}
   }
 
+  let activeDialIndex = -1;
+  let activeDialEl = null;
+  let startY = 0;
+
+  function moveDrag(e) {
+    if (activeDialIndex === -1 || !activeDialEl || solved) return;
+    let y = e.touches ? e.touches[0].clientY : e.clientY;
+    let diff = startY - y;
+    
+    if (Math.abs(diff) > 20) { // Schwelle für einen "Klick"
+      if (diff > 0) {
+        currentCode[activeDialIndex] = (currentCode[activeDialIndex] + 1) % 10;
+      } else {
+        currentCode[activeDialIndex] = (currentCode[activeDialIndex] - 1 + 10) % 10;
+      }
+      
+      activeDialEl.querySelector('.dial-val').textContent = currentCode[activeDialIndex];
+      startY = y;
+      
+      const isCorrect = currentCode[activeDialIndex] === TARGET_CODE[activeDialIndex];
+      playClickSound(isCorrect);
+      
+      if (isCorrect) {
+        activeDialEl.style.transform = "translateY(2px)";
+        setTimeout(() => { if (activeDialEl) activeDialEl.style.transform = "translateY(0)"; }, 100);
+      }
+    }
+  }
+
+  function endDrag() {
+    activeDialIndex = -1;
+    activeDialEl = null;
+  }
+
   document.querySelectorAll('.dial-container').forEach(dial => {
-    let startY = 0;
-    let isDragging = false;
     let index = parseInt(dial.getAttribute('data-index'));
     
     function startDrag(e) {
       if (solved) return;
-      isDragging = true;
+      activeDialIndex = index;
+      activeDialEl = dial;
       startY = e.touches ? e.touches[0].clientY : e.clientY;
     }
     
-    function moveDrag(e) {
-      if (!isDragging || solved) return;
-      let y = e.touches ? e.touches[0].clientY : e.clientY;
-      let diff = startY - y;
-      
-      if (Math.abs(diff) > 20) { // Schwelle für einen "Klick"
-        if (diff > 0) {
-          currentCode[index] = (currentCode[index] + 1) % 10;
-        } else {
-          currentCode[index] = (currentCode[index] - 1 + 10) % 10;
-        }
-        
-        dial.querySelector('.dial-val').textContent = currentCode[index];
-        startY = y;
-        
-        const isCorrect = currentCode[index] === TARGET_CODE[index];
-        playClickSound(isCorrect);
-        
-        if (isCorrect) {
-          dial.style.transform = "translateY(2px)";
-          setTimeout(() => dial.style.transform = "translateY(0)", 100);
-        }
-      }
-    }
-    
-    function endDrag() { isDragging = false; }
-    
     dial.addEventListener('mousedown', startDrag);
-    window.addEventListener('mousemove', moveDrag);
-    window.addEventListener('mouseup', endDrag);
-    
     dial.addEventListener('touchstart', startDrag, {passive: true});
-    window.addEventListener('touchmove', moveDrag, {passive: true});
-    window.addEventListener('touchend', endDrag);
   });
+
+  window.addEventListener('mousemove', moveDrag);
+  window.addEventListener('mouseup', endDrag);
+  window.addEventListener('touchmove', moveDrag, {passive: true});
+  window.addEventListener('touchend', endDrag);
+
+  function cleanup() {
+    window.removeEventListener('mousemove', moveDrag);
+    window.removeEventListener('mouseup', endDrag);
+    window.removeEventListener('touchmove', moveDrag);
+    window.removeEventListener('touchend', endDrag);
+    if (audioCtx) {
+      try { audioCtx.close(); } catch(e) {}
+    }
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      cleanup();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
 
   document.getElementById('btn-lock-open').addEventListener('click', () => {
     if (solved) return;
     if (currentCode[0] === TARGET_CODE[0] && currentCode[1] === TARGET_CODE[1] && currentCode[2] === TARGET_CODE[2]) {
       solved = true;
+      cleanup();
       document.getElementById('btn-lock-open').style.transform = "translateX(10px)";
       setTimeout(() => {
         overlay.innerHTML = `<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Koffer geöffnet!</h2>`;

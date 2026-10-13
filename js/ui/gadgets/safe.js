@@ -94,6 +94,14 @@ export function runGadget(stationId, onComplete, onCancel) {
   }
   window.addEventListener('deviceorientation', handleOrientation);
 
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      window.removeEventListener('deviceorientation', handleOrientation);
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
+
   // Confirm
   document.getElementById('btn-dial-confirm').onclick = () => {
     if (currentVal === targetCombo[entered.length]) {

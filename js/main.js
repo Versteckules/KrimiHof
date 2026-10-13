@@ -13,6 +13,7 @@ import { loadAllData } from './config-loader.js';
 import { getState } from './state.js';
 import { initDebug } from './debug.js';
 import { attachGlobalHaptics } from './fx.js';
+import { initTrackables } from './ui/trackables.js';
 
 let dataReady = false;
 
@@ -230,6 +231,7 @@ async function boot() {
     safeInit('StationView', initStationView);
     safeInit('StreetEvents', initStreetEvents);
     safeInit('Dossier', initDossier);
+    safeInit('Trackables', initTrackables);
     safeInit('FinalView', initFinalView);
     safeInit('Debug', initDebug);
   }

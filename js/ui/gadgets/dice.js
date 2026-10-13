@@ -169,6 +169,7 @@ export function runGadget(stationId, onSuccess) {
     // Gewinn: Mehr als 8 Augen (9, 10, 11, 12)
     if (sum > 8) {
       solved = true;
+      window.removeEventListener('devicemotion', handleMotion);
       statusEl.innerHTML = `<strong style="color: #4ade80;">🎲 ${v1} + ${v2} = ${sum} Augen! Gewonnen!</strong>`;
       rollBtn.style.display = 'none';
 
@@ -234,4 +235,12 @@ export function runGadget(stationId, onSuccess) {
       onSuccess();
     }
   };
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      window.removeEventListener('devicemotion', handleMotion);
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
 }

@@ -1,4 +1,4 @@
-﻿import * as FX from '../../fx.js';
+import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -166,4 +166,14 @@ export function runGadget(stationId, onSuccess) {
       FX.playSuccessWumms().then(() => onSuccess()); 
     }, 1500);
   }
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      stopRingtone();
+      if (callTimer) clearInterval(callTimer);
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
 }

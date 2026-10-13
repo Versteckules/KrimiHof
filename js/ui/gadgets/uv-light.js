@@ -146,4 +146,15 @@ export function runGadget(stationId, onSuccess) {
   touchArea.addEventListener('touchmove', moveSpotlight, {passive: false});
   touchArea.addEventListener('mouseleave', hideSpotlight);
   touchArea.addEventListener('touchend', hideSpotlight);
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      stopHum();
+      if (audioCtx) {
+        try { audioCtx.close(); } catch(e) {}
+      }
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
 }

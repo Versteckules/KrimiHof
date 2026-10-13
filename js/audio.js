@@ -131,21 +131,29 @@ export function getMuteState() {
   return isMuted;
 }
 
+let duckFadeInterval = null;
+
 export function duckBGM(isDucking) {
   if (isMuted || !bgm) return;
   
+  if (duckFadeInterval) {
+    clearInterval(duckFadeInterval);
+    duckFadeInterval = null;
+  }
+
   // Smoothly fade volume
   const target = isDucking ? 0.05 : 0.4;
   let current = bgm.volume;
   const step = (target - current) / 20;
   
-  const fade = setInterval(() => {
+  duckFadeInterval = setInterval(() => {
     current += step;
     if ((step > 0 && current >= target) || (step < 0 && current <= target)) {
       bgm.volume = target;
-      clearInterval(fade);
+      clearInterval(duckFadeInterval);
+      duckFadeInterval = null;
     } else {
-      bgm.volume = current;
+      bgm.volume = Math.max(0, Math.min(1, current));
     }
   }, 50);
 }

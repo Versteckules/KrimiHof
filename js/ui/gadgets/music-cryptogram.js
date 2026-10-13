@@ -56,6 +56,16 @@ export function runGadget(stationId, onComplete, onCancel) {
     if (onComplete) onComplete();
   }
 
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      if (audioCtx) {
+        try { audioCtx.close(); } catch(e) {}
+      }
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
+
   function skipWithPenalty() {
     const doSkip = () => {
       addScore(-10);
