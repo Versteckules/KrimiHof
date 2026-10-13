@@ -172,11 +172,17 @@ export function runGadget(stationId, onSuccess) {
       statusEl.innerHTML = `<strong style="color: #4ade80;">🎲 ${v1} + ${v2} = ${sum} Augen! Gewonnen!</strong>`;
       rollBtn.style.display = 'none';
 
+      import('../../state.js').then(m => {
+        m.addInventoryItem('evidence_dice_gamble');
+        m.addScore(15);
+      });
+
       setTimeout(() => {
         overlay.innerHTML = `
           <div class="cl-gadget-wrapper" style="padding: 30px; text-align: center; background: rgba(15,23,42,0.95); border: 2px solid #4ade80; border-radius: 12px;">
             <h2 style="color:#4ade80; font-family:var(--font-serif); font-size:2rem; margin-bottom:15px;">Wirtshaus-Sieg!</h2>
             <p style="color:#cbd5e1; font-size:1.05rem; line-height:1.5;">Mit ${sum} Augen beeindruckst du die Zeugen am Tisch. Sie rücken endlich mit den gesuchten Hinweisen heraus!</p>
+            <p style="color:#f5d79e; font-size:1.05rem; margin-top:12px; font-weight:bold;">🍺 Wirtshaus-Abrechnung zur Ermittlungsakte hinzugefügt (+15 XP)</p>
           </div>
         `;
         setTimeout(() => {

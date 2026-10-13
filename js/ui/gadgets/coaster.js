@@ -1,4 +1,4 @@
-﻿import * as FX from '../../fx.js';
+import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
   let overlay = document.getElementById('gadget-fullscreen-overlay');
@@ -108,7 +108,11 @@ export function runGadget(stationId, onSuccess) {
       if (solvedPieces === pieces.length) {
         setTimeout(() => {
           overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px; text-align:center;">Beweis gesichert!</h2></div>`;
-          setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1500);
+          setTimeout(() => { 
+            cleanup();
+            overlay.remove(); 
+            FX.playSuccessWumms().then(() => onSuccess()); 
+          }, 1500);
         }, 1000);
       }
     } else {
@@ -119,6 +123,13 @@ export function runGadget(stationId, onSuccess) {
     }
     
     activePiece = null;
+  }
+
+  function cleanup() {
+    window.removeEventListener('mousemove', moveDrag);
+    window.removeEventListener('mouseup', endDrag);
+    window.removeEventListener('touchmove', moveDrag);
+    window.removeEventListener('touchend', endDrag);
   }
 
   window.addEventListener('mousemove', moveDrag);

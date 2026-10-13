@@ -43,18 +43,24 @@
 
 /* Service Badge (Dienstausweis) */
 .badge-card {
-  background: var(--color-paper-light);
+  background: #fdf5e6;
   color: var(--color-night-dark);
   border: 4px solid var(--color-night-dark);
   border-radius: var(--radius-sm);
-  padding: var(--space-lg);
+  padding: 16px 20px;
   margin: var(--space-xl) auto;
-  max-width: 400px;
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
   box-shadow: var(--shadow-strong);
   position: relative;
-  background: #fdf5e6;
-  background-size: cover;
   transform: rotate(-2deg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.badge-card:hover {
+  transform: rotate(-1deg) scale(1.01);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
 }
 
 .badge-card::before {
@@ -62,35 +68,73 @@
   display: block;
   font-family: var(--font-serif);
   font-weight: 900;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   text-align: center;
   border-bottom: 2px solid var(--color-night-dark);
-  padding-bottom: var(--space-sm);
-  margin-bottom: var(--space-md);
-  letter-spacing: 1px;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  letter-spacing: 1.5px;
+}
+
+.badge-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.badge-card-fields {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
 }
 
 .badge-card input {
   width: 100%;
-  padding: var(--space-sm);
+  box-sizing: border-box;
+  padding: 4px 0 6px 0;
   font-family: var(--font-mono);
-  font-size: 1.2rem;
+  font-size: 1.18rem;
   font-weight: bold;
   color: var(--color-night-dark);
   background: transparent;
   border: none;
   border-bottom: 2px dashed var(--color-night-dark);
-  text-align: center;
+  text-align: left;
   outline: none;
-  margin-bottom: var(--space-md);
+  margin: 0 0 6px 0;
+  transition: border-bottom-color 0.2s ease;
 }
 
 .badge-card input::placeholder {
-  color: rgba(10, 14, 23, 0.4);
+  color: rgba(10, 14, 23, 0.45);
+  font-weight: normal;
+  font-size: 1.05rem;
 }
 
 .badge-card input:focus {
   border-bottom-color: var(--color-blood-red);
+}
+
+.badge-card-sub {
+  font-size: 0.76rem;
+  font-family: var(--font-mono);
+  color: var(--color-night-light);
+  margin: 0;
+  letter-spacing: 0.5px;
+  line-height: 1.35;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 6px;
+}
+
+.badge-sub-chunk {
+  white-space: nowrap;
+}
+
+.badge-sub-dot {
+  opacity: 0.6;
 }
 
 /* Instruction Cards (Aktenkarten) */
@@ -189,7 +233,7 @@
   overflow: hidden;
   position: relative;
   transition: box-shadow 0.4s ease, transform 0.4s ease;
-  background: var(--color-night-dark);
+  background: #fbf7eb;
 }
 
 .avatar-frame:hover {
@@ -204,10 +248,13 @@
 .avatar-noir {
   width: 100%;
   height: 100%;
-  max-width: none;
-  object-fit: cover;
-  object-position: top;
-  filter: sepia(0.2) contrast(1.1);
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 9%;
+  box-sizing: border-box;
+  filter: sepia(0.08) contrast(1.05);
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -240,54 +287,54 @@
 
 /* --- Variante: Auf hellem Papier / Aktennotiz (.paper-note) --- */
 .praegesiegel-paper {
-  /* Blindprägung im Papier: Subtiler Schatten unten-rechts, Glanzkante oben-links */
-  filter: drop-shadow(1px 2px 2px rgba(139, 90, 43, 0.2))
-          drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.9));
+  /* Authentische Blindprägung / Trockenstempel im Papier mit deutlichem Relief */
+  filter: drop-shadow(1px 2px 3px rgba(90, 45, 15, 0.4))
+          drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.95));
 }
 
 .praegesiegel-paper .seal-outer-ring {
-  fill: rgba(253, 245, 230, 0.5);
-  stroke: rgba(139, 90, 43, 0.35);
-  stroke-width: 1.2;
+  fill: rgba(253, 245, 230, 0.6);
+  stroke: rgba(110, 60, 20, 0.8);
+  stroke-width: 1.4;
 }
 
 .praegesiegel-paper .seal-beaded-ring {
   fill: none;
-  stroke: rgba(139, 90, 43, 0.3);
+  stroke: rgba(110, 60, 20, 0.7);
   stroke-width: 1.5;
   stroke-dasharray: 2.2 2.6;
 }
 
 .praegesiegel-paper .seal-inner-line {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.9);
-  stroke-width: 0.9;
+  stroke: rgba(255, 255, 255, 0.95);
+  stroke-width: 1;
 }
 
 .praegesiegel-paper .seal-text {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 7.2px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1.2px;
-  fill: rgba(120, 75, 30, 0.55);
+  fill: rgba(90, 45, 15, 0.88);
 }
 
 .praegesiegel-paper .seal-medallion-border {
   fill: none;
-  stroke: rgba(139, 90, 43, 0.4);
-  stroke-width: 1.2;
+  stroke: rgba(110, 60, 20, 0.75);
+  stroke-width: 1.3;
 }
 
 .praegesiegel-paper .seal-avatar {
-  /* Trocken-Prägung im Papier: Sepia-Relief mit Papier-Multiplikation */
-  filter: grayscale(1) sepia(0.4) contrast(1.4) brightness(0.92);
+  /* Prägnantes Stempel-Relief: Scharfer Kontrast, sattes Sepia, prominent sichtbar */
+  filter: grayscale(1) sepia(0.55) contrast(1.75) brightness(0.78);
   mix-blend-mode: multiply;
-  opacity: 0.6;
+  opacity: 0.95;
 }
 
 .praegesiegel-paper .seal-bevel-rim {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.8);
+  stroke: rgba(255, 255, 255, 0.9);
   stroke-width: 1.2;
 }
 
@@ -295,26 +342,26 @@
 .praegesiegel-dark {
   /* Edles golden-bronzefarbenes Amtssiegel */
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7))
-          drop-shadow(0 0 12px rgba(212, 175, 55, 0.25));
+          drop-shadow(0 0 12px rgba(212, 175, 55, 0.35));
 }
 
 .praegesiegel-dark .seal-outer-ring {
-  fill: rgba(10, 14, 23, 0.7);
-  stroke: rgba(212, 175, 55, 0.55);
-  stroke-width: 1.4;
+  fill: rgba(10, 14, 23, 0.85);
+  stroke: rgba(212, 175, 55, 0.8);
+  stroke-width: 1.5;
 }
 
 .praegesiegel-dark .seal-beaded-ring {
   fill: none;
-  stroke: rgba(212, 175, 55, 0.45);
+  stroke: rgba(212, 175, 55, 0.7);
   stroke-width: 1.5;
   stroke-dasharray: 2.2 2.6;
 }
 
 .praegesiegel-dark .seal-inner-line {
   fill: none;
-  stroke: rgba(245, 215, 158, 0.45);
-  stroke-width: 0.9;
+  stroke: rgba(245, 215, 158, 0.65);
+  stroke-width: 1;
 }
 
 .praegesiegel-dark .seal-text {
@@ -322,24 +369,56 @@
   font-size: 7.2px;
   font-weight: 700;
   letter-spacing: 1.2px;
-  fill: rgba(245, 215, 158, 0.85);
+  fill: rgba(245, 215, 158, 0.95);
 }
 
 .praegesiegel-dark .seal-medallion-border {
   fill: none;
-  stroke: rgba(212, 175, 55, 0.55);
-  stroke-width: 1.2;
+  stroke: rgba(212, 175, 55, 0.75);
+  stroke-width: 1.3;
 }
 
 .praegesiegel-dark .seal-avatar {
-  filter: grayscale(1) sepia(0.7) contrast(1.25) brightness(0.85);
-  opacity: 0.75;
+  filter: grayscale(1) sepia(0.8) contrast(1.45) brightness(1.1);
+  opacity: 0.95;
 }
 
 .praegesiegel-dark .seal-bevel-rim {
   fill: none;
-  stroke: rgba(245, 215, 158, 0.4);
+  stroke: rgba(245, 215, 158, 0.5);
   stroke-width: 1.2;
+}
+
+/* ============================================================
+   LEAFLET MAP POPUP NOIR THEME
+   Beseitigt den störenden weißen Standard-Hintergrund bei Verdächtigen-Popups
+   ============================================================ */
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: #0d121f !important;
+  color: #f1f5f9 !important;
+  border: 1.5px solid rgba(212, 175, 55, 0.65) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.95), 0 0 15px rgba(212, 175, 55, 0.25) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px !important;
+  padding: 2px !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px 12px !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-popup-close-button {
+  color: var(--color-amber-muted, #d4af37) !important;
+  font-size: 1.3rem !important;
+  padding: 6px 8px !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #fff !important;
 }
 
 /* Footer-Zeile am Fuß von Papier-Akten: Garantiert kein Überlagern */

@@ -97,7 +97,11 @@ export function runGadget(stationId, onSuccess) {
       FX.playHeavySnap();
       setTimeout(() => { 
         overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Kern gesichert!</h2></div>`;
-        setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1000);
+        setTimeout(() => { 
+          cleanup();
+          overlay.remove(); 
+          FX.playSuccessWumms().then(() => onSuccess()); 
+        }, 1000);
       }, 1000);
     }
   }
@@ -105,6 +109,13 @@ export function runGadget(stationId, onSuccess) {
   function endDrag() { 
     isDragging = false; 
     player.style.cursor = 'grab';
+  }
+
+  function cleanup() {
+    window.removeEventListener('mousemove', moveDrag);
+    window.removeEventListener('mouseup', endDrag);
+    window.removeEventListener('touchmove', moveDrag);
+    window.removeEventListener('touchend', endDrag);
   }
   
   player.addEventListener('mousedown', startDrag);

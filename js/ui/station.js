@@ -2,7 +2,7 @@
  * station.js - Rätselmaske, Tatort-Szene, Klickbare Personen-Karten & Entscheidungs-Dialog (AP8)
  */
 
-import { getStationById, getConfig, getStory } from '../config-loader.js';
+import { getStationById, getConfig, getStory, isBonusStation } from '../config-loader.js';
 import { checkAnswer } from '../answers.js';
 import { showView, showNoirAlert } from '../main.js';
 import { markStationSolved, getState, unlockSuspectsInState } from '../state.js';
@@ -49,7 +49,7 @@ export function openStation(stationId) {
     if (d.getHours() === 0 && d.getMinutes() <= 15) {
       const state = getState();
       if (!state.easterEggBell) {
-        alert("EASTER EGG GEFUNDEN! Der unheimliche Mitternachtsschlag der Michaeliskirche ertönt! (+25 Punkte)");
+        showNoirAlert("EASTER EGG GEFUNDEN! Der unheimliche Mitternachtsschlag der Michaeliskirche ertönt! (+25 Punkte)", "Geheimes Ereignis");
         import('../state.js').then(mod => mod.saveState({ easterEggBell: true, score: (state.score || 0) + 25 }));
       }
     }
@@ -246,8 +246,7 @@ export function onStationComplete(stationId) {
   if (stationId === 'jean_paul') {
     markStationSolved(stationId, { points: 50, isBonus: true });
     import('../state.js').then(mod => {
-      const state = mod.getState();
-      mod.saveState({ easterEgg_jean_paul: true, score: (state.score || 0) + 50 });
+      mod.saveState({ easterEgg_jean_paul: true });
       import('../main.js').then(m => {
         m.showNoirAlert('🌟 GEHEIMES EASTER EGG GELÖST!\nDu hast Jean Pauls Geist gefunden und seinen poetischen Geistersegen empfangen! (+50 Detektiv-Punkte)', 'Meisterleistung');
         showView('view-dashboard');
@@ -259,7 +258,7 @@ export function onStationComplete(stationId) {
     return;
   }
 
-  const isBonus = stationId.startsWith('saale_') || stationId.startsWith('altstadt_') || stationId.startsWith('versteck_');
+  const isBonus = isBonusStation(stationId);
   markStationSolved(stationId, { points: isBonus ? 15 : 10, isBonus });
   
   if (stationId === 'rathaus') {
@@ -301,7 +300,7 @@ export function onStationComplete(stationId) {
 function checkFinalAndProceed() {
   const state = getState();
   const mandatorySolved = state.solvedStations.filter(
-    sid => !sid.startsWith('saale_') && !sid.startsWith('altstadt_')
+    sid => !isBonusStation(sid)
   ).length;
   
   if (mandatorySolved >= getConfig().gameplay.mandatoryStationCount && !state.hasSeenFinalNotice) {

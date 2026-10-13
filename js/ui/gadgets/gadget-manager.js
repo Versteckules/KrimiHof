@@ -17,27 +17,30 @@ export function startGadget(gadgetId, stationId, customOnComplete) {
     return;
   }
 
-  // Inject skip button
+  // Inject skip button (nur falls das jeweilige Gadget keinen eigenen Skip-Button besitzt)
   const checkInterval = setInterval(() => {
     let overlay = document.getElementById('gadget-fullscreen-overlay') || document.getElementById('gadget-canvas-overlay');
     if (overlay && !document.getElementById('global-skip-btn')) {
+      // Prüfen, ob das Gadget bereits einen eigenen thematischen Umgehen-Button hat
+      const hasInternalSkip = overlay.querySelector('[id*="-abort"], [id*="-skip"], [id*="-cancel"]');
+      if (hasInternalSkip) return;
+
       const skipBtn = document.createElement('button');
       skipBtn.id = 'global-skip-btn';
-      skipBtn.innerHTML = 'Rätsel Abbrechen<br><span style="font-size:0.7rem;">(-50 XP)</span>';
-      skipBtn.className = 'btn-danger';
-      skipBtn.style.cssText = 'position: absolute; top: 15px; right: 15px; z-index: 999999; padding: 5px 10px; font-size: 0.8rem; box-shadow: 0 0 10px black;';
+      skipBtn.innerHTML = 'Rätsel umgehen<br><span style="font-size:0.7rem; opacity: 0.85;">(-10 Punkte)</span>';
+      skipBtn.className = 'btn-secondary';
+      skipBtn.style.cssText = 'position: absolute; top: 15px; right: 15px; z-index: 999999; padding: 6px 12px; font-size: 0.8rem; background: rgba(10, 14, 23, 0.9); border: 1px solid var(--color-glass-border); color: var(--color-amber-muted); border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.8); cursor: pointer;';
       skipBtn.onclick = () => {
-        const msg = 'Möchtest du das Rätsel wirklich überspringen? Dies kostet 50 Erfahrungspunkte und du erhältst keinen Beweis!';
+        const msg = 'Möchtest du dieses Rätsel überspringen? Dies kostet 10 Kommissarpunkte.';
         if (window.showNoirConfirm) {
-          window.showNoirConfirm(msg, doSkip, 'Rätsel abbrechen');
+          window.showNoirConfirm(msg, doSkip, 'Rätsel umgehen');
         } else if (confirm(msg)) {
           doSkip();
         }
         
         function doSkip() {
           import('../../state.js').then(stateMod => {
-            const currentScore = stateMod.getState().score || 0;
-            stateMod.saveState({ score: currentScore - 50 });
+            stateMod.addScore(-10);
             clearInterval(checkInterval);
             overlay.remove();
             window.isGadgetRunning = false;

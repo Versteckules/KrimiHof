@@ -17,17 +17,17 @@
 | # | Themenbereich | Verbindliche Festlegung & Umsetzung |
 |---|---------------|-------------------------------------|
 | 1 | **Titel & Setting** | **„Der Pakt der Schlappen-Erben“** (Untertitel: *„Ein Nacht-Krimi in Hof (Saale)“*). Historischer Brand von 1823, verschwundene Brandakten und ein Geheimbund wohlhabender Patrizier. |
-| 2 | **Eingangsseite & Dienstausweis** | Immer zugänglich ([landing.js](file:///c:/Users/flaem/Desktop/Krimi/js/ui/landing.js)). Interaktiver Dienstausweis, freie Namenseingabe, Akkordeon-Anleitung, Fortschrittsanzeige, Notfall-Button *„Akte Schreddern“* (Spielstand-Reset) und Owner-Badge (*made by Versteckules*). |
+| 2 | **Eingangsseite & Dienstausweis** | Immer zugänglich ([landing.js](file:///c:/Users/flaem/Desktop/Krimi/js/ui/landing.js)). Interaktiver Dienstausweis, freie Namenseingabe, Akkordeon-Anleitung, Fortschrittsanzeige, Notfall-Button *„Akte Schreddern“* (Spielstand-Reset auf Startseite, im Dossier und im Finale) sowie Testmodi: Name **`OFFLINETEST`** (Couch-Testing) und **`ONSIDETEST`** (Vor-Ort-Test bei Tag). Owner-Badge (*made by Versteckules*). |
 | 3 | **Dynamische Personalisierung** | Spieler vergibt eigenen Team- bzw. Ermittlernamen. Sämtliche Dialoge, Audio-Intros und Zwischenmeldungen sprechen den Spieler dynamisch mit `{PLAYER_NAME}` an. |
 | 4 | **Trigger via GPS-Geofencing** | **Keine manuelle Texteingabe zur Stationsfreischaltung im Feld!** Betreten des GPS-Radius (Standard: 20 m Geofence, Toleranzabzug bis 15 m) schaltet den Tatort automatisch frei. Akustischer/haptischer Sonar-Puls ab 100 m Annäherung. Dev-/Debug-Modus (`?debug=1`) erlaubt Klick-Trigger. |
-| 5 | **Zeitsperre & Nacht-Bedingung** | Spielbar erst ab Einbruch der Dunkelheit via SunCalc-Formel ([timelock.js](file:///c:/Users/flaem/Desktop/Krimi/js/timelock.js)): `max(18:00 Uhr, Sonnenuntergang + 30 Minuten)` bis Sonnenaufgang. Schloss-Overlay blockiert Tagsüber-Spielen. |
+| 5 | **Zeitsperre & Nacht-Bedingung** | Spielbar erst ab Einbruch der Dunkelheit via SunCalc-Formel ([timelock.js](file:///c:/Users/flaem/Desktop/Krimi/js/timelock.js)): `max(18:00 Uhr, Sonnenuntergang + 30 Minuten)` bis Sonnenaufgang. Schloss-Overlay blockiert Tagsüber-Spielen. Betatester können die Zeitsperre via **`ONSIDETEST`** (mit realem GPS vor Ort) oder **`OFFLINETEST`** (vom Schreibtisch) umgehen. |
 | 6 | **Zwingender Gadget-Zwang** | An **jeder** Station **MUSS zuerst ein interaktives Ermittler-Gadget / Minigame gelöst werden**, bevor der Zeugendialog beginnt. Kein reines Me-Too-Abklicken. Insgesamt 23 eigenständige Gadgets in `js/ui/gadgets/`. |
 | 7 | **Dynamische Probability-Engine** | Drei Hauptverdächtige (*Valentin Herold*, *Katharina von Gipser*, *Severin Heiden*) besitzen Live-Schuldwahrscheinlichkeiten (0–100%). **Zwingende Freischaltung erst nach Station 1 (Rathaus):** Zu Beginn sind die Verdächtigen unbekannt; erst der Abschluss des Brandherds schaltet ihre Profile und GPS-Pins frei. |
-| 8 | **Branching True-Detective Dialoge** | Komplexe Verhörbäume nach RPG-Hub-and-Spoke-Muster ([DIALOG_ARCHITEKTUR.md](file:///c:/Users/flaem/Desktop/Krimi/DIALOG_ARCHITEKTUR.md)). 19 Charaktere mit je 16–24 modularen Knoten, 3 Verhörstilen, Selbst- und Kreuzwidersprüchen sowie 4 distinkten Outcomes pro Zeuge. Keine vorgegebenen Täter-Namen! |
-| 9 | **Kommissar-Ränge & Schwierigkeit** | 5 Ränge basierend auf Kommissarpunkten (Streifenpolizist bis Sherlock Holmes). Hohe Ränge erfordern zwingende Sachbeweise, schalten aber den roten *Sherlock-Tipp* auf der Karte und Rang-Boni bei der Beweiszuteilung frei. |
-| 10| **Ermittler-Pinnwand & Vor-Ort-Verhör** | TV-Style Dossier ([dossier.js](file:///c:/Users/flaem/Desktop/Krimi/js/ui/dossier.js)). Polaroids der Verdächtigen werden dynamisch per HTML5-Canvas mit roten Fäden (*Red Strings*) an die Beweisstücke geheftet. **Kein Verhör aus dem Dossier:** Hauptverdächtige haben feste GPS-Punkte in Hof und können nur vor Ort per Geofencing verhört werden! |
+| 8 | **Branching True-Detective Dialoge** | Komplexe Verhörbäume nach RPG-Hub-and-Spoke-Muster ([DIALOG_ARCHITEKTUR.md](file:///c:/Users/flaem/Desktop/Krimi/DIALOG_ARCHITEKTUR.md)). 19 Charaktere mit je 16–24 modularen Knoten, 3 Verhörstilen, Selbst- und Kreuzwidersprüchen sowie 4 distinkten Outcomes pro Zeuge. Keine vorgegebenen Täter-Namen! **Verhörfalle `[Druck erhöhen]`:** Unüberlegter Druck führt ohne erdrückende Beweise direkt zum Aussageboykott (Outcome C, 0 Punkte & kein Beweis). |
+| 9 | **Kommissar-Ränge & Schwierigkeit** | 5 Ränge basierend auf Kommissarpunkten (Streifenpolizist bis Sherlock Holmes). Hohe Ränge erfordern zwingende Sachbeweise, schalten aber den roten *Sherlock-Tipp* auf der Karte und Rang-Boni bei der Beweiszuteilung frei. Höchster Rang *Sherlock Holmes* (≥ 700 XP & min. 8 Pflichtstationen) ist zwingende Voraussetzung für den Meister-Bonus! |
+| 10| **Ermittler-Pinnwand & Vor-Ort-Verhör** | TV-Style Dossier ([dossier.js](file:///c:/Users/flaem/Desktop/Krimi/js/ui/dossier.js)). Polaroids der Verdächtigen werden dynamisch per HTML5-Canvas mit roten Fäden (*Red Strings*) an die Beweisstücke geheftet. **Kein Couch-Verhör aus dem Dossier:** Hauptverdächtige haben feste GPS-Punkte in Hof und können nur vor Ort per Geofencing (≤ 25 m) verhört werden! |
 | 11| **Große Boss-Spiele** | Vor der finalen Konfrontation der Hauptverdächtigen triggern Spezial-Spiele: Drehscheiben-Tresor (Herold), Schredder-Rekonstruktion (Gipser) und interaktive Kirchenorgel (Heiden). |
-| 12| **Zweistufiges Krypto-Finale** | Finale Geocache-Koordinaten liegen AES-GCM-verschlüsselt in [data/final.json](file:///c:/Users/flaem/Desktop/Krimi/data/final.json). **Haupt-Final (GCBYXW0)** schaltet immer frei; der exklusive **Meister-Bonus Cache** (`SCHLAPPEN-1823-REX`) öffnet sich nur bei korrekter Täterüberführung mit ≥ 55% Beweislast. |
+| 12| **Zweistufiges Krypto-Finale** | Finale Geocache-Koordinaten liegen AES-GCM-verschlüsselt in [data/final.json](file:///c:/Users/flaem/Desktop/Krimi/data/final.json). **Haupt-Final (GCBYXW0)** schaltet immer frei; der exklusive **Meister-Bonus Cache** öffnet sich nur bei korrekter Täterüberführung mit **> 55% Beweislast UND Rang „Sherlock Holmes“** (≥ 700 XP & 8 Stationen). Das Diplom-Banner (`assets/diploma_banner.jpg`) dient als separates Listing-Asset; im Web-Finale gibt es kein Banner und keinen HTML-Code mehr (reine Krypto- & Koordinatenausgabe). |
 | 13| **Vollvertonung & Audio-Engine** | Sämtliche 265 Audiosequenzen (alle 248 Verhörzeilen, Prolog, Outros, Easter-Eggs) professionell via Neural-TTS vertont. Web Audio API erzeugt prozedurale Synthesizer-Klangwelten pro Verdächtigem inklusive automatischem Audio-Ducking. |
 | 14| **Reale Trackables (TB-Support)** | Vollständige Integration von 4 Geocaching-Trackables (`HQZJCG`, `EA99DB`, `CABGEW`, `CARGC7`) plus Geheimbund-TB `CA6D92`. |
 | 15| **Geheime Easter Eggs** | 5 feste Easter Eggs (Versteckules-Ausweis, Wärschtlamo-Kessel, Kompass-Schwindel, Mitternachtsgeläut, Jean Pauls Geist) plus Sensor-Trigger (Geschwindigkeits- und Batteriewarnung). |
@@ -62,9 +62,9 @@ flowchart TD
     CheckSolved -- "Nein" --> Map
     CheckSolved -- "Ja" --> FinalChoice["Das Finale: Verdächtige anklagen<br>(final.js)"]
     
-    FinalChoice --> FinalEvaluation{"Täter korrekt &<br>Beweislast >= 55%?"}
-    FinalEvaluation -- "Voller Triumph (>= 55%)" --> FullWin["Hinter Gittern!<br>AES-Entschlüsselung:<br>Haupt-Final (GCBYXW0)<br>+ Meister-Bonus Cache"]
-    FinalEvaluation -- "Teilerfolg (< 55%)" --> PartialWin["Freispruch auf Kaution!<br>AES-Entschlüsselung:<br>Nur Haupt-Final (GCBYXW0)"]
+    FinalChoice --> FinalEvaluation{"Täter korrekt,<br>Beweislast > 55% &<br>Rang Sherlock Holmes?"}
+    FinalEvaluation -- "Voller Triumph (> 55% & Sherlock)" --> FullWin["Hinter Gittern!<br>AES-Entschlüsselung:<br>Haupt-Final (GCBYXW0)<br>+ Meister-Bonus Cache"]
+    FinalEvaluation -- "Teilerfolg (<= 55% oder < Sherlock)" --> PartialWin["Freispruch auf Kaution!<br>AES-Entschlüsselung:<br>Nur Haupt-Final (GCBYXW0)"]
     FinalEvaluation -- "Falscher Täter" --> Loss["Justizirrtum!<br>Trostpreis:<br>Nur Haupt-Final (GCBYXW0)"]
 ```
 
@@ -97,7 +97,7 @@ Die Ermittlung führt über 16 historisch authentische Punkte durch die Hofer In
 
 ## 4. Das 23-Gadget-Arsenal (Interaktive Minispiele)
 
-Jedes Gadget ist als eigenständiges ES-Modul in `js/ui/gadgets/` gekapselt und wird über den zentralen [gadget-manager.js](file:///c:/Users/flaem/Desktop/Krimi/js/ui/gadgets/gadget-manager.js) orchestriert. Hardware-Sensoren besitzen durchgängig automatisierte Fallbacks sowie einen Notfall-Abbruch-Button (*-50 XP*):
+Jedes Gadget ist als eigenständiges ES-Modul in `js/ui/gadgets/` gekapselt und wird über den zentralen [gadget-manager.js](file:///c:/Users/flaem/Desktop/Krimi/js/ui/gadgets/gadget-manager.js) orchestriert. Hardware-Sensoren besitzen durchgängig automatisierte Fallbacks sowie einen Notfall-Abbruch-Button (*-10 XP*):
 
 ```
                                   ┌──────────────────────────┐
@@ -146,7 +146,7 @@ Jedes Gadget ist als eigenständiges ES-Modul in `js/ui/gadgets/` gekapselt und 
 20. **`safe.js` (Tresor Valentin Herold):** Großer Boss-Fight. Gyroskop-Drehrad zur Eingabe der Kombination `18 - 23 - 0`.
 21. **`shredder.js` (Schredder Katharina von Gipser):** Großer Boss-Fight. 3x3 Kachel-Verschiebespiel rekonstruiert vernichtete Verträge des Bauamts.
 22. **`music-cryptogram.js` (Musikalische Orgel Severin Heiden):** Großer Boss-Fight. Virtuelles Kirchenorgel-Keyboard mit echter Web Audio API Synthese zur Einspielung von B-A-C-H.
-23. **`gadget-manager.js` (Zentraler Controller):** Handhabt Laden, Fallbacks, Belohnungszuteilung ins Inventar und den globalen Abbruch-Button (*-50 XP*).
+23. **`gadget-manager.js` (Zentraler Controller):** Handhabt Laden, Fallbacks, Belohnungszuteilung ins Inventar und den globalen Abbruch-Button (*-10 XP*).
 
 ---
 
@@ -172,11 +172,11 @@ Mit gelösten Stationen, Beweisen und korrekten Verhören sammelt der Spieler *K
 
 | Rang-Stufe | Dienstgrad | Punktebereich | Mechanische Auswirkung & Balancing |
 |:----------:|------------|:-------------:|-----------------------------------|
-| **1** | **Streifenpolizist** | 0 – 99 XP | Zeugen plaudern leichtfertig, lassen Details fallen. Harte Konfrontationen misslingen. |
-| **2** | **Schnüffler** | 100 – 199 XP | Solide Basis, Zeugen reagieren neutral auf formelle Fragen. |
-| **3** | **Privatdetektiv** | 200 – 299 XP | **Vorteil:** Schaltet den roten **„Sherlock-Tipp“**-Button auf der Karte frei (präzise Empfehlung der nächsten Station).<br>**Nachteil:** Zeugen werden misstrauisch; brisante Fragen verlangen Sachbeweise im Inventar. |
-| **4** | **Inspektor** | 300 – 399 XP | Zeugen blocken Standard-Ausreden ab. +9% Rangbonus bei korrekter Beweiszuordnung. |
-| **5** | **Sherlock Holmes** | 400+ XP | Höchste Stufe: +12% Rangbonus auf Beweise, maximaler Schärfebonus (+32 Pkt) bei der finalen Täterüberführung. |
+| **1** | **Streifenpolizist** | 0 – 149 XP | Zeugen plaudern leichtfertig, lassen Details fallen. Harte Konfrontationen misslingen. |
+| **2** | **Schnüffler** | 150 – 299 XP | Solide Basis, Zeugen reagieren neutral auf formelle Fragen. |
+| **3** | **Privatdetektiv** | 300 – 499 XP | **Vorteil:** Schaltet den roten **„Sherlock-Tipp“**-Button auf der Karte frei (präzise Empfehlung der nächsten Station).<br>**Nachteil:** Zeugen werden misstrauisch; brisante Fragen verlangen Sachbeweise im Inventar. |
+| **4** | **Inspektor** | 500 – 699 XP | Zeugen blocken Standard-Ausreden ab. +9% Rangbonus bei korrekter Beweiszuordnung. |
+| **5** | **Sherlock Holmes** | 700+ XP | Höchste Stufe (erfordert min. 8 gelöste Pflichtstationen): +12% Rangbonus auf Beweise, maximaler Schärfebonus (+32 Pkt) bei der finalen Täterüberführung. **Zwingende Voraussetzung für den Meister-Bonus-Cache.** |
 
 ---
 
@@ -190,6 +190,7 @@ Das Dossier ([dossier.js](file:///c:/Users/flaem/Desktop/Krimi/js/ui/dossier.js)
   - *Falsche Zuordnung:* **-7% Verdacht**, **-5 Kommissarpunkte**.
   - *Einmalige Korrektur:* Jeder Beweis darf genau einmal re-evaluiert und umgehängt werden.
 - **Live-Schuldbarometer:** Fortschrittsbalken zeigen in Echtzeit den aktuellen Verdachtsgrad jedes Kandidaten an.
+- **Akte schreddern (Reset-Funktion):** Direkter Reset-Button im Header des Dossiers erlaubt das Zurücksetzen des Spielstands bei Neustart.
 
 ---
 
@@ -229,8 +230,13 @@ Die Hauptverdächtigen sind reale Personen im Stadtgebiet von Hof und können **
 
 * **Freischaltung:** Pins und Profile erscheinen erst nach erfolgreichem Abschluss von **Station 1 (Historisches Rathaus)**. Vorher sind die Verdächtigen für den Spieler unbekannt.
 * **Geofence-Trigger:** Erreicht der Spieler den 20-Meter-Radius eines Verdächtigen, schaltet der Navigator das Verhör automatisch frei.
-* **Karten-Popup:** Bei Anklicken des Pins aus der Ferne wird die Distanz angezeigt und der Kompass via *„Als Ziel anpeilen“* aktiviert. Ein Verhör ist erst möglich, sobald der Spieler vor Ort eingetroffen ist.
-* **Dossier:** Zeigt Steckbriefe, Motive, Beweisketten und den Button *„🧭 Auf Karte anpeilen“*.
+* **Karten-Popup & Dossier:** Ein Verhör ist nur vor Ort am GPS-Punkt (Geofence $\le 25\text{ m}$) möglich (im `OFFLINETEST`-Modus auch remote).
+* **Maximal 2 Verhöre pro Hauptverdächtigem (Cooldown-System):**
+  - **1. Erstverhör:** Erstes Vorfühlen am Standort.
+  - **3-Stationen-Sperre:** Nach dem 1. Verhör sperrt der Verdächtige ab. Erst nach Lösen von mindestens 3 weiteren Ermittlungsstationen schaltet neues Beweismaterial das 2. Verhör frei. UI zeigt: `⏳ Noch X Station(en) lösen`.
+  - **2. Nachverhör:** Ermöglicht die Konfrontation mit den neu gesammelten Beweisen (z. B. Rolfs Taschenuhr, Frachtpapiere, UV-Chornoten).
+  - **Aussageverweigerung:** Nach 2 Verhören verweigert der Verdächtige auf Anraten seines Anwalts jedes weitere Wort (`🚫 Aussage verweigert (Max. 2 Verhöre)`). Punkt- und Verdachts-Farming ist damit ausgeschlossen.
+  - **Boss-Minispiel-Schutz:** Jedes Boss-Minispiel (`safe.js`, `shredder.js`, `music-cryptogram.js`) kann nur einmalig gelöst werden; der Verdachtsbonus (+15 %) wird nicht doppelt gewertet.
 
 ---
 
@@ -239,15 +245,20 @@ Die Hauptverdächtigen sind reale Personen im Stadtgebiet von Hof und können **
 Sobald alle 12 Pflichtstationen absolviert sind, öffnet sich der Gerichtssaal ([final.js](file:///c:/Users/flaem/Desktop/Krimi/js/ui/final.js)):
 
 ### Die 3 Urteils-Outcomes:
-1. **Voller Triumph (Korrekter Täter & Beweislast ≥ 55%):**
+1. **Voller Triumph (Korrekter Täter, Beweislast > 55% UND Rang „Sherlock Holmes“):**
    - Der Täter gesteht vollständig, Handschellen klicken, der Haftrichter verhängt Untersuchungshaft.
-   - **Belohnung:** Entschlüsselung beider Caches: **Haupt-Final (GCBYXW0)** UND exklusiver **Meister-Bonus Cache** (`SCHLAPPEN-1823-REX`) inklusive Druck-Diplom.
-2. **Teilerfolg (Korrekter Täter, aber Beweislast < 55%):**
-   - Täter gesteht zwar, wird jedoch mangels erdrückender Beweiskette gegen Kaution auf freien Fuß gesetzt. Spuren zum Bonus-Versteck werden vernichtet.
+   - **Belohnung:** Entschlüsselung beider Caches: **Haupt-Final (GCBYXW0)** UND exklusiver **Meister-Bonus Cache** (Koordinaten & Hint direkt im Display freigeschaltet, kein separater Bonus-Textcode nötig).
+2. **Teilerfolg (Korrekter Täter, aber Beweislast ≤ 55% ODER Rang unter „Sherlock Holmes“):**
+   - Täter gesteht zwar, wird jedoch mangels erdrückender Beweiskette oder fehlendem Sherlock-Status gegen Kaution auf freien Fuß gesetzt. Spuren zum Bonus-Versteck werden vernichtet.
    - **Belohnung:** Entschlüsselung des **Haupt-Finals (GCBYXW0)**. Bonus-Cache bleibt verschlossen.
 3. **Niederlage / Justizirrtum (Falsche Person angeklagt):**
    - Ein Unschuldiger wird beschuldigt; der wahre Täter entkommt unerkannt mit den Urkunden.
    - **Trostpreis:** Aus Gnade der Ermittlungsbehörde werden die Koordinaten des **Haupt-Finals (GCBYXW0)** dennoch freigegeben, damit der Geocacher die Dose vor Ort loggen kann.
+
+### Finale-Präsentation & Listing-Banner:
+- **Kein Banner & kein HTML-Code im In-Game-Finale:** Das Web-Finale verzichtet vollständig auf eingebettete Bannergrafiken oder HTML-Codeschnipsel, um auf Smartphones maximale Übersichtlichkeit und Fokus auf Koordinaten und Hints zu gewährleisten.
+- **Listing-Asset:** Das gestaltete Diplom-Banner (`assets/diploma_banner.jpg`) mit eingestanztem GC-Code `GCBYXW0` wird außerhalb der PWA vom Cache-Owner direkt für das offizielle Geocaching.com-Listing genutzt.
+- **Akte schreddern:** Direkter Reset-Button im Finale ermöglicht Spielern oder Testern ein sauberes Zurücksetzen auf die Startseite.
 
 ### AES-GCM Verschlüsselungs-Architektur:
 Die finalen Daten liegen niemals in lesbarem Klartext im Webcode, sondern in [data/final.json](file:///c:/Users/flaem/Desktop/Krimi/data/final.json). Die Passphrasen werden dynamisch aus Spielzustand und Täter-Identität via PBKDF2 und AES-GCM generiert ([crypto.js](file:///c:/Users/flaem/Desktop/Krimi/js/crypto.js)):
@@ -318,6 +329,8 @@ In [data/events.json](file:///c:/Users/flaem/Desktop/Krimi/data/events.json) sin
   "gameStarted": true,
   "startedAt": 1791850000000,
   "score": 165,
+  "isTestingMode": false,
+  "isOnsiteTestMode": false,
   "solvedStations": ["rathaus", "hauptpost", "obelisk"],
   "stationOrder": ["rathaus", "hauptpost", "obelisk"],
   "bonusSolved": ["saale_schmuggel"],
@@ -330,6 +343,16 @@ In [data/events.json](file:///c:/Users/flaem/Desktop/Krimi/data/events.json) sin
   "easterEggWaerchtlamo": true
 }
 ```
+
+### Betatest-Accounts (Namenseingabe im Dienstausweis):
+- **`OFFLINETEST` (Couch-Testing / Schreibtisch):**
+  - Setzt `isTestingMode: true` und `isOnsiteTestMode: false`.
+  - **Zeitsperre:** Deaktiviert (Start zu jeder Tageszeit).
+  - **GPS-Radius:** Deaktiviert; Stationen und Verdächtige lassen sich per Klick auf der Karte öffnen.
+- **`ONSIDETEST` (Vor-Ort-Betatest bei Tag):**
+  - Setzt `isTestingMode: false` und `isOnsiteTestMode: true`.
+  - **Zeitsperre:** Deaktiviert (erlaubt Betatestern das Begehen der Runde bei Tageslicht).
+  - **GPS-Radius:** **Voll aktiv!** Betatester müssen real vor Ort in Hof an den exakten Koordinaten stehen (Geofence $\le 20\text{ m}$ / $\le 25\text{ m}$), um Stationen und Verhöre zu triggern.
 
 ### Wartungs- & Starter-Skripte:
 - **`START.bat`:** Startet lokalen HTTP-Server (Port 8080) und öffnet direkt den Standardbrowser.

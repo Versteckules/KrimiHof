@@ -1,6 +1,6 @@
 import { addSuspectImpact, addScore } from '../../state.js';
 
-export function runGadget(stationId, onComplete) {
+export function runGadget(stationId, onComplete, onCancel) {
   const overlay = document.createElement('div');
   overlay.id = 'gadget-fullscreen-overlay';
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e17; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; color:white; font-family:serif; text-align:center;';
@@ -36,14 +36,24 @@ export function runGadget(stationId, onComplete) {
     'H': 493.88  // B natural (H)
   };
 
-  function closeGadget() {
+  function cancelGadget() {
     if (audioCtx) {
       try { audioCtx.close(); } catch(e) {}
     }
     if (overlay.parentNode) {
       overlay.parentNode.removeChild(overlay);
     }
-    onComplete();
+    if (onCancel) onCancel();
+  }
+
+  function finishGadget() {
+    if (audioCtx) {
+      try { audioCtx.close(); } catch(e) {}
+    }
+    if (overlay.parentNode) {
+      overlay.parentNode.removeChild(overlay);
+    }
+    if (onComplete) onComplete();
   }
 
   function skipWithPenalty() {
@@ -93,7 +103,7 @@ export function runGadget(stationId, onComplete) {
       </button>
     `;
 
-    document.getElementById('btn-music-cancel').onclick = closeGadget;
+    document.getElementById('btn-music-cancel').onclick = cancelGadget;
     document.getElementById('btn-music-abort').onclick = () => skipWithPenalty();
 
     const targetSequence = ['B', 'A', 'C', 'H'];
@@ -147,7 +157,7 @@ export function runGadget(stationId, onComplete) {
       </button>
     `;
 
-    document.getElementById('btn-music-cancel').onclick = closeGadget;
+    document.getElementById('btn-music-cancel').onclick = cancelGadget;
     document.getElementById('btn-music-abort2').onclick = () => skipWithPenalty();
 
     const input = document.getElementById('kryptex-input');
@@ -162,7 +172,6 @@ export function runGadget(stationId, onComplete) {
         setTimeout(() => input.style.borderColor = '#d4af37', 800);
         import('../../main.js').then(m => {
           if (m.showNoirAlert) m.showNoirAlert('Falsches Kennwort! Das Kryptex blockiert. (Tipp: PAKT)', 'Kryptex klemmt');
-          else alert('Falsches Kennwort! (Tipp: PAKT)');
         });
       }
     };
@@ -188,12 +197,12 @@ export function runGadget(stationId, onComplete) {
       
       <div style="display:flex; flex-direction:column; gap:10px; width:100%; max-width:320px; font-family:sans-serif;">
         <button class="btn-primary suspect-choice" data-suspect="herold" data-val="15" style="padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">Valentin Herold (+15% Verdacht)</button>
-        <button class="btn-primary suspect-choice" data-suspect="gipser" data-val="15" style="padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">Margarete von Gipser (+15% Verdacht)</button>
+        <button class="btn-primary suspect-choice" data-suspect="gipser" data-val="15" style="padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">Katharina von Gipser (+15% Verdacht)</button>
         <button class="btn-primary suspect-choice" data-suspect="heiden" data-val="15" style="padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">Severin Heiden (+15% Verdacht)</button>
       </div>
     `;
 
-    document.getElementById('btn-music-cancel').onclick = closeGadget;
+    document.getElementById('btn-music-cancel').onclick = cancelGadget;
 
     overlay.querySelectorAll('.suspect-choice').forEach(btn => {
       btn.onclick = () => {
@@ -203,7 +212,7 @@ export function runGadget(stationId, onComplete) {
         import('../../main.js').then(m => {
           if (m.showNoirAlert) m.showNoirAlert('Dokumente gesichert und Verdacht zugewiesen!', 'Erfolg');
         });
-        closeGadget();
+        finishGadget();
       };
     });
   }

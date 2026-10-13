@@ -89,7 +89,7 @@
       "stationId": "sonnenplatz",
       "targetSuspect": "heiden",
       "description": "Ein Notenblatt mit liturgischen Chorälen und einer Grundrissskizze des Rathaus-Gewölbes, verfasst in altertümlicher Musikerschrift.",
-      "rewardReason": "Die Chor-Notiz mit dem Gewölbegrundriss belegt Klaus Heidens Vorbereitung und Auskundschaftung des Tatorts! (Verdacht +15%)"
+      "rewardReason": "Die Chor-Notiz mit dem Gewölbegrundriss belegt Severin Heidens Vorbereitung und Auskundschaftung des Tatorts! (Verdacht +15%)"
     },
     {
       "id": "beweis_pakt_ring",
@@ -98,7 +98,7 @@
       "stationId": "lorenzkirche",
       "targetSuspect": "heiden",
       "description": "Ein alter Silberring mit dem eingravierten Emblem der Bruderschaft, übergeben von Pfarrer Klement. In die Ringschiene ist die geheime Losung eingraviert, die das Orgel-Kryptex öffnet: 'PAKT'.",
-      "rewardReason": "Der Siegelring beweist Klaus Heidens Führungsrolle im Geheimbund der Schlappen-Bruderschaft! (Verdacht +15%)"
+      "rewardReason": "Der Siegelring beweist Severin Heidens Führungsrolle im Geheimbund der Schlappen-Bruderschaft! (Verdacht +15%)"
     },
     {
       "id": "foto_gipser_auto",
@@ -116,7 +116,7 @@
       "stationId": "rathaus",
       "targetSuspect": "heiden",
       "description": "Ein am Brandherd gefundenes, teils verkohltes Notenblatt. Die freigelegte Partitur zeigt ein Orgelmotiv über die Tonfolge B-A-C-H.",
-      "rewardReason": "Das B-A-C-H Orgelmotiv verbindet Kirchenmusiker Klaus Heiden direkt mit dem Brandherd im Rathauskeller! (Verdacht +15%)"
+      "rewardReason": "Das B-A-C-H Orgelmotiv verbindet Kirchenmusiker Severin Heiden direkt mit dem Brandherd im Rathauskeller! (Verdacht +15%)"
     },
     {
       "id": "evidence_fire_dossier",
@@ -188,7 +188,7 @@
       "stationId": "schlossplatz",
       "targetSuspect": "heiden",
       "description": "Ein kunstvolles Pergament mit einem okkulten Spiegelschrift-Ambigramm und sakralen Ordensinsignien.",
-      "rewardReason": "Das rituelle Spiegelschrift-Ambigramm ist das Erkennungszeichen des von Klaus Heiden geführten Ordens! (Verdacht +15%)"
+      "rewardReason": "Das rituelle Spiegelschrift-Ambigramm ist das Erkennungszeichen des von Severin Heiden geführten Ordens! (Verdacht +15%)"
     },
     {
       "id": "evidence_dice_gamble",
@@ -215,7 +215,7 @@
       "stationId": "michaeliskirche",
       "targetSuspect": "heiden",
       "description": "Die dechiffrierte Losung des mechanischen Kryptorads: 'ORDO SCHLAPPIS 1823' – das Losungswort der Verschwörer.",
-      "rewardReason": "Die Ordenslosung 'ORDO SCHLAPPIS 1823' führt direkt zum fanatischen Traditionsbewahrer Klaus Heiden! (Verdacht +15%)"
+      "rewardReason": "Die Ordenslosung 'ORDO SCHLAPPIS 1823' führt direkt zum fanatischen Traditionsbewahrer Severin Heiden! (Verdacht +15%)"
     },
     {
       "id": "evidence_uv_formula",

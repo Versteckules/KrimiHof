@@ -2,13 +2,15 @@
  * dossier.js - Die Ermittlungsakte mit Tatverdächtigen-Porträts, Verhören & Beweisen (AP12)
  */
 
-import { getState, subscribe, getPlayerRank, recordInterrogation, saveState } from '../state.js';
-import { getStations, getStory } from '../config-loader.js';
+import { getState, subscribe, getPlayerRank, recordInterrogation, saveState, getInterrogationStatus, recordBossGameSolved } from '../state.js';
+import { getStations, getStory, isBonusStation } from '../config-loader.js';
 import { calculateFinalResult } from '../scoring.js';
 import { showView } from '../main.js';
 import { getSuspectName, FULL_WIN_THRESHOLD } from './final.js';
 import { openDialogue } from './dialogue.js';
 import { openIntro } from './intro.js';
+import { getCurrentPosition, getDistance } from '../geo.js';
+import { parseCoords } from '../coords.js';
 
 export function initDossier() {
   const closeBtn = document.getElementById('btn-close-dossier');
@@ -53,6 +55,22 @@ export function initDossier() {
   if (closeEvBtn) {
     closeEvBtn.addEventListener('click', () => {
       document.getElementById('modal-evidence').classList.add('hidden');
+    });
+  }
+
+  // Akte schreddern Button
+  const shredBtn = document.getElementById('btn-dossier-shred');
+  if (shredBtn) {
+    shredBtn.addEventListener('click', () => {
+      const modal = document.getElementById('modal-reset');
+      if (modal) {
+        modal.classList.remove('hidden');
+      } else if (confirm("Möchtest du die gesamte Ermittlungsakte wirklich schreddern und von vorne anfangen?")) {
+        import('../state.js').then(m => {
+          m.resetState();
+          window.location.reload();
+        });
+      }
     });
   }
 
@@ -101,7 +119,7 @@ export function updateDossier() {
   // Outro-Button im Dossier-Kopf anzeigen, wenn Endphase erreicht oder im Testmodus
   const replayOutroBtn = document.getElementById('btn-dossier-replay-outro');
   if (replayOutroBtn) {
-    const pflichtCount = (state.solvedStations || []).filter(sid => !sid.startsWith('saale_') && !sid.startsWith('altstadt_')).length;
+    const pflichtCount = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
     if (pflichtCount >= 12 || state.isTestingMode || state.accusedSuspect) {
       replayOutroBtn.classList.remove('hidden');
     } else {
@@ -125,7 +143,7 @@ export function updateDossier() {
       let html = '';
       const storySuspects = (story && story.suspects) ? story.suspects : {};
 
-    const pflichtCount = (state.solvedStations || []).filter(sid => !sid.startsWith('saale_') && !sid.startsWith('altstadt_')).length;
+    const pflichtCount = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
     const isAllStationsSolved = pflichtCount >= 12;
 
     if (isAllStationsSolved) {
@@ -191,8 +209,26 @@ export function updateDossier() {
           </div>
 
           <div style="display: flex; gap: 8px; margin-top: 8px;">
-            <button class="btn-secondary btn-show-suspect-map" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; border: 1px solid var(--color-amber-muted); color: #f5d79e; background: rgba(212, 175, 55, 0.15); font-weight: bold; cursor: pointer;">
-              🧭 Auf Karte anpeilen
+            ${(() => {
+              const intStatus = getInterrogationStatus(s.id);
+              if (!intStatus.canInterrogate) {
+                const label = intStatus.count >= 2 ? '🚫 Aussage verweigert' : `⏳ Noch ${intStatus.remainingStations} Station(en)`;
+                return `
+                  <button class="btn-primary btn-interrogate-direct" data-suspect-id="${s.id}" disabled style="flex: 1.1; padding: 10px 8px; font-size: 0.8rem; text-align: center; border-radius: 4px; background: #222; color: #888; border: 1px solid #444; opacity: 0.6; cursor: not-allowed;" title="${intStatus.reason}">
+                    ${label}
+                  </button>
+                `;
+              } else {
+                const label = intStatus.count === 1 ? '🗣️ 2. Verhör' : '🗣️ 1. Verhör';
+                return `
+                  <button class="btn-primary btn-interrogate-direct" data-suspect-id="${s.id}" style="flex: 1.1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; background: linear-gradient(135deg, #d4af37, #8c6d23); color: #05080f; border: 1px solid #d4af37; font-weight: bold; cursor: pointer;" title="${intStatus.reason}">
+                    ${label}
+                  </button>
+                `;
+              }
+            })()}
+            <button class="btn-secondary btn-show-suspect-map" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; border: 1px solid var(--color-amber-muted); color: #f5d79e; background: rgba(212, 175, 55, 0.15); font-weight: bold; cursor: pointer;" title="Auf Karte anpeilen & Standort zeigen">
+              🧭 Karte
             </button>
             <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.5; filter: grayscale(1);'}">
               🚨 Verhaften
@@ -202,6 +238,60 @@ export function updateDossier() {
       `;
     });
     suspContainer.innerHTML = html;
+
+    // Klick-Handler für Vor-Ort-Verhör aus dem Dossier
+    suspContainer.querySelectorAll('.btn-interrogate-direct').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const suspectId = btn.getAttribute('data-suspect-id');
+        const state = getState();
+
+        // 1. Verhör-Status prüfen (Max 2 Verhöre & 3 Stationen Cooldown)
+        const intStatus = getInterrogationStatus(suspectId);
+        if (!intStatus.canInterrogate) {
+          import('../main.js').then(m => {
+            if (m.showNoirAlert) {
+              m.showNoirAlert(
+                intStatus.count >= 2
+                  ? `🚫 ${getSuspectName(suspectId)} hat bereits 2 Verhöre hinter sich und verweigert auf Anraten des Anwalts jedes weitere Wort bis zur Verhaftung.`
+                  : `⏳ Verhör gesperrt: Löse noch ${intStatus.remainingStations} weitere Ermittlungsstationen, um neue Spuren & Beweise für das 2. Verhör zu sammeln.`,
+                'Verhör aktuell nicht möglich'
+              );
+            }
+          });
+          return;
+        }
+
+        // Testing-Mode (Couch) erlaubt direktes Verhör ohne Distanzprüfung
+        if (!state.isTestingMode) {
+          const curPos = getCurrentPosition();
+          const story = getStory();
+          const sData = (story && story.suspects) ? story.suspects[suspectId] : null;
+          let dist = Infinity;
+          if (curPos && sData && sData.coords) {
+            const parsed = parseCoords(sData.coords);
+            if (parsed) {
+              dist = getDistance(curPos.lat, curPos.lng, parsed.lat, parsed.lng);
+            }
+          }
+
+          if (dist > 25) {
+            const distText = dist !== Infinity ? `${Math.round(dist)} m` : 'GPS nicht erfasst';
+            const locText = sData ? sData.location : 'Hof';
+            import('../main.js').then(m => {
+              if (m.showNoirAlert) {
+                m.showNoirAlert(
+                  `🚫 Zu weit entfernt (${distText})!\n\n${getSuspectName(suspectId)} hält sich persönlich bei folgendem Ort auf:\n📍 ${locText}\n\nBegib dich vor Ort zu den Koordinaten (oder nutze „🧭 Karte“, um das Ziel anzupeilen), um das Verhör zu führen.`,
+                  'Vor-Ort-Verhör erforderlich'
+                );
+              }
+            });
+            return;
+          }
+        }
+
+        startSuspectInterrogation(suspectId);
+      });
+    });
 
     // Klick-Handler für "Auf Karte anpeilen" (Verhör nur vor Ort am GPS-Punkt)
     suspContainer.querySelectorAll('.btn-show-suspect-map').forEach(btn => {
@@ -550,7 +640,7 @@ export function updateDossier() {
     
     let pflichtCount = 0;
     solved.forEach(sid => {
-      if (!sid.startsWith('saale_') && !sid.startsWith('altstadt_')) {
+      if (!isBonusStation(sid)) {
         pflichtCount++;
       }
     });
@@ -560,7 +650,7 @@ export function updateDossier() {
     stations.forEach(st => {
       const isSolved = solved.includes(st.id);
       if (isSolved) {
-        const isBonus = st.id.startsWith('saale_') || st.id.startsWith('altstadt_');
+        const isBonus = isBonusStation(st.id);
         const color = isBonus ? 'var(--color-text-muted)' : 'var(--color-green)';
         sHtml += `<span style="border: 1px solid ${color}; color: ${color}; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; background: rgba(0,0,0,0.3);">${st.name}</span>`;
       }
@@ -574,6 +664,21 @@ export function updateDossier() {
  * @param {string} suspectId ('herold' | 'gipser' | 'heiden')
  */
 export function startSuspectInterrogation(suspectId) {
+  const intStatus = getInterrogationStatus(suspectId);
+  if (!intStatus.canInterrogate) {
+    import('../main.js').then(m => {
+      if (m.showNoirAlert) {
+        m.showNoirAlert(
+          intStatus.count >= 2
+            ? `🚫 ${getSuspectName(suspectId)} verweigert weitere Verhöre (Max. 2 Verhöre erreicht).`
+            : `⏳ Löse noch ${intStatus.remainingStations} Station(en), um das 2. Verhör freizuschalten.`,
+          'Verhör gesperrt'
+        );
+      }
+    });
+    return;
+  }
+
   const story = getStory();
   const treeKey = 'interrogate_' + suspectId;
   const state = getState();
@@ -595,9 +700,19 @@ export function startSuspectInterrogation(suspectId) {
           'gipser': 'shredder',
           'heiden': 'music-cryptogram'
         };
-        if (suspectGames[suspectId]) {
-          import(`./gadgets/${suspectGames[suspectId]}.js`).then(gameMod => {
+        const gameKey = suspectGames[suspectId];
+        const stateNow = getState();
+        const solvedBossGames = stateNow.solvedBossGames || [];
+
+        // Boss-Minispiel nur ausführen, wenn es für diesen Verdächtigen noch nicht gelöst wurde
+        if (gameKey && !solvedBossGames.includes(gameKey)) {
+          import(`./gadgets/${gameKey}.js`).then(gameMod => {
             gameMod.runGadget(suspectId, () => {
+              recordBossGameSolved(gameKey);
+              import('../main.js').then(m => m.showView('view-dossier'));
+              updateDossier();
+            }, () => {
+              // onCancel: Minispiel ohne Lösung abgebrochen
               import('../main.js').then(m => m.showView('view-dossier'));
               updateDossier();
             });

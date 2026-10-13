@@ -29,6 +29,7 @@ function createDefaultState() {
     currentView: 'landing',
     activeStationId: null,
     isTestingMode: false,
+    isOnsiteTestMode: false,
 
     // Stationen & Routing
     solvedStations: [],       // Array von Stations-IDs (z.B. ['rathaus', ...])
@@ -60,6 +61,7 @@ function createDefaultState() {
     reassignedEvidence: {},   // { evidenceId: true } - Einmalige Neuzuordnung pro Beweis
     evidenceImpactHistory: {},// { evidenceId: { suspectId, suspectImpact, scoreImpact } }
     interrogations: {},       // { suspectId: [solvedStationsCount] }
+    solvedBossGames: [],      // ['safe', 'shredder', 'music-cryptogram']
     
     // Die 4 Trackables (TBs)
     unlockedTrackables: [],   // ['HQZJCG', 'EA99DB', 'CABGEW', 'CARGC7']
@@ -74,19 +76,21 @@ let _currentState = null;
 const _subscribers = new Set();
 
 /**
- * Berechnet den aktuellen Rang basierend auf den Punkten (Score)
- * 0-99: Streifenpolizist
- * 100-199: Schnüffler
- * 200-299: Privatdetektiv (Rangstufe 3)
- * 300-399: Inspektor
- * 400+: Sherlock Holmes
+ * Berechnet den aktuellen Rang basierend auf den Punkten (Score) und Stationsfortschritt
+ * 0-149: Streifenpolizist (Level 1)
+ * 150-299: Schnüffler (Level 2)
+ * 300-499: Privatdetektiv (Level 3 - schaltet Sherlock-Tipp frei)
+ * 500-699: Inspektor (Level 4)
+ * 700+: Sherlock Holmes (Level 5 - erfordert min. 8 gelöste Pflichtstationen!)
  */
 export function getPlayerRank() {
   const score = _currentState ? _currentState.score || 0 : 0;
-  if (score >= 400) return { name: "Sherlock Holmes", level: 5 };
-  if (score >= 300) return { name: "Inspektor", level: 4 };
-  if (score >= 200) return { name: "Privatdetektiv", level: 3 };
-  if (score >= 100) return { name: "Schnüffler", level: 2 };
+  const solvedCount = _currentState && _currentState.solvedStations ? _currentState.solvedStations.length : 0;
+
+  if (score >= 700 && solvedCount >= 8) return { name: "Sherlock Holmes", level: 5 };
+  if (score >= 500) return { name: "Inspektor", level: 4 };
+  if (score >= 300) return { name: "Privatdetektiv", level: 3 };
+  if (score >= 150) return { name: "Schnüffler", level: 2 };
   return { name: "Streifenpolizist", level: 1 };
 }
 
@@ -270,7 +274,13 @@ export function markStationSolved(stationId, options = {}) {
     solved.add(stationId);
     order.push(stationId);
 
-    if (options.isBonus || stationId.startsWith('saale_') || stationId.startsWith('altstadt_')) {
+    const isBonus = options.isBonus || 
+                    stationId.startsWith('saale_') || 
+                    stationId.startsWith('altstadt_') || 
+                    stationId.startsWith('versteck_') || 
+                    stationId === 'jean_paul';
+
+    if (isBonus) {
       bonus.add(stationId);
       scoreDelta = options.points || 15; // Bonusstationen geben 15 Punkte
     }
@@ -428,6 +438,64 @@ export function recordInterrogation(suspectId, solvedCount) {
   if (!interrogations[suspectId]) interrogations[suspectId] = [];
   interrogations[suspectId].push(solvedCount);
   saveState({ interrogations });
+  return getState();
+}
+
+/**
+ * Prüft, ob ein Hauptverdächtiger verhört werden darf
+ * - Maximal 2 Verhöre pro Verdächtigem
+ * - Nach dem 1. Verhör müssen mindestens 3 weitere Stationen gelöst werden
+ * @param {string} suspectId ('herold' | 'gipser' | 'heiden')
+ * @returns {{ canInterrogate: boolean, reason: string, count: number, remainingStations: number }}
+ */
+export function getInterrogationStatus(suspectId) {
+  const state = getState();
+  const history = (state.interrogations && state.interrogations[suspectId]) || [];
+  const currentSolved = state.solvedStations ? state.solvedStations.length : 0;
+  const count = history.length;
+
+  if (count >= 2) {
+    return {
+      canInterrogate: false,
+      reason: 'Aussage verweigert (Max. 2 Verhöre)',
+      count,
+      remainingStations: 0
+    };
+  }
+
+  if (count === 1) {
+    const lastSolved = history[0];
+    const needed = lastSolved + 3;
+    if (currentSolved < needed) {
+      const remaining = needed - currentSolved;
+      return {
+        canInterrogate: false,
+        reason: `Noch ${remaining} Station(en) lösen`,
+        count,
+        remainingStations: remaining
+      };
+    }
+  }
+
+  return {
+    canInterrogate: true,
+    reason: count === 0 ? 'Erstverhör bereit' : 'Zweitverhör bereit',
+    count,
+    remainingStations: 0
+  };
+}
+
+/**
+ * Protokolliert ein gelöstes Boss-Minispiel (verhindert mehrfaches Belohnungs-Farming)
+ * @param {string} gameKey ('safe' | 'shredder' | 'music-cryptogram')
+ */
+export function recordBossGameSolved(gameKey) {
+  const state = getState();
+  const solved = new Set(state.solvedBossGames || []);
+  if (!solved.has(gameKey)) {
+    solved.add(gameKey);
+    saveState({ solvedBossGames: Array.from(solved) });
+  }
   return getState();
 }
 

@@ -2,7 +2,7 @@
  * final.js - Das Finale (AP11)
  */
 
-import { getState } from '../state.js';
+import { getState, getPlayerRank } from '../state.js';
 import { showView } from '../main.js';
 import { calculateFinalResult } from '../scoring.js';
 import { getConfig, getFinalCoords, getStory } from '../config-loader.js';
@@ -10,7 +10,7 @@ import { openIntro } from './intro.js';
 import { decryptObject, getStandardPassphrase, getBonusPassphrase } from '../crypto.js';
 
 let accusedSuspect = null;
-export const FULL_WIN_THRESHOLD = 55; // Mindest-Beweislast in % fuer Täter-Inhaftierung & Meister-Bonus Cache
+export const FULL_WIN_THRESHOLD = 55; // Mindest-Beweislast in % (> 55% erforderlich) fuer Täter-Inhaftierung & Meister-Bonus Cache
 
 /**
  * Liefert den Anzeigenamen eines Verdächtigen (aus story.json, Fallback config.js)
@@ -44,7 +44,20 @@ export function initFinalView() {
     container.appendChild(btn);
   });
 
-  document.getElementById('btn-print-diploma').addEventListener('click', generateDiploma);
+  const finalResetBtn = document.getElementById('btn-final-reset');
+  if (finalResetBtn) {
+    finalResetBtn.addEventListener('click', () => {
+      const modal = document.getElementById('modal-reset');
+      if (modal) {
+        modal.classList.remove('hidden');
+      } else if (confirm("Möchtest du die Fallakte wirklich schreddern und das Spiel von vorne beginnen?")) {
+        import('../state.js').then(m => {
+          m.resetState();
+          window.location.reload();
+        });
+      }
+    });
+  }
 }
 
 export function openFinal() {
@@ -69,7 +82,6 @@ async function resolveFinalCoords(isFullWin = false, murdererId = 'herold') {
       bonus: fc.bonusFinal || {
         title: 'Bonus-Cache: Das Vermächtnis des Meisters',
         coordsDMM: 'N 50° 19.510 E 011° 55.680',
-        bonusCode: 'SCHLAPPEN-1823-REX',
         hint: 'Im alten Mauerwerk des Torbogens, hinter dem losen Sandsteinquader auf der Nordseite.'
       }
     };
@@ -106,7 +118,7 @@ async function resolveFinalCoords(isFullWin = false, murdererId = 'herold') {
   return { standard, bonus };
 }
 
-async function formatFinalCoords(isFullWin = false, murdererId = 'herold') {
+async function formatFinalCoords(isFullWin = false, murdererId = 'herold', suspectId = null, result = null) {
   const resolved = await resolveFinalCoords(isFullWin, murdererId);
   if (!resolved || !resolved.standard) return '<div style="color:red;">Koordinaten nicht verfügbar</div>';
 
@@ -128,29 +140,44 @@ async function formatFinalCoords(isFullWin = false, murdererId = 'herold') {
   `;
 
   if (isFullWin && bonus) {
-    // Fall 1: Täter ins Gefängnis (>= 55%) -> Finalkords UND Bonus
+    // Fall 1: Täter ins Gefängnis (> 55% UND Rang Sherlock) -> Finalkords UND Bonus
     html += `
-      <!-- 2. Meister-Bonus (Exklusiv bei erfolgreicher Überführung >= 55%) -->
+      <!-- 2. Meister-Bonus (Exklusiv bei erfolgreicher Überführung > 55% UND Rang Sherlock) -->
       <div style="background: linear-gradient(135deg, rgba(212, 163, 89, 0.2) 0%, rgba(139, 101, 8, 0.3) 100%); border: 2px solid #d4af37; border-radius: 8px; padding: 15px; text-align: left; box-shadow: 0 0 20px rgba(212, 163, 89, 0.35);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
           <span style="color: #f5d79e; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">⭐ ${bonus.title || 'Bonus-Cache: Das Vermächtnis'}</span>
-          <span style="background: #d4af37; color: #000; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">Täter Inhaftiert!</span>
+          <span style="background: #d4af37; color: #000; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">Täter Inhaftiert &amp; Sherlock-Rang!</span>
         </div>
         <div style="font-family: var(--font-mono); font-size: 1.35rem; color: #ffd700; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px;">
           ${bonus.coordsDMM}
         </div>
-        ${bonus.bonusCode ? `<div style="font-family: var(--font-mono); font-size: 0.9rem; color: #ffffff; margin-bottom: 6px;">🔑 Bonus-Code: <strong style="color: #fcd34d;">${bonus.bonusCode}</strong></div>` : ''}
         ${bonus.hint ? `<div style="font-size: 0.85rem; color: #f5ecc8; font-style: italic; border-top: 1px dashed rgba(212, 163, 89, 0.3); padding-top: 6px;">💡 Bonus-Hinweis: ${bonus.hint}</div>` : ''}
       </div>
     `;
   } else {
-    // Fall 2: Täter nicht ins Gefängnis (< 55% oder falscher Täter) -> Nur Finalkords
+    // Fall 2: Bonus nicht freigeschaltet -> Spezifische Begründung
+    const rank = getPlayerRank();
+    const perc = result && result.percentages && result.murderer ? result.percentages[result.murderer] : 0;
+    const isCorrect = (suspectId && result && suspectId === result.murderer);
+    
+    let reasonText = '';
+    if (!isCorrect) {
+      reasonText = 'Du hast den falschen Tatverdächtigen beschuldigt. Der wahre Drahtzieher konnte entkommen und hat alle Spuren zum Bonus verwischt.';
+    } else if (perc <= FULL_WIN_THRESHOLD) {
+      reasonText = `Die Beweislast war mit ${perc}% zu gering (benötigt: über ${FULL_WIN_THRESHOLD}%). Ein Staranwalt erwirkte Freispruch auf Kaution.`;
+    } else {
+      reasonText = `Die Beweislast lag zwar bei ${perc}%, doch dein Ermittler-Rang ist „${rank.name}“. Um die Geheimakten des Meisters zu öffnen, ist der Meister-Rang „Sherlock Holmes“ erforderlich (mind. 700 Punkte &amp; 8 gelöste Stationen, erreichbar durch sorgfältiges Bearbeiten aller Beweise).`;
+    }
+
     html += `
       <!-- Bonus Gesperrt -->
-      <div style="background: rgba(30, 41, 59, 0.4); border: 1px dashed #64748b; border-radius: 8px; padding: 12px; text-align: left; opacity: 0.85;">
-        <div style="display: flex; align-items: center; gap: 8px; color: #94a3b8; font-size: 0.85rem; font-style: italic;">
-          <span style="font-size: 1.2rem;">🔒</span>
-          <span><strong>Bonus-Cache verpasst:</strong> Der Drahtzieher konnte entkommen und hat alle Spuren zum Bonus-Versteck verwischt. (Voraussetzung für den Bonus: Mindestens ${FULL_WIN_THRESHOLD}% Beweislast &amp; Täter hinter Gittern)</span>
+      <div style="background: rgba(30, 41, 59, 0.4); border: 1px dashed #64748b; border-radius: 8px; padding: 14px; text-align: left; opacity: 0.9;">
+        <div style="display: flex; align-items: flex-start; gap: 10px; color: #94a3b8; font-size: 0.85rem; line-height: 1.5;">
+          <span style="font-size: 1.3rem; line-height: 1;">🔒</span>
+          <div>
+            <strong style="color: #cbd5e1;">Bonus-Cache verpasst:</strong> ${reasonText}
+            <div style="margin-top: 6px; font-size: 0.78rem; color: #64748b; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 4px;">Voraussetzung für den Bonus: Richtiger Täter + über 55% Beweislast + Rang „Sherlock Holmes“.</div>
+          </div>
         </div>
       </div>
     `;
@@ -167,24 +194,28 @@ export function handleAccusation(suspectId) {
   const accusedName = getSuspectName(suspectId);
   const realName = getSuspectName(result.murderer);
   const story = getStory();
+  const rank = getPlayerRank();
+  const isSherlock = rank.level >= 5;
   
   const avatar = story.suspects && story.suspects[suspectId] ? story.suspects[suspectId].image : 'assets/avatar.jpg';
   const realAvatar = story.suspects && story.suspects[result.murderer] ? story.suspects[result.murderer].image : 'assets/avatar.jpg';
   const ending = story.endings && story.endings[suspectId] ? story.endings[suspectId] : { confession: 'Ich war es!' };
   
   const perc = result.percentages[result.murderer];
-  const isFullWin = (suspectId === result.murderer && perc >= FULL_WIN_THRESHOLD);
+  const isCorrectSuspect = (suspectId === result.murderer);
+  const isHighSuspicion = (perc > FULL_WIN_THRESHOLD);
+  const isFullWin = (isCorrectSuspect && isHighSuspicion && isSherlock);
   let outroSlides = [];
 
-  if (suspectId === result.murderer) {
-    if (perc >= FULL_WIN_THRESHOLD) {
-      // 1. VOLLER ERFOLG (>= FULL_WIN_THRESHOLD%): HINTER GITTERN! -> Finalkords UND Bonus
+  if (isCorrectSuspect) {
+    if (isFullWin) {
+      // 1. VOLLER ERFOLG (> 55% UND Sherlock Holmes): HINTER GITTERN! -> Finalkords UND Bonus
       outroSlides = [
         {
           image: avatar,
           badge: 'KAPITEL 1 • DIE ÜBERFÜHRUNG',
           title: 'Die Falle schnappt zu!',
-          text: `Mit wasserdichten Beweisen (Beweislast: ${perc}%) konfrontierst du ${accusedName}. Unter der erdrückenden Last der Indizien bricht ${accusedName} schließlich zusammen.`,
+          text: `Mit wasserdichten Beweisen (Beweislast: ${perc}%) und meisterhafter Kombinationsgabe als ${rank.name} konfrontierst du ${accusedName}. Unter der erdrückenden Last der Indizien bricht ${accusedName} schließlich zusammen.`,
           audio: 'assets/audio/story/outro_win_ueberfuehrung.mp3'
         },
         {
@@ -205,13 +236,13 @@ export function handleAccusation(suspectId) {
           image: 'assets/seal_schlappen.jpg',
           badge: 'KAPITEL 4 • DIE FINAL-DOSE &amp; BONUS',
           title: 'Das Vermächtnis von GCBYXW0',
-          text: 'Die Handschellen haben geklickt, Hof ist gerettet! Aus den beschlagnahmten Geheimakten des Inhaftierten entzifferst du nun die finalen Koordinaten des Haupt-Finals UND des geheimen Meister-Bonus!',
+          text: 'Die Handschellen haben geklickt, Hof ist gerettet! Als Meister-Detektiv entzifferst du aus den beschlagnahmten Geheimakten des Inhaftierten die finalen Koordinaten des Haupt-Finals UND des Meister-Bonus!',
           audio: null,
           buttonText: '🏆 Fall abschließen &amp; Koordinaten enthüllen ›'
         }
       ];
     } else {
-      // 2. TÄTER IDENTIFIZIERT, ABER < 55%: FREISPRUCH & SPUREN VERWISCHT -> Nur Finalkords
+      // 2. TÄTER IDENTIFIZIERT, ABER BEWEISKETTE VOR GERICHT NICHT WASSERDICHT (<= 55% ODER Rang < Sherlock) -> Nur Finalkords
       outroSlides = [
         {
           image: avatar,
@@ -231,7 +262,7 @@ export function handleAccusation(suspectId) {
           image: 'assets/kommissar_stahl.jpg',
           badge: 'KAPITEL 3 • FREISPRUCH AUF KAUTION',
           title: 'Mangel an Beweisen!',
-          text: `Doch der Triumph ist von kurzer Dauer. Die Beweislast liegt nur bei ${perc}% (Benötigt: ${FULL_WIN_THRESHOLD}%). Ein teurer Staranwalt erwirkt einen Freispruch auf Kaution. ${accusedName} entkommt der Justiz!`,
+          text: `Doch der Triumph ist von kurzer Dauer. Die Beweislast reicht für den Haftrichter nicht aus. Ein teurer Staranwalt erwirkt einen Freispruch auf Kaution. ${accusedName} entkommt der Justiz!`,
           audio: 'assets/audio/story/outro_insufficient_abschluss.mp3'
         },
         {
@@ -298,15 +329,19 @@ export function handleAccusation(suspectId) {
 
     resContainer.classList.remove('hidden');
 
-    if (suspectId === result.murderer) {
-      if (perc >= FULL_WIN_THRESHOLD) {
-        title.textContent = 'Glückwunsch! Fall meisterhaft gelöst (Täter hinter Gittern).';
-        title.style.color = 'var(--color-green, #2e8b57)';
-        text.innerHTML = 'Hervorragende Ermittlung! Hier sind deine Belohnungen:';
+    if (isFullWin) {
+      title.textContent = 'Glückwunsch! Fall meisterhaft gelöst (Täter inhaftiert & Sherlock Holmes).';
+      title.style.color = 'var(--color-green, #2e8b57)';
+      text.innerHTML = 'Hervorragende Ermittlung! Beide Cache-Koordinaten und der Meister-Bonus sind freigeschaltet:';
+    } else if (isCorrectSuspect) {
+      if (isHighSuspicion && !isSherlock) {
+        title.textContent = `Täter überführt (Beweise erdrückend, aber Rang „${rank.name}“)`;
+        title.style.color = 'var(--color-amber-glow)';
+        text.innerHTML = `Du hast den Drahtzieher entlarvt (${perc}%). Da dein Rang noch nicht „Sherlock Holmes“ ist (mind. 700 Punkte &amp; 8 Stationen), bleibt der Meister-Bonus verschlossen. Hier sind die Koordinaten der Hauptdose:`;
       } else {
         title.textContent = 'Fall gelöst (aber Täter auf freiem Fuß / Kaution)';
         title.style.color = 'var(--color-amber-glow)';
-        text.innerHTML = 'Der Fall ist geklärt, doch der Drahtzieher konnte entkommen. Hier sind die Koordinaten der Hauptdose:';
+        text.innerHTML = `Der Fall ist geklärt, doch die Beweise reichten nicht für eine Inhaftierung (Beweislast: ${perc}%, benötigt: über ${FULL_WIN_THRESHOLD}%). Hier sind die Koordinaten der Hauptdose:`;
       }
     } else {
       title.textContent = 'Fall ungelöst (Falscher Verdächtiger)!';
@@ -314,7 +349,7 @@ export function handleAccusation(suspectId) {
       text.innerHTML = 'Der wahre Drahtzieher bleibt im Schatten. Dennoch hast du die Hauptdose lokalisiert:';
     }
 
-    coords.innerHTML = await formatFinalCoords(isFullWin, result.murderer);
+    coords.innerHTML = await formatFinalCoords(isFullWin, result.murderer, suspectId, result);
 
     // Replay Outro Button
     let replayBtn = document.getElementById('btn-replay-outro');
@@ -329,7 +364,7 @@ export function handleAccusation(suspectId) {
     replayBtn.onclick = () => {
       openIntro(async () => {
         showView('view-final');
-        coords.innerHTML = await formatFinalCoords(isFullWin, result.murderer);
+        coords.innerHTML = await formatFinalCoords(isFullWin, result.murderer, suspectId, result);
       }, lastOutroSlides);
     };
 
@@ -364,49 +399,4 @@ export function startFinaleForSuspect(suspectId) {
   }
   
   handleAccusation(suspectId);
-}
-
-function generateDiploma() {
-  const resultContainer = document.getElementById('final-result');
-  const existingBanner = document.getElementById('diploma-banner-wrapper');
-  if (existingBanner) existingBanner.remove();
-
-  const bannerWrapper = document.createElement('div');
-  bannerWrapper.id = 'diploma-banner-wrapper';
-  bannerWrapper.style = "margin-top: 30px; border-top: 1px solid var(--color-glass-border); padding-top: 20px;";
-  
-  const bannerUrl = new URL('assets/diploma_banner.jpg', window.location.href).href;
-  
-  bannerWrapper.innerHTML = `
-    <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px;">
-      <div class="praegesiegel praegesiegel-dark" style="width: 58px; height: 58px;" title="Offizielles Meister-Siegel">
-        <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
-          <defs>
-            <path id="seal-path-diploma" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
-            <clipPath id="seal-clip-diploma">
-              <circle cx="50" cy="50" r="24.5" />
-            </clipPath>
-          </defs>
-          <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
-          <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
-          <circle cx="50" cy="50" r="42" class="seal-inner-line" />
-          <text class="seal-text">
-            <textPath href="#seal-path-diploma" startOffset="50%" text-anchor="middle">
-              ★ VERSTECKULES • MEISTER-DIPLOM ★
-            </textPath>
-          </text>
-          <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
-          <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-diploma)" class="seal-avatar" />
-          <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
-        </svg>
-      </div>
-      <h3 style="color: var(--color-amber-glow); font-size: 1.25rem; margin: 0;">Dein Geocaching-Banner (GCBYXW0)</h3>
-    </div>
-    <img src="${bannerUrl}" alt="Diplom Banner" style="width: 100%; max-width: 600px; border-radius: 8px; border: 2px solid var(--color-amber-muted); margin-bottom: 15px;">
-    <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 10px;">Füge diesen Code in dein Geocaching-Profil ein:</p>
-    <textarea readonly style="width: 100%; height: 60px; background: rgba(0,0,0,0.5); color: #fff; font-family: monospace; border: 1px solid var(--color-glass-border); padding: 10px; border-radius: 4px; resize: none;"><a href="${window.location.origin}${window.location.pathname}"><img src="${bannerUrl}" alt="Der Pakt der Schlappen-Erben - Meister-Ermittler" /></a></textarea>
-  `;
-  
-  resultContainer.appendChild(bannerWrapper);
-  bannerWrapper.scrollIntoView({ behavior: 'smooth' });
 }

@@ -3,7 +3,7 @@
  */
 
 import { getStations, getConfig } from '../config-loader.js';
-import { getState, subscribe, isStationSolved, getPlayerRank } from '../state.js';
+import { getState, subscribe, isStationSolved, getPlayerRank, getInterrogationStatus } from '../state.js';
 import { showNoirAlert } from '../main.js';
 
 let map = null;
@@ -91,7 +91,7 @@ export function initMap() {
           marker.on('click', () => {
             import('../state.js').then(mod => {
               const currentState = mod.getState();
-              alert(`EASTER EGG GEFUNDEN: ${egg.desc}`);
+              showNoirAlert(`EASTER EGG GEFUNDEN!\n\n${egg.desc}\n(+${egg.points} Punkte)`, 'Geheimes Fundstück');
               mod.saveState({ [`easterEgg_${egg.id}`]: true, score: (currentState.score || 0) + egg.points });
               marker.remove();
               delete markers[egg.id];
@@ -279,7 +279,10 @@ function renderMarkers() {
                     icon: getIcon('suspect')
                   }).addTo(map);
 
-                  marker.on('click', () => {
+                  marker.on('click', (e) => {
+                    if (e && e.originalEvent) {
+                      e.originalEvent.stopPropagation();
+                    }
                     setActiveTarget(markerKey);
                     renderSuspectPopup(marker, suspect, [parsed.lat, parsed.lng]);
                   });
@@ -301,7 +304,7 @@ function renderSuspectPopup(marker, suspect, suspectLatLng) {
 
   if (playerMarker) {
     dist = map.distance(playerMarker.getLatLng(), suspectLatLng);
-    if (dist <= 20) {
+    if (dist <= 25) {
       isNear = true;
     }
   }
@@ -311,51 +314,81 @@ function renderSuspectPopup(marker, suspect, suspectLatLng) {
   const popupDiv = document.createElement('div');
   popupDiv.className = 'suspect-map-popup';
   popupDiv.innerHTML = `
-    <div style="width: 220px; font-family: sans-serif; color: #fff;">
-      <div style="position: relative; width: 100%; height: 130px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; border: 1px solid rgba(212, 175, 55, 0.4);">
-        <img src="${suspect.image}" alt="${suspect.name}" style="width: 100%; height: 100%; object-fit: contain; background: #000;">
-        <span style="position: absolute; top: 6px; right: 6px; background: rgba(10, 14, 23, 0.85); border: 1px solid #8b0000; color: #ff5555; font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; font-weight: bold; letter-spacing: 1px;">HAUPTVERDACHT</span>
+    <div style="width: 220px; font-family: var(--font-sans, sans-serif); color: #f1f5f9;">
+      <div style="position: relative; width: 100%; height: 130px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; border: 1px solid rgba(212, 175, 55, 0.5); background: #000;">
+        <img src="${suspect.image}" alt="${suspect.name}" style="width: 100%; height: 100%; object-fit: contain;">
+        <span style="position: absolute; top: 6px; right: 6px; background: rgba(10, 14, 23, 0.9); border: 1px solid #8b0000; color: #ff5555; font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; font-weight: bold; letter-spacing: 1px;">HAUPTVERDACHT</span>
       </div>
-      <div style="font-family: serif; font-size: 1.15rem; color: #d4af37; font-weight: bold; margin-bottom: 2px;">${suspect.name}</div>
-      <div style="font-size: 0.78rem; color: #aaa; margin-bottom: 4px;">${suspect.role} (${suspect.age} J.)</div>
+      <div style="font-family: var(--font-serif, serif); font-size: 1.15rem; color: #d4af37; font-weight: bold; margin-bottom: 2px;">${suspect.name}</div>
+      <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 4px;">${suspect.role} (${suspect.age} J.)</div>
       <div style="font-size: 0.75rem; color: #f5d79e; margin-bottom: 8px;">📍 ${suspect.location || 'Hof'}</div>
 
-      ${isNear ? `
-        <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px; font-size: 0.8rem; color: #a7f3d0; text-align: center;">
-          ✅ Du befindest dich vor Ort am Standort!
-        </div>
-        <button class="btn-interrogate-popup" id="btn-interrogate-map-${suspect.id}" style="width: 100%; padding: 10px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: linear-gradient(135deg, #d4af37, #8c6d23); color: #05080f; border: 1px solid #d4af37; cursor: pointer;">🗣️ Vor Ort verhören</button>
-      ` : `
-        <div style="background: rgba(180, 0, 0, 0.2); border: 1px solid #8b0000; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px;">
+      ${isNear ? (() => {
+        const intStatus = getInterrogationStatus(suspect.id);
+        if (!intStatus.canInterrogate) {
+          return `
+            <div style="background: rgba(180, 0, 0, 0.25); border: 1px solid #8b0000; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px;">
+              <div style="font-size: 0.78rem; color: #ff8888; font-weight: bold;">🚫 ${intStatus.reason}</div>
+              <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 2px;">
+                ${intStatus.count >= 2 
+                  ? 'Der Verdächtige verweigert auf Anraten des Anwalts jedes weitere Wort bis zur Verhaftung.' 
+                  : `Löse noch ${intStatus.remainingStations} weitere Station(en), um neues Beweismaterial für das 2. Verhör zu sichern.`}
+              </div>
+            </div>
+            <button disabled style="width: 100%; padding: 10px 12px; font-size: 0.82rem; font-weight: bold; border-radius: 4px; background: #222; color: #888; border: 1px solid #444; cursor: not-allowed; opacity: 0.6;">
+              ${intStatus.count >= 2 ? '🚫 Max. 2 Verhöre erreicht' : `⏳ Noch ${intStatus.remainingStations} Station(en) nötig`}
+            </button>
+          `;
+        } else {
+          return `
+            <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px; font-size: 0.8rem; color: #a7f3d0; text-align: center;">
+              ✅ Vor Ort am Standort! (${intStatus.count === 0 ? '1. Verhör' : '2. Verhör'})
+            </div>
+            <button class="btn-interrogate-popup" style="width: 100%; padding: 10px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: linear-gradient(135deg, #d4af37, #8c6d23); color: #05080f; border: 1px solid #d4af37; cursor: pointer;">🗣️ Vor Ort verhören (${intStatus.count === 0 ? '1/2' : '2/2'})</button>
+          `;
+        }
+      })() : `
+        <div style="background: rgba(180, 0, 0, 0.25); border: 1px solid #8b0000; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px;">
           <div style="font-size: 0.78rem; color: #ff8888; font-weight: bold;">🚫 Zu weit entfernt (${distText})</div>
-          <div style="font-size: 0.72rem; color: #ccc; margin-top: 2px;">Begib dich persönlich zu diesem Ort (${suspect.location}), um den Verdächtigen zu verhören.</div>
+          <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 2px;">Begib dich persönlich zu diesem Ort (${suspect.location}), um den Verdächtigen zu verhören.</div>
         </div>
-        <button id="btn-target-suspect-${suspect.id}" style="width: 100%; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: rgba(212, 175, 55, 0.2); color: #d4af37; border: 1px solid #d4af37; cursor: pointer;">🧭 Als Ziel anpeilen</button>
+        <button class="btn-target-suspect" style="width: 100%; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: rgba(212, 175, 55, 0.2); color: #d4af37; border: 1px solid #d4af37; cursor: pointer;">🧭 Als Ziel anpeilen</button>
       `}
     </div>
   `;
 
-  marker.bindPopup(popupDiv).openPopup();
+  // Sauberes Öffnen über Leaflet Popup-Instanz
+  map.closePopup();
 
-  if (isNear) {
-    const btn = document.getElementById(`btn-interrogate-map-${suspect.id}`);
-    if (btn) {
-      btn.onclick = () => {
-        marker.closePopup();
-        import('./dossier.js').then(dossierMod => {
-          dossierMod.startSuspectInterrogation(suspect.id);
-        });
-      };
-    }
-  } else {
-    const targetBtn = document.getElementById(`btn-target-suspect-${suspect.id}`);
-    if (targetBtn) {
-      targetBtn.onclick = () => {
-        marker.closePopup();
-        setActiveTarget('suspect_' + suspect.id);
-        showNoirAlert(`Ziel auf ${suspect.name} (${suspect.location}) gesetzt! Folge dem Kompass im Navigator.`, 'Ziel erfasst');
-      };
-    }
+  const popup = L.popup({
+    className: 'noir-suspect-popup',
+    maxWidth: 260,
+    autoPan: true,
+    closeButton: true
+  })
+  .setLatLng(suspectLatLng)
+  .setContent(popupDiv)
+  .openOn(map);
+
+  const interrogateBtn = popupDiv.querySelector('.btn-interrogate-popup');
+  if (interrogateBtn) {
+    interrogateBtn.onclick = (e) => {
+      e.stopPropagation();
+      map.closePopup();
+      import('./dossier.js').then(dossierMod => {
+        dossierMod.startSuspectInterrogation(suspect.id);
+      });
+    };
+  }
+
+  const targetBtn = popupDiv.querySelector('.btn-target-suspect');
+  if (targetBtn) {
+    targetBtn.onclick = (e) => {
+      e.stopPropagation();
+      map.closePopup();
+      setActiveTarget('suspect_' + suspect.id);
+      showNoirAlert(`Ziel auf ${suspect.name} (${suspect.location}) gesetzt! Folge dem Kompass im Navigator.`, 'Ziel erfasst');
+    };
   }
 }
 

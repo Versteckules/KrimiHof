@@ -6,6 +6,7 @@ import { onPositionUpdate, getDistance, getBearing } from '../geo.js';
 import { getActiveTargetId, updatePlayerMarker } from './map.js';
 import { getStationById, getConfig, getStory } from '../config-loader.js';
 import { parseCoords } from '../coords.js';
+import { showNoirAlert } from '../main.js';
 
 let sonarInterval = null;
 let isGeofenceTriggered = false;
@@ -100,7 +101,7 @@ export function initNavigator() {
             document.body.style.transition = 'filter 2s';
             document.body.style.filter = 'blur(5px) hue-rotate(90deg)';
             setTimeout(() => {
-              alert("EASTER EGG GEFUNDEN! Jean Paul sagt: 'Schwindel ist die Poesie des Raumes'. (+25 Punkte)");
+              showNoirAlert("EASTER EGG GEFUNDEN!\n\nJean Paul flüstert: 'Schwindel ist die Poesie des Raumes.' (+25 Punkte)", "Geheimes Ereignis");
               document.body.style.filter = 'none';
               mod.saveState({ easterEggCompass: true, score: (state.score || 0) + 25 });
             }, 2000);
@@ -112,7 +113,19 @@ export function initNavigator() {
   });
 }
 
+let lastCheckedTargetId = null;
+
+document.addEventListener('targetChanged', () => {
+  isGeofenceTriggered = false;
+  lastCheckedTargetId = null;
+});
+
 function checkGeofence(dist, geoConfig, targetId) {
+  if (targetId !== lastCheckedTargetId) {
+    lastCheckedTargetId = targetId;
+    isGeofenceTriggered = false;
+  }
+
   const hitRadius = geoConfig.standardRadiusMeters;
   if (dist <= hitRadius && !isGeofenceTriggered) {
     isGeofenceTriggered = true;

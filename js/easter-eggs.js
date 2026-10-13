@@ -1,5 +1,6 @@
 import { playSound } from './audio.js';
 import { onPositionUpdate } from './geo.js';
+import { showNoirAlert } from './main.js';
 
 export function initEasterEggs() {
   console.log("Easter Eggs listener initialized.");
@@ -11,13 +12,13 @@ export function initEasterEggs() {
     setTimeout(() => {
       document.body.classList.remove('glass-crack');
     }, 2000);
-    alert("EASTER EGG: Der Kompass ist verwirrt! Die Sensoren spielen verrückt.");
+    showNoirAlert("Der Kompass ist verwirrt! Die Sensoren spielen verrückt.", "Kompass-Schwindel");
   });
 
   // 2. Midnight Glockenschlag
   document.addEventListener('easterEggBell', () => {
     playSound('bell');
-    alert("EASTER EGG: Es ist exakt Mitternacht! Die Geisterstunde beginnt.");
+    showNoirAlert("Es ist exakt Mitternacht! Die Geisterstunde der St. Michaeliskirche beginnt.", "Mitternachtsglocke");
   });
 
   setInterval(() => {
@@ -32,13 +33,13 @@ export function initEasterEggs() {
   onPositionUpdate((pos) => {
     if (pos.speed && pos.speed > 8.33 && !speedWarningShown) { // > 30 km/h
       speedWarningShown = true;
-      alert("EASTER EGG: Bist du im Auto unterwegs, Detektiv? Vergiss nicht, die Augen auf der Straße zu behalten!");
+      showNoirAlert("Bist du im Auto unterwegs, Detektiv? Vergiss nicht, die Augen auf der Straße zu behalten!", "Tempo-Warnung");
     }
   });
 
   // 4. Offline Mode
   window.addEventListener('offline', () => {
-    alert("EASTER EGG: Verbindung zum Archiv abgerissen! Wir sind komplett offline... vertraue deinem Instinkt.");
+    showNoirAlert("Verbindung zum Archiv abgerissen! Wir sind komplett offline... vertraue deinem Instinkt.", "Offline-Modus");
   });
 
   // 5. Battery API (Wenn verfügbar)
@@ -46,7 +47,7 @@ export function initEasterEggs() {
     navigator.getBattery().then(function(battery) {
       battery.addEventListener('levelchange', function() {
         if (battery.level <= 0.15) {
-          alert("EASTER EGG: Achtung! Deine Batterie ist kritisch. Die Dunkelheit frisst den Akku... beeil dich!");
+          showNoirAlert("Achtung! Deine Batterie ist kritisch (< 15%). Die Dunkelheit frisst den Akku... beeil dich!", "Akku-Warnung");
         }
       });
     });

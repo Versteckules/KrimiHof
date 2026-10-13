@@ -24,7 +24,7 @@ export function initLockscreen() {
  */
 export function checkLockscreenStatus() {
   const state = getState();
-  if (state && state.isTestingMode) {
+  if (state && (state.isTestingMode || state.isOnsiteTestMode)) {
     stopCountdown();
     return true;
   }

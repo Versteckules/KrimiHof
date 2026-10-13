@@ -60,31 +60,37 @@
         </p>
 
         <!-- Dienstausweis -->
-        <div class="badge-card" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 14px 20px;">
-          <div style="flex-grow: 1; text-align: left;">
-            <input type="text" id="player-name-input" placeholder="Name des Ermittlers..." autocomplete="off">
-            <p style="font-size: 0.78rem; color: var(--color-night-light); margin-top: 4px;">OFFIZIELLE ERMITTLUNGSAKTE &middot; KRIMINALPOLIZEI HOF</p>
-          </div>
-          <div class="praegesiegel praegesiegel-dark" style="width: 58px; height: 58px;" title="Dienstsiegel • Versteckules">
-            <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
-              <defs>
-                <path id="seal-path-badge" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
-                <clipPath id="seal-clip-badge">
-                  <circle cx="50" cy="50" r="24.5" />
-                </clipPath>
-              </defs>
-              <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
-              <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
-              <circle cx="50" cy="50" r="42" class="seal-inner-line" />
-              <text class="seal-text">
-                <textPath href="#seal-path-badge" startOffset="50%" text-anchor="middle">
-                  ★ VERSTECKULES • DIENSTAUSWEIS ★
-                </textPath>
-              </text>
-              <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
-              <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-badge)" class="seal-avatar" />
-              <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
-            </svg>
+        <div class="badge-card">
+          <div class="badge-card-body">
+            <div class="badge-card-fields">
+              <input type="text" id="player-name-input" placeholder="Name des Ermittlers..." autocomplete="off">
+              <p class="badge-card-sub">
+                <span class="badge-sub-chunk">OFFIZIELLE ERMITTLUNGSAKTE</span>
+                <span class="badge-sub-dot">&middot;</span>
+                <span class="badge-sub-chunk">KRIMINALPOLIZEI HOF</span>
+              </p>
+            </div>
+            <div class="praegesiegel praegesiegel-dark" style="width: 58px; height: 58px; flex-shrink: 0;" title="Dienstsiegel • Versteckules">
+              <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
+                <defs>
+                  <path id="seal-path-badge" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
+                  <clipPath id="seal-clip-badge">
+                    <circle cx="50" cy="50" r="24.5" />
+                  </clipPath>
+                </defs>
+                <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
+                <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
+                <circle cx="50" cy="50" r="42" class="seal-inner-line" />
+                <text class="seal-text">
+                  <textPath href="#seal-path-badge" startOffset="50%" text-anchor="middle">
+                    ★ VERSTECKULES • DIENSTAUSWEIS ★
+                  </textPath>
+                </text>
+                <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
+                <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-badge)" class="seal-avatar" />
+                <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
+              </svg>
+            </div>
           </div>
         </div>
 
@@ -95,9 +101,9 @@
         <div>
           <button id="btn-start-game" class="btn-primary">Akte Öffnen</button>
           <br>
-          <a href="?debug=1"
-            style="color: rgba(255,255,255,0.2); font-size: 0.75rem; text-decoration: none; margin-top: 15px; display: inline-block;">[Offline-Test
-            aktivieren]</a>
+          <div style="color: rgba(255,255,255,0.25); font-size: 0.72rem; margin-top: 15px; font-family: var(--font-mono);">
+            Test-Modus: Name <code>OFFLINETEST</code> (Couch) oder <code>ONSIDETEST</code> (Vor Ort / Tag)
+          </div>
         </div>
         <p id="name-error" class="hidden"
           style="color: var(--color-blood-red); margin-top: var(--space-sm); font-family: var(--font-mono);">
@@ -419,6 +425,16 @@
               Heiden</button>
           </div>
         </div>
+
+        <!-- Akte Schreddern im Dossier -->
+        <div style="margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: 1px solid var(--color-glass-border); text-align: center; position: relative; z-index: 1;">
+          <button id="btn-dossier-shred" class="btn-danger" style="font-size: 0.95rem; padding: 10px 20px; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);">
+            🗑️ Akte schreddern (Neues Spiel beginnen)
+          </button>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); margin-top: 6px;">
+            Setzt den gesamten Spielfortschritt zurück, um von vorne zu starten.
+          </div>
+        </div>
       </section>
     </main>
 
@@ -447,10 +463,17 @@
           <div id="final-coords"
             style="font-family: var(--font-mono); font-size: 1.2rem; color: var(--color-blood-red); font-weight: bold; margin-bottom: 20px;">
           </div>
-
-          <button id="btn-print-diploma" class="btn-primary">Diplom anzeigen / speichern</button>
         </div>
 
+        <!-- Akte Schreddern im Finale -->
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--color-glass-border); text-align: center;">
+          <button id="btn-final-reset" class="btn-danger" style="font-size: 0.95rem; padding: 12px 24px; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);">
+            🗑️ Akte schreddern (Neues Spiel starten)
+          </button>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-muted); margin-top: 8px;">
+            Löscht alle gespeicherten Spieldaten, damit man das Krimi-Abenteuer von vorne spielen kann.
+          </div>
+        </div>
 
       </section>
     </main>
@@ -670,19 +693,19 @@
 
       <ul style="list-style: none; padding: 0; margin-bottom: 20px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px;">
         <li style="display:flex; justify-content:space-between; border-bottom: 1px dashed #333; padding-bottom: 3px;">
-          <span>1. Streifenpolizist</span> <span style="color:#aaa;">0 - 99 Pkt</span>
+          <span>1. Streifenpolizist</span> <span style="color:#aaa;">0 - 149 Pkt</span>
         </li>
         <li style="display:flex; justify-content:space-between; border-bottom: 1px dashed #333; padding-bottom: 3px;">
-          <span>2. Schnüffler</span> <span style="color:#aaa;">100 - 199 Pkt</span>
+          <span>2. Schnüffler</span> <span style="color:#aaa;">150 - 299 Pkt</span>
         </li>
         <li style="display:flex; justify-content:space-between; border-bottom: 1px dashed #333; padding-bottom: 3px;">
-          <strong style="color: var(--color-amber-glow);">3. Privatdetektiv</strong> <span style="color:#aaa;">200 - 299 Pkt</span>
+          <strong style="color: var(--color-amber-glow);">3. Privatdetektiv</strong> <span style="color:#aaa;">300 - 499 Pkt</span>
         </li>
         <li style="display:flex; justify-content:space-between; border-bottom: 1px dashed #333; padding-bottom: 3px;">
-          <strong style="color: var(--color-amber-glow);">4. Inspektor</strong> <span style="color:#aaa;">300 - 399 Pkt</span>
+          <strong style="color: var(--color-amber-glow);">4. Inspektor</strong> <span style="color:#aaa;">500 - 699 Pkt</span>
         </li>
         <li style="display:flex; justify-content:space-between;">
-          <strong style="color: var(--color-amber-glow);">5. Sherlock Holmes</strong> <span style="color:#aaa;">400+ Pkt</span>
+          <strong style="color: var(--color-amber-glow);">5. Sherlock Holmes</strong> <span style="color:#aaa;">700+ Pkt (ab 8 Pflichtstationen)</span>
         </li>
       </ul>
 

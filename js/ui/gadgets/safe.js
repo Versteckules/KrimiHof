@@ -1,6 +1,7 @@
 import { addSuspectImpact } from '../../state.js';
+import { showNoirAlert } from '../../main.js';
 
-export function runGadget(stationId, onComplete) {
+export function runGadget(stationId, onComplete, onCancel) {
   const overlay = document.createElement('div');
   overlay.id = 'gadget-fullscreen-overlay';
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle, #333 0%, #111 100%); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; color:white; font-family:sans-serif; text-align:center;';
@@ -58,7 +59,7 @@ export function runGadget(stationId, onComplete) {
   document.getElementById('btn-safe-cancel').onclick = () => {
     window.removeEventListener('deviceorientation', handleOrientation);
     if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-    onComplete();
+    if (onCancel) onCancel();
   };
 
   // Abort
@@ -77,13 +78,19 @@ export function runGadget(stationId, onComplete) {
     }
   };
 
-  // Gyroscope
+  // Gyroscope mit Throttling (verhindert unkontrolliertes Durchdrehen bei 60Hz)
+  let lastGyroTime = 0;
   function handleOrientation(event) {
     if (!event.gamma) return;
-    // gamma is left/right tilt in degrees (-90 to 90)
-    // Map tilt to a slow rotation
-    if (event.gamma > 15) updateDial(currentVal + 1);
-    if (event.gamma < -15) updateDial(currentVal - 1);
+    const now = Date.now();
+    if (now - lastGyroTime < 180) return;
+    if (event.gamma > 20) {
+      lastGyroTime = now;
+      updateDial(currentVal + 1);
+    } else if (event.gamma < -20) {
+      lastGyroTime = now;
+      updateDial(currentVal - 1);
+    }
   }
   window.addEventListener('deviceorientation', handleOrientation);
 
@@ -97,10 +104,10 @@ export function runGadget(stationId, onComplete) {
         window.removeEventListener('deviceorientation', handleOrientation);
         showInsideSafe();
       } else {
-        alert("Klick! Die Zahl rastet ein.");
+        showNoirAlert("Klick! Die Zahl rastet mit einem feinen Klicken ein.", "Tresor-Schloss");
       }
     } else {
-      alert("Falsche Zahl! Das Schloss blockiert. (Reset)");
+      showNoirAlert("Falsche Zahl! Das Schloss blockiert und setzt sich zurück.", "Fehlversuch");
       entered = [];
       progressDisplay.innerText = "_ _ _";
     }
@@ -125,7 +132,7 @@ export function runGadget(stationId, onComplete) {
         const suspect = btn.getAttribute('data-suspect');
         const val = parseInt(btn.getAttribute('data-val'), 10);
         addSuspectImpact(suspect, val);
-        alert("Beleg gesichert und zugeordnet!");
+        showNoirAlert("Beleg gesichert und zugeordnet!", "Erfolg");
         document.body.removeChild(overlay);
         onComplete();
       };

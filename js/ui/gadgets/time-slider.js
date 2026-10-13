@@ -108,7 +108,15 @@ export function runGadget(stationId, onSuccess) {
   window.addEventListener('touchmove', moveDrag, {passive: false});
   window.addEventListener('touchend', endDrag);
 
+  function cleanup() {
+    window.removeEventListener('mousemove', moveDrag);
+    window.removeEventListener('mouseup', endDrag);
+    window.removeEventListener('touchmove', moveDrag);
+    window.removeEventListener('touchend', endDrag);
+  }
+
   btnDone.onclick = () => {
+    cleanup();
     overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Beweis gesichert!</h2></div>`;
     setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1000);
   };

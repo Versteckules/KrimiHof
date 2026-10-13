@@ -4,6 +4,7 @@
 
 import { getState, saveState, setPlayerName, startGame, resetState, subscribe } from '../state.js';
 import { openIntro } from './intro.js';
+import { showNoirAlert } from '../main.js';
 
 export function initLanding() {
   const startBtn = document.getElementById('btn-start-game');
@@ -50,8 +51,10 @@ export function initLanding() {
 
     if (hasProgress) {
       startBtn.innerHTML = solvedCount > 0 ? `Ermittlung fortsetzen (${solvedCount}/12)` : "Ermittlung fortsetzen";
-      progressIndicator.textContent = `Akte aktiv: ${solvedCount}/12 Pflichtstationen gelöst • ${state.score || 0} Punkte`;
-      if (state.isTestingMode) progressIndicator.textContent += " [TEST-MODUS]";
+      let testBadge = "";
+      if (state.isTestingMode) testBadge = " [OFFLINE-TEST]";
+      else if (state.isOnsiteTestMode) testBadge = " [VOR-ORT-TEST / TAG]";
+      progressIndicator.textContent = `Akte aktiv: ${solvedCount}/12 Pflichtstationen gelöst • ${state.score || 0} Punkte${testBadge}`;
       progressIndicator.classList.remove('hidden');
     } else {
       startBtn.innerHTML = "Akte Öffnen";
@@ -113,21 +116,26 @@ export function initLanding() {
 
   // Start / Fortsetzen Button
   startBtn.addEventListener('click', () => {
-    const name = nameInput.value.trim();
+    const trimmedName = nameInput.value.trim();
+    const nameUpper = trimmedName.toUpperCase();
     const currentState = getState();
     const solvedCount = (currentState.solvedStations || []).length;
 
-    if (name === "OFFLINETEST") {
+    if (nameUpper === "OFFLINETEST") {
       errorMsg.classList.add('hidden');
-      saveState({ isTestingMode: true, playerName: "TEST-AGENT" });
+      saveState({ isTestingMode: true, isOnsiteTestMode: false, playerName: "OFFLINETEST" });
       startGame();
-    } else if (name.length < 2) {
+    } else if (nameUpper === "ONSIDETEST") {
+      errorMsg.classList.add('hidden');
+      saveState({ isTestingMode: false, isOnsiteTestMode: true, playerName: "ONSIDETEST" });
+      startGame();
+    } else if (trimmedName.length < 2) {
       errorMsg.classList.remove('hidden');
       nameInput.focus();
       return;
     } else {
       errorMsg.classList.add('hidden');
-      setPlayerName(name);
+      setPlayerName(trimmedName);
       startGame();
     }
 
@@ -169,7 +177,7 @@ export function initLanding() {
           nameInput.disabled = false;
           nameInput.style.opacity = '1';
           updateUIFromState(getState());
-          alert("Die Fallakte wurde erfolgreich geschreddert.");
+          showNoirAlert("Die Fallakte wurde erfolgreich geschreddert.", "Akte gelöscht");
         }
       }
     });
@@ -190,7 +198,7 @@ export function initLanding() {
       nameInput.style.opacity = '1';
       closeResetModal();
       updateUIFromState(getState());
-      alert("Die Ermittlungsakte wurde vollständig geschreddert und zurückgesetzt.");
+      window.location.reload();
     });
   }
 

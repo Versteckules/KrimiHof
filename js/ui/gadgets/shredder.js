@@ -1,6 +1,7 @@
 import { addSuspectImpact, saveState, getState, addScore } from '../../state.js';
+import { showNoirAlert } from '../../main.js';
 
-export function runGadget(stationId, onComplete) {
+export function runGadget(stationId, onComplete, onCancel) {
   const overlay = document.createElement('div');
   overlay.id = 'gadget-fullscreen-overlay';
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:#111; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; color:white; font-family:sans-serif; text-align:center;';
@@ -19,7 +20,7 @@ export function runGadget(stationId, onComplete) {
 
   document.getElementById('btn-shredder-cancel').onclick = () => {
     document.body.removeChild(overlay);
-    onComplete();
+    if (onCancel) onCancel();
   };
 
   document.getElementById('btn-shredder-abort').onclick = () => {
@@ -103,7 +104,7 @@ export function runGadget(stationId, onComplete) {
         const val = parseInt(btn.getAttribute('data-val'), 10);
         addSuspectImpact(suspect, val);
         
-        alert("Schuldzuweisung notiert! Beweis gesichert.");
+        showNoirAlert("Schuldzuweisung notiert! Beweis gesichert.", "Beweisaufnahme");
         document.body.removeChild(overlay);
         onComplete();
       };

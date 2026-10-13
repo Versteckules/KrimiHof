@@ -34,8 +34,15 @@ export function runGadget(stationId, onSuccess) {
     if (development >= 100 && !solved) {
       solved = true;
       window.removeEventListener('devicemotion', handleMotion);
+      import('../../state.js').then(m => {
+        m.addInventoryItem('evidence_polaroid_station');
+        m.addScore(15);
+      });
       setTimeout(() => {
-        overlay.innerHTML = `<h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Beweis gesichert!</h2>`;
+        overlay.innerHTML = `
+          <h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Beweis gesichert!</h2>
+          <p style="color:#f5d79e; font-size:1.05rem; margin-top:12px;">📸 Überwachungs-Polaroid zur Ermittlungsakte hinzugefügt (+15 XP)</p>
+        `;
         setTimeout(() => {
           overlay.remove();
           FX.playSuccessWumms().then(() => onSuccess());

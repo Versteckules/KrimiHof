@@ -193,10 +193,6 @@
         <input type="text" id="bonus-coords" class="coords-input" value="N 50° 19.510 E 011° 55.680">
       </div>
       <div class="form-group">
-        <label>Geheimer Bonus-Code (Logbuch / Schloss):</label>
-        <input type="text" id="bonus-code" value="SCHLAPPEN-1823-REX">
-      </div>
-      <div class="form-group">
         <label>Bonus-Hinweis / Hint:</label>
         <textarea id="bonus-hint" rows="2">Im alten Mauerwerk des Torbogens, hinter dem losen Sandsteinquader auf der Nordseite.</textarea>
       </div>
@@ -249,7 +245,6 @@
           if (d.bonusFinal) {
             document.getElementById('bonus-title').value = d.bonusFinal.title || '';
             document.getElementById('bonus-coords').value = d.bonusFinal.coordsDMM || '';
-            document.getElementById('bonus-code').value = d.bonusFinal.bonusCode || '';
             document.getElementById('bonus-hint').value = d.bonusFinal.hint || '';
             document.getElementById('bonus-desc').value = d.bonusFinal.description || '';
           }
@@ -276,7 +271,6 @@
         const bonusObj = {
           title: document.getElementById('bonus-title').value.trim(),
           coordsDMM: document.getElementById('bonus-coords').value.trim(),
-          bonusCode: document.getElementById('bonus-code').value.trim(),
           hint: document.getElementById('bonus-hint').value.trim(),
           description: document.getElementById('bonus-desc').value.trim()
         };

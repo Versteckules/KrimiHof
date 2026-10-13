@@ -316,3 +316,20 @@ export function getEvents() {
 export function getFinalCoords() {
   return _finalCache;
 }
+
+/**
+ * Prüft, ob eine Station eine Bonus- oder Easter-Egg-Station ist (Stationen 13-16)
+ * @param {string} id
+ * @returns {boolean}
+ */
+export function isBonusStation(id) {
+  if (!id) return false;
+  if (_stationsCache) {
+    const st = _stationsCache.find(s => s.id === id);
+    if (st && (st.type === 'bonus' || st.type === 'easteregg')) return true;
+  }
+  return id.startsWith('saale_') || 
+         id.startsWith('altstadt_') || 
+         id.startsWith('versteck_') || 
+         id === 'jean_paul';
+}
