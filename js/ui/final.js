@@ -7,8 +7,10 @@ import { showView } from '../main.js';
 import { calculateFinalResult } from '../scoring.js';
 import { getConfig, getFinalCoords, getStory } from '../config-loader.js';
 import { openIntro } from './intro.js';
+import { decryptObject, getStandardPassphrase, getBonusPassphrase } from '../crypto.js';
 
 let accusedSuspect = null;
+export const FULL_WIN_THRESHOLD = 55; // Mindest-Beweislast in % fuer Täter-Inhaftierung & Meister-Bonus Cache
 
 /**
  * Liefert den Anzeigenamen eines Verdächtigen (aus story.json, Fallback config.js)
@@ -49,22 +51,67 @@ export function openFinal() {
   showView('view-final');
 }
 
-function formatFinalCoords(isFullWin = false) {
+/**
+ * Löst die Final- und Bonusdaten auf (unterstützt sowohl AES-GCM als auch Klartext)
+ */
+async function resolveFinalCoords(isFullWin = false, murdererId = 'herold') {
   const fc = getFinalCoords();
-  if (!fc) return '<div style="color:red;">Koordinaten nicht verfügbar</div>';
+  if (!fc) return null;
 
-  const standard = fc.standardFinal || {
-    title: 'Haupt-Final (GCBYXW0)',
-    coordsDMM: fc.coordsDMM || 'N 50° 19.345 E 011° 55.412',
-    hint: fc.hint || 'Im Schutz der alten Kopfweide...'
-  };
+  // Fall A: Unverschlüsselte Klartextdaten
+  if (!fc.encrypted) {
+    return {
+      standard: fc.standardFinal || {
+        title: 'Haupt-Final (GCBYXW0)',
+        coordsDMM: fc.coordsDMM || 'N 50° 19.345 E 011° 55.412',
+        hint: fc.hint || 'Im Schutz der alten Kopfweide...'
+      },
+      bonus: fc.bonusFinal || {
+        title: 'Bonus-Cache: Das Vermächtnis des Meisters',
+        coordsDMM: 'N 50° 19.510 E 011° 55.680',
+        bonusCode: 'SCHLAPPEN-1823-REX',
+        hint: 'Im alten Mauerwerk des Torbogens, hinter dem losen Sandsteinquader auf der Nordseite.'
+      }
+    };
+  }
 
-  const bonus = fc.bonusFinal || {
-    title: 'Bonus-Cache: Das Vermächtnis des Meisters',
-    coordsDMM: 'N 50° 19.510 E 011° 55.680',
-    bonusCode: 'SCHLAPPEN-1823-REX',
-    hint: 'Im alten Mauerwerk des Torbogens, hinter dem losen Sandsteinquader auf der Nordseite.'
-  };
+  // Fall B: Verschlüsselt mit AES-GCM
+  let standard = null;
+  let bonus = null;
+
+  try {
+    standard = await decryptObject(fc.standardFinal, getStandardPassphrase());
+  } catch (err) {
+    console.error('[Crypto] Entschlüsselung Standard-Final fehlgeschlagen:', err);
+    standard = {
+      title: 'Haupt-Final (GCBYXW0)',
+      coordsDMM: 'Entschlüsselung fehlgeschlagen',
+      hint: ''
+    };
+  }
+
+  if (isFullWin) {
+    try {
+      bonus = await decryptObject(fc.bonusFinal, getBonusPassphrase(murdererId));
+    } catch (err) {
+      console.error('[Crypto] Entschlüsselung Bonus-Final fehlgeschlagen:', err);
+      bonus = {
+        title: 'Bonus-Cache',
+        coordsDMM: 'Zugriff verweigert (Falscher Täter)',
+        hint: ''
+      };
+    }
+  }
+
+  return { standard, bonus };
+}
+
+async function formatFinalCoords(isFullWin = false, murdererId = 'herold') {
+  const resolved = await resolveFinalCoords(isFullWin, murdererId);
+  if (!resolved || !resolved.standard) return '<div style="color:red;">Koordinaten nicht verfügbar</div>';
+
+  const standard = resolved.standard;
+  const bonus = resolved.bonus;
 
   let html = `
     <!-- 1. Haupt-Final (Immer sichtbar für alle ehrlichen Finder) -->
@@ -80,10 +127,10 @@ function formatFinalCoords(isFullWin = false) {
     </div>
   `;
 
-  if (isFullWin) {
-    // Fall 1: Täter ins Gefängnis (>= 75%) -> Finalkords UND Bonus
+  if (isFullWin && bonus) {
+    // Fall 1: Täter ins Gefängnis (>= 55%) -> Finalkords UND Bonus
     html += `
-      <!-- 2. Meister-Bonus (Exklusiv bei erfolgreicher Überführung >= 75%) -->
+      <!-- 2. Meister-Bonus (Exklusiv bei erfolgreicher Überführung >= 55%) -->
       <div style="background: linear-gradient(135deg, rgba(212, 163, 89, 0.2) 0%, rgba(139, 101, 8, 0.3) 100%); border: 2px solid #d4af37; border-radius: 8px; padding: 15px; text-align: left; box-shadow: 0 0 20px rgba(212, 163, 89, 0.35);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
           <span style="color: #f5d79e; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">⭐ ${bonus.title || 'Bonus-Cache: Das Vermächtnis'}</span>
@@ -97,13 +144,13 @@ function formatFinalCoords(isFullWin = false) {
       </div>
     `;
   } else {
-    // Fall 2: Täter nicht ins Gefängnis (< 75% oder falscher Täter) -> Nur Finalkords
+    // Fall 2: Täter nicht ins Gefängnis (< 55% oder falscher Täter) -> Nur Finalkords
     html += `
       <!-- Bonus Gesperrt -->
       <div style="background: rgba(30, 41, 59, 0.4); border: 1px dashed #64748b; border-radius: 8px; padding: 12px; text-align: left; opacity: 0.85;">
         <div style="display: flex; align-items: center; gap: 8px; color: #94a3b8; font-size: 0.85rem; font-style: italic;">
           <span style="font-size: 1.2rem;">🔒</span>
-          <span><strong>Bonus-Cache verpasst:</strong> Der Drahtzieher konnte entkommen und hat alle Spuren zum Bonus-Versteck verwischt. (Voraussetzung für den Bonus: Mindestens 75% Beweislast &amp; Täter hinter Gittern)</span>
+          <span><strong>Bonus-Cache verpasst:</strong> Der Drahtzieher konnte entkommen und hat alle Spuren zum Bonus-Versteck verwischt. (Voraussetzung für den Bonus: Mindestens ${FULL_WIN_THRESHOLD}% Beweislast &amp; Täter hinter Gittern)</span>
         </div>
       </div>
     `;
@@ -126,12 +173,12 @@ export function handleAccusation(suspectId) {
   const ending = story.endings && story.endings[suspectId] ? story.endings[suspectId] : { confession: 'Ich war es!' };
   
   const perc = result.percentages[result.murderer];
-  const isFullWin = (suspectId === result.murderer && perc >= 75);
+  const isFullWin = (suspectId === result.murderer && perc >= FULL_WIN_THRESHOLD);
   let outroSlides = [];
 
   if (suspectId === result.murderer) {
-    if (perc >= 75) {
-      // 1. VOLLER ERFOLG (>= 75%): HINTER GITTERN! -> Finalkords UND Bonus
+    if (perc >= FULL_WIN_THRESHOLD) {
+      // 1. VOLLER ERFOLG (>= FULL_WIN_THRESHOLD%): HINTER GITTERN! -> Finalkords UND Bonus
       outroSlides = [
         {
           image: avatar,
@@ -164,7 +211,7 @@ export function handleAccusation(suspectId) {
         }
       ];
     } else {
-      // 2. TÄTER IDENTIFIZIERT, ABER < 75%: FREISPRUCH & SPUREN VERWISCHT -> Nur Finalkords
+      // 2. TÄTER IDENTIFIZIERT, ABER < 55%: FREISPRUCH & SPUREN VERWISCHT -> Nur Finalkords
       outroSlides = [
         {
           image: avatar,
@@ -184,7 +231,7 @@ export function handleAccusation(suspectId) {
           image: 'assets/kommissar_stahl.jpg',
           badge: 'KAPITEL 3 • FREISPRUCH AUF KAUTION',
           title: 'Mangel an Beweisen!',
-          text: `Doch der Triumph ist von kurzer Dauer. Die Beweislast liegt nur bei ${perc}% (Benötigt: 75%). Ein teurer Staranwalt erwirkt einen Freispruch auf Kaution. ${accusedName} entkommt der Justiz!`,
+          text: `Doch der Triumph ist von kurzer Dauer. Die Beweislast liegt nur bei ${perc}% (Benötigt: ${FULL_WIN_THRESHOLD}%). Ein teurer Staranwalt erwirkt einen Freispruch auf Kaution. ${accusedName} entkommt der Justiz!`,
           audio: 'assets/audio/story/outro_insufficient_abschluss.mp3'
         },
         {
@@ -236,7 +283,7 @@ export function handleAccusation(suspectId) {
   lastOutroSlides = outroSlides;
 
   // Start Outro slides
-  openIntro(() => {
+  openIntro(async () => {
     // This callback runs when the Outro slides finish
     showView('view-final');
     
@@ -252,7 +299,7 @@ export function handleAccusation(suspectId) {
     resContainer.classList.remove('hidden');
 
     if (suspectId === result.murderer) {
-      if (perc >= 75) {
+      if (perc >= FULL_WIN_THRESHOLD) {
         title.textContent = 'Glückwunsch! Fall meisterhaft gelöst (Täter hinter Gittern).';
         title.style.color = 'var(--color-green, #2e8b57)';
         text.innerHTML = 'Hervorragende Ermittlung! Hier sind deine Belohnungen:';
@@ -267,7 +314,7 @@ export function handleAccusation(suspectId) {
       text.innerHTML = 'Der wahre Drahtzieher bleibt im Schatten. Dennoch hast du die Hauptdose lokalisiert:';
     }
 
-    coords.innerHTML = formatFinalCoords(isFullWin);
+    coords.innerHTML = await formatFinalCoords(isFullWin, result.murderer);
 
     // Replay Outro Button
     let replayBtn = document.getElementById('btn-replay-outro');
@@ -280,7 +327,10 @@ export function handleAccusation(suspectId) {
       resContainer.appendChild(replayBtn);
     }
     replayBtn.onclick = () => {
-      openIntro(() => showView('view-final'), lastOutroSlides);
+      openIntro(async () => {
+        showView('view-final');
+        coords.innerHTML = await formatFinalCoords(isFullWin, result.murderer);
+      }, lastOutroSlides);
     };
 
     // Button um anderen Verdächtigen zu testen (hilfreich für Betatest!)

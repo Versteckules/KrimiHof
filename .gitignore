@@ -1,0 +1,16 @@
+# ============================================================
+# .gitignore - Krimi Hof (GCBYXW0)
+# ============================================================
+
+# Private Geocaching-Koordinaten im Klartext (NIEMALS hochladen!)
+data/final_plain.json
+data/*.plain.json
+*.private.json
+
+# Lokale Logs & Systemdateien
+*.log
+.DS_Store
+Thumbs.db
+
+# Temporäre Scratch-Dateien
+scratch/

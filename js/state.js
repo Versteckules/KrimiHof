@@ -75,18 +75,18 @@ const _subscribers = new Set();
 
 /**
  * Berechnet den aktuellen Rang basierend auf den Punkten (Score)
- * 0-49: Streifenpolizist
- * 50-99: Schnüffler
- * 100-149: Privatdetektiv (Rangstufe 3)
- * 150-199: Inspektor
- * 200+: Sherlock Holmes
+ * 0-99: Streifenpolizist
+ * 100-199: Schnüffler
+ * 200-299: Privatdetektiv (Rangstufe 3)
+ * 300-399: Inspektor
+ * 400+: Sherlock Holmes
  */
 export function getPlayerRank() {
   const score = _currentState ? _currentState.score || 0 : 0;
-  if (score >= 200) return { name: "Sherlock Holmes", level: 5 };
-  if (score >= 150) return { name: "Inspektor", level: 4 };
-  if (score >= 100) return { name: "Privatdetektiv", level: 3 };
-  if (score >= 50) return { name: "Schnüffler", level: 2 };
+  if (score >= 400) return { name: "Sherlock Holmes", level: 5 };
+  if (score >= 300) return { name: "Inspektor", level: 4 };
+  if (score >= 200) return { name: "Privatdetektiv", level: 3 };
+  if (score >= 100) return { name: "Schnüffler", level: 2 };
   return { name: "Streifenpolizist", level: 1 };
 }
 
@@ -138,8 +138,11 @@ export function loadState() {
         });
       }
 
-      // Auto-Repair: Sobald das Rathaus oder irgendeine Station gelöst ist (oder im Testmodus), muss das Dossier freigeschaltet sein
-      if (((_currentState.solvedStations && (_currentState.solvedStations.includes('rathaus') || _currentState.solvedStations.length > 0)) || _currentState.isTestingMode) && !_currentState.suspectsUnlocked) {
+      // Die Hauptverdächtigen dürfen AUSSCHLIESSLICH nach Abschluss des Rathauses freigeschaltet sein!
+      const rathausSolved = Boolean(_currentState.solvedStations && _currentState.solvedStations.includes('rathaus'));
+      if (!rathausSolved) {
+        _currentState.suspectsUnlocked = false;
+      } else if (!_currentState.suspectsUnlocked) {
         _currentState.suspectsUnlocked = true;
         saveState({ suspectsUnlocked: true });
       }
@@ -280,7 +283,7 @@ export function markStationSolved(stationId, options = {}) {
       inventory.add(options.evidenceId);
     }
 
-    const shouldUnlockSuspects = state.suspectsUnlocked || stationId === 'rathaus';
+    const shouldUnlockSuspects = (stationId === 'rathaus') || solved.has('rathaus');
 
     saveState({
       solvedStations: Array.from(solved),

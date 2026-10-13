@@ -304,9 +304,16 @@ function checkFinalAndProceed() {
     sid => !sid.startsWith('saale_') && !sid.startsWith('altstadt_')
   ).length;
   
-  if (mandatorySolved >= getConfig().gameplay.mandatoryStationCount) {
-    import('./final.js').then(module => {
-      module.openFinal();
+  if (mandatorySolved >= getConfig().gameplay.mandatoryStationCount && !state.hasSeenFinalNotice) {
+    import('../state.js').then(st => st.saveState({ hasSeenFinalNotice: true }));
+    showView('view-dashboard');
+    import('../main.js').then(m => {
+      if (m.showNoirAlert) {
+        m.showNoirAlert(
+          'Alle 12 Pflichtstationen gelöst! Die Ermittlungsakte ist vollständig. Du kannst nun im Dossier letzte Beweise zuordnen, Verdächtige nochmals aufsuchen oder direkt die Verhaftung einleiten!',
+          '🏁 Finale Phase erreicht!'
+        );
+      }
     });
   } else {
     showView('view-dashboard');

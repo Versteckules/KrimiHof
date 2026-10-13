@@ -1,32 +1,20 @@
 {
-  "_anleitung": "HIER KANNST DU DIE KOORDINATEN BEARBEITEN. Format: N 50° 19.xxx E 011° 55.yyy",
-
-  "standardFinal": {
-    "title": "Haupt-Final (GCBYXW0)",
-    "coordsDMM": "N 50° 19.345 E 011° 55.412",
-    "hint": "Im Schutz der alten Kopfweide, magnetisch an der eisernen Uferbefestigung der Saale verankert. Etwa 1,5 Meter über dem Boden, nicht im Wasser.",
-    "spoilerDescription": "Schwarze Lock&Lock-Dose in wetterfester Tarnhülle mit offiziellem Geocaching-Aufkleber."
-  },
-
-  "bonusFinal": {
-    "title": "Bonus-Cache: Das Vermächtnis des Meisters",
-    "coordsDMM": "N 50° 19.510 E 011° 55.680",
-    "bonusCode": "SCHLAPPEN-1823-REX",
-    "hint": "Im alten Mauerwerk des Torbogens, hinter dem losen Sandsteinquader auf der Nordseite.",
-    "description": "Wird nur freigeschaltet, wenn der Täter mit mindestens 75% Beweislast überführt wurde und ins Gefängnis geht."
-  },
-
-  "coordsDMM": "N 50° 19.345 E 011° 55.412",
-  "coordsDecimal": {
-    "lat": 50.322417,
-    "lng": 11.923533
-  },
-  "hint": "Im Schutz der alten Kopfweide, magnetisch an der eisernen Uferbefestigung der Saale verankert. Etwa 1,5 Meter über dem Boden, nicht im Wasser.",
-  "spoilerDescription": "Schwarze Lock&Lock-Dose in wetterfester Tarnhülle mit offiziellem Geocaching-Aufkleber.",
-  "diploma": {
-    "title": "Meister-Ermittler der Stadt Hof",
-    "subtitle": "Im Fall des verschwundenen Bundespakts von 1823",
-    "signature": "Der Hohe Rat der Hofer Schlappen-Erben",
-    "bonusBadgeTitle": "Ehren-Detektiv mit Auszeichnung (Alle Bonus-Fälle gelöst)"
-  }
+    "_hinweis":  "DIESE DATEI IST MIT AES-256-CBC VERSCHLUESSELT. Sie kann bedenkenlos auf GitHub hochgeladen werden!",
+    "_bearbeitung":  "Zum Aendern der Koordinaten nutze data/final_plain.json oder tools/encrypt_final.html",
+    "encrypted":  true,
+    "algorithm":  "AES-CBC",
+    "standardFinal":  {
+                          "iv":  "55047d751533936ff868abbe1bb90bf2",
+                          "data":  "bac306ecccef01e97f02a89b59815bff5fc84c3726a3e2f96d8314d04f39c293a62f6b7ffcaff74e0ff3e0b76e40477b9253235308d7ecec063e0fb5189e4ff14636067e1e38b2b35517b83e90a6a55c3e1ae813ebbdbecdbae9d1fe9825253f714c7f16adeeb32145b4ea0bb8a21559aa564c84bb81ae5855627876117f41e7c171b592d394d78b3d0c11eb35582c05b5bd3a7da703211d64e6211113adef95fa29b5fb0431947a7f6f49454764a38b4a62e1ad8d04c93d1ad951663064881ecd32365614c76cf5a20b1310547ef06428e4bcf4a8bb54bc5a91fa3991f83c189ec3908e7a63b9789cc2a798a8df64ad94f266cacbfdcd48d9799726f159f8a5e57ee943a49e66fa50246a25f281d8d2aa5a50eb6382fa1e745637444355fafc06b2399d9f7288647feb64f2ad6683c9111bad30b0a139c407eb1c23257b5b25dc8f3f6019de1f77f956748a22104b5577390d0fd9b5d11fd71e41cee6a2116c"
+                      },
+    "bonusFinal":  {
+                       "iv":  "36ce0de1899cc17c162c068cb9dc126b",
+                       "data":  "b5c3d6e7c82c9723dad089d965828eb3ca7e14fbbe9ee70f7eb7f42aad3f389efb8f0296c70e5b473f2bd5ced26d229b8a9c433ae6c323ef98895b2bd82097926cbcc531bf675c02515b38cfa4c3db4fcbe61629500b43de8b929883e624f1ee93b69ad15f13102541f11fdc33114586725f048b6d3484685e611b21ae12379c342f4b144dd040a79fff97abc7b8ee8e7fbc7b92534cabeb20cc2225651c56c0498fdb3e9f499162f0766c8d0e6c1d4b1dbd2f1542fe7e99f2b0251c3522cf07038234f3777b6ace1a1df273fe42714d0cd452204c88e1e6d1ab6461957c581c72c9d0c10a18a93eae93f7b68fc66ea77565f3ef451a2f2cdc18cddc90a473a5eec12c8921f86105eb7564413d4afaf9d91f7e2f7ffbc22fcea03c8118af398e6381a64ffc983209cc317685a5823c85a3faa703dc1119bb1b9d1555784198847acf9a405ce747885f0f5ecf8b08439598be3cedfe817d7b13e2b422859b6ce7e8a78c177c58d185180e3ec21fa90de1"
+                   },
+    "diploma":  {
+                    "title":  "Meister-Ermittler der Stadt Hof",
+                    "subtitle":  "Im Fall des verschwundenen Bundespakts von 1823",
+                    "signature":  "Der Hohe Rat der Hofer Schlappen-Erben",
+                    "bonusBadgeTitle":  "Ehren-Detektiv mit Auszeichnung (Alle Bonus-Faelle geloest)"
+                }
 }

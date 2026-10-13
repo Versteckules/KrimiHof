@@ -4,7 +4,8 @@
 
 import { onPositionUpdate, getDistance, getBearing } from '../geo.js';
 import { getActiveTargetId, updatePlayerMarker } from './map.js';
-import { getStationById, getConfig } from '../config-loader.js';
+import { getStationById, getConfig, getStory } from '../config-loader.js';
+import { parseCoords } from '../coords.js';
 
 let sonarInterval = null;
 let isGeofenceTriggered = false;
@@ -29,11 +30,34 @@ export function initNavigator() {
       return;
     }
 
-    const station = getStationById(targetId);
-    if (!station || !station.coordsDecimal) return;
+    let targetLat = null;
+    let targetLng = null;
 
-    const targetLat = station.coordsDecimal.lat;
-    const targetLng = station.coordsDecimal.lng;
+    const station = getStationById(targetId);
+    if (station && station.coordsDecimal) {
+      targetLat = station.coordsDecimal.lat;
+      targetLng = station.coordsDecimal.lng;
+    } else {
+      const suspectId = targetId.startsWith('suspect_') ? targetId.replace('suspect_', '') : targetId;
+      const story = getStory();
+      if (story && story.suspects && story.suspects[suspectId]) {
+        const susp = story.suspects[suspectId];
+        if (susp.coords) {
+          const parsed = parseCoords(susp.coords);
+          if (parsed) {
+            targetLat = parsed.lat;
+            targetLng = parsed.lng;
+          }
+        }
+      }
+    }
+
+    if (targetLat === null || targetLng === null) {
+      distanceEl.textContent = '-- m';
+      compassEl.style.transform = `rotate(0deg)`;
+      stopSonar();
+      return;
+    }
 
     // Distanz
     const dist = getDistance(pos.lat, pos.lng, targetLat, targetLng);
@@ -93,11 +117,18 @@ function checkGeofence(dist, geoConfig, targetId) {
   if (dist <= hitRadius && !isGeofenceTriggered) {
     isGeofenceTriggered = true;
     
-    console.log('[Navigator] GEOFENCE BETRETEN! Rätselmaske sollte öffnen (AP8)');
-    // Hole openStation dynamisch oder lade es
-    import('./station.js').then(module => {
-      module.openStation(targetId);
-    });
+    if (targetId.startsWith('suspect_') || ['herold', 'gipser', 'heiden'].includes(targetId)) {
+      const suspectId = targetId.startsWith('suspect_') ? targetId.replace('suspect_', '') : targetId;
+      console.log(`[Navigator] GEOFENCE BETRETEN für Verdächtigen: ${suspectId}`);
+      import('./dossier.js').then(module => {
+        module.startSuspectInterrogation(suspectId);
+      });
+    } else {
+      console.log('[Navigator] GEOFENCE BETRETEN! Rätselmaske sollte öffnen (AP8)');
+      import('./station.js').then(module => {
+        module.openStation(targetId);
+      });
+    }
   } else if (dist > hitRadius) {
     isGeofenceTriggered = false;
   }

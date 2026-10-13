@@ -97,7 +97,7 @@
       "type": "object",
       "stationId": "lorenzkirche",
       "targetSuspect": "heiden",
-      "description": "Ein alter Silberring mit dem eingravierten Emblem der Bruderschaft und einem eingelassenen Kirchenkreuz, übergeben von Pfarrer Klement.",
+      "description": "Ein alter Silberring mit dem eingravierten Emblem der Bruderschaft, übergeben von Pfarrer Klement. In die Ringschiene ist die geheime Losung eingraviert, die das Orgel-Kryptex öffnet: 'PAKT'.",
       "rewardReason": "Der Siegelring beweist Klaus Heidens Führungsrolle im Geheimbund der Schlappen-Bruderschaft! (Verdacht +15%)"
     },
     {
@@ -231,9 +231,9 @@
       "name": "Zerrissener Drohbrief",
       "type": "document",
       "stationId": "saale_schmuggel",
-      "targetSuspect": "heiden",
-      "description": "Wieder zusammengesetzte Bruchstücke eines Schreibens an Dr. Renger: 'Schweigen Sie, oder Hof wird ein zweites Mal brennen!'",
-      "rewardReason": "Der fanatische Tonfall und die Branddrohung gegen Dr. Renger stammen zweifelsfrei von Klaus Heiden! (Verdacht +15%)"
+      "targetSuspect": "gipser",
+      "description": "Aus der Saale gefischte Bruchstücke eines zerrissenen Drohbriefs von Frau von Gipser: 'Schweigen Sie, oder Hof wird brennen!' Fischer Jan sah eine aufgebrachte Frau im Hosenanzug flüchten.",
+      "rewardReason": "Die Zeugenaussage von Fischer Jan und der zerrissene Drohbrief überführen Katharina von Gipser! (Verdacht +15%)"
     },
     {
       "id": "evidence_charter_1432",
@@ -2330,7 +2330,7 @@
       {
         "id": "end_rolf_a",
         "speaker": "Wachmann Rolf",
-        "avatar": "assets/rolf.jpg",
+        "avatar": "assets/passant.jpg",
         "text": "Hier ist die Quittung und die Taschenuhr. Ich sage vor Gericht gegen Herold aus!",
         "choices": [],
         "isEnd": true,

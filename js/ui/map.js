@@ -37,7 +37,7 @@ export function initMap() {
     attribution: '© OpenStreetMap'
   }).addTo(map);
 
-  L.control.zoom({ position: 'topright' }).addTo(map);
+  L.control.zoom({ position: 'topleft' }).addTo(map);
 
   // Markierungen zeichnen
   renderMarkers();
@@ -253,60 +253,122 @@ function renderMarkers() {
     }
   });
 
-  // Suspects rendern
-  const suspectsUnlockedOnMap = Boolean(
-    state.suspectsUnlocked || 
-    (state.solvedStations && (state.solvedStations.includes('rathaus') || state.solvedStations.length > 0)) ||
-    state.isTestingMode
-  );
-  if (suspectsUnlockedOnMap) {
+  // Suspects rendern - AUSSCHLIESSLICH wenn das Rathaus gelöst ist!
+  const rathausSolved = isStationSolved('rathaus');
+  const suspectsUnlockedOnMap = Boolean(state.suspectsUnlocked && rathausSolved);
+
+  if (!suspectsUnlockedOnMap) {
+    // Falls noch Verdächtigen-Pins existieren, sauber von der Karte entfernen
+    Object.keys(markers).forEach(k => {
+      if (k.startsWith('suspect_')) {
+        markers[k].remove();
+        delete markers[k];
+      }
+    });
+  } else {
     import('../config-loader.js').then(module => {
        const story = module.getStory();
        if(story && story.suspects) {
           import('../coords.js').then(coordsModule => {
             Object.values(story.suspects).forEach(suspect => {
-              if (suspect.coords && !markers['suspect_' + suspect.id]) {
+              const markerKey = 'suspect_' + suspect.id;
+              if (suspect.coords && !markers[markerKey]) {
                 const parsed = coordsModule.parseCoords(suspect.coords);
                 if (parsed) {
                   const marker = L.marker([parsed.lat, parsed.lng], {
                     icon: getIcon('suspect')
                   }).addTo(map);
 
-                  const popupDiv = document.createElement('div');
-                  popupDiv.className = 'suspect-map-popup';
-                  popupDiv.innerHTML = `
-                    <div style="width: 220px; font-family: sans-serif; color: #fff;">
-                      <div style="position: relative; width: 100%; height: 130px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; border: 1px solid rgba(212, 175, 55, 0.4);">
-                        <img src="${suspect.image}" alt="${suspect.name}" style="width: 100%; height: 100%; object-fit: contain; background: #000;">
-                        <span style="position: absolute; top: 6px; right: 6px; background: rgba(10, 14, 23, 0.85); border: 1px solid #8b0000; color: #ff5555; font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; font-weight: bold; letter-spacing: 1px;">HAUPTVERDACHT</span>
-                      </div>
-                      <div style="font-family: serif; font-size: 1.15rem; color: #d4af37; font-weight: bold; margin-bottom: 2px;">${suspect.name}</div>
-                      <div style="font-size: 0.78rem; color: #aaa; margin-bottom: 6px;">${suspect.role} (${suspect.age} J.)</div>
-                      <div style="font-size: 0.75rem; color: #ddd; line-height: 1.35; margin-bottom: 10px; max-height: 55px; overflow-y: auto;">${suspect.motive}</div>
-                      <button class="btn-interrogate-popup" id="btn-interrogate-map-${suspect.id}" style="width: 100%; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: linear-gradient(135deg, #d4af37, #8c6d23); color: #05080f; border: 1px solid #d4af37; cursor: pointer;">🗣️ Verhör / Konfrontation</button>
-                    </div>
-                  `;
-
-                  marker.bindPopup(popupDiv);
-                  marker.on('popupopen', () => {
-                    const btn = document.getElementById(`btn-interrogate-map-${suspect.id}`);
-                    if (btn) {
-                      btn.onclick = () => {
-                        marker.closePopup();
-                        import('./dossier.js').then(dossierMod => {
-                          dossierMod.startSuspectInterrogation(suspect.id);
-                        });
-                      };
-                    }
+                  marker.on('click', () => {
+                    setActiveTarget(markerKey);
+                    renderSuspectPopup(marker, suspect, [parsed.lat, parsed.lng]);
                   });
 
-                  markers['suspect_' + suspect.id] = marker;
+                  markers[markerKey] = marker;
                 }
               }
             });
           });
        }
     });
+  }
+}
+
+function renderSuspectPopup(marker, suspect, suspectLatLng) {
+  const state = getState();
+  let dist = Infinity;
+  let isNear = Boolean(state.isTestingMode);
+
+  if (playerMarker) {
+    dist = map.distance(playerMarker.getLatLng(), suspectLatLng);
+    if (dist <= 20) {
+      isNear = true;
+    }
+  }
+
+  const distText = dist !== Infinity ? `${Math.round(dist)} m` : 'Distanz unbekannt';
+
+  const popupDiv = document.createElement('div');
+  popupDiv.className = 'suspect-map-popup';
+  popupDiv.innerHTML = `
+    <div style="width: 220px; font-family: sans-serif; color: #fff;">
+      <div style="position: relative; width: 100%; height: 130px; border-radius: 6px; overflow: hidden; margin-bottom: 8px; border: 1px solid rgba(212, 175, 55, 0.4);">
+        <img src="${suspect.image}" alt="${suspect.name}" style="width: 100%; height: 100%; object-fit: contain; background: #000;">
+        <span style="position: absolute; top: 6px; right: 6px; background: rgba(10, 14, 23, 0.85); border: 1px solid #8b0000; color: #ff5555; font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; font-weight: bold; letter-spacing: 1px;">HAUPTVERDACHT</span>
+      </div>
+      <div style="font-family: serif; font-size: 1.15rem; color: #d4af37; font-weight: bold; margin-bottom: 2px;">${suspect.name}</div>
+      <div style="font-size: 0.78rem; color: #aaa; margin-bottom: 4px;">${suspect.role} (${suspect.age} J.)</div>
+      <div style="font-size: 0.75rem; color: #f5d79e; margin-bottom: 8px;">📍 ${suspect.location || 'Hof'}</div>
+
+      ${isNear ? `
+        <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px; font-size: 0.8rem; color: #a7f3d0; text-align: center;">
+          ✅ Du befindest dich vor Ort am Standort!
+        </div>
+        <button class="btn-interrogate-popup" id="btn-interrogate-map-${suspect.id}" style="width: 100%; padding: 10px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: linear-gradient(135deg, #d4af37, #8c6d23); color: #05080f; border: 1px solid #d4af37; cursor: pointer;">🗣️ Vor Ort verhören</button>
+      ` : `
+        <div style="background: rgba(180, 0, 0, 0.2); border: 1px solid #8b0000; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px;">
+          <div style="font-size: 0.78rem; color: #ff8888; font-weight: bold;">🚫 Zu weit entfernt (${distText})</div>
+          <div style="font-size: 0.72rem; color: #ccc; margin-top: 2px;">Begib dich persönlich zu diesem Ort (${suspect.location}), um den Verdächtigen zu verhören.</div>
+        </div>
+        <button id="btn-target-suspect-${suspect.id}" style="width: 100%; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: rgba(212, 175, 55, 0.2); color: #d4af37; border: 1px solid #d4af37; cursor: pointer;">🧭 Als Ziel anpeilen</button>
+      `}
+    </div>
+  `;
+
+  marker.bindPopup(popupDiv).openPopup();
+
+  if (isNear) {
+    const btn = document.getElementById(`btn-interrogate-map-${suspect.id}`);
+    if (btn) {
+      btn.onclick = () => {
+        marker.closePopup();
+        import('./dossier.js').then(dossierMod => {
+          dossierMod.startSuspectInterrogation(suspect.id);
+        });
+      };
+    }
+  } else {
+    const targetBtn = document.getElementById(`btn-target-suspect-${suspect.id}`);
+    if (targetBtn) {
+      targetBtn.onclick = () => {
+        marker.closePopup();
+        setActiveTarget('suspect_' + suspect.id);
+        showNoirAlert(`Ziel auf ${suspect.name} (${suspect.location}) gesetzt! Folge dem Kompass im Navigator.`, 'Ziel erfasst');
+      };
+    }
+  }
+}
+
+export function focusSuspectOnMap(suspectId) {
+  if (!map) return;
+  const markerKey = 'suspect_' + suspectId;
+  const marker = markers[markerKey];
+  if (marker) {
+    map.setView(marker.getLatLng(), 17, { animate: true });
+    setActiveTarget(markerKey);
+    setTimeout(() => {
+      marker.fire('click');
+    }, 350);
   }
 }
 

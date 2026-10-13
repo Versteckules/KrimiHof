@@ -160,6 +160,15 @@ export function validateFinal(finalData) {
     throw new DataValidationError('Finaldaten müssen ein Objekt sein.');
   }
 
+  // Fall A: Verschlüsselte Finaldaten (AES-GCM Chiffre für GitHub)
+  if (finalData.encrypted) {
+    if (!finalData.standardFinal || !finalData.standardFinal.data || !finalData.standardFinal.iv) {
+      throw new DataValidationError('Verschlüsselte Finaldaten müssen standardFinal mit iv und data enthalten.');
+    }
+    return finalData;
+  }
+
+  // Fall B: Unverschlüsselte Klartextdaten
   const standardCoords = (finalData.standardFinal && finalData.standardFinal.coordsDMM) || finalData.coordsDMM;
   if (!standardCoords || typeof standardCoords !== 'string') {
     throw new DataValidationError('Finaldaten müssen einen coordsDMM-String besitzen (z. B. in standardFinal.coordsDMM).');

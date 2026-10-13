@@ -6,6 +6,7 @@ export function runGadget(stationId, onComplete) {
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle, #333 0%, #111 100%); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; color:white; font-family:sans-serif; text-align:center;';
 
   overlay.innerHTML = `
+    <button id="btn-safe-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
     <h2 style="color:var(--color-night-light); margin-bottom:10px;">Der Historische Tresor</h2>
     <p style="margin-bottom:10px; font-size:0.9rem;">Hinweis: "Das Jahr der Gründung (1823)"</p>
     
@@ -26,7 +27,7 @@ export function runGadget(stationId, onComplete) {
     
     <div id="safe-progress" style="font-family:monospace; font-size:1.2rem; letter-spacing:5px;">_ _ _</div>
     
-    <button class="btn-secondary" id="btn-safe-abort" style="margin-top: 30px;">Schloss umgehen</button>
+    <button class="btn-secondary" id="btn-safe-abort" style="margin-top:25px; padding:10px 18px; font-size:0.85rem; border:1px solid #777; background:rgba(0,0,0,0.5); color:#ddd; border-radius:4px; cursor:pointer;">Tresor überspringen (-10 Punkte)</button>
   `;
 
   document.body.appendChild(overlay);
@@ -52,6 +53,13 @@ export function runGadget(stationId, onComplete) {
   // Buttons
   document.getElementById('btn-dial-left').onclick = () => updateDial(currentVal - 1);
   document.getElementById('btn-dial-right').onclick = () => updateDial(currentVal + 1);
+
+  // Close button
+  document.getElementById('btn-safe-cancel').onclick = () => {
+    window.removeEventListener('deviceorientation', handleOrientation);
+    if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+    onComplete();
+  };
 
   // Abort
   document.getElementById('btn-safe-abort').onclick = () => {

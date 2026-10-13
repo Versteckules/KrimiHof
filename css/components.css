@@ -1025,3 +1025,28 @@
   bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
+.leaflet-top.leaflet-left {
+  top: calc(12px + env(safe-area-inset-top, 0px)) !important;
+  left: calc(12px + env(safe-area-inset-left, 0px)) !important;
+}
+
+.leaflet-control-zoom {
+  border: 1px solid var(--color-glass-border) !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+}
+
+.leaflet-control-zoom a {
+  background: rgba(10, 14, 23, 0.85) !important;
+  color: var(--color-amber-muted) !important;
+  backdrop-filter: blur(6px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: rgba(20, 28, 45, 0.95) !important;
+  color: var(--color-amber-glow) !important;
+}
+
+

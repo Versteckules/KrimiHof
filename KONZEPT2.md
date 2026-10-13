@@ -2,10 +2,12 @@
 Geolokalisierter Krimi-Nachtcache (Mystery/Unknown) in Hof (Saale)
 *Umfang: 16 Stationen (ca. 3 - 4 Kilometer, 2 bis 3 Stunden Spieldauer)*
 
+> **HINWEIS:** Dieses Arbeitsdokument wurde vollständig mit dem Master-Dokument konsolidiert. Bitte **[KONZEPT.md](file:///c:/Users/flaem/Desktop/Krimi/KONZEPT.md)** als aktuellen und verbindlichen Master-Stand verwenden.
+
 > **Stand:** 06.10.2026 – "Next Level" Architektur (Komplexe Wahrscheinlichkeiten, Branching Dialogues, Gadget-Minigames, Dynamische Verhaftung).
 > **Cache-Titel:** *„Der Pakt der Schlappen-Erben – Ein Nacht-Krimi in Hof (Saale)“*  
 > **Autor/Owner:** *made by Versteckules* (Profilbild: `assets/avatar.jpg`)  
-> Dieses Dokument ist die **verbindliche Gesamt-Architektur**. 
+> Dieses Dokument ist die **historische Zwischenstufe**; der aktuelle Master ist **[KONZEPT.md](file:///c:/Users/flaem/Desktop/Krimi/KONZEPT.md)**. 
 
 ---
 
@@ -22,7 +24,7 @@ Geolokalisierter Krimi-Nachtcache (Mystery/Unknown) in Hof (Saale)
 | 7 | **Gadget-Zwang pro Station** | An **jeder** der 12 Stationen **MUSS zwingend ein interaktives Gadget / Minigame** absolviert werden, bevor es in den Dialog geht. (Schütteln, Rubbeln, Puzzeln, etc. - kein "Me-Too"-Abklicken). |
 | 8 | **Dynamische Wahrscheinlichkeiten** | Jeder Hauptverdächtige hat einen Wahrscheinlichkeitswert (0-100%). Dieser Wert **ändert sich dynamisch** bei jedem gefundenen Beweis und nach jeder Dialogentscheidung. |
 | 9 | **Komplexe Branching-Dialoge** | **Keine linearen Storys!** Verschachtelte Dialogbäume. Das Finden von Beweisen schaltet neue Dialogoptionen bei Verdächtigen frei. Man muss mehrmals zu Charakteren zurückkehren können. |
-| 10| **Verhaftungs-Mechanik** | Ein großer **"Verhaften" Button** wird aktiv, sobald ein Verdächtiger **> 50% Wahrscheinlichkeit** erreicht hat. Ist man am Ende aller Stationen und niemand hat 50%, kann man den mit dem höchsten Wert verhaften. |
+| 10| **Verhaftungs-Mechanik** | Ein großer **"Verhaften" Button** wird aktiv, sobald ein Verdächtiger **≥ 55% Wahrscheinlichkeit** erreicht hat. Ist man am Ende aller Stationen und niemand hat 55%, kann man den mit dem höchsten Wert verhaften. |
 | 11| Multiple Endings | Das Finale ändert sich komplett basierend darauf, wen man verhaftet (3 verschiedene Enden möglich!). |
 | 12| **Ermittler-Pinnwand** | Dossier als TV-Style Evidence Board. Polaroids der Verdächtigen werden dynamisch mit gesammelten Beweisen (rote Fäden) visuell verknüpft. |
 | 13| **Easter Eggs** | 5 feste Easter Eggs (Versteckules-Name, Wärschtlamo-Kessel, Jean-Paul, Kompass-Rundlauf, Glockenschlag) müssen ins Gameplay verwoben sein. |
@@ -50,7 +52,7 @@ flowchart TD
     BranchA --> ProbChange["+/- % Wahrscheinlichkeit"]
     BranchB --> ProbChange
     
-    ProbChange --> CheckArrest{"Verdächtiger > 50%?"}
+    ProbChange --> CheckArrest{"Verdächtiger >= 55%?"}
     CheckArrest -- "Ja" --> ArrestUnlock["'Verhaften' Button wird freigeschaltet"]
     CheckArrest -- "Nein" --> OpenWorld
     
@@ -106,7 +108,7 @@ Um den Anforderungen gerecht zu werden, muss das aktuelle System stark umgebaut 
 
 1. **Entfernen der manuellen Texteingaben:** Die Check-Logik in `station.js` wird auf reines GPS-Geofencing (oder Klick in der Dev-Umgebung) umgestellt.
 2. **Probability-Engine bauen:** `state.js` erweitern, um Wahrscheinlichkeiten (%) pro Verdächtigem zu tracken und UI (Dossier) dynamisch upzudaten.
-3. **Verhaftungs-Logik:** Im Dossier den dicken 50%-Button implementieren.
+3. **Verhaftungs-Logik:** Im Dossier den dicken 55%-Button implementieren.
 4. **Branching Story Editor:** `story.json` radikal umbauen, um Knoten mit `requires` (Beweise) und `effects` (Wahrscheinlichkeits-Shift) zu unterstützen.
 5. **Gadget-Integration erzwingen:** Der Flow an einer Station wird strikt: `GPS-Trigger -> Gadget Minigame -> Dialog mit Branching`.
 
@@ -169,11 +171,11 @@ Das Spiel wurde durch ein eigenes `fx.js` Modul und erweiterte CSS-Animationen (
 Mit dem Sammeln von Beweisen und dem Lösen von Stationen sammelt der Spieler *Kommissarpunkte*. Daraus resultiert ein Rang, der sichtbar im Dashboard (Karte) angezeigt wird und direkten Einfluss auf die Mechanik hat:
 
 **Die Ränge:**
-1. **Streifenpolizist** (0 - 49 Punkte)
-2. **Schnüffler** (50 - 99 Punkte)
-3. **Privatdetektiv** (100 - 149 Punkte)
-4. **Inspektor** (150 - 199 Punkte)
-5. **Sherlock Holmes** (200+ Punkte)
+1. **Streifenpolizist** (0 - 99 Punkte)
+2. **Schnüffler** (100 - 199 Punkte)
+3. **Privatdetektiv** (200 - 299 Punkte)
+4. **Inspektor** (300 - 399 Punkte)
+5. **Sherlock Holmes** (400+ Punkte)
 
 **Vor- und Nachteile (Dynamik):**
 - **Vorteil ("Sherlock-Tipp"):** Ab Rang 3 (Privatdetektiv) schaltet sich auf der Übersichtskarte ein roter *Sherlock-Tipp*-Button frei. Klickt man darauf, erhält man basierend auf dem eigenen Spielfortschritt einen präzisen Hinweis, an welchem Ort man als Nächstes ermitteln sollte.

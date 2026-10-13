@@ -68,7 +68,7 @@ STORY_AUDIO_ITEMS = [
         "text": "Hauptverdächtiger 3: Severin Heiden. Domorganist und Chorleiter an St. Michaelis. Ein fanatischer Traditionstreuer, der das Vermächtnis der Schlappen-Erben vor profaner Entweihung schützen wollte."
     },
 
-    # --- OUTRO: ERFOLG (Sieg >= 75%) ---
+    # --- OUTRO: ERFOLG (Sieg >= 55%) ---
     {
         "id": "outro_win_ueberfuehrung",
         "speaker": "narrator",
@@ -95,7 +95,7 @@ STORY_AUDIO_ITEMS = [
         "text": "Fall gelöst! Hinter Gittern! Der Pakt der Schlappen-Erben ist endgültig zerschlagen! Der Drahtzieher wird dem Haftrichter vorgeführt und zu einer langen Freiheitsstrafe verurteilt. Die historischen Urkunden sind sichergestellt."
     },
 
-    # --- OUTRO: FREISPRUCH (< 75%) ---
+    # --- OUTRO: FREISPRUCH (< 55%) ---
     {
         "id": "outro_insufficient_ueberfuehrung",
         "speaker": "narrator",

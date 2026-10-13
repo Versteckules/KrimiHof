@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final-Koordinaten Verschlüsseler (Krimi Hof - GCBYXW0)</title>
+  <link rel="icon" type="image/jpeg" href="../assets/seal_schlappen.jpg">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    body {
+      background: #0a0e17;
+      color: #e2e8f0;
+      font-family: var(--font-sans, sans-serif);
+      padding: 30px 15px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 750px;
+      margin: 0 auto;
+      background: rgba(18, 24, 38, 0.95);
+      border: 1px solid var(--color-glass-border);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+    h1 {
+      font-family: var(--font-serif);
+      color: var(--color-amber-glow);
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+    .badge-info {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid #10b981;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .card-section {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    input, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 14px;
+      background: rgba(10, 14, 23, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+    }
+    input.coords-input {
+      font-family: var(--font-mono, monospace);
+      color: #ffd700;
+      font-size: 1.15rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--color-amber-glow);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+    .btn-action {
+      background: linear-gradient(135deg, #d4af37, #997316);
+      color: #000;
+      font-weight: bold;
+      font-size: 1.1rem;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+      transition: all 0.2s ease;
+    }
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+    }
+    .result-box {
+      margin-top: 25px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 8px;
+    }
+    .result-box.hidden { display: none; }
+    textarea.output-json {
+      font-family: monospace;
+      font-size: 0.8rem;
+      height: 160px;
+      color: #86efac;
+      background: #020617;
+      margin-top: 10px;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    .btn-secondary {
+      flex: 1;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>🔐 Geocaching Final-Verschlüsseler</h1>
+    <div class="badge-info">AES-GCM (256-Bit) • GitHub Spoiler-Schutz</div>
+
+    <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 20px;">
+      Trage hier deine <strong>echten Geocaching-Koordinaten</strong> ein. Dieses Tool verschlüsselt sie mit 
+      militärischem AES-GCM. Die verschlüsselte <code>data/final.json</code> kannst du danach <strong>völlig 
+      bedenkenlos auf GitHub hochladen</strong> – niemand kann sie dort vorab lesen!
+    </p>
+
+    <!-- 1. Haupt-Final -->
+    <div class="card-section">
+      <div class="card-title" style="color: #6ee7b7;">
+        <span>📍 1. Haupt-Final (GCBYXW0)</span>
+      </div>
+      <div class="form-group">
+        <label>Titel des Haupt-Finals:</label>
+        <input type="text" id="std-title" value="Haupt-Final (GCBYXW0)">
+      </div>
+      <div class="form-group">
+        <label>Koordinaten (DMM-Format: N 50° 19.xxx E 011° 55.yyy):</label>
+        <input type="text" id="std-coords" class="coords-input" value="N 50° 19.345 E 011° 55.412">
+      </div>
+      <div class="form-group">
+        <label>Hinweis / Hint:</label>
+        <textarea id="std-hint" rows="2">Im Schutz der alten Kopfweide, magnetisch an der eisernen Uferbefestigung der Saale verankert. Etwa 1,5 Meter über dem Boden, nicht im Wasser.</textarea>
+      </div>
+      <div class="form-group">
+        <label>Spoiler-Beschreibung / Dosen-Info:</label>
+        <input type="text" id="std-spoiler" value="Schwarze Lock&Lock-Dose in wetterfester Tarnhülle mit offiziellem Geocaching-Aufkleber.">
+      </div>
+    </div>
+
+    <!-- 2. Meister-Bonus -->
+    <div class="card-section">
+      <div class="card-title" style="color: #fcd34d;">
+        <span>⭐ 2. Meister-Bonus (Freischaltung bei Sieg &gt;= 55%)</span>
+      </div>
+      <div class="form-group">
+        <label>Titel des Bonus-Caches:</label>
+        <input type="text" id="bonus-title" value="Bonus-Cache: Das Vermächtnis des Meisters">
+      </div>
+      <div class="form-group">
+        <label>Bonus-Koordinaten (DMM-Format):</label>
+        <input type="text" id="bonus-coords" class="coords-input" value="N 50° 19.510 E 011° 55.680">
+      </div>
+      <div class="form-group">
+        <label>Geheimer Bonus-Code (Logbuch / Schloss):</label>
+        <input type="text" id="bonus-code" value="SCHLAPPEN-1823-REX">
+      </div>
+      <div class="form-group">
+        <label>Bonus-Hinweis / Hint:</label>
+        <textarea id="bonus-hint" rows="2">Im alten Mauerwerk des Torbogens, hinter dem losen Sandsteinquader auf der Nordseite.</textarea>
+      </div>
+      <div class="form-group">
+        <label>Bedingungs-Hinweis:</label>
+        <input type="text" id="bonus-desc" value="Wird nur freigeschaltet, wenn der Täter mit mindestens 55% Beweislast überführt wurde und ins Gefängnis geht.">
+      </div>
+    </div>
+
+    <button id="btn-encrypt" class="btn-action">🔒 Jetzt verschlüsseln &amp; data/final.json erzeugen</button>
+
+    <!-- Ergebnis -->
+    <div id="result-box" class="result-box hidden">
+      <h3 style="color: #10b981; margin-top: 0; font-size: 1.2rem;">✅ Erfolgreich verschlüsselt!</h3>
+      <p style="font-size: 0.9rem; color: #cbd5e1;">
+        Deine Koordinaten wurden in kryptografischen Chiffretext umgewandelt. Lade die Datei herunter und 
+        speichere sie als <code>data/final.json</code> (oder ersetze den Inhalt).
+      </p>
+
+      <textarea id="output-json" class="output-json" readonly></textarea>
+
+      <div class="btn-group">
+        <button id="btn-download" class="btn-secondary" style="background:#10b981; color:#000; font-weight:bold;">
+          💾 Als "data/final.json" herunterladen
+        </button>
+        <button id="btn-copy" class="btn-secondary">
+          📋 In Zwischenablage kopieren
+        </button>
+      </div>
+      <p id="copy-status" style="color: #fcd34d; font-size: 0.85rem; margin-top: 8px; text-align: center;"></p>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { encryptObject, getStandardPassphrase, getBonusPassphrase } from '../js/crypto.js';
+
+    // Versuche bestehende Klartext-Daten zu laden
+    async function loadCurrent() {
+      try {
+        const res = await fetch('../data/final_plain.json');
+        if (res.ok) {
+          const d = await res.json();
+          if (d.standardFinal) {
+            document.getElementById('std-title').value = d.standardFinal.title || '';
+            document.getElementById('std-coords').value = d.standardFinal.coordsDMM || '';
+            document.getElementById('std-hint').value = d.standardFinal.hint || '';
+            document.getElementById('std-spoiler').value = d.standardFinal.spoilerDescription || '';
+          }
+          if (d.bonusFinal) {
+            document.getElementById('bonus-title').value = d.bonusFinal.title || '';
+            document.getElementById('bonus-coords').value = d.bonusFinal.coordsDMM || '';
+            document.getElementById('bonus-code').value = d.bonusFinal.bonusCode || '';
+            document.getElementById('bonus-hint').value = d.bonusFinal.hint || '';
+            document.getElementById('bonus-desc').value = d.bonusFinal.description || '';
+          }
+        }
+      } catch (e) {
+        console.log('Vorbelegung aus Standardfeldern aktiv.');
+      }
+    }
+    loadCurrent();
+
+    document.getElementById('btn-encrypt').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-encrypt');
+      btn.textContent = '⏳ Verschlüssle mit AES-GCM...';
+      btn.disabled = true;
+
+      try {
+        const stdObj = {
+          title: document.getElementById('std-title').value.trim(),
+          coordsDMM: document.getElementById('std-coords').value.trim(),
+          hint: document.getElementById('std-hint').value.trim(),
+          spoilerDescription: document.getElementById('std-spoiler').value.trim()
+        };
+
+        const bonusObj = {
+          title: document.getElementById('bonus-title').value.trim(),
+          coordsDMM: document.getElementById('bonus-coords').value.trim(),
+          bonusCode: document.getElementById('bonus-code').value.trim(),
+          hint: document.getElementById('bonus-hint').value.trim(),
+          description: document.getElementById('bonus-desc').value.trim()
+        };
+
+        // 1. Standard-Final verschlüsseln
+        const encStandard = await encryptObject(stdObj, getStandardPassphrase());
+
+        // 2. Bonus-Final verschlüsseln (an Täter 'herold' gebunden)
+        const encBonus = await encryptObject(bonusObj, getBonusPassphrase('herold'));
+
+        const encryptedFinalJson = {
+          "_hinweis": "DIESE DATEI IST MIT AES-GCM VERSCHLÜSSELT. Sie kann bedenkenlos öffentlich auf GitHub hochgeladen werden!",
+          "_bearbeitung": "Zum Ändern der Koordinaten nutze tools/encrypt_final.html oder bearbeite data/final_plain.json",
+          "encrypted": true,
+          "standardFinal": encStandard,
+          "bonusFinal": encBonus,
+          "diploma": {
+            "title": "Meister-Ermittler der Stadt Hof",
+            "subtitle": "Im Fall des verschwundenen Bundespakts von 1823",
+            "signature": "Der Hohe Rat der Hofer Schlappen-Erben",
+            "bonusBadgeTitle": "Ehren-Detektiv mit Auszeichnung (Alle Bonus-Fälle gelöst)"
+          }
+        };
+
+        const jsonString = JSON.stringify(encryptedFinalJson, null, 2);
+        document.getElementById('output-json').value = jsonString;
+        
+        let dumpEl = document.getElementById('json-dump');
+        if (!dumpEl) {
+          dumpEl = document.createElement('pre');
+          dumpEl.id = 'json-dump';
+          dumpEl.style.display = 'none';
+          document.body.appendChild(dumpEl);
+        }
+        dumpEl.textContent = jsonString;
+
+        document.getElementById('result-box').classList.remove('hidden');
+        document.getElementById('result-box').scrollIntoView({ behavior: 'smooth' });
+
+      } catch (err) {
+        alert('Fehler bei der Verschlüsselung: ' + err.message);
+      } finally {
+        btn.textContent = '🔒 Jetzt verschlüsseln & data/final.json erzeugen';
+        btn.disabled = false;
+      }
+    });
+
+    if (new URLSearchParams(window.location.search).get('autorun') === '1') {
+      setTimeout(() => {
+        document.getElementById('btn-encrypt').click();
+      }, 300);
+    }
+
+    // Download Button
+    document.getElementById('btn-download').addEventListener('click', () => {
+      const content = document.getElementById('output-json').value;
+      const blob = new Blob([content], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'final.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
+    // Copy Button
+    document.getElementById('btn-copy').addEventListener('click', async () => {
+      const content = document.getElementById('output-json').value;
+      try {
+        await navigator.clipboard.writeText(content);
+        const status = document.getElementById('copy-status');
+        status.textContent = '✓ In die Zwischenablage kopiert! Jetzt in data/final.json einfügen.';
+        setTimeout(() => { status.textContent = ''; }, 4000);
+      } catch (e) {
+        alert('Kopieren fehlgeschlagen. Bitte manuell markieren und kopieren.');
+      }
+    });
+  </script>
+</body>
+</html>

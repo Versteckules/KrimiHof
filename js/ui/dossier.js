@@ -6,7 +6,7 @@ import { getState, subscribe, getPlayerRank, recordInterrogation, saveState } fr
 import { getStations, getStory } from '../config-loader.js';
 import { calculateFinalResult } from '../scoring.js';
 import { showView } from '../main.js';
-import { getSuspectName } from './final.js';
+import { getSuspectName, FULL_WIN_THRESHOLD } from './final.js';
 import { openDialogue } from './dialogue.js';
 import { openIntro } from './intro.js';
 
@@ -79,10 +79,8 @@ export function updateDossier() {
       });
     }
 
-    const isUnlocked = Boolean(
-      state.suspectsUnlocked || 
-      (state.solvedStations && (state.solvedStations.includes('rathaus') || state.solvedStations.length > 0))
-    );
+    const rathausSolved = Boolean(state.solvedStations && state.solvedStations.includes('rathaus'));
+    const isUnlocked = Boolean(state.suspectsUnlocked && rathausSolved);
 
     if (isUnlocked) {
       openBtn.classList.remove('hidden');
@@ -111,21 +109,37 @@ export function updateDossier() {
     }
   }
   
-  // 1. Verdächtige aktualisieren (mit Bildern und Verhör-Buttons!)
+  // 1. Verdächtige aktualisieren (Standorte und Vor-Ort-Verhör-Hinweis)
   const suspContainer = document.getElementById('dossier-suspects');
   if (suspContainer) {
-    const suspectsAreUnlocked = Boolean(
-      state.suspectsUnlocked || 
-      (state.solvedStations && (state.solvedStations.includes('rathaus') || state.solvedStations.length > 0))
-    );
+    const rathausSolved = Boolean(state.solvedStations && state.solvedStations.includes('rathaus'));
+    const suspectsAreUnlocked = Boolean(state.suspectsUnlocked && rathausSolved);
     if (!suspectsAreUnlocked) {
-      suspContainer.innerHTML = '<p style="color:var(--color-text-muted); font-style:italic; font-size:0.9rem;">Noch keine Verdächtigen identifiziert. Sprechen Sie mit Zeugen.</p>';
+      suspContainer.innerHTML = `
+        <div style="padding: 16px; background: rgba(10, 14, 23, 0.65); border: 1px dashed var(--color-glass-border); border-radius: 8px; text-align: center;">
+          <p style="color:var(--color-amber-muted); font-size:0.95rem; font-weight: bold; margin-bottom: 6px;">🔒 Hauptverdächtige noch unbekannt</p>
+          <p style="color:var(--color-text-muted); font-style:italic; font-size:0.85rem; line-height: 1.4; margin: 0;">Untersuche zuerst den Brandherd am Historischen Rathaus (Station 1), um erste Spuren aufzudecken und die Identität der Verdächtigen zu ermitteln.</p>
+        </div>
+      `;
     } else {
       let html = '';
       const storySuspects = (story && story.suspects) ? story.suspects : {};
 
     const pflichtCount = (state.solvedStations || []).filter(sid => !sid.startsWith('saale_') && !sid.startsWith('altstadt_')).length;
     const isAllStationsSolved = pflichtCount >= 12;
+
+    if (isAllStationsSolved) {
+      html += `
+        <div style="background: linear-gradient(135deg, rgba(139, 0, 0, 0.25) 0%, rgba(30, 41, 59, 0.8) 100%); border: 1px solid var(--color-blood-red); border-radius: 8px; padding: 12px; margin-bottom: 14px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+          <div style="color: var(--color-blood-red); font-weight: bold; font-size: 0.95rem; margin-bottom: 4px; letter-spacing: 0.5px;">
+            🚨 12 Pflichtstationen gelöst • Ermittlungsakte komplett!
+          </div>
+          <div style="color: #cbd5e1; font-size: 0.8rem; line-height: 1.4;">
+            Du kannst Verdächtige nochmals anpeilen, offene Beweise prüfen oder jetzt direkt bei deinem Hauptverdächtigen auf <strong>„🚨 Verhaften“</strong> tippen!
+          </div>
+        </div>
+      `;
+    }
 
     result.suspects.forEach((s, index) => {
       const perc = result.percentages[s.id] || 0;
@@ -135,7 +149,7 @@ export function updateDossier() {
       const motive = suspectData.motive || '';
       
       const isHighest = index === 0;
-      const canArrest = isAllStationsSolved && (perc > 50 || isHighest);
+      const canArrest = isAllStationsSolved && (perc >= FULL_WIN_THRESHOLD || isHighest);
 
       html += `
         <div class="dossier-suspect-card" style="background: rgba(10, 14, 23, 0.85); border: 1px solid var(--color-glass-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
@@ -157,19 +171,28 @@ export function updateDossier() {
             ${motive}
           </div>
 
+          <div style="background: rgba(0,0,0,0.35); border-left: 3px solid var(--color-amber-muted); padding: 8px 10px; margin-top: 4px; border-radius: 0 4px 4px 0;">
+            <div style="font-size: 0.8rem; color: #f5d79e; font-weight: bold; margin-bottom: 2px;">
+              📍 Fester Aufenthaltsort: ${suspectData.location || 'Hof (Saale)'}
+            </div>
+            <div style="font-size: 0.74rem; color: #aaa; line-height: 1.35;">
+              Begib dich im Stadtgebiet zu diesem Ort, um den Verdächtigen vor Ort persönlich zu stellen.
+            </div>
+          </div>
+
           <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 3px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 3px; margin-top: 4px;">
               <span>Verdachtslast:</span>
-              <span style="color: ${perc > 50 ? 'var(--color-blood-red)' : 'var(--color-amber-glow)'}; font-weight: bold;">${perc}%</span>
+              <span style="color: ${perc >= FULL_WIN_THRESHOLD ? 'var(--color-blood-red)' : 'var(--color-amber-glow)'}; font-weight: bold;">${perc}%</span>
             </div>
             <div style="width: 100%; background: #222; height: 7px; border-radius: 4px; overflow: hidden;">
-              <div style="width: ${perc}%; background: ${perc > 50 ? 'var(--color-blood-red)' : 'var(--color-amber-muted)'}; height: 100%; transition: width 0.4s ease;"></div>
+              <div style="width: ${perc}%; background: ${perc >= FULL_WIN_THRESHOLD ? 'var(--color-blood-red)' : 'var(--color-amber-muted)'}; height: 100%; transition: width 0.4s ease;"></div>
             </div>
           </div>
 
           <div style="display: flex; gap: 8px; margin-top: 8px;">
-            <button class="btn-primary btn-interrogate" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; background: linear-gradient(135deg, #d4af37, #8c6d23); color: #05080f; font-weight: bold; border: 1px solid #d4af37; cursor: pointer;">
-              🗣️ Verhör starten
+            <button class="btn-secondary btn-show-suspect-map" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; border: 1px solid var(--color-amber-muted); color: #f5d79e; background: rgba(212, 175, 55, 0.15); font-weight: bold; cursor: pointer;">
+              🧭 Auf Karte anpeilen
             </button>
             <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.5; filter: grayscale(1);'}">
               🚨 Verhaften
@@ -180,11 +203,18 @@ export function updateDossier() {
     });
     suspContainer.innerHTML = html;
 
-    // Klick-Handler für Verhör
-    suspContainer.querySelectorAll('.btn-interrogate').forEach(btn => {
+    // Klick-Handler für "Auf Karte anpeilen" (Verhör nur vor Ort am GPS-Punkt)
+    suspContainer.querySelectorAll('.btn-show-suspect-map').forEach(btn => {
       btn.addEventListener('click', () => {
         const suspectId = btn.getAttribute('data-suspect-id');
-        startSuspectInterrogation(suspectId);
+        import('../main.js').then(m => {
+          m.showView('view-dashboard');
+          import('./map.js').then(mapMod => {
+            if (mapMod.focusSuspectOnMap) {
+              mapMod.focusSuspectOnMap(suspectId);
+            }
+          });
+        });
       });
     });
 
@@ -356,7 +386,8 @@ export function updateDossier() {
                     'beweis_frachtpapiere',
                     'evidence_rosina_note',
                     'evidence_phone_warning',
-                    'evidence_wiretap_log'
+                    'evidence_wiretap_log',
+                    'evidence_torn_letter'
                   ],
                   'heiden': [
                     'notenblatt_heiden',
@@ -364,8 +395,7 @@ export function updateDossier() {
                     'beweis_pakt_ring',
                     'evidence_brass_wheel',
                     'evidence_uv_formula',
-                    'evidence_ambigram_mirror',
-                    'evidence_torn_letter'
+                    'evidence_ambigram_mirror'
                   ]
                 };
                 

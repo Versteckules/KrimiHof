@@ -1,34 +1,11 @@
-import { addSuspectImpact } from '../../state.js';
+import { addSuspectImpact, addScore } from '../../state.js';
 
 export function runGadget(stationId, onComplete) {
   const overlay = document.createElement('div');
   overlay.id = 'gadget-fullscreen-overlay';
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e17; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; color:white; font-family:serif; text-align:center;';
 
-  overlay.innerHTML = `
-    <h2 style="color:#a89f91; margin-bottom:10px;">Die Orgelempore</h2>
-    <p style="margin-bottom:20px; font-size:0.9rem; font-family:sans-serif;">Ein uraltes Notenblatt zeigt ein Motiv, das in der Musikgeschichte berühmt ist (Vier Töne).</p>
-    
-    <div id="piano" style="display:flex; justify-content:center; gap:2px; margin-bottom:20px;">
-      <!-- White keys -->
-      <div class="piano-key" data-note="C" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">C</div>
-      <div class="piano-key" data-note="D" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">D</div>
-      <div class="piano-key" data-note="E" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">E</div>
-      <div class="piano-key" data-note="F" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">F</div>
-      <div class="piano-key" data-note="G" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">G</div>
-      <div class="piano-key" data-note="A" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">A</div>
-      <div class="piano-key" data-note="B" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">B</div>
-      <div class="piano-key" data-note="H" style="width:35px; height:120px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px;">H</div>
-    </div>
-    
-    <div id="notes-display" style="font-family:monospace; font-size:1.5rem; letter-spacing:5px; height:30px; color:#d4af37;"></div>
-    
-    <button class="btn-secondary" id="btn-music-abort1" style="margin-top: 30px;">Rätsel umgehen</button>
-  `;
-
-  document.body.appendChild(overlay);
-
-  // Web Audio Context for simple beeps
+  // Web Audio Context for notes
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   let audioCtx;
 
@@ -59,103 +36,178 @@ export function runGadget(stationId, onComplete) {
     'H': 493.88  // B natural (H)
   };
 
-  const targetSequence = ['B', 'A', 'C', 'H'];
-  let entered = [];
-  const display = document.getElementById('notes-display');
-
-  overlay.querySelectorAll('.piano-key').forEach(key => {
-    key.onclick = () => {
-      const note = key.getAttribute('data-note');
-
-      // Visual feedback
-      key.style.background = '#ccc';
-      setTimeout(() => key.style.background = 'white', 150);
-
-      playNoteFreq(noteFrequencies[note]);
-
-      entered.push(note);
-      if (entered.length > 4) entered.shift(); // keep last 4
-
-      display.innerText = entered.join(' ');
-
-      if (entered.length === 4 && entered.join('') === targetSequence.join('')) {
-        setTimeout(startPhase2, 500);
-      }
-    };
-  });
-
-  document.getElementById('btn-music-abort1').onclick = () => {
-    if (window.showNoirConfirm) {
-      window.showNoirConfirm("Orgel knacken?", "Möchtest du das Notenrätsel überspringen? (-10 Punkte)", () => {
-        import('../../state.js').then(m => m.addScore(-10));
-        import('../../main.js').then(m => m.showNoirAlert('Rätsel gewaltsam gelöst (-10 Punkte)', 'Punkteabzug'));
-        startPhase2();
-      });
-    } else {
-      import('../../state.js').then(m => m.addScore(-10));
-      startPhase2();
+  function closeGadget() {
+    if (audioCtx) {
+      try { audioCtx.close(); } catch(e) {}
     }
-  };
+    if (overlay.parentNode) {
+      overlay.parentNode.removeChild(overlay);
+    }
+    onComplete();
+  }
+
+  function skipWithPenalty() {
+    const doSkip = () => {
+      addScore(-10);
+      import('../../main.js').then(m => {
+        if (m.showNoirAlert) m.showNoirAlert('Rätsel gewaltsam gelöst (-10 Punkte)', 'Punkteabzug');
+      });
+      showPhase3();
+    };
+
+    if (window.showNoirConfirm) {
+      window.showNoirConfirm("Orgel knacken?", "Möchtest du das gesamte Rätsel gewaltsam überspringen? (-10 Kommissarpunkte)", doSkip);
+    } else if (confirm("Möchtest du das Rätsel überspringen? (-10 Punkte)")) {
+      doSkip();
+    }
+  }
+
+  function renderPhase1() {
+    overlay.innerHTML = `
+      <button id="btn-music-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
+      
+      <h2 style="color:var(--color-amber-glow); margin-bottom:8px; font-family:var(--font-serif); font-size:1.5rem;">Die Orgel von St. Michaelis</h2>
+      <p style="margin-bottom:12px; font-size:0.95rem; font-family:sans-serif; color:#cbd5e1; max-width:420px; line-height:1.4;">
+        Ein gerettetes Notenblatt offenbart das musikalische Kennwort der Bruderschaft. Spiele die 4 Töne auf den Tasten:
+      </p>
+
+      <div style="background:rgba(212,175,55,0.12); border-left:3px solid #d4af37; border-radius:4px; padding:10px 14px; margin-bottom:20px; font-size:0.85rem; color:#f5d79e; text-align:left; max-width:380px; font-family:sans-serif; line-height:1.4;">
+        💡 <strong>Ermittler-Hinweis:</strong> Die Notenfolge ehrt den berühmtesten Meister barocker Orgelmusik: <strong style="color:#fff; letter-spacing:1px;">B – A – C – H</strong>.
+      </div>
+      
+      <div id="piano" style="display:flex; justify-content:center; gap:3px; margin-bottom:15px;">
+        <div class="piano-key" data-note="C" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">C</div>
+        <div class="piano-key" data-note="D" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">D</div>
+        <div class="piano-key" data-note="E" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">E</div>
+        <div class="piano-key" data-note="F" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">F</div>
+        <div class="piano-key" data-note="G" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">G</div>
+        <div class="piano-key" data-note="A" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">A</div>
+        <div class="piano-key" data-note="B" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">B</div>
+        <div class="piano-key" data-note="H" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">H</div>
+      </div>
+      
+      <div id="notes-display" style="font-family:monospace; font-size:1.6rem; letter-spacing:8px; height:36px; color:#d4af37; font-weight:bold;">_ _ _ _</div>
+      
+      <button class="btn-secondary" id="btn-music-abort" style="margin-top:20px; padding:10px 18px; font-size:0.85rem; border:1px solid #777; background:rgba(0,0,0,0.5); color:#ddd; border-radius:4px; cursor:pointer;">
+        Rätsel überspringen (-10 Punkte)
+      </button>
+    `;
+
+    document.getElementById('btn-music-cancel').onclick = closeGadget;
+    document.getElementById('btn-music-abort').onclick = () => skipWithPenalty();
+
+    const targetSequence = ['B', 'A', 'C', 'H'];
+    let entered = [];
+    const display = document.getElementById('notes-display');
+
+    overlay.querySelectorAll('.piano-key').forEach(key => {
+      key.onclick = () => {
+        const note = key.getAttribute('data-note');
+
+        key.style.background = '#ffd700';
+        setTimeout(() => key.style.background = 'white', 160);
+
+        playNoteFreq(noteFrequencies[note]);
+
+        entered.push(note);
+        if (entered.length > 4) entered.shift();
+
+        display.innerText = entered.join(' ');
+
+        if (entered.length === 4 && entered.join('') === targetSequence.join('')) {
+          setTimeout(startPhase2, 450);
+        }
+      };
+    });
+  }
 
   function startPhase2() {
     overlay.innerHTML = `
-      <h2 style="color:#d4af37; margin-bottom:10px;">Ein Kryptex fährt aus der Wand!</h2>
-      <p style="margin-bottom:20px; font-size:0.9rem; font-family:sans-serif;">Die Orgelmechanik gibt ein 4-stelliges Worträtsel frei. Wie nennt sich das geheime Bündnis?</p>
+      <button id="btn-music-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
       
-      <input type="text" id="kryptex-input" maxlength="4" style="font-size:2rem; width:120px; text-align:center; text-transform:uppercase; letter-spacing:10px; background:#222; color:#fff; border:2px solid #555; border-radius:5px; margin-bottom:20px;">
-      <br>
-      <div style="display:flex; gap:10px;">
-        <button class="btn-primary" id="btn-kryptex-check">Öffnen</button>
-        <button class="btn-secondary" id="btn-music-abort2">Kryptex aufbrechen</button>
+      <h2 style="color:var(--color-amber-glow); margin-bottom:8px; font-family:var(--font-serif); font-size:1.5rem;">Das Orgel-Kryptex</h2>
+      <p style="margin-bottom:12px; font-size:0.95rem; font-family:sans-serif; color:#cbd5e1; max-width:400px; line-height:1.4;">
+        Ein zylinderförmiges Kryptex fährt aus der Wand! Wie lautet das 4-stellige Kennwort des geheimen Hofer Bundes?
+      </p>
+
+      <div style="background:rgba(212,175,55,0.12); border-left:3px solid #d4af37; border-radius:4px; padding:10px 14px; margin-bottom:20px; font-size:0.85rem; color:#f5d79e; text-align:left; max-width:380px; font-family:sans-serif; line-height:1.4;">
+        💡 <strong>Ermittler-Hinweis:</strong> Das Leitwort unserer Ermittlung: Der <strong>P – A – K – T</strong> der Schlappen-Erben.
       </div>
+      
+      <input type="text" id="kryptex-input" maxlength="4" placeholder="WORT" style="font-size:2rem; width:160px; text-align:center; text-transform:uppercase; letter-spacing:8px; background:#1e293b; color:#ffd700; border:2px solid #d4af37; border-radius:6px; margin-bottom:20px; padding:6px; font-family:monospace; font-weight:bold;">
+      
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <button class="btn-primary" id="btn-kryptex-check" style="padding:10px 24px; font-size:0.95rem; font-weight:bold; background:var(--color-blood-red); border:none; border-radius:4px; cursor:pointer; color:white;">
+          Kryptex öffnen
+        </button>
+      </div>
+
+      <button class="btn-secondary" id="btn-music-abort2" style="margin-top:20px; padding:10px 18px; font-size:0.85rem; border:1px solid #777; background:rgba(0,0,0,0.5); color:#ddd; border-radius:4px; cursor:pointer;">
+        Kryptex aufbrechen (-10 Punkte)
+      </button>
     `;
 
-    document.getElementById('btn-kryptex-check').onclick = () => {
-      const val = document.getElementById('kryptex-input').value.toUpperCase();
+    document.getElementById('btn-music-cancel').onclick = closeGadget;
+    document.getElementById('btn-music-abort2').onclick = () => skipWithPenalty();
+
+    const input = document.getElementById('kryptex-input');
+    input.focus();
+
+    const checkCode = () => {
+      const val = input.value.trim().toUpperCase();
       if (val === "PAKT") {
         showPhase3();
       } else {
-        alert("Falsches Wort. Das Kryptex klemmt.");
+        input.style.borderColor = '#ef4444';
+        setTimeout(() => input.style.borderColor = '#d4af37', 800);
+        import('../../main.js').then(m => {
+          if (m.showNoirAlert) m.showNoirAlert('Falsches Kennwort! Das Kryptex blockiert. (Tipp: PAKT)', 'Kryptex klemmt');
+          else alert('Falsches Kennwort! (Tipp: PAKT)');
+        });
       }
     };
 
-    document.getElementById('btn-music-abort2').onclick = () => {
-      if (window.showNoirConfirm) {
-        window.showNoirConfirm("Kryptex aufbrechen?", "Möchtest du das Kryptex gewaltsam öffnen? (-10 Punkte)", () => {
-          import('../../state.js').then(m => m.addScore(-10));
-          import('../../main.js').then(m => m.showNoirAlert('Rätsel gewaltsam gelöst (-10 Punkte)', 'Punkteabzug'));
-          showPhase3();
-        });
-      } else {
-        import('../../state.js').then(m => m.addScore(-10));
-        showPhase3();
-      }
-    };
+    document.getElementById('btn-kryptex-check').onclick = checkCode;
+    input.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') checkCode();
+    });
   }
 
   function showPhase3() {
     overlay.innerHTML = `
-      <h2 style="color:var(--color-amber-glow); margin-bottom:20px;">Das Kryptex ist offen!</h2>
-      <div style="background:#222; border:1px solid #d4af37; padding:20px; text-align:left; max-width:300px; margin-bottom:20px; font-family:sans-serif;">
-        <p style="color:#ddd; font-size:0.9rem;">Du findest brisante theologische Aufzeichnungen, die eine Fanatisierung belegen.</p>
+      <button id="btn-music-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
+      
+      <h2 style="color:var(--color-amber-glow); margin-bottom:12px; font-family:var(--font-serif); font-size:1.5rem;">Kryptex entriegelt!</h2>
+      <div style="background:rgba(30, 41, 59, 0.7); border:1px solid #d4af37; border-radius:6px; padding:16px; text-align:left; max-width:340px; margin-bottom:20px; font-family:sans-serif;">
+        <p style="color:#e2e8f0; font-size:0.9rem; line-height:1.45; margin:0;">
+          Im Geheimfach des Spieltischs liegen liturgische Schriften und Drohbriefe, die eine radikale Fanatisierung belegen.
+        </p>
       </div>
-      <p style="margin-bottom:15px; font-family:sans-serif;">Wem ordnest du diese Dokumente zu?</p>
-      <div style="display:flex; flex-direction:column; gap:10px; width:100%; max-width:300px; font-family:sans-serif;">
-        <button class="btn-primary suspect-choice" data-suspect="herold" data-val="15">Herold (+15% Schuld)</button>
-        <button class="btn-primary suspect-choice" data-suspect="gipser" data-val="15">Von Gipser (+15% Schuld)</button>
-        <button class="btn-primary suspect-choice" data-suspect="heiden" data-val="15">Heiden (+15% Schuld)</button>
+
+      <p style="margin-bottom:15px; font-family:sans-serif; font-size:0.95rem; color:#f5d79e;">Wem ordnest du diese Dokumente zu?</p>
+      
+      <div style="display:flex; flex-direction:column; gap:10px; width:100%; max-width:320px; font-family:sans-serif;">
+        <button class="btn-primary suspect-choice" data-suspect="herold" data-val="15" style="padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">Valentin Herold (+15% Verdacht)</button>
+        <button class="btn-primary suspect-choice" data-suspect="gipser" data-val="15" style="padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">Margarete von Gipser (+15% Verdacht)</button>
+        <button class="btn-primary suspect-choice" data-suspect="heiden" data-val="15" style="padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">Severin Heiden (+15% Verdacht)</button>
       </div>
     `;
+
+    document.getElementById('btn-music-cancel').onclick = closeGadget;
 
     overlay.querySelectorAll('.suspect-choice').forEach(btn => {
       btn.onclick = () => {
         const suspect = btn.getAttribute('data-suspect');
         const val = parseInt(btn.getAttribute('data-val'), 10);
         addSuspectImpact(suspect, val);
-        alert("Beweis gesichert!");
-        document.body.removeChild(overlay);
-        onComplete();
+        import('../../main.js').then(m => {
+          if (m.showNoirAlert) m.showNoirAlert('Dokumente gesichert und Verdacht zugewiesen!', 'Erfolg');
+        });
+        closeGadget();
       };
     });
   }
+
+  // Start with Phase 1
+  renderPhase1();
 }

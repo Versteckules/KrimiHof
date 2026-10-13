@@ -159,8 +159,8 @@ export function initDebug() {
       <div class="debug-section">
         <h4>Outro / Epilog Vorschau</h4>
         <div class="debug-control" style="display:flex; flex-direction:column; gap:5px;">
-          <button id="btn-debug-outro-win" class="debug-btn" style="text-align:left;">🏆 Sieg (&gt;= 75% Hinter Gittern)</button>
-          <button id="btn-debug-outro-insufficient" class="debug-btn" style="text-align:left;">⚖️ Freispruch (&lt; 75% Spuren verwischt)</button>
+          <button id="btn-debug-outro-win" class="debug-btn" style="text-align:left;">🏆 Sieg (&gt;= 55% Hinter Gittern)</button>
+          <button id="btn-debug-outro-insufficient" class="debug-btn" style="text-align:left;">⚖️ Freispruch (&lt; 55% Spuren verwischt)</button>
           <button id="btn-debug-outro-fail" class="debug-btn" style="text-align:left;">❌ Fataler Irrtum (Falscher Täter)</button>
         </div>
       </div>
