@@ -173,14 +173,14 @@ function renderChoices(choices, isEnd, unlockSuspects) {
   const playerName = state.playerName || 'Ermittler';
   
   const playerAvatarWrap = document.createElement('div');
-  playerAvatarWrap.style = "display:flex; align-items:flex-end; gap: 10px; margin-top: 15px;";
+  playerAvatarWrap.style = "display:flex; align-items:flex-end; gap: 10px; margin-top: 15px; width: 100%; min-width: 0; box-sizing: border-box;";
   
   const playerAvatar = document.createElement('img');
   playerAvatar.src = 'assets/kommissar_stahl.jpg';
   playerAvatar.style = "width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--color-amber-muted); object-fit: cover; object-position: top; flex-shrink: 0;";
   
   const choicesContainer = document.createElement('div');
-  choicesContainer.style = "display: flex; flex-direction: column; gap: 10px; flex-grow: 1;";
+  choicesContainer.style = "display: flex; flex-direction: column; gap: 10px; flex-grow: 1; min-width: 0; width: 100%;";
 
   playerAvatarWrap.appendChild(playerAvatar);
   playerAvatarWrap.appendChild(choicesContainer);

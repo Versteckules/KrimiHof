@@ -125,15 +125,15 @@ async function formatFinalCoords(isFullWin = false, murdererId = 'herold', suspe
 
   let html = `
     <!-- 1. Haupt-Final (Immer sichtbar für alle ehrlichen Finder) -->
-    <div style="background: rgba(16, 185, 129, 0.12); border: 2px solid #10b981; border-radius: 8px; padding: 15px; margin-bottom: 15px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-        <span style="color: #6ee7b7; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">📍 ${standard.title || 'Haupt-Final (GCBYXW0)'}</span>
+    <div style="background: rgba(16, 185, 129, 0.12); border: 2px solid #10b981; border-radius: 8px; padding: 14px 12px; margin-bottom: 15px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.5); box-sizing: border-box;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+        <span style="color: #6ee7b7; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">📍 ${standard.title || 'Haupt-Final (GCBYXW0)'}</span>
         <span style="background: rgba(16, 185, 129, 0.25); color: #a7f3d0; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">Freigeschaltet</span>
       </div>
-      <div style="font-family: var(--font-mono); font-size: 1.35rem; color: #ffffff; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px;">
+      <div style="font-family: var(--font-mono); font-size: clamp(1.05rem, 4.2vw, 1.35rem); color: #ffffff; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px; word-break: break-word;">
         ${standard.coordsDMM}
       </div>
-      ${standard.hint ? `<div style="font-size: 0.85rem; color: #cbd5e1; font-style: italic; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 6px;">💡 Hinweis: ${standard.hint}</div>` : ''}
+      ${standard.hint ? `<div style="font-size: 0.85rem; color: #cbd5e1; font-style: italic; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 6px; word-break: break-word;">💡 Hinweis: ${standard.hint}</div>` : ''}
     </div>
   `;
 
@@ -141,15 +141,15 @@ async function formatFinalCoords(isFullWin = false, murdererId = 'herold', suspe
     // Fall 1: Täter ins Gefängnis (> 55% UND Rang Sherlock) -> Finalkords UND Bonus
     html += `
       <!-- 2. Meister-Bonus (Exklusiv bei erfolgreicher Überführung > 55% UND Rang Sherlock) -->
-      <div style="background: linear-gradient(135deg, rgba(212, 163, 89, 0.2) 0%, rgba(139, 101, 8, 0.3) 100%); border: 2px solid #d4af37; border-radius: 8px; padding: 15px; text-align: left; box-shadow: 0 0 20px rgba(212, 163, 89, 0.35);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <span style="color: #f5d79e; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">⭐ ${bonus.title || 'Bonus-Cache: Das Vermächtnis'}</span>
+      <div style="background: linear-gradient(135deg, rgba(212, 163, 89, 0.2) 0%, rgba(139, 101, 8, 0.3) 100%); border: 2px solid #d4af37; border-radius: 8px; padding: 14px 12px; text-align: left; box-shadow: 0 0 20px rgba(212, 163, 89, 0.35); box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+          <span style="color: #f5d79e; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">⭐ ${bonus.title || 'Bonus-Cache: Das Vermächtnis'}</span>
           <span style="background: #d4af37; color: #000; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">Täter Inhaftiert &amp; Sherlock-Rang!</span>
         </div>
-        <div style="font-family: var(--font-mono); font-size: 1.35rem; color: #ffd700; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px;">
+        <div style="font-family: var(--font-mono); font-size: clamp(1.05rem, 4.2vw, 1.35rem); color: #ffd700; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px; word-break: break-word;">
           ${bonus.coordsDMM}
         </div>
-        ${bonus.hint ? `<div style="font-size: 0.85rem; color: #f5ecc8; font-style: italic; border-top: 1px dashed rgba(212, 163, 89, 0.3); padding-top: 6px;">💡 Bonus-Hinweis: ${bonus.hint}</div>` : ''}
+        ${bonus.hint ? `<div style="font-size: 0.85rem; color: #f5ecc8; font-style: italic; border-top: 1px dashed rgba(212, 163, 89, 0.3); padding-top: 6px; word-break: break-word;">💡 Bonus-Hinweis: ${bonus.hint}</div>` : ''}
       </div>
     `;
   } else {

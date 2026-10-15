@@ -94,9 +94,9 @@ export function initLanding() {
         updateUIFromState(getState());
 
         const easterEggOverlay = document.createElement('div');
-        easterEggOverlay.style = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.9); z-index: 10000; display:flex; align-items:center; justify-content:center; padding: 20px;";
+        easterEggOverlay.style.cssText = "position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.9); z-index: 10000; display:flex; align-items:center; justify-content:center; padding: 20px; overflow-y:auto; -webkit-overflow-scrolling:touch; box-sizing:border-box;";
         easterEggOverlay.innerHTML = `
-          <div style="background: #1a1a1a; border: 2px solid #d4af37; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);">
+          <div style="background: #1a1a1a; border: 2px solid #d4af37; padding: 25px 20px; border-radius: 10px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.4); margin: auto;">
             <h2 style="color: #d4af37; font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.8rem;">EASTER EGG GEFUNDEN!</h2>
             <div class="avatar-frame" style="margin: 0 auto 15px auto; width: 100px; height: 100px;">
               <img src="assets/avatar.jpg" class="avatar-noir" alt="Versteckules">

@@ -496,6 +496,12 @@
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .btn-danger:hover {
@@ -1542,7 +1548,11 @@
     gap: var(--space-md) !important;
   }
 
-  /* Final View Suspect Buttons */
+  /* Final View */
+  #view-final h2 {
+    font-size: clamp(1.6rem, 6vw, 2.2rem) !important;
+  }
+
   .final-suspects-grid {
     flex-direction: column !important;
     gap: 10px !important;
@@ -1595,13 +1605,33 @@
   }
 
   .intro-controls {
-    flex-direction: row !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
     justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
   }
 
   .intro-controls button {
-    padding: 8px 14px !important;
-    font-size: 0.85rem !important;
+    padding: 10px 14px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .intro-controls #btn-intro-prev {
+    order: 1 !important;
+  }
+
+  .intro-controls #btn-intro-skip {
+    order: 2 !important;
+  }
+
+  .intro-controls #btn-intro-next {
+    order: 3 !important;
+    width: 100% !important;
+    margin-top: 4px !important;
+    text-align: center !important;
+    padding: 12px 18px !important;
+    font-size: 0.98rem !important;
   }
 }
 

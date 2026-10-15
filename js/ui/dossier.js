@@ -439,20 +439,16 @@ export function updateDossier() {
                 : `Sind Sie sicher, dass Sie diesen Beweis <b>${sName}</b> zuweisen wollen?<br><br><span style="color:var(--color-amber-muted); font-size:0.9rem;">Hinweis: Sollten Sie sich irren, steht Ihnen für diesen Beweis später genau EINE einmalige Neuzuordnung zur Verfügung.</span>`;
 
               const confirmBox = document.createElement('div');
-              confirmBox.style.position = 'fixed';
-              confirmBox.style.top = '0'; confirmBox.style.left = '0'; confirmBox.style.width = '100vw'; confirmBox.style.height = '100vh';
-              confirmBox.style.backgroundColor = 'rgba(0,0,0,0.85)';
-              confirmBox.style.display = 'flex'; confirmBox.style.justifyContent = 'center'; confirmBox.style.alignItems = 'center';
-              confirmBox.style.zIndex = '99999';
+              confirmBox.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center; z-index:99999; padding:16px; box-sizing:border-box; overflow-y:auto; -webkit-overflow-scrolling:touch;";
               confirmBox.innerHTML = `
-                <div style="background: var(--color-night-dark); border: 2px solid ${isReassignedAttempt ? 'var(--color-blood-red)' : 'var(--color-amber-muted)'}; border-radius: 8px; padding: 25px; max-width: 420px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
-                  <h3 style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 1px;">Beweis Zuweisen</h3>
-                  <p style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1rem; line-height: 1.5; margin-bottom: 25px;">
+                <div style="background: var(--color-night-dark); border: 2px solid ${isReassignedAttempt ? 'var(--color-blood-red)' : 'var(--color-amber-muted)'}; border-radius: 8px; padding: 20px 16px; width: 100%; max-width: 420px; box-sizing: border-box; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: auto;">
+                  <h3 style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 12px; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 1px;">Beweis Zuweisen</h3>
+                  <p style="color: #e2e8f0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
                     ${confirmText}
                   </p>
-                  <div style="display: flex; justify-content: space-around;">
-                    <button id="btn-assign-no" class="btn-secondary" style="padding: 10px 20px;">Abbrechen</button>
-                    <button id="btn-assign-yes" class="btn-primary" style="padding: 10px 20px; background: var(--color-blood-red); border:none;">Zuweisen</button>
+                  <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button id="btn-assign-no" class="btn-secondary" style="flex: 1; min-width: 120px; padding: 10px 14px;">Abbrechen</button>
+                    <button id="btn-assign-yes" class="btn-primary" style="flex: 1; min-width: 120px; padding: 10px 14px; background: var(--color-blood-red); border:none;">Zuweisen</button>
                   </div>
                 </div>
               `;
@@ -571,23 +567,19 @@ export function updateDossier() {
                 resetBtn.onclick = () => {
                   // Bestätigungsdialog mit expliziter Warnung
                   const confirmBox = document.createElement('div');
-                  confirmBox.style.position = 'fixed';
-                  confirmBox.style.top = '0'; confirmBox.style.left = '0'; confirmBox.style.width = '100vw'; confirmBox.style.height = '100vh';
-                  confirmBox.style.backgroundColor = 'rgba(0,0,0,0.85)';
-                  confirmBox.style.display = 'flex'; confirmBox.style.justifyContent = 'center'; confirmBox.style.alignItems = 'center';
-                  confirmBox.style.zIndex = '99999';
+                  confirmBox.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center; z-index:99999; padding:16px; box-sizing:border-box; overflow-y:auto; -webkit-overflow-scrolling:touch;";
                   confirmBox.innerHTML = `
-                    <div style="background: var(--color-night-dark); border: 2px solid var(--color-blood-red); border-radius: 8px; padding: 25px; max-width: 420px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
-                      <h3 style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 1px;">⚠️ Einmalige Neuzuordnung</h3>
-                      <p style="color: #e2e8f0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.5; margin-bottom: 25px; text-align: left;">
+                    <div style="background: var(--color-night-dark); border: 2px solid var(--color-blood-red); border-radius: 8px; padding: 20px 16px; width: 100%; max-width: 420px; box-sizing: border-box; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: auto;">
+                      <h3 style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 12px; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 1px;">⚠️ Einmalige Neuzuordnung</h3>
+                      <p style="color: #e2e8f0; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; text-align: left;">
                         Achtung, Kommissar!<br><br>
                         Eine Neuzuordnung ist für jedes Beweisstück <b>nur ein einziges Mal im gesamten Fall</b> gestattet.
                         Ihre nächste Zuordnung für diesen Beweis ist <b>dauerhaft endgültig</b> und kann danach unter keinen Umständen mehr geändert werden.<br><br>
                         Möchten Sie die bisherige Zuordnung jetzt aufheben?
                       </p>
-                      <div style="display: flex; justify-content: space-around;">
-                        <button id="btn-reassign-no" class="btn-secondary" style="padding: 10px 20px;">Abbrechen</button>
-                        <button id="btn-reassign-yes" class="btn-primary" style="padding: 10px 20px; background: var(--color-blood-red); border:none;">Ja, einmalig neu zuordnen</button>
+                      <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button id="btn-reassign-no" class="btn-secondary" style="flex: 1; min-width: 120px; padding: 10px 14px;">Abbrechen</button>
+                        <button id="btn-reassign-yes" class="btn-primary" style="flex: 1; min-width: 120px; padding: 10px 14px; background: var(--color-blood-red); border:none;">Ja, einmalig neu zuordnen</button>
                       </div>
                     </div>
                   `;

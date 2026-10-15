@@ -706,14 +706,14 @@
   <div id="noir-alert-modal" class="hidden"
     style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); padding: 12px; box-sizing: border-box; overflow-y: auto;">
     <div class="noir-alert-box"
-      style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: auto;">
+      style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 20px 16px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: auto; box-sizing: border-box;">
       <h3 id="noir-alert-title"
-        style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px;">
+        style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: clamp(1.2rem, 5vw, 1.5rem); text-transform: uppercase; letter-spacing: 1px; word-break: break-word;">
         Zugriff Verweigert</h3>
       <p id="noir-alert-message"
-        style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
+        style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1rem; line-height: 1.5; margin-bottom: 20px; word-break: break-word;">
       </p>
-      <button id="noir-alert-close" class="btn-primary" style="padding: 10px 20px; font-size: 1rem;">Verstanden</button>
+      <button id="noir-alert-close" class="btn-primary" style="padding: 10px 20px; font-size: 1rem; min-width: 120px;">Verstanden</button>
     </div>
   </div>
 
@@ -721,16 +721,16 @@
   <div id="noir-confirm-modal" class="hidden"
     style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); padding: 12px; box-sizing: border-box; overflow-y: auto;">
     <div class="noir-alert-box"
-      style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: auto;">
+      style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 20px 16px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: auto; box-sizing: border-box;">
       <h3 id="noir-confirm-title"
-        style="color: var(--color-amber-glow); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px;">
+        style="color: var(--color-amber-glow); font-family: var(--font-serif); margin-bottom: 15px; font-size: clamp(1.2rem, 5vw, 1.5rem); text-transform: uppercase; letter-spacing: 1px; word-break: break-word;">
         Bestätigung</h3>
       <p id="noir-confirm-message"
-        style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
+        style="color: #e2e8f0; font-family: var(--font-mono); font-size: 1rem; line-height: 1.5; margin-bottom: 20px; word-break: break-word;">
       </p>
-      <div style="display: flex; gap: 10px; justify-content: center;">
-        <button id="noir-confirm-yes" class="btn-danger" style="padding: 10px 20px; font-size: 1rem;">Ja, abbrechen</button>
-        <button id="noir-confirm-no" class="btn-secondary" style="padding: 10px 20px; font-size: 1rem;">Zurück</button>
+      <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button id="noir-confirm-yes" class="btn-danger" style="flex: 1 1 120px; padding: 10px 14px; font-size: 0.95rem;">Ja, abbrechen</button>
+        <button id="noir-confirm-no" class="btn-secondary" style="flex: 1 1 120px; padding: 10px 14px; font-size: 0.95rem;">Zurück</button>
       </div>
     </div>
   </div>
