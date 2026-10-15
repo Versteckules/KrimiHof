@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Der Pakt der Schlappen-Erben - Ein Nacht-Krimi in Hof</title>
   <link rel="icon" type="image/jpeg" href="assets/seal_schlappen.jpg">
   <link rel="manifest" href="manifest.json">
@@ -32,7 +32,7 @@
   <div id="flashlight-overlay"></div>
 
   <!-- Global Audio Control Button -->
-  <button id="btn-toggle-music" class="music-toggle-btn" style="position: fixed; top: 12px; right: 12px; z-index: 9999; background: rgba(10,14,23,0.75); border: 1px solid var(--color-glass-border); border-radius: 50%; width: 38px; height: 38px; font-size: 1.1rem; color: var(--color-amber-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0,0,0,0.5);" title="Soundeffekte & Musik umschalten">🔊</button>
+  <button id="btn-toggle-music" class="music-toggle-btn" title="Soundeffekte & Musik umschalten">🔊</button>
 
   <!-- Main App Container -->
   <div id="app">
@@ -74,15 +74,15 @@
               <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
                 <defs>
                   <radialGradient id="wax-grad-badge" cx="38%" cy="32%" r="65%">
-                    <stop offset="0%" stop-color="#ef4444" />
-                    <stop offset="35%" stop-color="#b91c1c" />
-                    <stop offset="75%" stop-color="#7f1d1d" />
-                    <stop offset="100%" stop-color="#450a0a" />
+                    <stop offset="0%" stop-color="#9b3438" />
+                    <stop offset="35%" stop-color="#782024" />
+                    <stop offset="75%" stop-color="#4d1215" />
+                    <stop offset="100%" stop-color="#2a080a" />
                   </radialGradient>
                   <radialGradient id="wax-center-badge" cx="42%" cy="36%" r="60%">
-                    <stop offset="0%" stop-color="#991b1b" />
-                    <stop offset="70%" stop-color="#70121a" />
-                    <stop offset="100%" stop-color="#3f070b" />
+                    <stop offset="0%" stop-color="#691a1e" />
+                    <stop offset="70%" stop-color="#460e11" />
+                    <stop offset="100%" stop-color="#220506" />
                   </radialGradient>
                   <path id="seal-path-badge-top" d="M 14,50 A 36,36 0 0,1 86,50" />
                   <path id="seal-path-badge-bot" d="M 86,50 A 36,36 0 0,1 14,50" />
@@ -194,23 +194,23 @@
     <!-- Lockscreen View (AP4) -->
     <main id="view-lockscreen" class="view hidden">
       <section
-        style="padding: var(--space-xl) var(--space-md); text-align: center; max-width: 600px; margin: 0 auto; margin-top: 10vh;">
+        style="padding: var(--space-xl) var(--space-md); text-align: center; max-width: 600px; margin: 0 auto; margin-top: clamp(10px, 4vh, 60px);">
         <img src="assets/seal_schlappen.jpg" alt="Siegel"
-          style="width: 100px; border-radius: 50%; opacity: 0.5; margin-bottom: var(--space-lg);">
+          style="width: 80px; height: 80px; border-radius: 50%; opacity: 0.6; margin-bottom: var(--space-md);">
         <h2
-          style="font-size: 2rem; margin-bottom: var(--space-sm); font-family: var(--font-serif); color: var(--color-amber-glow);">
+          style="font-size: clamp(1.5rem, 6vw, 2rem); margin-bottom: var(--space-sm); font-family: var(--font-serif); color: var(--color-amber-glow);">
           Die Akte ist versiegelt</h2>
-        <p style="color: var(--color-text-muted); font-size: 1.1rem; margin-bottom: var(--space-xl);">
+        <p style="color: var(--color-text-muted); font-size: 1rem; margin-bottom: var(--space-lg);">
           Echte Ermittlungen erfordern den Schutz der Dunkelheit.
         </p>
 
         <div class="lock-box"
-          style="background: rgba(0,0,0,0.4); border: 1px solid var(--color-glass-border); padding: var(--space-lg); border-radius: 8px; margin-bottom: var(--space-lg);">
+          style="background: rgba(0,0,0,0.4); border: 1px solid var(--color-glass-border); padding: var(--space-md) var(--space-lg); border-radius: 8px; margin-bottom: var(--space-lg);">
           <div
-            style="font-family: var(--font-mono); color: var(--color-night-light); font-size: 0.9rem; margin-bottom: var(--space-xs);">
+            style="font-family: var(--font-mono); color: var(--color-night-light); font-size: 0.85rem; margin-bottom: var(--space-xs);">
             FREIGABE ERFOLGT IN</div>
           <div id="lockscreen-countdown"
-            style="font-size: 2.5rem; font-family: var(--font-mono); color: var(--color-amber-glow); font-weight: bold; letter-spacing: 2px;">
+            style="font-size: clamp(1.8rem, 8vw, 2.5rem); font-family: var(--font-mono); color: var(--color-amber-glow); font-weight: bold; letter-spacing: 2px;">
             00:00:00
           </div>
           <div id="lockscreen-start-info" style="margin-top: var(--space-sm); color: var(--color-text);">
@@ -237,25 +237,19 @@
     <main id="view-dashboard" class="view hidden">
       <div id="map-container"></div>
 
-      <!-- Map Legend Overlay -->
-      <div class="map-legend"
-        style="position: absolute; right: 12px; z-index: 1000; background: rgba(10,14,23,0.85); padding: 10px; border-radius: 8px; border: 1px solid var(--color-glass-border); font-family: var(--font-mono); font-size: 0.8rem; pointer-events: none;">
-        <div style="margin-bottom: 5px;"><strong>Legende</strong></div>
-        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;"><span
-            style="display:inline-block; width:10px; height:10px; background:#d4af37; border-radius:50%;"></span> Tatort
-          (Offen)</div>
-        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;"><span
-            style="display:inline-block; width:10px; height:10px; background:#2e8b57; border-radius:50%;"></span> Tatort
-          (Gelöst)</div>
-        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;"><span
-            style="display:inline-block; width:10px; height:10px; background:red; border-radius:50%;"></span> Wichtiger
-          Beweis</div>
-        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;"><span
-            style="display:inline-block; width:10px; height:10px; background:#3b82f6; border-radius:50%;"></span>
-          Hauptverdächtige</div>
-        <div style="display: flex; align-items: center; gap: 5px;"><span
-            style="display:inline-block; width:10px; height:10px; background:#8b008b; border-radius:50%;"></span>
-          Geheimnis (Easter Egg)</div>
+      <!-- Map Legend Overlay (Mobile Collapsible) -->
+      <div id="map-legend" class="map-legend">
+        <button id="btn-toggle-legend" class="map-legend-toggle" type="button" aria-expanded="false" title="Kartenlegende ein-/ausklappen">
+          <span class="legend-toggle-title">🗺️ Legende</span>
+          <span id="legend-toggle-icon" class="legend-toggle-icon">▾</span>
+        </button>
+        <div id="map-legend-body" class="map-legend-body">
+          <div class="map-legend-row"><span class="legend-color-dot" style="background:#d4af37;"></span> Tatort (Offen)</div>
+          <div class="map-legend-row"><span class="legend-color-dot" style="background:#2e8b57;"></span> Tatort (Gelöst)</div>
+          <div class="map-legend-row"><span class="legend-color-dot" style="background:red;"></span> Wichtiger Beweis</div>
+          <div class="map-legend-row"><span class="legend-color-dot" style="background:#3b82f6;"></span> Hauptverdächtige</div>
+          <div class="map-legend-row"><span class="legend-color-dot" style="background:#8b008b;"></span> Geheimnis (Easter Egg)</div>
+        </div>
       </div>
 
       <!-- Bottom Navigator Bar (AP7) -->
@@ -317,15 +311,15 @@
               <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
                 <defs>
                   <radialGradient id="wax-grad-station" cx="38%" cy="32%" r="65%">
-                    <stop offset="0%" stop-color="#ef4444" />
-                    <stop offset="35%" stop-color="#b91c1c" />
-                    <stop offset="75%" stop-color="#7f1d1d" />
-                    <stop offset="100%" stop-color="#450a0a" />
+                    <stop offset="0%" stop-color="#9b3438" />
+                    <stop offset="35%" stop-color="#782024" />
+                    <stop offset="75%" stop-color="#4d1215" />
+                    <stop offset="100%" stop-color="#2a080a" />
                   </radialGradient>
                   <radialGradient id="wax-center-station" cx="42%" cy="36%" r="60%">
-                    <stop offset="0%" stop-color="#991b1b" />
-                    <stop offset="70%" stop-color="#70121a" />
-                    <stop offset="100%" stop-color="#3f070b" />
+                    <stop offset="0%" stop-color="#691a1e" />
+                    <stop offset="70%" stop-color="#460e11" />
+                    <stop offset="100%" stop-color="#220506" />
                   </radialGradient>
                   <path id="seal-path-station-top" d="M 14,50 A 36,36 0 0,1 86,50" />
                   <path id="seal-path-station-bot" d="M 86,50 A 36,36 0 0,1 14,50" />
@@ -367,22 +361,21 @@
       <section
         style="padding: var(--space-xl) var(--space-md); max-width: 800px; margin: 0 auto; color: var(--color-text); position: relative; overflow: hidden;">
         <!-- watermark removed -->
-        <div
-          style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-glass-border); padding-bottom: var(--space-md); margin-bottom: var(--space-lg); position: relative; z-index: 1;">
-          <div style="display: flex; align-items: center; gap: 14px;">
-            <div class="praegesiegel praegesiegel-dark" style="width: 62px; height: 62px;" title="Amtliches Wachssiegel • Versteckules">
+        <div class="dossier-header-bar">
+          <div class="dossier-header-title-group">
+            <div class="praegesiegel praegesiegel-dark dossier-seal" title="Amtliches Wachssiegel • Versteckules">
               <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
                 <defs>
                   <radialGradient id="wax-grad-dossier" cx="38%" cy="32%" r="65%">
-                    <stop offset="0%" stop-color="#ef4444" />
-                    <stop offset="35%" stop-color="#b91c1c" />
-                    <stop offset="75%" stop-color="#7f1d1d" />
-                    <stop offset="100%" stop-color="#450a0a" />
+                    <stop offset="0%" stop-color="#9b3438" />
+                    <stop offset="35%" stop-color="#782024" />
+                    <stop offset="75%" stop-color="#4d1215" />
+                    <stop offset="100%" stop-color="#2a080a" />
                   </radialGradient>
                   <radialGradient id="wax-center-dossier" cx="42%" cy="36%" r="60%">
-                    <stop offset="0%" stop-color="#991b1b" />
-                    <stop offset="70%" stop-color="#70121a" />
-                    <stop offset="100%" stop-color="#3f070b" />
+                    <stop offset="0%" stop-color="#691a1e" />
+                    <stop offset="70%" stop-color="#460e11" />
+                    <stop offset="100%" stop-color="#220506" />
                   </radialGradient>
                   <path id="seal-path-dossier-top" d="M 14,50 A 36,36 0 0,1 86,50" />
                   <path id="seal-path-dossier-bot" d="M 86,50 A 36,36 0 0,1 14,50" />
@@ -411,20 +404,17 @@
               </svg>
             </div>
             <div>
-              <h2
-                style="font-size: 2rem; font-family: var(--font-serif); color: var(--color-amber-glow); margin-bottom: 2px;">
-                Ermittlungsakte</h2>
-              <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-amber-muted); letter-spacing: 1px; text-transform: uppercase;">
+              <h2 class="dossier-main-title">Ermittlungsakte</h2>
+              <div class="dossier-main-sub">
                 Amtlich beglaubigt &middot; Versteckules
               </div>
             </div>
           </div>
-          <div style="display: flex; gap: 10px; align-items: center;">
-            <button id="btn-dossier-replay-intro" class="btn-secondary"
-              style="font-size: 0.85rem; padding: 6px 12px;">📖 Fall-Prolog</button>
-            <button id="btn-dossier-replay-outro" class="btn-secondary hidden"
-              style="font-size: 0.85rem; padding: 6px 12px; background: rgba(212, 175, 55, 0.15); border-color: #d4af37; color: #f5d79e;">🎬 Epilog / Outro</button>
-            <button id="btn-close-dossier" class="btn-secondary">Schließen</button>
+          <div class="dossier-header-actions">
+            <button id="btn-dossier-replay-intro" class="btn-secondary dossier-act-btn">📖 Fall-Prolog</button>
+            <button id="btn-dossier-replay-outro" class="btn-secondary hidden dossier-act-btn"
+              style="background: rgba(212, 175, 55, 0.15); border-color: #d4af37; color: #f5d79e;">🎬 Epilog / Outro</button>
+            <button id="btn-close-dossier" class="btn-secondary dossier-close-btn">Schließen</button>
           </div>
         </div>
 
@@ -435,7 +425,7 @@
               <div style="font-size:0.7rem; color:#aaa; margin-bottom:2px;">Rang (<span id="player-score-val">0</span> Pkt)</div>
               <strong id="player-rank-name">Streifenpolizist</strong>
             </div>
-            <button id="btn-rank-info" style="background:transparent; border:1px solid #d4af37; color:#d4af37; border-radius:50%; width:22px; height:22px; font-size:12px; cursor:pointer; margin-left: 10px;">i</button>
+            <button id="btn-rank-info" class="btn-rank-info" title="Rang-Informationen anzeigen">i</button>
           </div>
           
           <button id="btn-sherlock-hint" class="hidden" style="background: #8b0000; padding: 10px 15px; box-shadow: 0 0 15px rgba(139,0,0,0.8); border:1px solid #ff4444; border-radius: 5px; color:white; font-family:var(--font-mono); cursor:pointer; flex-grow: 1;">🔎 Sherlock-Tipp</button>
@@ -507,8 +497,7 @@
           "Das Warten hat ein Ende. Du hast alle Zeugen gehört und alle Beweise gesichert. Jetzt geht es ans Eingemachte! Wer ist der Täter?"
         </p>
 
-        <div id="final-suspects-container"
-          style="display: flex; gap: var(--space-md); justify-content: center; margin-bottom: var(--space-xl);">
+        <div id="final-suspects-container" class="final-suspects-grid">
           <!-- Buttons generated in JS -->
         </div>
 
@@ -627,15 +616,15 @@
           <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
             <defs>
               <radialGradient id="wax-grad-evidence" cx="38%" cy="32%" r="65%">
-                <stop offset="0%" stop-color="#ef4444" />
-                <stop offset="35%" stop-color="#b91c1c" />
-                <stop offset="75%" stop-color="#7f1d1d" />
-                <stop offset="100%" stop-color="#450a0a" />
+                <stop offset="0%" stop-color="#9b3438" />
+                <stop offset="35%" stop-color="#782024" />
+                <stop offset="75%" stop-color="#4d1215" />
+                <stop offset="100%" stop-color="#2a080a" />
               </radialGradient>
               <radialGradient id="wax-center-evidence" cx="42%" cy="36%" r="60%">
-                <stop offset="0%" stop-color="#991b1b" />
-                <stop offset="70%" stop-color="#70121a" />
-                <stop offset="100%" stop-color="#3f070b" />
+                <stop offset="0%" stop-color="#691a1e" />
+                <stop offset="70%" stop-color="#460e11" />
+                <stop offset="100%" stop-color="#220506" />
               </radialGradient>
               <path id="seal-path-evidence-top" d="M 14,50 A 36,36 0 0,1 86,50" />
               <path id="seal-path-evidence-bot" d="M 86,50 A 36,36 0 0,1 14,50" />
@@ -715,9 +704,9 @@
 
   <!-- Custom Alert Modal (Noir Theme) -->
   <div id="noir-alert-modal" class="hidden"
-    style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+    style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); padding: 12px; box-sizing: border-box; overflow-y: auto;">
     <div class="noir-alert-box"
-      style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
+      style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: auto;">
       <h3 id="noir-alert-title"
         style="color: var(--color-blood-red); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px;">
         Zugriff Verweigert</h3>
@@ -730,9 +719,9 @@
 
   <!-- Custom Confirm Modal (Noir Theme) -->
   <div id="noir-confirm-modal" class="hidden"
-    style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+    style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); padding: 12px; box-sizing: border-box; overflow-y: auto;">
     <div class="noir-alert-box"
-      style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: 20px;">
+      style="background: var(--color-night-dark); border: 2px solid var(--color-amber-muted); border-radius: 8px; padding: 25px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin: auto;">
       <h3 id="noir-confirm-title"
         style="color: var(--color-amber-glow); font-family: var(--font-serif); margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px;">
         Bestätigung</h3>

@@ -9,12 +9,12 @@ export function runGadget(stationId, onSuccess) {
     document.body.appendChild(overlay);
   }
 
-  overlay.innerHTML = `<div class="cl-gadget-wrapper" style="padding: 10px; width: 95vw; height: 90vh; max-width: 500px; display: flex; flex-direction: column;">
+  overlay.innerHTML = `<div class="cl-gadget-wrapper" style="padding: 12px; width: 95vw; height: min(600px, 85dvh); max-width: 500px; display: flex; flex-direction: column;">
     <div class="cl-gadget-screws"></div>
-    <h2 style="font-family:var(--font-serif); margin-top: 10px; margin-bottom:10px; color:#0f0; text-align: center; text-shadow: 0 0 10px #0f0;">IR-Scanner</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:10px; text-align: center;">Scanne die Umgebung nach Infrarot-Spuren.</p>
+    <h2 style="font-family:var(--font-serif); margin-top: 5px; margin-bottom:8px; color:#0f0; text-align: center; text-shadow: 0 0 10px #0f0; font-size:1.6rem;">IR-Scanner</h2>
+    <p style="color:var(--color-text-muted); font-size:0.85rem; margin-bottom:10px; text-align: center;">Scanne die Umgebung nach Infrarot-Spuren.</p>
     
-    <div id="scanner-view-container" style="flex-grow: 1; width: 100%; position: relative; background: #111; border: 2px solid #333; border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+    <div id="scanner-view-container" style="flex-grow: 1; width: 100%; position: relative; background: #111; border: 2px solid #333; border-radius: 8px; overflow: hidden; margin-bottom: 12px;">
       <video id="scanner-video" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) sepia(100%) hue-rotate(70deg) saturate(500%) brightness(1.2) contrast(1.5);"></video>
       <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px); pointer-events: none;"></div>
       <div id="scanner-reticle" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; border: 2px solid rgba(0, 255, 0, 0.5); border-radius: 10px; pointer-events: none; transition: all 0.3s;">
@@ -31,7 +31,7 @@ export function runGadget(stationId, onSuccess) {
       </div>
     </div>
 
-    <button id="btn-scanner-skip" class="btn-secondary hidden" style="align-self: center;">Sensor überspringen</button>
+    <button id="btn-scanner-skip" class="btn-secondary hidden" style="align-self: center; padding: 10px 18px; margin-bottom: 4px;">Sensor überspringen</button>
   </div>`;
   overlay.style.display = 'flex';
 

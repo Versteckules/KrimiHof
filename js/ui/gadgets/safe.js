@@ -8,7 +8,7 @@ export function runGadget(stationId, onComplete, onCancel) {
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle at center, #262933 0%, #0a0d14 100%); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; box-sizing:border-box; color:white; font-family:sans-serif; text-align:center; user-select:none;';
 
   overlay.innerHTML = `
-    <button id="btn-safe-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:2rem; cursor:pointer; padding:5px 12px; line-height:1;" title="Schließen">&times;</button>
+    <button id="btn-safe-cancel" style="position:absolute; top:calc(12px + env(safe-area-inset-top, 0px)); left:calc(14px + env(safe-area-inset-left, 0px)); background:rgba(0,0,0,0.5); border:1px solid #555; color:#ddd; font-size:1.6rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:10; line-height:1;" title="Schließen">&times;</button>
     <div style="font-size:2.2rem; margin-bottom:4px;">🔐</div>
     <h2 style="color:var(--color-amber-glow, #d4af37); margin:0 0 6px 0; font-family:serif; font-size:1.6rem;">Der Historische Tresor</h2>
     <div style="background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); border-radius:6px; padding:6px 14px; max-width:380px; margin-bottom:12px; font-size:0.85rem; color:#f5d79e; line-height:1.35;">

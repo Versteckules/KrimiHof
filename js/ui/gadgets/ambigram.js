@@ -10,23 +10,23 @@ export function runGadget(stationId, onSuccess) {
 
   overlay.innerHTML = `<div class="cl-gadget-wrapper"><div class="cl-gadget-screws"></div>
     <h2 style="color:#fff; font-family:var(--font-serif); margin-bottom:20px;">Das Kopfüber-Ambigramm</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:40px;">Es gibt Dinge, die nur aus einem anderen Blickwinkel Sinn ergeben.</p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Es gibt Dinge, die nur aus einem anderen Blickwinkel Sinn ergeben.</p>
     
-    <div id="ambigram-canvas" style="width:280px; height:400px; background:#fdf5e6; border-radius:3px; box-shadow:0 0 20px rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; transition: all 1s ease-in-out; position:relative;">
+    <div id="ambigram-canvas" style="width:min(280px, 80vw); height:min(340px, 45dvh); background:#fdf5e6; border-radius:3px; box-shadow:0 0 20px rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; transition: all 1s ease-in-out; position:relative;">
       
       <!-- Unlesbare Runen (verschwinden bei Lösung) -->
-      <div id="ambigram-runes" style="font-family:var(--font-mono); font-size:3rem; font-weight:bold; color:#8b0000; transform: rotate(180deg); transition: opacity 1s;">
+      <div id="ambigram-runes" style="font-family:var(--font-mono); font-size:clamp(1.8rem, 6vw, 3rem); font-weight:bold; color:#8b0000; transform: rotate(180deg); transition: opacity 1s;">
         W3HCA N38R3 3I0
       </div>
       
       <!-- Lesbarer Text (erscheint bei Lösung) -->
-      <div id="ambigram-text" style="font-family:var(--font-serif); font-size:2rem; font-weight:bold; color:#d4af37; text-align:center; position:absolute; opacity:0; transition: opacity 1s;">
+      <div id="ambigram-text" style="font-family:var(--font-serif); font-size:clamp(1.5rem, 5vw, 2rem); font-weight:bold; color:#d4af37; text-align:center; position:absolute; opacity:0; transition: opacity 1s;">
         DIE ERBEN<br>WACHEN
       </div>
 
     </div>
     
-    <button id="btn-ambigram-fallback" class="btn-secondary" style="margin-top:40px;">(PC) Bild umdrehen</button>
+    <button id="btn-ambigram-fallback" class="btn-secondary" style="margin-top:20px; font-size:0.9rem; padding: 10px 18px;">🔄 Bild manuell umdrehen</button>
   </div>`;
   overlay.style.display = 'flex';
 

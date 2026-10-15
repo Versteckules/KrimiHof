@@ -10,15 +10,15 @@ export function runGadget(stationId, onSuccess) {
 
   overlay.innerHTML = `<div class="cl-gadget-wrapper"><div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:10px;">Polaroid Entwicklung</h2>
-    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Schüttle das Gerät leicht, um das Bild zu entwickeln.</p>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Schüttle dein Smartphone oder tippe auf das Bild, um es zu entwickeln.</p>
     
-    <div style="width:300px; height:350px; background:#e0e0e0; padding:15px 15px 60px 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transform: rotate(-3deg);">
+    <div style="width:min(280px, 85vw); height:330px; box-sizing:border-box; background:#e0e0e0; padding:15px 15px 50px 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transform: rotate(-2deg); cursor:pointer;">
       <div style="width:100%; height:100%; background:#111; overflow:hidden; position:relative;">
         <img id="polaroid-img" src="assets/suspect_herold.jpg" style="width:100%; height:100%; object-fit:cover; filter: blur(20px) brightness(0.2); transition: filter 0.5s;">
       </div>
     </div>
     
-    <button id="btn-polaroid-fallback" class="btn-secondary" style="margin-top:30px;">(PC) Bild entwickeln</button>
+    <button id="btn-polaroid-fallback" class="btn-secondary" style="margin-top:20px; padding: 10px 18px;">📸 Schütteln / Manuell entwickeln</button>
   </div>`;
   overlay.style.display = 'flex';
 

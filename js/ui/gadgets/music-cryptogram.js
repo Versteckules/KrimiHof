@@ -84,7 +84,7 @@ export function runGadget(stationId, onComplete, onCancel) {
 
   function renderPhase1() {
     overlay.innerHTML = `
-      <button id="btn-music-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
+      <button id="btn-music-cancel" style="position:absolute; top:calc(12px + env(safe-area-inset-top, 0px)); left:calc(14px + env(safe-area-inset-left, 0px)); background:rgba(0,0,0,0.5); border:1px solid #555; color:#ddd; font-size:1.6rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:10;" title="Schließen">&times;</button>
       
       <h2 style="color:var(--color-amber-glow); margin-bottom:8px; font-family:var(--font-serif); font-size:1.5rem;">Die Orgel von St. Michaelis</h2>
       <p style="margin-bottom:12px; font-size:0.95rem; font-family:sans-serif; color:#cbd5e1; max-width:420px; line-height:1.4;">
@@ -95,15 +95,15 @@ export function runGadget(stationId, onComplete, onCancel) {
         💡 <strong>Ermittler-Hinweis:</strong> Die Notenfolge ehrt den berühmtesten Meister barocker Orgelmusik: <strong style="color:#fff; letter-spacing:1px;">B – A – C – H</strong>.
       </div>
       
-      <div id="piano" style="display:flex; justify-content:center; gap:3px; margin-bottom:15px;">
-        <div class="piano-key" data-note="C" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">C</div>
-        <div class="piano-key" data-note="D" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">D</div>
-        <div class="piano-key" data-note="E" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">E</div>
-        <div class="piano-key" data-note="F" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">F</div>
-        <div class="piano-key" data-note="G" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">G</div>
-        <div class="piano-key" data-note="A" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">A</div>
-        <div class="piano-key" data-note="B" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">B</div>
-        <div class="piano-key" data-note="H" style="width:38px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">H</div>
+      <div id="piano" style="display:flex; justify-content:center; gap:3px; margin-bottom:15px; width:100%; max-width:340px;">
+        <div class="piano-key" data-note="C" style="flex:1; max-width:40px; min-width:30px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">C</div>
+        <div class="piano-key" data-note="D" style="flex:1; max-width:40px; min-width:30px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">D</div>
+        <div class="piano-key" data-note="E" style="flex:1; max-width:40px; min-width:30px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">E</div>
+        <div class="piano-key" data-note="F" style="flex:1; max-width:40px; min-width:30px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">F</div>
+        <div class="piano-key" data-note="G" style="flex:1; max-width:40px; min-width:30px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">G</div>
+        <div class="piano-key" data-note="A" style="flex:1; max-width:40px; min-width:30px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">A</div>
+        <div class="piano-key" data-note="B" style="flex:1; max-width:40px; min-width:30px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">B</div>
+        <div class="piano-key" data-note="H" style="flex:1; max-width:40px; min-width:30px; height:125px; background:white; color:black; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; cursor:pointer; font-weight:bold; border-radius:0 0 5px 5px; box-shadow:0 3px 6px rgba(0,0,0,0.5); user-select:none;">H</div>
       </div>
       
       <div id="notes-display" style="font-family:monospace; font-size:1.6rem; letter-spacing:8px; height:36px; color:#d4af37; font-weight:bold;">_ _ _ _</div>
@@ -143,7 +143,7 @@ export function runGadget(stationId, onComplete, onCancel) {
 
   function startPhase2() {
     overlay.innerHTML = `
-      <button id="btn-music-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
+      <button id="btn-music-cancel" style="position:absolute; top:calc(12px + env(safe-area-inset-top, 0px)); left:calc(14px + env(safe-area-inset-left, 0px)); background:rgba(0,0,0,0.5); border:1px solid #555; color:#ddd; font-size:1.6rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:10;" title="Schließen">&times;</button>
       
       <h2 style="color:var(--color-amber-glow); margin-bottom:8px; font-family:var(--font-serif); font-size:1.5rem;">Das Orgel-Kryptex</h2>
       <p style="margin-bottom:12px; font-size:0.95rem; font-family:sans-serif; color:#cbd5e1; max-width:400px; line-height:1.4;">
@@ -194,7 +194,7 @@ export function runGadget(stationId, onComplete, onCancel) {
 
   function showPhase3() {
     overlay.innerHTML = `
-      <button id="btn-music-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
+      <button id="btn-music-cancel" style="position:absolute; top:calc(12px + env(safe-area-inset-top, 0px)); left:calc(14px + env(safe-area-inset-left, 0px)); background:rgba(0,0,0,0.5); border:1px solid #555; color:#ddd; font-size:1.6rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:10;" title="Schließen">&times;</button>
       
       <h2 style="color:var(--color-amber-glow); margin-bottom:12px; font-family:var(--font-serif); font-size:1.5rem;">Kryptex entriegelt!</h2>
       <div style="background:rgba(30, 41, 59, 0.7); border:1px solid #d4af37; border-radius:6px; padding:16px; text-align:left; max-width:340px; margin-bottom:20px; font-family:sans-serif;">

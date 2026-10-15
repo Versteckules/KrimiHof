@@ -1,14 +1,15 @@
 /* dialogue.css - Visual Novel Styles */
 #view-dialogue {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.92);
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Prevent upward pushing on typewriter */
+  justify-content: center;
   align-items: center;
-  padding: 20px;
-  padding-bottom: env(safe-area-inset-bottom, 20px);
-  height: 100dvh; /* Mobile friendly */
+  padding: calc(16px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)) 16px;
+  min-height: 100dvh;
   box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .dialogue-scene {
@@ -17,6 +18,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin: auto 0;
 }
 
 .dialogue-character {
@@ -33,6 +35,7 @@
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
   object-fit: cover;
   object-position: top;
+  flex-shrink: 0;
 }
 
 .dialogue-box {
@@ -41,6 +44,7 @@
   border-radius: 12px;
   padding: 20px;
   flex-grow: 1;
+  min-width: 0;
   position: relative;
   box-shadow: 0 5px 25px rgba(0,0,0,0.8);
 }
@@ -70,7 +74,8 @@
   color: #e2e8f0;
   font-size: 1.1rem;
   line-height: 1.5;
-  min-height: 120px; /* Increased to prevent layout shift on multiline */
+  min-height: 100px;
+  word-break: break-word;
 }
 
 #dialogue-choices {
@@ -82,12 +87,70 @@
 
 .dialogue-btn {
   text-align: left;
-  padding: 12px 20px;
+  padding: 12px 18px;
   font-size: 1rem;
+  line-height: 1.4;
   border-radius: 8px;
   transition: all 0.2s ease;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .dialogue-btn:hover {
-  transform: translateX(5px);
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   Mobile Optimization for Dialogue Scene (<= 640px)
+   ========================================================================== */
+@media (max-width: 640px) {
+  #view-dialogue {
+    justify-content: flex-start;
+    padding: calc(12px + env(safe-area-inset-top, 0px)) 12px calc(20px + env(safe-area-inset-bottom, 0px)) 12px;
+  }
+
+  .dialogue-scene {
+    gap: 12px;
+    margin: 0 auto;
+  }
+
+  .dialogue-character {
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  #dialogue-avatar {
+    width: 64px;
+    height: 64px;
+    border-width: 2px;
+  }
+
+  .dialogue-box {
+    padding: 14px 14px;
+    border-radius: 10px;
+  }
+
+  .dialogue-box::before {
+    left: -8px;
+    bottom: auto;
+    top: 20px;
+    border-width: 8px 8px 8px 0;
+  }
+
+  #dialogue-name {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+  }
+
+  #dialogue-text {
+    font-size: 0.98rem;
+    line-height: 1.45;
+    min-height: 70px;
+  }
+
+  .dialogue-btn {
+    padding: 11px 14px;
+    font-size: 0.92rem;
+  }
 }

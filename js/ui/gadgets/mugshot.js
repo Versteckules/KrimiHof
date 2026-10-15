@@ -23,26 +23,26 @@ export function runGadget(stationId, onSuccess) {
       </div>
 
       <!-- Controls -->
-      <div style="display:flex; flex-direction:column; gap: 15px; width:100%;">
+      <div style="display:flex; flex-direction:column; gap: 12px; width:100%;">
         <div style="display:flex; align-items:center; justify-content:space-between;">
-          <button id="btn-hat-prev" class="btn-secondary" style="width: 40px; height: 40px; border-radius: 50%; font-weight:bold;">&lt;</button>
-          <div style="font-family:var(--font-mono); color:#111;">KOPFBEDECKUNG</div>
-          <button id="btn-hat-next" class="btn-secondary" style="width: 40px; height: 40px; border-radius: 50%; font-weight:bold;">&gt;</button>
+          <button id="btn-hat-prev" class="btn-secondary" style="width: 44px; height: 44px; min-width: 44px; border-radius: 50%; font-weight:bold; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">&lt;</button>
+          <div style="font-family:var(--font-mono); color:#111; font-size:0.8rem; font-weight:bold; letter-spacing:0.5px;">KOPFBEDECKUNG</div>
+          <button id="btn-hat-next" class="btn-secondary" style="width: 44px; height: 44px; min-width: 44px; border-radius: 50%; font-weight:bold; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">&gt;</button>
         </div>
         <div style="display:flex; align-items:center; justify-content:space-between;">
-          <button id="btn-eyes-prev" class="btn-secondary" style="width: 40px; height: 40px; border-radius: 50%; font-weight:bold;">&lt;</button>
-          <div style="font-family:var(--font-mono); color:#111;">AUGENPARTIE</div>
-          <button id="btn-eyes-next" class="btn-secondary" style="width: 40px; height: 40px; border-radius: 50%; font-weight:bold;">&gt;</button>
+          <button id="btn-eyes-prev" class="btn-secondary" style="width: 44px; height: 44px; min-width: 44px; border-radius: 50%; font-weight:bold; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">&lt;</button>
+          <div style="font-family:var(--font-mono); color:#111; font-size:0.8rem; font-weight:bold; letter-spacing:0.5px;">AUGENPARTIE</div>
+          <button id="btn-eyes-next" class="btn-secondary" style="width: 44px; height: 44px; min-width: 44px; border-radius: 50%; font-weight:bold; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">&gt;</button>
         </div>
         <div style="display:flex; align-items:center; justify-content:space-between;">
-          <button id="btn-mouth-prev" class="btn-secondary" style="width: 40px; height: 40px; border-radius: 50%; font-weight:bold;">&lt;</button>
-          <div style="font-family:var(--font-mono); color:#111;">BART / MUND</div>
-          <button id="btn-mouth-next" class="btn-secondary" style="width: 40px; height: 40px; border-radius: 50%; font-weight:bold;">&gt;</button>
+          <button id="btn-mouth-prev" class="btn-secondary" style="width: 44px; height: 44px; min-width: 44px; border-radius: 50%; font-weight:bold; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">&lt;</button>
+          <div style="font-family:var(--font-mono); color:#111; font-size:0.8rem; font-weight:bold; letter-spacing:0.5px;">BART / MUND</div>
+          <button id="btn-mouth-next" class="btn-secondary" style="width: 44px; height: 44px; min-width: 44px; border-radius: 50%; font-weight:bold; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">&gt;</button>
         </div>
       </div>
     </div>
     
-    <button id="btn-mugshot-submit" class="btn-primary" style="margin-top:30px;">Identität bestätigen</button>
+    <button id="btn-mugshot-submit" class="btn-primary" style="margin-top:20px; padding: 12px 24px; font-size: 1rem;">Identität bestätigen</button>
   </div>`;
   overlay.style.display = 'flex';
 

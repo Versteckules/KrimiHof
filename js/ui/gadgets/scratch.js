@@ -12,11 +12,11 @@ export function runGadget(stationId, onSuccess) {
     <h2 style="color:#fff; font-family:var(--font-serif); margin-bottom:10px;">Brandspuren freilegen</h2>
     <p style="color:var(--color-text-muted); margin-bottom:20px;">Rubbel den dicken Ruß weg, um den Text zu lesen.</p>
     
-    <div style="position:relative; width:300px; height:400px; background:#fff; border-radius:5px; overflow:hidden;">
-      <div style="position:absolute; width:100%; height:100%; background:#fdf5e6; color:#000; font-family:var(--font-mono); font-size:1.2rem; font-weight:bold; padding:20px; box-sizing:border-box;">
-        <br><br>Das Feuer von 1823...<br>es war kein Unfall.<br>Der Pakt der Erben...<br><br>Sie haben mich gefunden.<br>- Dr. Renger
+    <div style="position:relative; width:min(300px, 85vw); height:min(380px, 50dvh); background:#fff; border-radius:5px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+      <div style="position:absolute; width:100%; height:100%; background:#fdf5e6; color:#000; font-family:var(--font-mono); font-size:clamp(0.95rem, 3.5vw, 1.2rem); font-weight:bold; padding:20px 14px; box-sizing:border-box; line-height:1.45;">
+        <br>Das Feuer von 1823...<br>es war kein Unfall.<br><br>Der Pakt der Erben...<br>Sie haben mich gefunden.<br><br>- Dr. Renger
       </div>
-      <canvas id="scratch-canvas" width="300" height="400" style="position:absolute; top:0; left:0; cursor:pointer; touch-action:none;"></canvas>
+      <canvas id="scratch-canvas" width="300" height="400" style="position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer; touch-action:none;"></canvas>
     </div>
   </div>`;
   overlay.style.display = 'flex';

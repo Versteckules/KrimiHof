@@ -34,11 +34,9 @@ export function initFinalView() {
   container.innerHTML = '';
   suspects.forEach(s => {
     const btn = document.createElement('button');
-    btn.className = 'btn-secondary';
+    btn.className = 'btn-secondary final-accuse-btn';
     btn.id = `btn-accuse-${s.id}`;
-    btn.style.flex = '1';
-    btn.style.padding = '20px 10px';
-    btn.style.fontSize = '1.1rem';
+    btn.style.flex = '1 1 200px';
     btn.textContent = getSuspectName(s.id);
     btn.onclick = () => handleAccusation(s.id);
     container.appendChild(btn);

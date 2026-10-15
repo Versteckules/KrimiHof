@@ -23,7 +23,7 @@ export function runGadget(stationId, onSuccess) {
 
       <!-- Overlay Image (Today IR Scan) -->
       <div id="time-slider-overlay" style="position:absolute; top:0; left:0; width:50%; height:100%; overflow:hidden; border-right: 4px solid var(--color-amber-glow); box-shadow: 5px 0 15px rgba(0,0,0,0.5);">
-         <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: url('assets/intro_fire_1823.jpg') center/cover; filter: grayscale(1) invert(0.8) brightness(0.6) contrast(2); min-width: 400px;">
+         <div id="time-slider-inner-img" style="position:absolute; top:0; left:0; width:100%; height:100%; background: url('assets/intro_fire_1823.jpg') center/cover; filter: grayscale(1) invert(0.8) brightness(0.6) contrast(2);">
            <div style="position:absolute; top:10px; right:10px; color:#0f0; font-family:var(--font-mono); font-size: 1.2rem; opacity: 0.8; text-shadow: 1px 1px 2px #000;">IR-SCAN</div>
          </div>
          
@@ -44,9 +44,18 @@ export function runGadget(stationId, onSuccess) {
 
   const container = document.getElementById('time-slider-container');
   const overlayImg = document.getElementById('time-slider-overlay');
+  const innerImg = document.getElementById('time-slider-inner-img');
   const handle = document.getElementById('time-slider-handle');
   const hint = document.getElementById('time-slider-hint');
   const btnDone = document.getElementById('btn-time-slider-done');
+
+  const updateInnerWidth = () => {
+    if (innerImg && container) {
+      innerImg.style.width = container.clientWidth + 'px';
+    }
+  };
+  updateInnerWidth();
+  window.addEventListener('resize', updateInnerWidth);
   
   let isDragging = false;
   let solved = false;

@@ -182,6 +182,22 @@
   color: var(--color-amber-glow);
   background: rgba(255, 255, 255, 0.02);
   transition: background 0.2s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.instruction-header::after {
+  content: '▾';
+  font-size: 1.05rem;
+  color: var(--color-amber-muted);
+  transition: transform 0.25s ease, color 0.25s ease;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.instruction-card.active .instruction-header::after {
+  transform: rotate(180deg);
+  color: var(--color-amber-glow);
 }
 
 .instruction-header:hover {
@@ -192,13 +208,14 @@
   padding: 0 var(--space-md);
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  transition: max-height 0.35s ease, padding 0.3s ease;
   color: var(--color-text-muted);
+  line-height: 1.55;
 }
 
 .instruction-card.active .instruction-body {
   padding: var(--space-md);
-  max-height: 200px;
+  max-height: 600px;
 }
 
 /* Owner Badge */
@@ -276,11 +293,11 @@
   transform: rotate(-4deg);
   transition: transform 0.3s ease;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75))
-          drop-shadow(0 2px 5px rgba(185, 28, 28, 0.45));
+          drop-shadow(0 2px 4px rgba(60, 15, 18, 0.3));
 }
 
 .praegesiegel:hover {
-  transform: rotate(0deg) scale(1.05);
+  transform: rotate(0deg) scale(1.04);
 }
 
 .praegesiegel-svg {
@@ -297,7 +314,7 @@
 
 .seal-outer-rim {
   fill: none;
-  stroke: rgba(254, 202, 202, 0.4);
+  stroke: rgba(245, 210, 180, 0.35);
   stroke-width: 1.2;
 }
 
@@ -336,15 +353,15 @@
   opacity: 1;
 }
 
-/* Spezifische Schattenanpassung je nach Hintergrund */
+/* Spezifische Schattenanpassung je nach Hintergrund - Dezentes historisches Siegel */
 .praegesiegel-paper {
-  filter: drop-shadow(1px 3px 5px rgba(90, 45, 15, 0.45))
-          drop-shadow(0 1px 3px rgba(153, 27, 27, 0.35));
+  filter: drop-shadow(1px 2px 4px rgba(70, 35, 20, 0.35))
+          drop-shadow(0 1px 2px rgba(80, 15, 18, 0.2));
 }
 
 .praegesiegel-dark {
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.85))
-          drop-shadow(0 0 12px rgba(220, 38, 38, 0.35));
+          drop-shadow(0 0 8px rgba(90, 18, 22, 0.25));
 }
 
 /* ============================================================
@@ -632,7 +649,8 @@
 /* ==========================================================================
    Modals (z.B. Akte Schreddern)
    ========================================================================== */
-.modal-backdrop {
+.modal-backdrop,
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -647,9 +665,12 @@
   justify-content: center;
   padding: var(--space-md);
   animation: fadeIn 0.25s ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.modal-box {
+.modal-box,
+.modal-content {
   background: linear-gradient(145deg, rgba(20, 26, 38, 0.98), rgba(12, 16, 25, 0.98));
   border: 1px solid var(--color-glass-border);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(139, 0, 0, 0.2);
@@ -657,8 +678,69 @@
   padding: var(--space-xl);
   max-width: 480px;
   width: 100%;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   text-align: center;
   box-sizing: border-box;
+}
+
+/* Rank Info Trigger Button */
+.btn-rank-info {
+  background: transparent;
+  border: 1.5px solid #d4af37;
+  color: #d4af37;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  margin-left: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+
+.btn-rank-info:hover,
+.btn-rank-info:active {
+  background: rgba(212, 175, 55, 0.2);
+  transform: scale(1.08);
+}
+
+/* Riddle Choice Buttons */
+.btn-riddle-choice {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  font-size: 1rem !important;
+  line-height: 1.4 !important;
+  text-align: left !important;
+  border-radius: 8px !important;
+  word-break: break-word !important;
+  white-space: normal !important;
+  min-height: 48px !important;
+  touch-action: manipulation !important;
+}
+
+/* Evidence Assignment Buttons */
+.btn-assign-evidence {
+  min-height: 44px !important;
+  touch-action: manipulation !important;
+}
+
+/* Noir Alert & Confirm Box */
+.noir-alert-box {
+  max-width: min(420px, calc(100vw - 28px)) !important;
+  max-height: calc(100dvh - 30px) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  box-sizing: border-box !important;
 }
 
 /* ==========================================================================
@@ -1058,8 +1140,193 @@
   transform: scale(0.95);
 }
 
+/* Global Music Toggle Button */
+.music-toggle-btn {
+  position: fixed !important;
+  top: calc(12px + env(safe-area-inset-top, 0px)) !important;
+  right: calc(12px + env(safe-area-inset-right, 0px)) !important;
+  z-index: 10005 !important;
+  background: rgba(10, 14, 23, 0.82) !important;
+  border: 1px solid var(--color-glass-border) !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  font-size: 1.2rem !important;
+  color: var(--color-amber-muted) !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6) !important;
+  transition: transform 0.2s ease, border-color 0.2s ease !important;
+}
+
+.music-toggle-btn:active {
+  transform: scale(0.92);
+}
+
+/* ==========================================================================
+   Map Legend (Responsive & Collapsible on Mobile)
+   ========================================================================== */
 .map-legend {
-  bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
+  position: absolute !important;
+  right: calc(12px + env(safe-area-inset-right, 0px)) !important;
+  bottom: calc(85px + env(safe-area-inset-bottom, 0px)) !important;
+  z-index: 1000 !important;
+  background: rgba(10, 14, 23, 0.92) !important;
+  border: 1px solid var(--color-glass-border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.8rem !important;
+  max-width: 220px !important;
+  transition: all 0.25s ease !important;
+  overflow: hidden !important;
+  pointer-events: auto !important;
+}
+
+.map-legend-toggle {
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--color-amber-glow) !important;
+  padding: 8px 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  cursor: pointer !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.82rem !important;
+  font-weight: bold !important;
+  gap: 8px !important;
+}
+
+.map-legend-toggle:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.legend-toggle-icon {
+  font-size: 0.85rem !important;
+  transition: transform 0.25s ease !important;
+}
+
+.map-legend-body {
+  padding: 0 12px 10px 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+}
+
+.map-legend.collapsed .map-legend-body {
+  display: none !important;
+}
+
+.map-legend.collapsed .legend-toggle-icon {
+  transform: rotate(-90deg) !important;
+}
+
+.map-legend-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 0.78rem !important;
+  color: var(--color-text-main) !important;
+  white-space: nowrap !important;
+}
+
+.legend-color-dot {
+  display: inline-block !important;
+  width: 9px !important;
+  height: 9px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+}
+
+/* ==========================================================================
+   Dossier Header Bar
+   ========================================================================== */
+.dossier-header-bar {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  border-bottom: 1px solid var(--color-glass-border) !important;
+  padding-bottom: var(--space-md) !important;
+  margin-bottom: var(--space-lg) !important;
+  position: relative !important;
+  z-index: 1 !important;
+  gap: 12px !important;
+}
+
+.dossier-header-title-group {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+.dossier-seal {
+  width: 58px !important;
+  height: 58px !important;
+  flex-shrink: 0 !important;
+}
+
+.dossier-main-title {
+  font-size: 2rem !important;
+  font-family: var(--font-serif) !important;
+  color: var(--color-amber-glow) !important;
+  margin-bottom: 2px !important;
+  line-height: 1.15 !important;
+}
+
+.dossier-main-sub {
+  font-family: var(--font-mono) !important;
+  font-size: 0.72rem !important;
+  color: var(--color-amber-muted) !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+
+.dossier-header-actions {
+  display: flex !important;
+  gap: 8px !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.dossier-act-btn {
+  font-size: 0.85rem !important;
+  padding: 6px 12px !important;
+}
+
+.dossier-close-btn {
+  font-size: 0.9rem !important;
+  padding: 6px 14px !important;
+}
+
+/* Final Suspects Grid */
+.final-suspects-grid {
+  display: flex !important;
+  gap: var(--space-md) !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  margin-bottom: var(--space-xl) !important;
+}
+
+.final-accuse-btn {
+  padding: 16px 14px !important;
+  font-size: 1.05rem !important;
+  text-align: center !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  word-break: break-word !important;
 }
 
 .leaflet-top.leaflet-left {
@@ -1084,6 +1351,289 @@
 .leaflet-control-zoom a:hover {
   background: rgba(20, 28, 45, 0.95) !important;
   color: var(--color-amber-glow) !important;
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVENESS OVERHAUL (@media <= 768px & <= 480px)
+   Beseitigt Überlagerungen, abgeschnittene Buttons und horizontales Scrollen
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Hero Section */
+  .hero-container {
+    height: auto !important;
+    min-height: 320px !important;
+    padding: 30px 16px 20px 16px !important;
+  }
+
+  .hero-content {
+    padding: var(--space-md) !important;
+    max-width: 95% !important;
+  }
+
+  .hero-title {
+    font-size: clamp(1.6rem, 7vw, 2.4rem) !important;
+  }
+
+  .hero-subtitle {
+    font-size: 0.85rem !important;
+    letter-spacing: 1.5px !important;
+  }
+
+  .seal-img {
+    width: 60px !important;
+    height: 60px !important;
+    margin-bottom: var(--space-sm) !important;
+  }
+
+  /* Badge Card (Dienstausweis) */
+  .badge-card {
+    transform: none !important; /* Kein Rotieren auf Mobile, verhindert Kanten-Abschneiden */
+    margin: var(--space-lg) auto !important;
+    max-width: 100% !important;
+    padding: 14px 14px !important;
+  }
+
+  .badge-card:hover {
+    transform: none !important;
+  }
+
+  .badge-card::before {
+    font-size: 1rem !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 8px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .badge-card-sub {
+    font-size: 0.68rem !important;
+    gap: 2px 4px !important;
+  }
+
+  /* Instruction Cards */
+  .instruction-accordion {
+    margin-bottom: var(--space-xl) !important;
+  }
+
+  .instruction-header {
+    padding: 12px 14px !important;
+    font-size: 0.95rem !important;
+  }
+
+  .instruction-body {
+    font-size: 0.9rem !important;
+  }
+
+  .owner-badge {
+    margin-top: var(--space-lg) !important;
+    padding-top: var(--space-md) !important;
+  }
+
+  .avatar-frame {
+    --avatar-size: 80px !important;
+  }
+
+  /* Map Navigator Bar */
+  #navigator-bar {
+    height: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 0 10px env(safe-area-inset-bottom, 0px) 10px !important;
+  }
+
+  #nav-distance {
+    font-size: 1.15rem !important;
+    min-width: 55px !important;
+  }
+
+  #nav-compass {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  #btn-open-dossier {
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Station Riddle View */
+  .paper-note {
+    padding: 18px 14px !important;
+    margin-bottom: var(--space-lg) !important;
+  }
+
+  .paper-note-seal-footer {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    align-items: center !important;
+    margin-top: var(--space-lg) !important;
+  }
+
+  .paper-note-seal-footer .seal-caption-dept {
+    font-size: 0.68rem !important;
+  }
+
+  .paper-note-seal-footer .seal-caption-sub {
+    font-size: 0.62rem !important;
+  }
+
+  .paper-note-seal-footer .praegesiegel {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .station-characters-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .station-choices-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .station-choice-btn {
+    padding: 12px 14px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Dossier View - Kein Abschneiden rechts mehr */
+  .dossier-header-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .dossier-header-title-group {
+    justify-content: flex-start !important;
+    width: 100% !important;
+  }
+
+  .dossier-seal {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .dossier-main-title {
+    font-size: 1.5rem !important;
+  }
+
+  .dossier-header-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .dossier-close-btn {
+    grid-column: 1 / -1 !important;
+    order: -1 !important;
+    padding: 10px 14px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+  }
+
+  .dossier-act-btn {
+    padding: 8px 10px !important;
+    font-size: 0.8rem !important;
+    text-align: center !important;
+  }
+
+  .dossier-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-md) !important;
+  }
+
+  /* Final View Suspect Buttons */
+  .final-suspects-grid {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .final-suspects-grid button {
+    width: 100% !important;
+    padding: 14px 12px !important;
+    font-size: 1rem !important;
+  }
+
+  /* Modals */
+  .modal-backdrop,
+  .modal-overlay {
+    padding: 10px !important;
+  }
+
+  .modal-box,
+  .modal-content {
+    padding: 18px 14px !important;
+    max-height: calc(100dvh - 24px) !important;
+    max-width: min(440px, 95vw) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Bilderstory / Intro */
+  #view-intro {
+    padding: 8px !important;
+    align-items: flex-start !important;
+  }
+
+  .intro-media-wrapper {
+    max-height: 200px !important;
+  }
+
+  .intro-body {
+    padding: 14px 12px !important;
+    gap: 8px !important;
+  }
+
+  .intro-title {
+    font-size: 1.25rem !important;
+  }
+
+  .intro-text {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    min-height: 50px !important;
+  }
+
+  .intro-controls {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+  }
+
+  .intro-controls button {
+    padding: 8px 14px !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Sehr schmale Smartphones (z.B. iPhone SE, 360-390px Breite) */
+  .badge-card input {
+    font-size: 1rem !important;
+  }
+
+  .badge-card-body {
+    gap: 10px !important;
+  }
+
+  .badge-card .praegesiegel {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .btn-primary {
+    font-size: 1.05rem !important;
+    padding: 12px 18px !important;
+    letter-spacing: 1px !important;
+  }
+
+  .map-legend {
+    max-width: 175px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .map-legend-row {
+    font-size: 0.72rem !important;
+  }
 }
 
 

@@ -1,6 +1,24 @@
 /* gadget-fx.css - Champions League Styling */
 
 /* Der dunkle, verstaubte, haptische Noir-Look */
+#gadget-fullscreen-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  background: #050510 !important;
+  z-index: 10000 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #fff !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 12px calc(14px + env(safe-area-inset-bottom, 0px)) 12px !important;
+  box-sizing: border-box !important;
+}
+
 .cl-gadget-wrapper {
   background: radial-gradient(circle at center, #2a2a2a 0%, #0a0e17 100%);
   /* background-image: url('../assets/texture_paper.webp'); */
@@ -13,12 +31,28 @@
     inset 0 2px 5px rgba(255,255,255,0.1);
   padding: 30px;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   max-width: 95vw;
-  max-height: 90vh;
+  max-height: 90dvh;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media (max-width: 600px) {
+  #gadget-fullscreen-overlay {
+    justify-content: flex-start !important;
+  }
+
+  .cl-gadget-wrapper {
+    padding: 20px 14px !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    border-width: 3px !important;
+    margin: auto 0 !important;
+  }
 }
 
 /* Schrauben in den Ecken für analogen Look */

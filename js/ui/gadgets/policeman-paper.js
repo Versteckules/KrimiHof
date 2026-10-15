@@ -20,16 +20,16 @@ export function runGadget(stationId, onSuccess, onCancel) {
   `;
 
   overlay.innerHTML = `<div class="cl-gadget-wrapper">
-    <button id="btn-paper-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
+    <button id="btn-paper-cancel" style="position:absolute; top:calc(12px + env(safe-area-inset-top, 0px)); left:calc(14px + env(safe-area-inset-left, 0px)); background:rgba(0,0,0,0.5); border:1px solid #555; color:#ddd; font-size:1.6rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:10;" title="Schließen">&times;</button>
     <div class="cl-gadget-screws"></div>
     <h2 style="color:var(--color-night-light); font-family:sans-serif; margin-bottom:10px;">Angekokeltes Blatt</h2>
     <p style="color:#aaa; font-family:sans-serif; margin-bottom:20px; font-size:0.9rem;">Streiche über das scheinbar leere, rußige Papier...</p>
     
-    <div style="position:relative; width:300px; height:400px; background:#fff; border-radius:5px; overflow:hidden; border:2px solid #555; margin-bottom:15px;">
+    <div style="position:relative; width:300px; max-width:100%; height:400px; max-height:55dvh; background:#fff; border-radius:5px; overflow:hidden; border:2px solid #555; margin-bottom:15px;">
       <div style="position:absolute; width:100%; height:100%; background:#e0d8b0; display:flex; align-items:center; justify-content:center; box-sizing:border-box;">
         ${hiddenContent}
       </div>
-      <canvas id="scratch-canvas2" width="300" height="400" style="position:absolute; top:0; left:0; cursor:pointer; touch-action:none;"></canvas>
+      <canvas id="scratch-canvas2" width="300" height="400" style="position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer; touch-action:none;"></canvas>
     </div>
     <button class="btn-secondary" id="btn-paper-abort" style="padding:6px 14px; font-size:0.8rem; border:1px solid #666; background:rgba(0,0,0,0.5); color:#bbb; border-radius:4px; cursor:pointer;">Ruß manuell entfernen (-10 Pkt)</button>
   </div>`;

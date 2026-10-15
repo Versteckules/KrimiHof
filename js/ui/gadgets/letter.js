@@ -9,7 +9,7 @@ export function runGadget(stationId, onSuccess) {
     document.body.appendChild(overlay);
   }
 
-  overlay.innerHTML = `<div class="cl-gadget-wrapper" style="width: 100%; max-width: 400px; height: 500px; padding: 20px;">
+  overlay.innerHTML = `<div class="cl-gadget-wrapper" style="width: 100%; max-width: 400px; height: min(520px, 85dvh); padding: 16px;">
     <div class="cl-gadget-screws"></div>
     <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:var(--color-amber-glow);">Zerrissenes Dokument</h2>
     <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Ziehe die Schnipsel zusammen.</p>

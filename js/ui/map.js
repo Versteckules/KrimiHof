@@ -51,6 +51,21 @@ export function initMap() {
   // Initiale Rank-Berechnung
   updateRankDisplay();
 
+  // Map Legend Toggle (auf Smartphones einklappbar, damit Karte nicht verdeckt wird)
+  const legendBox = document.getElementById('map-legend');
+  const legendToggleBtn = document.getElementById('btn-toggle-legend');
+  if (legendBox && legendToggleBtn) {
+    if (window.innerWidth <= 640) {
+      legendBox.classList.add('collapsed');
+      legendToggleBtn.setAttribute('aria-expanded', 'false');
+    }
+    legendToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isCollapsed = legendBox.classList.toggle('collapsed');
+      legendToggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
+    });
+  }
+
   // Sherlock Hint Listener
   const hintBtn = document.getElementById('btn-sherlock-hint');
   if (hintBtn) {

@@ -29,7 +29,7 @@ export function startGadget(gadgetId, stationId, customOnComplete) {
       skipBtn.id = 'global-skip-btn';
       skipBtn.innerHTML = 'Rätsel umgehen<br><span style="font-size:0.7rem; opacity: 0.85;">(-10 Punkte)</span>';
       skipBtn.className = 'btn-secondary';
-      skipBtn.style.cssText = 'position: absolute; top: 15px; right: 15px; z-index: 999999; padding: 6px 12px; font-size: 0.8rem; background: rgba(10, 14, 23, 0.9); border: 1px solid var(--color-glass-border); color: var(--color-amber-muted); border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.8); cursor: pointer;';
+      skipBtn.style.cssText = 'position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); left: calc(12px + env(safe-area-inset-left, 0px)); z-index: 999999; padding: 6px 12px; font-size: 0.8rem; background: rgba(10, 14, 23, 0.9); border: 1px solid var(--color-glass-border); color: var(--color-amber-muted); border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.8); cursor: pointer;';
       skipBtn.onclick = () => {
         const msg = 'Möchtest du dieses Rätsel überspringen? Dies kostet 10 Kommissarpunkte.';
         if (window.showNoirConfirm) {

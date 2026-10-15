@@ -30,14 +30,14 @@ export function runGadget(stationId, onSuccess) {
       </div>
 
       <!-- Inner Ring (Rotatable) -->
-      <div id="crypto-inner-ring" style="position:absolute; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, #e2c778, #b89947); border:3px solid #3e3215; display:flex; align-items:center; justify-content:center; cursor:grab; box-shadow:inset 0 0 10px rgba(0,0,0,0.5); transition: transform 0.1s ease-out; transform: rotate(0deg);">
+      <div id="crypto-inner-ring" style="position:absolute; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, #e2c778, #b89947); border:3px solid #3e3215; display:flex; align-items:center; justify-content:center; cursor:grab; box-shadow:inset 0 0 10px rgba(0,0,0,0.5); transition: transform 0.1s ease-out; transform: rotate(0deg); touch-action:none;">
         ${innerHTML}
         <div style="position:absolute; width:100%; height:100%; top:0; left:0; border-radius:50%;"></div>
       </div>
       
     </div>
-    <p style="color:var(--color-text-muted); margin-top:30px; font-size:0.9rem;">Drehe den inneren Ring. Richte 'A' auf 'R' aus.</p>
-    <button class="btn-secondary" id="btn-crypto-abort" style="margin-top: 20px;">Schloss umgehen</button>
+    <p style="color:var(--color-text-muted); margin-top:20px; font-size:0.9rem;">Drehe den inneren Ring. Richte 'A' auf 'R' aus.</p>
+    <button class="btn-secondary" id="btn-crypto-abort" style="margin-top: 15px; padding: 10px 18px;">Schloss umgehen</button>
   </div>`;
   overlay.style.display = 'flex';
 

@@ -7,7 +7,7 @@ export function runGadget(stationId, onComplete, onCancel) {
   overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:#111; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; color:white; font-family:sans-serif; text-align:center;';
 
   overlay.innerHTML = `
-    <button id="btn-shredder-cancel" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#888; font-size:1.8rem; cursor:pointer; padding:5px 10px;" title="Schließen">&times;</button>
+    <button id="btn-shredder-cancel" style="position:absolute; top:calc(12px + env(safe-area-inset-top, 0px)); left:calc(14px + env(safe-area-inset-left, 0px)); background:rgba(0,0,0,0.5); border:1px solid #555; color:#ddd; font-size:1.6rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:10;" title="Schließen">&times;</button>
     <h2 style="color:var(--color-blood-red); margin-bottom:10px;">Brand-Rekonstruktion</h2>
     <p style="margin-bottom:20px; font-size:0.9rem;">Tippe auf zwei Fetzen, um sie zu tauschen. Setze das Dokument zusammen!</p>
     <div id="shredder-grid" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:2px; background:#444; padding:2px; border:2px solid #555;"></div>

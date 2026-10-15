@@ -27,7 +27,7 @@ export function runGadget(stationId, onSuccess) {
       <div id="wiretap-progress" style="width:0%; height:100%; background: linear-gradient(90deg, #0f0, #fff); transition:width 0.2s; box-shadow: 0 0 10px #0f0;"></div>
     </div>
     
-    <button id="btn-wiretap-fallback" class="btn-secondary" style="margin-top:40px;">Signal Manuell Suchen (PC)</button>
+    <button id="btn-wiretap-fallback" class="btn-secondary" style="margin-top:25px; padding: 10px 18px;">📡 Signal manuell suchen</button>
   </div>`;
   overlay.style.display = 'flex';
 

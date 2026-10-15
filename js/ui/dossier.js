@@ -223,7 +223,7 @@ export function updateDossier() {
             })()}
           </div>
 
-          <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
             ${state.isTestingMode ? (() => {
               const intStatus = getInterrogationStatus(s.id);
               if (!intStatus.canInterrogate) {

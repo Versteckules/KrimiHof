@@ -23,7 +23,7 @@ export function runGadget(stationId, onSuccess) {
     
     <div id="whisper-status" style="font-family:var(--font-mono); font-size:0.9rem; color:var(--color-amber-glow); margin-bottom: 20px; height: 20px;">Initialisiere Mikrofon...</div>
     
-    <button id="btn-whisper-skip" class="btn-secondary hidden">Sensor überspringen</button>
+    <button id="btn-whisper-skip" class="btn-secondary hidden" style="padding: 10px 18px; margin-top: 10px;">Sensor überspringen</button>
   </div>`;
   overlay.style.display = 'flex';
 

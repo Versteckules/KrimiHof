@@ -15,7 +15,7 @@ export function runGadget(stationId, onSuccess) {
     </div>
   `;
 
-  overlay.innerHTML = `<div class="cl-gadget-wrapper" style="width: 100%; max-width: 400px; height: 500px; padding:0; overflow: hidden; position: relative;">
+  overlay.innerHTML = `<div class="cl-gadget-wrapper" style="width: 100%; max-width: 400px; height: min(500px, 75dvh); min-height: 380px; padding:0; overflow: hidden; position: relative;">
     <div class="cl-gadget-screws"></div>
     <h2 style="color:#d200ff; font-family:var(--font-mono); position:absolute; top:20px; left: 0; width: 100%; text-align: center; z-index:2; pointer-events:none; text-shadow: 0 0 10px #d200ff;">UV-Scanner aktiv</h2>
     <p style="color:rgba(255,255,255,0.5); position:absolute; top:60px; left: 0; width: 100%; text-align: center; z-index:2; pointer-events:none;">Wische, um die Wand abzusuchen.</p>

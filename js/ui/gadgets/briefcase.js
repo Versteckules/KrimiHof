@@ -19,31 +19,31 @@ export function runGadget(stationId, onSuccess) {
       <div style="position:absolute; bottom:10px; right:10px; width:10px; height:10px; background:#111; border-radius:50%;"></div>
       
       <!-- Rädchen -->
-      <div class="dial-container" data-index="0" style="width:60px; height:100px; background:#000; border:2px solid #666; border-radius:5px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; cursor:ns-resize; user-select:none;">
+      <div class="dial-container" data-index="0" style="width:60px; height:100px; background:#000; border:2px solid #666; border-radius:5px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; cursor:ns-resize; user-select:none; touch-action:none;">
         <div class="dial-val" style="font-family:var(--font-mono); font-size:3rem; color:#fff; font-weight:bold; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">0</div>
         <div style="position:absolute; top:0; width:100%; height:20px; background:linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); pointer-events:none;"></div>
         <div style="position:absolute; bottom:0; width:100%; height:20px; background:linear-gradient(to top, rgba(0,0,0,0.8), transparent); pointer-events:none;"></div>
       </div>
       
-      <div class="dial-container" data-index="1" style="width:60px; height:100px; background:#000; border:2px solid #666; border-radius:5px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; cursor:ns-resize; user-select:none;">
+      <div class="dial-container" data-index="1" style="width:60px; height:100px; background:#000; border:2px solid #666; border-radius:5px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; cursor:ns-resize; user-select:none; touch-action:none;">
         <div class="dial-val" style="font-family:var(--font-mono); font-size:3rem; color:#fff; font-weight:bold; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">0</div>
         <div style="position:absolute; top:0; width:100%; height:20px; background:linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); pointer-events:none;"></div>
         <div style="position:absolute; bottom:0; width:100%; height:20px; background:linear-gradient(to top, rgba(0,0,0,0.8), transparent); pointer-events:none;"></div>
       </div>
       
-      <div class="dial-container" data-index="2" style="width:60px; height:100px; background:#000; border:2px solid #666; border-radius:5px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; cursor:ns-resize; user-select:none;">
+      <div class="dial-container" data-index="2" style="width:60px; height:100px; background:#000; border:2px solid #666; border-radius:5px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; cursor:ns-resize; user-select:none; touch-action:none;">
         <div class="dial-val" style="font-family:var(--font-mono); font-size:3rem; color:#fff; font-weight:bold; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">0</div>
         <div style="position:absolute; top:0; width:100%; height:20px; background:linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); pointer-events:none;"></div>
         <div style="position:absolute; bottom:0; width:100%; height:20px; background:linear-gradient(to top, rgba(0,0,0,0.8), transparent); pointer-events:none;"></div>
       </div>
       
       <!-- Schloss Button -->
-      <div id="btn-lock-open" style="width:30px; background:linear-gradient(to right, #888, #555); border:1px solid #333; border-radius:3px; margin-left:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: 2px 0 5px rgba(0,0,0,0.5);">
-        <div style="width:4px; height:20px; background:#333; border-radius:2px;"></div>
+      <div id="btn-lock-open" style="width:44px; min-width:44px; background:linear-gradient(to right, #888, #555); border:1px solid #333; border-radius:3px; margin-left:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: 2px 0 5px rgba(0,0,0,0.5); touch-action:manipulation;" title="Schloss öffnen">
+        <div style="width:4px; height:24px; background:#222; border-radius:2px;"></div>
       </div>
     </div>
-    <p id="briefcase-hint" style="color:var(--color-text-muted); margin-top:20px; font-size:0.9rem;">Wische nach oben/unten.</p>
-    <button class="btn-secondary" id="btn-briefcase-abort" style="margin-top: 20px;">Schloss umgehen</button>
+    <p id="briefcase-hint" style="color:var(--color-text-muted); margin-top:20px; font-size:0.9rem;">Wische über die Zahlen nach oben/unten.</p>
+    <button class="btn-secondary" id="btn-briefcase-abort" style="margin-top: 20px; padding: 10px 18px;">Schloss umgehen</button>
   </div>`;
   overlay.style.display = 'flex';
 
