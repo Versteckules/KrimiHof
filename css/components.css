@@ -271,11 +271,16 @@
   width: 76px;
   height: 76px;
   flex-shrink: 0;
-  pointer-events: none;
   user-select: none;
   border-radius: 50%;
-  transform: rotate(-6deg);
+  transform: rotate(-4deg);
   transition: transform 0.3s ease;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75))
+          drop-shadow(0 2px 5px rgba(185, 28, 28, 0.45));
+}
+
+.praegesiegel:hover {
+  transform: rotate(0deg) scale(1.05);
 }
 
 .praegesiegel-svg {
@@ -285,108 +290,61 @@
   display: block;
 }
 
-/* --- Variante: Auf hellem Papier / Aktennotiz (.paper-note) --- */
-.praegesiegel-paper {
-  /* Authentische Blindprägung / Trockenstempel im Papier mit deutlichem Relief */
-  filter: drop-shadow(1px 2px 3px rgba(90, 45, 15, 0.4))
-          drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.95));
+/* Wachs-Relief Elemente */
+.seal-wax-base {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
 }
 
-.praegesiegel-paper .seal-outer-ring {
-  fill: rgba(253, 245, 230, 0.6);
-  stroke: rgba(110, 60, 20, 0.8);
-  stroke-width: 1.4;
-}
-
-.praegesiegel-paper .seal-beaded-ring {
+.seal-outer-rim {
   fill: none;
-  stroke: rgba(110, 60, 20, 0.7);
+  stroke: rgba(254, 202, 202, 0.4);
+  stroke-width: 1.2;
+}
+
+.seal-beaded-ring {
+  fill: none;
+  stroke: rgba(254, 240, 138, 0.65);
+  stroke-width: 1.2;
+  stroke-dasharray: 2.2 2.4;
+}
+
+.seal-inner-groove {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.55);
   stroke-width: 1.5;
-  stroke-dasharray: 2.2 2.6;
 }
 
-.praegesiegel-paper .seal-inner-line {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.95);
-  stroke-width: 1;
-}
-
-.praegesiegel-paper .seal-text {
+.seal-text {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 7.2px;
   font-weight: 800;
   letter-spacing: 1.2px;
-  fill: rgba(90, 45, 15, 0.88);
+  fill: #fef08a;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.85));
 }
 
-.praegesiegel-paper .seal-medallion-border {
+.seal-medallion-rim {
   fill: none;
-  stroke: rgba(110, 60, 20, 0.75);
-  stroke-width: 1.3;
+  stroke: rgba(0, 0, 0, 0.65);
+  stroke-width: 1.5;
 }
 
-.praegesiegel-paper .seal-avatar {
-  /* Prägnantes Stempel-Relief: Scharfer Kontrast, sattes Sepia, prominent sichtbar */
-  filter: grayscale(1) sepia(0.55) contrast(1.75) brightness(0.78);
-  mix-blend-mode: multiply;
-  opacity: 0.95;
+.seal-avatar-wax,
+.seal-avatar {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9))
+          drop-shadow(0 0 1px rgba(255, 240, 150, 0.6));
+  opacity: 1;
 }
 
-.praegesiegel-paper .seal-bevel-rim {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.9);
-  stroke-width: 1.2;
+/* Spezifische Schattenanpassung je nach Hintergrund */
+.praegesiegel-paper {
+  filter: drop-shadow(1px 3px 5px rgba(90, 45, 15, 0.45))
+          drop-shadow(0 1px 3px rgba(153, 27, 27, 0.35));
 }
 
-/* --- Variante: Auf dunklem Hintergrund (Dossier, Dienstausweis) --- */
 .praegesiegel-dark {
-  /* Edles golden-bronzefarbenes Amtssiegel */
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7))
-          drop-shadow(0 0 12px rgba(212, 175, 55, 0.35));
-}
-
-.praegesiegel-dark .seal-outer-ring {
-  fill: rgba(10, 14, 23, 0.85);
-  stroke: rgba(212, 175, 55, 0.8);
-  stroke-width: 1.5;
-}
-
-.praegesiegel-dark .seal-beaded-ring {
-  fill: none;
-  stroke: rgba(212, 175, 55, 0.7);
-  stroke-width: 1.5;
-  stroke-dasharray: 2.2 2.6;
-}
-
-.praegesiegel-dark .seal-inner-line {
-  fill: none;
-  stroke: rgba(245, 215, 158, 0.65);
-  stroke-width: 1;
-}
-
-.praegesiegel-dark .seal-text {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 7.2px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  fill: rgba(245, 215, 158, 0.95);
-}
-
-.praegesiegel-dark .seal-medallion-border {
-  fill: none;
-  stroke: rgba(212, 175, 55, 0.75);
-  stroke-width: 1.3;
-}
-
-.praegesiegel-dark .seal-avatar {
-  filter: grayscale(1) sepia(0.8) contrast(1.45) brightness(1.1);
-  opacity: 0.95;
-}
-
-.praegesiegel-dark .seal-bevel-rim {
-  fill: none;
-  stroke: rgba(245, 215, 158, 0.5);
-  stroke-width: 1.2;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.85))
+          drop-shadow(0 0 12px rgba(220, 38, 38, 0.35));
 }
 
 /* ============================================================

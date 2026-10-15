@@ -73,22 +73,41 @@
             <div class="praegesiegel praegesiegel-dark" style="width: 58px; height: 58px; flex-shrink: 0;" title="Dienstsiegel • Versteckules">
               <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
                 <defs>
-                  <path id="seal-path-badge" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
+                  <radialGradient id="wax-grad-badge" cx="38%" cy="32%" r="65%">
+                    <stop offset="0%" stop-color="#ef4444" />
+                    <stop offset="35%" stop-color="#b91c1c" />
+                    <stop offset="75%" stop-color="#7f1d1d" />
+                    <stop offset="100%" stop-color="#450a0a" />
+                  </radialGradient>
+                  <radialGradient id="wax-center-badge" cx="42%" cy="36%" r="60%">
+                    <stop offset="0%" stop-color="#991b1b" />
+                    <stop offset="70%" stop-color="#70121a" />
+                    <stop offset="100%" stop-color="#3f070b" />
+                  </radialGradient>
+                  <path id="seal-path-badge-top" d="M 14,50 A 36,36 0 0,1 86,50" />
+                  <path id="seal-path-badge-bot" d="M 86,50 A 36,36 0 0,1 14,50" />
                   <clipPath id="seal-clip-badge">
-                    <circle cx="50" cy="50" r="24.5" />
+                    <circle cx="50" cy="50" r="22.5" />
                   </clipPath>
                 </defs>
-                <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
-                <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
-                <circle cx="50" cy="50" r="42" class="seal-inner-line" />
+                <path d="M 50,4 C 59,3 65,8 72,9 C 79,11 85,8 90,14 C 95,20 93,27 96,33 C 99,40 102,46 100,54 C 98,61 94,66 93,73 C 91,80 94,87 88,91 C 83,96 76,94 70,97 C 63,100 57,99 50,99 C 43,99 37,102 30,98 C 24,95 18,96 13,91 C 8,86 11,79 8,73 C 5,66 2,60 4,52 C 5,45 9,40 9,33 C 10,26 6,20 11,14 C 16,9 23,11 29,9 C 36,7 43,4 50,4 Z" fill="url(#wax-grad-badge)" class="seal-wax-base" />
+                <circle cx="50" cy="50" r="44" class="seal-outer-rim" />
+                <circle cx="50" cy="50" r="41.5" class="seal-beaded-ring" />
+                <circle cx="50" cy="50" r="38" class="seal-inner-groove" />
                 <text class="seal-text">
-                  <textPath href="#seal-path-badge" startOffset="50%" text-anchor="middle">
-                    ★ VERSTECKULES • DIENSTAUSWEIS ★
+                  <textPath href="#seal-path-badge-top" startOffset="50%" text-anchor="middle">
+                    ★ VERSTECKULES ★
                   </textPath>
                 </text>
-                <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
-                <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-badge)" class="seal-avatar" />
-                <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
+                <text class="seal-text" style="font-size: 5.4px;">
+                  <textPath href="#seal-path-badge-bot" startOffset="50%" text-anchor="middle">
+                    DIENSTAUSWEIS • HOF
+                  </textPath>
+                </text>
+                <circle cx="50" cy="50" r="23.5" class="seal-medallion-rim" />
+                <circle cx="50" cy="50" r="22.5" fill="url(#wax-center-badge)" />
+                <image href="assets/avatar_seal.png" x="27.5" y="27.5" width="45" height="45" clip-path="url(#seal-clip-badge)" class="seal-avatar-wax" preserveAspectRatio="xMidYMid meet" />
+                <ellipse cx="44" cy="20" rx="18" ry="6" fill="white" opacity="0.22" transform="rotate(-15 44 20)" pointer-events="none" />
               </svg>
             </div>
           </div>
@@ -294,25 +313,44 @@
               <div class="seal-caption-dept">Kriminalinspektion Hof &middot; Aktenstelle</div>
               <div class="seal-caption-sub">Amtlich beglaubigtes Dokument &middot; Pakt von 1823</div>
             </div>
-            <div class="praegesiegel praegesiegel-paper" title="Amtliches Prägesiegel • Versteckules">
+            <div class="praegesiegel praegesiegel-paper" title="Amtliches Wachssiegel • Versteckules">
               <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
                 <defs>
-                  <path id="seal-path-station" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
+                  <radialGradient id="wax-grad-station" cx="38%" cy="32%" r="65%">
+                    <stop offset="0%" stop-color="#ef4444" />
+                    <stop offset="35%" stop-color="#b91c1c" />
+                    <stop offset="75%" stop-color="#7f1d1d" />
+                    <stop offset="100%" stop-color="#450a0a" />
+                  </radialGradient>
+                  <radialGradient id="wax-center-station" cx="42%" cy="36%" r="60%">
+                    <stop offset="0%" stop-color="#991b1b" />
+                    <stop offset="70%" stop-color="#70121a" />
+                    <stop offset="100%" stop-color="#3f070b" />
+                  </radialGradient>
+                  <path id="seal-path-station-top" d="M 14,50 A 36,36 0 0,1 86,50" />
+                  <path id="seal-path-station-bot" d="M 86,50 A 36,36 0 0,1 14,50" />
                   <clipPath id="seal-clip-station">
-                    <circle cx="50" cy="50" r="24.5" />
+                    <circle cx="50" cy="50" r="22.5" />
                   </clipPath>
                 </defs>
-                <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
-                <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
-                <circle cx="50" cy="50" r="42" class="seal-inner-line" />
+                <path d="M 50,4 C 59,3 65,8 72,9 C 79,11 85,8 90,14 C 95,20 93,27 96,33 C 99,40 102,46 100,54 C 98,61 94,66 93,73 C 91,80 94,87 88,91 C 83,96 76,94 70,97 C 63,100 57,99 50,99 C 43,99 37,102 30,98 C 24,95 18,96 13,91 C 8,86 11,79 8,73 C 5,66 2,60 4,52 C 5,45 9,40 9,33 C 10,26 6,20 11,14 C 16,9 23,11 29,9 C 36,7 43,4 50,4 Z" fill="url(#wax-grad-station)" class="seal-wax-base" />
+                <circle cx="50" cy="50" r="44" class="seal-outer-rim" />
+                <circle cx="50" cy="50" r="41.5" class="seal-beaded-ring" />
+                <circle cx="50" cy="50" r="38" class="seal-inner-groove" />
                 <text class="seal-text">
-                  <textPath href="#seal-path-station" startOffset="50%" text-anchor="middle">
-                    ★ VERSTECKULES • KRIMINALAKTE HOF ★
+                  <textPath href="#seal-path-station-top" startOffset="50%" text-anchor="middle">
+                    ★ VERSTECKULES ★
                   </textPath>
                 </text>
-                <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
-                <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-station)" class="seal-avatar" />
-                <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
+                <text class="seal-text" style="font-size: 5.4px;">
+                  <textPath href="#seal-path-station-bot" startOffset="50%" text-anchor="middle">
+                    KRIMINALAKTE • HOF
+                  </textPath>
+                </text>
+                <circle cx="50" cy="50" r="23.5" class="seal-medallion-rim" />
+                <circle cx="50" cy="50" r="22.5" fill="url(#wax-center-station)" />
+                <image href="assets/avatar_seal.png" x="27.5" y="27.5" width="45" height="45" clip-path="url(#seal-clip-station)" class="seal-avatar-wax" preserveAspectRatio="xMidYMid meet" />
+                <ellipse cx="44" cy="20" rx="18" ry="6" fill="white" opacity="0.22" transform="rotate(-15 44 20)" pointer-events="none" />
               </svg>
             </div>
           </div>
@@ -332,25 +370,44 @@
         <div
           style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-glass-border); padding-bottom: var(--space-md); margin-bottom: var(--space-lg); position: relative; z-index: 1;">
           <div style="display: flex; align-items: center; gap: 14px;">
-            <div class="praegesiegel praegesiegel-dark" style="width: 62px; height: 62px;" title="Amtliches Dienstsiegel • Versteckules">
+            <div class="praegesiegel praegesiegel-dark" style="width: 62px; height: 62px;" title="Amtliches Wachssiegel • Versteckules">
               <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
                 <defs>
-                  <path id="seal-path-dossier" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
+                  <radialGradient id="wax-grad-dossier" cx="38%" cy="32%" r="65%">
+                    <stop offset="0%" stop-color="#ef4444" />
+                    <stop offset="35%" stop-color="#b91c1c" />
+                    <stop offset="75%" stop-color="#7f1d1d" />
+                    <stop offset="100%" stop-color="#450a0a" />
+                  </radialGradient>
+                  <radialGradient id="wax-center-dossier" cx="42%" cy="36%" r="60%">
+                    <stop offset="0%" stop-color="#991b1b" />
+                    <stop offset="70%" stop-color="#70121a" />
+                    <stop offset="100%" stop-color="#3f070b" />
+                  </radialGradient>
+                  <path id="seal-path-dossier-top" d="M 14,50 A 36,36 0 0,1 86,50" />
+                  <path id="seal-path-dossier-bot" d="M 86,50 A 36,36 0 0,1 14,50" />
                   <clipPath id="seal-clip-dossier">
-                    <circle cx="50" cy="50" r="24.5" />
+                    <circle cx="50" cy="50" r="22.5" />
                   </clipPath>
                 </defs>
-                <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
-                <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
-                <circle cx="50" cy="50" r="42" class="seal-inner-line" />
+                <path d="M 50,4 C 59,3 65,8 72,9 C 79,11 85,8 90,14 C 95,20 93,27 96,33 C 99,40 102,46 100,54 C 98,61 94,66 93,73 C 91,80 94,87 88,91 C 83,96 76,94 70,97 C 63,100 57,99 50,99 C 43,99 37,102 30,98 C 24,95 18,96 13,91 C 8,86 11,79 8,73 C 5,66 2,60 4,52 C 5,45 9,40 9,33 C 10,26 6,20 11,14 C 16,9 23,11 29,9 C 36,7 43,4 50,4 Z" fill="url(#wax-grad-dossier)" class="seal-wax-base" />
+                <circle cx="50" cy="50" r="44" class="seal-outer-rim" />
+                <circle cx="50" cy="50" r="41.5" class="seal-beaded-ring" />
+                <circle cx="50" cy="50" r="38" class="seal-inner-groove" />
                 <text class="seal-text">
-                  <textPath href="#seal-path-dossier" startOffset="50%" text-anchor="middle">
-                    ★ VERSTECKULES • ERMITTLUNGSAKTE ★
+                  <textPath href="#seal-path-dossier-top" startOffset="50%" text-anchor="middle">
+                    ★ VERSTECKULES ★
                   </textPath>
                 </text>
-                <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
-                <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-dossier)" class="seal-avatar" />
-                <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
+                <text class="seal-text" style="font-size: 5.4px;">
+                  <textPath href="#seal-path-dossier-bot" startOffset="50%" text-anchor="middle">
+                    ERMITTLUNGSAKTE • HOF
+                  </textPath>
+                </text>
+                <circle cx="50" cy="50" r="23.5" class="seal-medallion-rim" />
+                <circle cx="50" cy="50" r="22.5" fill="url(#wax-center-dossier)" />
+                <image href="assets/avatar_seal.png" x="27.5" y="27.5" width="45" height="45" clip-path="url(#seal-clip-dossier)" class="seal-avatar-wax" preserveAspectRatio="xMidYMid meet" />
+                <ellipse cx="44" cy="20" rx="18" ry="6" fill="white" opacity="0.22" transform="rotate(-15 44 20)" pointer-events="none" />
               </svg>
             </div>
             <div>
@@ -566,25 +623,44 @@
           <div class="seal-caption-dept">Asservatenkammer &middot; Beweisakte</div>
           <div class="seal-caption-sub">Originalbeweis amtlich registriert &middot; Stadt Hof</div>
         </div>
-        <div class="praegesiegel praegesiegel-paper" style="width: 62px; height: 62px;" title="Amtliches Asservaten-Siegel • Versteckules">
+        <div class="praegesiegel praegesiegel-paper" style="width: 62px; height: 62px;" title="Amtliches Asservaten-Wachssiegel • Versteckules">
           <svg viewBox="0 0 100 100" class="praegesiegel-svg" aria-hidden="true">
             <defs>
-              <path id="seal-path-evidence" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" />
+              <radialGradient id="wax-grad-evidence" cx="38%" cy="32%" r="65%">
+                <stop offset="0%" stop-color="#ef4444" />
+                <stop offset="35%" stop-color="#b91c1c" />
+                <stop offset="75%" stop-color="#7f1d1d" />
+                <stop offset="100%" stop-color="#450a0a" />
+              </radialGradient>
+              <radialGradient id="wax-center-evidence" cx="42%" cy="36%" r="60%">
+                <stop offset="0%" stop-color="#991b1b" />
+                <stop offset="70%" stop-color="#70121a" />
+                <stop offset="100%" stop-color="#3f070b" />
+              </radialGradient>
+              <path id="seal-path-evidence-top" d="M 14,50 A 36,36 0 0,1 86,50" />
+              <path id="seal-path-evidence-bot" d="M 86,50 A 36,36 0 0,1 14,50" />
               <clipPath id="seal-clip-evidence">
-                <circle cx="50" cy="50" r="24.5" />
+                <circle cx="50" cy="50" r="22.5" />
               </clipPath>
             </defs>
-            <circle cx="50" cy="50" r="47" class="seal-outer-ring" />
-            <circle cx="50" cy="50" r="44.5" class="seal-beaded-ring" />
-            <circle cx="50" cy="50" r="42" class="seal-inner-line" />
+            <path d="M 50,4 C 59,3 65,8 72,9 C 79,11 85,8 90,14 C 95,20 93,27 96,33 C 99,40 102,46 100,54 C 98,61 94,66 93,73 C 91,80 94,87 88,91 C 83,96 76,94 70,97 C 63,100 57,99 50,99 C 43,99 37,102 30,98 C 24,95 18,96 13,91 C 8,86 11,79 8,73 C 5,66 2,60 4,52 C 5,45 9,40 9,33 C 10,26 6,20 11,14 C 16,9 23,11 29,9 C 36,7 43,4 50,4 Z" fill="url(#wax-grad-evidence)" class="seal-wax-base" />
+            <circle cx="50" cy="50" r="44" class="seal-outer-rim" />
+            <circle cx="50" cy="50" r="41.5" class="seal-beaded-ring" />
+            <circle cx="50" cy="50" r="38" class="seal-inner-groove" />
             <text class="seal-text">
-              <textPath href="#seal-path-evidence" startOffset="50%" text-anchor="middle">
-                ★ VERSTECKULES • AMTLICHE AKTE ★
+              <textPath href="#seal-path-evidence-top" startOffset="50%" text-anchor="middle">
+                ★ VERSTECKULES ★
               </textPath>
             </text>
-            <circle cx="50" cy="50" r="25.5" class="seal-medallion-border" />
-            <image href="assets/avatar.jpg" x="25.5" y="25.5" width="49" height="49" clip-path="url(#seal-clip-evidence)" class="seal-avatar" />
-            <circle cx="50" cy="50" r="24.5" class="seal-bevel-rim" />
+            <text class="seal-text" style="font-size: 5.4px;">
+              <textPath href="#seal-path-evidence-bot" startOffset="50%" text-anchor="middle">
+                ASSERVATENAKTE • HOF
+              </textPath>
+            </text>
+            <circle cx="50" cy="50" r="23.5" class="seal-medallion-rim" />
+            <circle cx="50" cy="50" r="22.5" fill="url(#wax-center-evidence)" />
+            <image href="assets/avatar_seal.png" x="27.5" y="27.5" width="45" height="45" clip-path="url(#seal-clip-evidence)" class="seal-avatar-wax" preserveAspectRatio="xMidYMid meet" />
+            <ellipse cx="44" cy="20" rx="18" ry="6" fill="white" opacity="0.22" transform="rotate(-15 44 20)" pointer-events="none" />
           </svg>
         </div>
       </div>

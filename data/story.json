@@ -5257,7 +5257,7 @@
         "id": "end_herold_a",
         "speaker": "Valentin Herold",
         "avatar": "assets/suspect_herold.webp",
-        "text": "Ich gestehe den Diebstahl der Kassette. Hier ist die Kombination für meinen Tresor: 18-23-0. Aber retten Sie Renger vor Heiden!",
+        "text": "Ich gestehe den Diebstahl der Kassette. Hier ist die Kombination für meinen Tresor: 18 - 23. Aber retten Sie Renger vor Heiden!",
         "choices": [],
         "isEnd": true,
         "outcome": "OUTCOME_A",

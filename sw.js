@@ -69,6 +69,7 @@ const ASSETS = [
   './vendor/leaflet/leaflet.js',
   './vendor/leaflet/leaflet.css',
   './assets/avatar.jpg',
+  './assets/avatar_seal.png',
   './assets/hero_hof_night.jpg',
   './assets/seal_schlappen.jpg',
   './assets/soundtrack.mp3'

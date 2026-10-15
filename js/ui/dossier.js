@@ -208,25 +208,40 @@ export function updateDossier() {
             </div>
           </div>
 
-          <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <div style="font-size: 0.76rem; color: #cbd5e1; background: rgba(0,0,0,0.4); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); margin-top: 4px; line-height: 1.35;">
             ${(() => {
               const intStatus = getInterrogationStatus(s.id);
+              if (intStatus.count >= 2) {
+                return '🚫 <strong>Verhör-Status:</strong> Max. 2 Verhöre geführt (Aussage verweigert)';
+              } else if (intStatus.count === 1 && !intStatus.canInterrogate) {
+                return `⏳ <strong>Verhör-Status:</strong> Noch ${intStatus.remainingStations} Station(en) für 2. Verhör nötig`;
+              } else if (intStatus.count === 1) {
+                return '🗣️ <strong>Verhör-Status:</strong> 2. Verhör bereit – <em>nur persönlich vor Ort am Standort</em>';
+              } else {
+                return '🗣️ <strong>Verhör-Status:</strong> 1. Verhör offen – <em>nur persönlich vor Ort am Standort</em>';
+              }
+            })()}
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-top: 8px;">
+            ${state.isTestingMode ? (() => {
+              const intStatus = getInterrogationStatus(s.id);
               if (!intStatus.canInterrogate) {
-                const label = intStatus.count >= 2 ? '🚫 Aussage verweigert' : `⏳ Noch ${intStatus.remainingStations} Station(en)`;
+                const label = intStatus.count >= 2 ? '🚫 Verhör beendet' : `⏳ Noch ${intStatus.remainingStations} St.`;
                 return `
-                  <button class="btn-primary btn-interrogate-direct" data-suspect-id="${s.id}" disabled style="flex: 1.1; padding: 10px 8px; font-size: 0.8rem; text-align: center; border-radius: 4px; background: #222; color: #888; border: 1px solid #444; opacity: 0.6; cursor: not-allowed;" title="${intStatus.reason}">
+                  <button class="btn-primary btn-interrogate-direct" data-suspect-id="${s.id}" disabled style="flex: 1.2; padding: 10px 8px; font-size: 0.8rem; text-align: center; border-radius: 4px; background: #222; color: #888; border: 1px solid #444; opacity: 0.6; cursor: not-allowed;" title="${intStatus.reason}">
                     ${label}
                   </button>
                 `;
               } else {
-                const label = intStatus.count === 1 ? '🗣️ 2. Verhör' : '🗣️ 1. Verhör';
+                const label = intStatus.count === 1 ? '🧪 Test: 2. Verhör' : '🧪 Test: 1. Verhör';
                 return `
-                  <button class="btn-primary btn-interrogate-direct" data-suspect-id="${s.id}" style="flex: 1.1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; background: linear-gradient(135deg, #d4af37, #8c6d23); color: #05080f; border: 1px solid #d4af37; font-weight: bold; cursor: pointer;" title="${intStatus.reason}">
+                  <button class="btn-primary btn-interrogate-direct" data-suspect-id="${s.id}" style="flex: 1.2; padding: 10px 8px; font-size: 0.82rem; text-align: center; border-radius: 4px; background: linear-gradient(135deg, #d4af37, #8c6d23); color: #05080f; border: 1px solid #d4af37; font-weight: bold; cursor: pointer;" title="Offline-Testmodus: Direktes Verhör">
                     ${label}
                   </button>
                 `;
               }
-            })()}
+            })() : ''}
             <button class="btn-secondary btn-show-suspect-map" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; border: 1px solid var(--color-amber-muted); color: #f5d79e; background: rgba(212, 175, 55, 0.15); font-weight: bold; cursor: pointer;" title="Auf Karte anpeilen & Standort zeigen">
               🧭 Karte
             </button>
@@ -239,13 +254,26 @@ export function updateDossier() {
     });
     suspContainer.innerHTML = html;
 
-    // Klick-Handler für Vor-Ort-Verhör aus dem Dossier
+    // Klick-Handler für Test-Verhör aus dem Dossier (NUR im Offline-Testmodus verfügbar)
     suspContainer.querySelectorAll('.btn-interrogate-direct').forEach(btn => {
       btn.addEventListener('click', () => {
         const suspectId = btn.getAttribute('data-suspect-id');
         const state = getState();
 
-        // 1. Verhör-Status prüfen (Max 2 Verhöre & 3 Stationen Cooldown)
+        // Absicherung: Direktes Verhör aus Akte ist ausschließlich im Offline-Testmodus erlaubt
+        if (!state.isTestingMode) {
+          import('../main.js').then(m => {
+            if (m.showNoirAlert) {
+              m.showNoirAlert(
+                `🚫 Verhöre können im Live-Spiel nur persönlich vor Ort am Standort des Verdächtigen geführt werden!`,
+                'Vor-Ort-Verhör erforderlich'
+              );
+            }
+          });
+          return;
+        }
+
+        // Verhör-Status prüfen (Max 2 Verhöre & 3 Stationen Cooldown)
         const intStatus = getInterrogationStatus(suspectId);
         if (!intStatus.canInterrogate) {
           import('../main.js').then(m => {
@@ -259,34 +287,6 @@ export function updateDossier() {
             }
           });
           return;
-        }
-
-        // Testing-Mode (Couch) erlaubt direktes Verhör ohne Distanzprüfung
-        if (!state.isTestingMode) {
-          const curPos = getCurrentPosition();
-          const story = getStory();
-          const sData = (story && story.suspects) ? story.suspects[suspectId] : null;
-          let dist = Infinity;
-          if (curPos && sData && sData.coords) {
-            const parsed = parseCoords(sData.coords);
-            if (parsed) {
-              dist = getDistance(curPos.lat, curPos.lng, parsed.lat, parsed.lng);
-            }
-          }
-
-          if (dist > 25) {
-            const distText = dist !== Infinity ? `${Math.round(dist)} m` : 'GPS nicht erfasst';
-            const locText = sData ? sData.location : 'Hof';
-            import('../main.js').then(m => {
-              if (m.showNoirAlert) {
-                m.showNoirAlert(
-                  `🚫 Zu weit entfernt (${distText})!\n\n${getSuspectName(suspectId)} hält sich persönlich bei folgendem Ort auf:\n📍 ${locText}\n\nBegib dich vor Ort zu den Koordinaten (oder nutze „🧭 Karte“, um das Ziel anzupeilen), um das Verhör zu führen.`,
-                  'Vor-Ort-Verhör erforderlich'
-                );
-              }
-            });
-            return;
-          }
         }
 
         startSuspectInterrogation(suspectId);
@@ -332,8 +332,12 @@ export function updateDossier() {
     const tbs = state.unlockedTrackables || [];
     const inv = state.inventory || [];
     let h = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-      <strong>Trackables (${tbs.length}/4):</strong>
-      <button id="btn-open-tb" class="btn-secondary" style="font-size:0.75rem; padding:2px 8px; cursor:pointer;" title="Trackable-Code eingeben">+ Code eingeben</button>
+      <strong style="color:var(--color-amber-glow);">🏷️ Geheimbund-Trackables (${tbs.length}/4):</strong>
+    </div>
+    <div style="font-size:0.8rem; color:#bbb; margin-bottom:10px; line-height:1.4;">
+      ${tbs.length > 0 
+        ? `Gefundene Signaturen: <span style="font-family:var(--font-mono); color:var(--color-gold); font-weight:bold;">${tbs.join(', ')}</span>` 
+        : '<em>Im Stadtgebiet aufmerksam sein: Versteckte Codes werden bei Zufallsbegegnungen am Wegesrand entdeckt.</em>'}
     </div>`;
     
     const fallbackItemNames = {
@@ -362,8 +366,7 @@ export function updateDossier() {
     const storyCatalog = (story && story.evidenceCatalog) || [];
     const genericIds = ['evidence_fire_dossier', 'evidence_tape_renger', 'evidence_charter_1432'];
     
-    h += tbs.length > 0 ? tbs.join(', ') : '<em>Noch keine</em>';
-    h += `<br><br><strong>Gegenstände (${inv.length}):</strong><br><div style="display:flex; flex-direction:column; gap:8px; margin-top:5px;">`;
+    h += `<br><strong>Gegenstände (${inv.length}):</strong><br><div style="display:flex; flex-direction:column; gap:8px; margin-top:5px;">`;
     
     if (inv.length > 0) {
       inv.forEach(id => {
@@ -383,18 +386,6 @@ export function updateDossier() {
     }
     h += '</div>';
     invContainer.innerHTML = h;
-
-    const btnOpenTb = invContainer.querySelector('#btn-open-tb');
-    if (btnOpenTb) {
-      btnOpenTb.addEventListener('click', () => {
-        import('./trackables.js').then(m => {
-          if (m.openTrackableModal) m.openTrackableModal();
-        }).catch(() => {
-          const modal = document.getElementById('tb-modal');
-          if (modal) modal.classList.remove('hidden');
-        });
-      });
-    }
 
     // Klick-Handler für Beweisstücke
     invContainer.querySelectorAll('.btn-evidence').forEach(btn => {
