@@ -32,6 +32,20 @@ export function getDistance(lat1, lon1, lat2, lon2) {
   return R * c; // in Metern
 }
 
+/**
+ * Prüft, ob eine Distanz innerhalb eines Radius liegt, unter Abzug der
+ * GPS-Ungenauigkeit (max. geo.maxAccuracyToleranceMeters), damit Spieler bei
+ * schlechtem Empfang in der Altstadt nicht dauerhaft "zu weit weg" sind.
+ */
+export function isWithinRadius(distance, radius) {
+  const pos = fakePos || currentPos;
+  const maxTol = (APP_CONFIG.geo && APP_CONFIG.geo.maxAccuracyToleranceMeters) || 0;
+  const acc = pos && typeof pos.accuracy === 'number'
+    ? Math.min(Math.max(0, pos.accuracy), maxTol)
+    : 0;
+  return Math.max(0, distance - acc) <= radius;
+}
+
 export function getBearing(lat1, lon1, lat2, lon2) {
   const p1 = toRad(lat1);
   const p2 = toRad(lat2);
@@ -75,6 +89,9 @@ export function startWatch() {
     },
     (err) => {
       console.warn(`[Geo] Error (${err.code}): ${err.message}`);
+      try {
+        window.dispatchEvent(new CustomEvent('gpsError', { detail: { code: err.code, message: err.message } }));
+      } catch (_) { /* ignore */ }
     },
     {
       enableHighAccuracy: highAccuracy,
