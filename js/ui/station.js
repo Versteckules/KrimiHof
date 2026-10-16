@@ -324,17 +324,18 @@ export function onStationComplete(stationId) {
 
 function checkFinalAndProceed() {
   const state = getState();
-  const mandatorySolved = state.solvedStations.filter(
+  const mandatorySolved = (state.solvedStations || []).filter(
     sid => !isBonusStation(sid)
   ).length;
+  const totalSolved = (state.solvedStations || []).length;
   
-  if (mandatorySolved >= getConfig().gameplay.mandatoryStationCount && !state.hasSeenFinalNotice) {
+  if ((mandatorySolved >= getConfig().gameplay.mandatoryStationCount || totalSolved >= 12) && !state.hasSeenFinalNotice) {
     import('../state.js').then(st => st.saveState({ hasSeenFinalNotice: true }));
     showView('view-dashboard');
     import('../main.js').then(m => {
       if (m.showNoirAlert) {
         m.showNoirAlert(
-          'Alle 12 Pflichtstationen gelöst! Die Ermittlungsakte ist vollständig. Du kannst nun im Dossier letzte Beweise zuordnen, Verdächtige nochmals aufsuchen oder direkt die Verhaftung einleiten!',
+          'Alle Pflichtstationen gelöst! Die Ermittlungsakte ist vollständig. Du kannst nun im Dossier letzte Beweise zuordnen, Verdächtige nochmals aufsuchen oder direkt die Verhaftung einleiten!',
           '🏁 Finale Phase erreicht!'
         );
       }

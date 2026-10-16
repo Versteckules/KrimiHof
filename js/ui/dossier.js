@@ -103,11 +103,23 @@ export function updateDossier() {
     if (isUnlocked) {
       openBtn.classList.remove('hidden');
       openBtn.style.display = 'inline-flex';
-      openBtn.innerHTML = '📁 Dossier';
-      if (hasUnassigned) {
+      const pflichtCountNow = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
+      const totalSolvedNow = (state.solvedStations || []).length;
+      const isFinalReady = pflichtCountNow >= 12 || totalSolvedNow >= 12 || state.isTestingMode || state.isOnsiteTestMode;
+      if (isFinalReady) {
+        openBtn.innerHTML = '🚨 Verhaften';
+        openBtn.style.background = 'linear-gradient(135deg, #b91c1c, #7f1d1d)';
+        openBtn.style.borderColor = '#ef4444';
         openBtn.classList.add('blink-animation');
       } else {
-        openBtn.classList.remove('blink-animation');
+        openBtn.innerHTML = '📁 Dossier';
+        openBtn.style.background = '';
+        openBtn.style.borderColor = '';
+        if (hasUnassigned) {
+          openBtn.classList.add('blink-animation');
+        } else {
+          openBtn.classList.remove('blink-animation');
+        }
       }
     } else {
       openBtn.classList.add('hidden');
@@ -120,7 +132,8 @@ export function updateDossier() {
   const replayOutroBtn = document.getElementById('btn-dossier-replay-outro');
   if (replayOutroBtn) {
     const pflichtCount = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
-    if (pflichtCount >= 12 || state.isTestingMode || state.isOnsiteTestMode || state.accusedSuspect) {
+    const totalSolved = (state.solvedStations || []).length;
+    if (pflichtCount >= 12 || totalSolved >= 12 || state.isTestingMode || state.isOnsiteTestMode || state.accusedSuspect) {
       replayOutroBtn.classList.remove('hidden');
     } else {
       replayOutroBtn.classList.add('hidden');
@@ -144,30 +157,43 @@ export function updateDossier() {
       const storySuspects = (story && story.suspects) ? story.suspects : {};
 
     const pflichtCount = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
-    const isAllStationsSolved = pflichtCount >= 12;
+    const totalSolved = (state.solvedStations || []).length;
+    const isAllStationsSolved = pflichtCount >= 12 || totalSolved >= 12 || state.isTestingMode || state.isOnsiteTestMode;
 
     if (isAllStationsSolved) {
       html += `
-        <div style="background: linear-gradient(135deg, rgba(139, 0, 0, 0.25) 0%, rgba(30, 41, 59, 0.8) 100%); border: 1px solid var(--color-blood-red); border-radius: 8px; padding: 12px; margin-bottom: 14px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-          <div style="color: var(--color-blood-red); font-weight: bold; font-size: 0.95rem; margin-bottom: 4px; letter-spacing: 0.5px;">
-            🚨 12 Pflichtstationen gelöst • Ermittlungsakte komplett!
+        <div style="background: linear-gradient(135deg, rgba(139, 0, 0, 0.35) 0%, rgba(30, 41, 59, 0.9) 100%); border: 2px solid var(--color-blood-red); border-radius: 8px; padding: 14px 12px; margin-bottom: 14px; text-align: center; box-shadow: 0 4px 15px rgba(180,0,0,0.4);">
+          <div style="color: #ff5555; font-weight: bold; font-size: 1rem; margin-bottom: 4px; letter-spacing: 0.5px;">
+            🚨 Ermittlungsakte komplett • Finale freigeschaltet!
           </div>
-          <div style="color: #cbd5e1; font-size: 0.8rem; line-height: 1.4;">
-            Du kannst Verdächtige nochmals anpeilen, offene Beweise prüfen oder jetzt direkt bei deinem Hauptverdächtigen auf <strong>„🚨 Verhaften“</strong> tippen!
+          <div style="color: #f1f5f9; font-size: 0.85rem; line-height: 1.4;">
+            Wähle deinen Hauptverdächtigen und tippe auf <strong>„🚨 Verhaften“</strong>, um den Fall abzuschließen!
+          </div>
+        </div>
+      `;
+    } else {
+      const missingStations = stations.filter(st => !isBonusStation(st.id) && !(state.solvedStations || []).includes(st.id));
+      const missingNames = missingStations.map(st => st.name).join(', ');
+      html += `
+        <div style="background: rgba(30, 41, 59, 0.5); border: 1px dashed rgba(212, 175, 55, 0.4); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; text-align: center;">
+          <div style="color: var(--color-amber-glow); font-size: 0.88rem; font-weight: bold;">
+            ⏳ Ermittlung noch aktiv (${pflichtCount}/12 Pflichtstationen gelöst)
+          </div>
+          <div style="color: #94a3b8; font-size: 0.78rem; margin-top: 3px; line-height: 1.35;">
+            Löse alle 12 Pflichtstationen, um die Verdächtigen zu verhaften.${missingNames ? '<br><span style="color:#fca5a5;">Noch offen: ' + missingNames + '</span>' : ''}
           </div>
         </div>
       `;
     }
 
-    result.suspects.forEach((s, index) => {
+    result.suspects.forEach((s) => {
       const perc = result.percentages[s.id] || 0;
       const suspectData = storySuspects[s.id] || {};
       const img = suspectData.image || 'assets/avatar.jpg';
       const role = suspectData.role || 'Tatverdächtige(r)';
       const motive = suspectData.motive || '';
       
-      const isHighest = index === 0;
-      const canArrest = isAllStationsSolved && (perc >= FULL_WIN_THRESHOLD || isHighest);
+      const canArrest = isAllStationsSolved;
 
       html += `
         <div class="dossier-suspect-card" style="background: rgba(10, 14, 23, 0.85); border: 1px solid var(--color-glass-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
@@ -245,7 +271,7 @@ export function updateDossier() {
             <button class="btn-secondary btn-show-suspect-map" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; border: 1px solid var(--color-amber-muted); color: #f5d79e; background: rgba(212, 175, 55, 0.15); font-weight: bold; cursor: pointer;" title="Auf Karte anpeilen & Standort zeigen">
               🧭 Karte
             </button>
-            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.5; filter: grayscale(1);'}">
+            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.5; filter: grayscale(1); cursor: pointer;'}" title="${canArrest ? 'Verdächtigen verhaften' : 'Erst nach allen Pflichtstationen verfügbar'}">
               🚨 Verhaften
             </button>
           </div>
@@ -311,13 +337,33 @@ export function updateDossier() {
     // Klick-Handler für Verhaftung
     suspContainer.querySelectorAll('.btn-arrest').forEach(btn => {
       btn.addEventListener('click', () => {
-        if (btn.hasAttribute('disabled')) return;
         const suspectId = btn.getAttribute('data-suspect-id');
-        const msg = 'Bist du sicher, dass du diesen Verdächtigen verhaften willst? Dies beendet die Ermittlung!';
+        const stateNow = getState();
+        const pflichtCountNow = (stateNow.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
+        const totalSolvedNow = (stateNow.solvedStations || []).length;
+        const isReady = pflichtCountNow >= 12 || totalSolvedNow >= 12 || stateNow.isTestingMode || stateNow.isOnsiteTestMode;
+
+        if (!isReady) {
+          const stationsList = getStations() || [];
+          const missing = stationsList.filter(st => !isBonusStation(st.id) && !(stateNow.solvedStations || []).includes(st.id));
+          const missingText = missing.length > 0 ? `\n\nNoch offen:\n• ${missing.map(m => m.name).join('\n• ')}` : '';
+          import('../main.js').then(m => {
+            if (m.showNoirAlert) {
+              m.showNoirAlert(
+                `Haftbefehl noch nicht bereit: Du hast bisher ${pflichtCountNow}/12 Pflichtstationen gelöst. Löse alle 12 Pflichtstationen, um den Zugriff zu autorisieren.${missingText}`,
+                'Ermittlungsakte unvollständig'
+              );
+            }
+          });
+          return;
+        }
+
+        const suspectName = getSuspectName(suspectId);
+        const msg = `Möchtest du ${suspectName} jetzt offiziell als Haupttäter verhaften? Dies beendet die Ermittlungen und leitet das große Finale ein!`;
         const doArrest = () => import('./final.js').then(mod => mod.startFinaleForSuspect(suspectId));
         
         if (window.showNoirConfirm) {
-          window.showNoirConfirm(msg, doArrest, 'Verhaften');
+          window.showNoirConfirm('Haftbefehl vollstrecken', msg, doArrest, '🚨 Jetzt verhaften');
         } else if (confirm(msg)) {
           doArrest();
         }
@@ -653,6 +699,11 @@ export function updateDossier() {
         sHtml += `<span style="border: 1px solid ${color}; color: ${color}; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; background: rgba(0,0,0,0.3);">${st.name}</span>`;
       }
     });
+
+    const missingPflicht = stations.filter(st => !isBonusStation(st.id) && !solved.includes(st.id));
+    if (missingPflicht.length > 0 && pflichtCount < 12 && solved.length < 12) {
+      sHtml += `<div style="width: 100%; margin-top: 8px; font-size: 0.8rem; color: #f87171; line-height: 1.4;"><strong>Noch offene Pflichtstationen:</strong> ${missingPflicht.map(st => st.name).join(', ')}</div>`;
+    }
     statContainer.innerHTML = sHtml;
   }
 }

@@ -184,25 +184,8 @@ export function runGadget(stationId, onComplete, onCancel) {
     }
   };
 
-  // Gyroscope mit Throttling
-  let lastGyroTime = 0;
-  function handleOrientation(event) {
-    if (!event.gamma) return;
-    const now = Date.now();
-    if (now - lastGyroTime < 180) return;
-    if (event.gamma > 20) {
-      lastGyroTime = now;
-      updateDial(currentVal + 1, true);
-    } else if (event.gamma < -20) {
-      lastGyroTime = now;
-      updateDial(currentVal - 1, true);
-    }
-  }
-  window.addEventListener('deviceorientation', handleOrientation);
-
   function cleanup() {
     window.removeEventListener('pointermove', handlePointerMove);
-    window.removeEventListener('deviceorientation', handleOrientation);
     window.removeEventListener('keydown', handleKeyDown);
   }
 

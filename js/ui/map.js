@@ -2,7 +2,7 @@
  * map.js - Leaflet-Karte & Dark-Noir Theme (AP6)
  */
 
-import { getStations, getConfig } from '../config-loader.js';
+import { getStations, getConfig, isBonusStation } from '../config-loader.js';
 import { getState, subscribe, isStationSolved, getPlayerRank, getInterrogationStatus } from '../state.js';
 import { showNoirAlert } from '../main.js';
 
@@ -334,6 +334,13 @@ function renderSuspectPopup(marker, suspect, suspectLatLng) {
 
   const distText = dist !== Infinity ? `${Math.round(dist)} m` : 'Distanz unbekannt';
 
+  const pflichtCountNow = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
+  const totalSolvedNow = (state.solvedStations || []).length;
+  const isFinalReady = pflichtCountNow >= 12 || totalSolvedNow >= 12 || state.isTestingMode || state.isOnsiteTestMode;
+  const arrestBtnHtml = isFinalReady
+    ? `<button class="btn-arrest-popup" style="width: 100%; margin-top: 8px; padding: 10px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: linear-gradient(135deg, #b91c1c, #7f1d1d); color: white; border: 1px solid #ef4444; cursor: pointer; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);">🚨 ${suspect.name} verhaften</button>`
+    : '';
+
   const popupDiv = document.createElement('div');
   popupDiv.className = 'suspect-map-popup';
   popupDiv.innerHTML = `
@@ -377,6 +384,8 @@ function renderSuspectPopup(marker, suspect, suspectLatLng) {
         </div>
         <button class="btn-target-suspect" style="width: 100%; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: rgba(212, 175, 55, 0.2); color: #d4af37; border: 1px solid #d4af37; cursor: pointer;">🧭 Als Ziel anpeilen</button>
       `}
+
+      ${arrestBtnHtml}
     </div>
   `;
 
@@ -411,6 +420,21 @@ function renderSuspectPopup(marker, suspect, suspectLatLng) {
       map.closePopup();
       setActiveTarget('suspect_' + suspect.id);
       showNoirAlert(`Ziel auf ${suspect.name} (${suspect.location}) gesetzt! Folge dem Kompass im Navigator.`, 'Ziel erfasst');
+    };
+  }
+
+  const arrestBtn = popupDiv.querySelector('.btn-arrest-popup');
+  if (arrestBtn) {
+    arrestBtn.onclick = (e) => {
+      e.stopPropagation();
+      map.closePopup();
+      const msg = `Möchtest du ${suspect.name} jetzt offiziell als Haupttäter verhaften? Dies beendet die Ermittlungen und leitet das große Finale ein!`;
+      const doArrest = () => import('./final.js').then(mod => mod.startFinaleForSuspect(suspect.id));
+      if (window.showNoirConfirm) {
+        window.showNoirConfirm('Haftbefehl vollstrecken', msg, doArrest, '🚨 Jetzt verhaften');
+      } else if (confirm(msg)) {
+        doArrest();
+      }
     };
   }
 }
