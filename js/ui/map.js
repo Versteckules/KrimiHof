@@ -336,7 +336,7 @@ function renderSuspectPopup(marker, suspect, suspectLatLng) {
 
   const pflichtCountNow = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
   const totalSolvedNow = (state.solvedStations || []).length;
-  const isFinalReady = pflichtCountNow >= 12 || totalSolvedNow >= 12 || state.isTestingMode || state.isOnsiteTestMode;
+  const isFinalReady = pflichtCountNow >= 12 || totalSolvedNow >= 12;
   const arrestBtnHtml = isFinalReady
     ? `<button class="btn-arrest-popup" style="width: 100%; margin-top: 8px; padding: 10px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 4px; background: linear-gradient(135deg, #b91c1c, #7f1d1d); color: white; border: 1px solid #ef4444; cursor: pointer; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);">🚨 ${suspect.name} verhaften</button>`
     : '';
@@ -428,6 +428,13 @@ function renderSuspectPopup(marker, suspect, suspectLatLng) {
     arrestBtn.onclick = (e) => {
       e.stopPropagation();
       map.closePopup();
+      const stateNow = getState();
+      const pflichtNow = (stateNow.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
+      const totalNow = (stateNow.solvedStations || []).length;
+      if (pflichtNow < 12 && totalNow < 12) {
+        showNoirAlert(`Haftbefehl noch nicht bereit: Du hast bisher erst ${pflichtNow}/12 Pflichtstationen gelöst.`, 'Ermittlungsakte unvollständig');
+        return;
+      }
       const msg = `Möchtest du ${suspect.name} jetzt offiziell als Haupttäter verhaften? Dies beendet die Ermittlungen und leitet das große Finale ein!`;
       const doArrest = () => import('./final.js').then(mod => mod.startFinaleForSuspect(suspect.id));
       if (window.showNoirConfirm) {

@@ -5,7 +5,7 @@
 import { getState, getPlayerRank } from '../state.js';
 import { showView } from '../main.js';
 import { calculateFinalResult } from '../scoring.js';
-import { getConfig, getFinalCoords, getStory } from '../config-loader.js';
+import { getConfig, getFinalCoords, getStory, isBonusStation } from '../config-loader.js';
 import { openIntro } from './intro.js';
 import { decryptObject, getStandardPassphrase, getBonusPassphrase } from '../crypto.js';
 
@@ -386,6 +386,21 @@ export function handleAccusation(suspectId) {
 }
 
 export function startFinaleForSuspect(suspectId) {
+  const state = getState();
+  const pflichtCount = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
+  const totalSolved = (state.solvedStations || []).length;
+  if (pflichtCount < 12 && totalSolved < 12) {
+    import('../main.js').then(m => {
+      if (m.showNoirAlert) {
+        m.showNoirAlert(
+          `Haftbefehl noch nicht bereit: Du hast bisher erst ${pflichtCount}/12 Pflichtstationen gelöst. Löse alle 12 Pflichtstationen, um den Zugriff zu autorisieren.`,
+          'Ermittlungsakte unvollständig'
+        );
+      }
+    });
+    return;
+  }
+
   openFinal();
   // Ensure the UI is populated first if it wasn't
   initFinalView();

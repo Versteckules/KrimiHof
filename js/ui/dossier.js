@@ -105,7 +105,7 @@ export function updateDossier() {
       openBtn.style.display = 'inline-flex';
       const pflichtCountNow = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
       const totalSolvedNow = (state.solvedStations || []).length;
-      const isFinalReady = pflichtCountNow >= 12 || totalSolvedNow >= 12 || state.isTestingMode || state.isOnsiteTestMode;
+      const isFinalReady = pflichtCountNow >= 12 || totalSolvedNow >= 12;
       if (isFinalReady) {
         openBtn.innerHTML = '🚨 Verhaften';
         openBtn.style.background = 'linear-gradient(135deg, #b91c1c, #7f1d1d)';
@@ -133,7 +133,7 @@ export function updateDossier() {
   if (replayOutroBtn) {
     const pflichtCount = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
     const totalSolved = (state.solvedStations || []).length;
-    if (pflichtCount >= 12 || totalSolved >= 12 || state.isTestingMode || state.isOnsiteTestMode || state.accusedSuspect) {
+    if (pflichtCount >= 12 || totalSolved >= 12 || state.accusedSuspect) {
       replayOutroBtn.classList.remove('hidden');
     } else {
       replayOutroBtn.classList.add('hidden');
@@ -158,7 +158,7 @@ export function updateDossier() {
 
     const pflichtCount = (state.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
     const totalSolved = (state.solvedStations || []).length;
-    const isAllStationsSolved = pflichtCount >= 12 || totalSolved >= 12 || state.isTestingMode || state.isOnsiteTestMode;
+    const isAllStationsSolved = pflichtCount >= 12 || totalSolved >= 12;
 
     if (isAllStationsSolved) {
       html += `
@@ -271,7 +271,7 @@ export function updateDossier() {
             <button class="btn-secondary btn-show-suspect-map" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; border: 1px solid var(--color-amber-muted); color: #f5d79e; background: rgba(212, 175, 55, 0.15); font-weight: bold; cursor: pointer;" title="Auf Karte anpeilen & Standort zeigen">
               🧭 Karte
             </button>
-            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.5; filter: grayscale(1); cursor: pointer;'}" title="${canArrest ? 'Verdächtigen verhaften' : 'Erst nach allen Pflichtstationen verfügbar'}">
+            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.4; filter: grayscale(1); cursor: not-allowed;'}" title="${canArrest ? 'Verdächtigen verhaften' : 'Erst nach 12 Pflichtstationen verfügbar'}">
               🚨 Verhaften
             </button>
           </div>
@@ -337,11 +337,12 @@ export function updateDossier() {
     // Klick-Handler für Verhaftung
     suspContainer.querySelectorAll('.btn-arrest').forEach(btn => {
       btn.addEventListener('click', () => {
+        if (btn.hasAttribute('disabled')) return;
         const suspectId = btn.getAttribute('data-suspect-id');
         const stateNow = getState();
         const pflichtCountNow = (stateNow.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
         const totalSolvedNow = (stateNow.solvedStations || []).length;
-        const isReady = pflichtCountNow >= 12 || totalSolvedNow >= 12 || stateNow.isTestingMode || stateNow.isOnsiteTestMode;
+        const isReady = pflichtCountNow >= 12 || totalSolvedNow >= 12;
 
         if (!isReady) {
           const stationsList = getStations() || [];
