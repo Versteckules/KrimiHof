@@ -321,9 +321,21 @@ export function handleAccusation(suspectId) {
     const text = document.getElementById('final-result-text');
     const coords = document.getElementById('final-coords');
     
-    // Hide the suspect container now that we're showing results
+    // Hide the suspect container and prompt intro now that we're showing results
     const container = document.getElementById('final-suspects-container');
-    if (container) container.style.display = 'none';
+    if (container) {
+      container.classList.add('hidden');
+      container.style.display = 'none';
+    }
+    const promptIntro = document.getElementById('final-prompt-intro');
+    if (promptIntro) {
+      promptIntro.classList.add('hidden');
+      promptIntro.style.display = 'none';
+    }
+    const mainTitle = document.getElementById('final-main-title');
+    if (mainTitle) {
+      mainTitle.textContent = '🏆 Fallakte abgeschlossen • Urteilsbegründung';
+    }
 
     resContainer.classList.remove('hidden');
 
@@ -378,7 +390,19 @@ export function handleAccusation(suspectId) {
     }
     retryBtn.onclick = () => {
       accusedSuspect = null;
-      if (container) container.style.display = 'flex';
+      if (container) {
+        container.classList.remove('hidden');
+        container.style.display = 'flex';
+      }
+      const promptIntro = document.getElementById('final-prompt-intro');
+      if (promptIntro) {
+        promptIntro.classList.remove('hidden');
+        promptIntro.style.display = 'block';
+      }
+      const mainTitle = document.getElementById('final-main-title');
+      if (mainTitle) {
+        mainTitle.textContent = 'Die Überführung';
+      }
       resContainer.classList.add('hidden');
     };
 
@@ -393,7 +417,7 @@ export function startFinaleForSuspect(suspectId) {
     import('../main.js').then(m => {
       if (m.showNoirAlert) {
         m.showNoirAlert(
-          `Haftbefehl noch nicht bereit: Du hast bisher erst ${pflichtCount}/12 Pflichtstationen gelöst. Löse alle 12 Pflichtstationen, um den Zugriff zu autorisieren.`,
+          `Haftbefehl noch nicht bereit: Du hast bisher erst ${totalSolved}/12 Stationen gelöst (Minimum zum Lösen des Falls). Löse mindestens 12 Stationen (Pflicht- oder Bonusstationen), um den Zugriff zu autorisieren.`,
           'Ermittlungsakte unvollständig'
         );
       }
@@ -401,14 +425,19 @@ export function startFinaleForSuspect(suspectId) {
     return;
   }
 
-  openFinal();
   // Ensure the UI is populated first if it wasn't
   initFinalView();
   
-  // Hide all suspect buttons since we already made a choice
+  // Hide all suspect buttons and prompt intro since we already made a choice
   const container = document.getElementById('final-suspects-container');
   if (container) {
+    container.classList.add('hidden');
     container.style.display = 'none';
+  }
+  const promptIntro = document.getElementById('final-prompt-intro');
+  if (promptIntro) {
+    promptIntro.classList.add('hidden');
+    promptIntro.style.display = 'none';
   }
   
   handleAccusation(suspectId);

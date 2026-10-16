@@ -54,7 +54,7 @@ export function initLanding() {
       let testBadge = "";
       if (state.isTestingMode) testBadge = " [OFFLINE-TEST]";
       else if (state.isOnsiteTestMode) testBadge = " [VOR-ORT-TEST / TAG]";
-      progressIndicator.textContent = `Akte aktiv: ${solvedCount}/12 Pflichtstationen gelöst • ${state.score || 0} Punkte${testBadge}`;
+      progressIndicator.textContent = `Akte aktiv: ${solvedCount}/12 Stationen gelöst • ${state.score || 0} Punkte${testBadge}`;
       progressIndicator.classList.remove('hidden');
     } else {
       startBtn.innerHTML = "Akte Öffnen";

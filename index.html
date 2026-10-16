@@ -489,13 +489,15 @@
     <main id="view-final" class="view hidden">
       <section
         style="padding: var(--space-xl) var(--space-md); text-align: center; max-width: 800px; margin: 0 auto; color: var(--color-text);">
-        <h2
+        <h2 id="final-main-title"
           style="font-size: 2.5rem; font-family: var(--font-serif); color: var(--color-amber-glow); margin-bottom: var(--space-md);">
           Die Überführung</h2>
-        <img src="assets/kommissar_stahl.jpg" alt="Kommissar Stahl" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--color-amber-muted); margin-bottom: 15px; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); object-fit: contain; background: #000;">
-        <p style="font-size: 1.1rem; margin-bottom: var(--space-xl); font-style: italic; color: #ccc;">
-          "Das Warten hat ein Ende. Du hast alle Zeugen gehört und alle Beweise gesichert. Jetzt geht es ans Eingemachte! Wer ist der Täter?"
-        </p>
+        <div id="final-prompt-intro">
+          <img src="assets/kommissar_stahl.jpg" alt="Kommissar Stahl" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--color-amber-muted); margin-bottom: 15px; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); object-fit: contain; background: #000;">
+          <p style="font-size: 1.1rem; margin-bottom: var(--space-xl); font-style: italic; color: #ccc;">
+            "Das Warten hat ein Ende. Du hast alle Zeugen gehört und alle Beweise gesichert. Jetzt geht es ans Eingemachte! Wer ist der Täter?"
+          </p>
+        </div>
 
         <div id="final-suspects-container" class="final-suspects-grid">
           <!-- Buttons generated in JS -->

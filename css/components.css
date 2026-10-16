@@ -1319,11 +1319,16 @@
 
 /* Final Suspects Grid */
 .final-suspects-grid {
-  display: flex !important;
-  gap: var(--space-md) !important;
-  justify-content: center !important;
-  flex-wrap: wrap !important;
-  margin-bottom: var(--space-xl) !important;
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-xl);
+}
+
+.final-suspects-grid.hidden,
+#final-suspects-container.hidden {
+  display: none !important;
 }
 
 .final-accuse-btn {

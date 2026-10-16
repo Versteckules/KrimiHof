@@ -432,7 +432,7 @@ function renderSuspectPopup(marker, suspect, suspectLatLng) {
       const pflichtNow = (stateNow.solvedStations || []).filter(sid => !isBonusStation(sid)).length;
       const totalNow = (stateNow.solvedStations || []).length;
       if (pflichtNow < 12 && totalNow < 12) {
-        showNoirAlert(`Haftbefehl noch nicht bereit: Du hast bisher erst ${pflichtNow}/12 Pflichtstationen gelöst.`, 'Ermittlungsakte unvollständig');
+        showNoirAlert(`Haftbefehl noch nicht bereit: Du hast bisher erst ${totalNow}/12 Stationen gelöst (Minimum zum Lösen des Falls). Löse mindestens 12 Stationen (Pflicht- oder Bonusstationen), um den Zugriff zu autorisieren.`, 'Ermittlungsakte unvollständig');
         return;
       }
       const msg = `Möchtest du ${suspect.name} jetzt offiziell als Haupttäter verhaften? Dies beendet die Ermittlungen und leitet das große Finale ein!`;

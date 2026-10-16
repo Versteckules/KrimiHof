@@ -167,6 +167,7 @@ export function updateDossier() {
             🚨 Ermittlungsakte komplett • Finale freigeschaltet!
           </div>
           <div style="color: #f1f5f9; font-size: 0.85rem; line-height: 1.4;">
+            Du hast ${totalSolved} Stationen gelöst – das Minimum zum Lösen des Falls ist erreicht!<br>
             Wähle deinen Hauptverdächtigen und tippe auf <strong>„🚨 Verhaften“</strong>, um den Fall abzuschließen!
           </div>
         </div>
@@ -177,10 +178,10 @@ export function updateDossier() {
       html += `
         <div style="background: rgba(30, 41, 59, 0.5); border: 1px dashed rgba(212, 175, 55, 0.4); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; text-align: center;">
           <div style="color: var(--color-amber-glow); font-size: 0.88rem; font-weight: bold;">
-            ⏳ Ermittlung noch aktiv (${pflichtCount}/12 Pflichtstationen gelöst)
+            ⏳ Ermittlung noch aktiv (${totalSolved}/12 Stationen gelöst)
           </div>
           <div style="color: #94a3b8; font-size: 0.78rem; margin-top: 3px; line-height: 1.35;">
-            Löse alle 12 Pflichtstationen, um die Verdächtigen zu verhaften.${missingNames ? '<br><span style="color:#fca5a5;">Noch offen: ' + missingNames + '</span>' : ''}
+            Mindestens 12 gelöste Stationen (egal ob Pflicht- oder Bonusstationen) erforderlich, um Haftbefehl zu erlassen.${missingNames ? '<br><span style="color:#fca5a5;">Noch offene Pflichtstationen: ' + missingNames + '</span>' : ''}
           </div>
         </div>
       `;
@@ -271,7 +272,7 @@ export function updateDossier() {
             <button class="btn-secondary btn-show-suspect-map" data-suspect-id="${s.id}" style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; border: 1px solid var(--color-amber-muted); color: #f5d79e; background: rgba(212, 175, 55, 0.15); font-weight: bold; cursor: pointer;" title="Auf Karte anpeilen & Standort zeigen">
               🧭 Karte
             </button>
-            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.4; filter: grayscale(1); cursor: not-allowed;'}" title="${canArrest ? 'Verdächtigen verhaften' : 'Erst nach 12 Pflichtstationen verfügbar'}">
+            <button class="btn-primary btn-arrest" data-suspect-id="${s.id}" ${canArrest ? '' : 'disabled'} style="flex: 1; padding: 10px 8px; font-size: 0.85rem; text-align: center; border-radius: 4px; ${canArrest ? 'background: var(--color-blood-red); color: white; border: none; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(180, 0, 0, 0.8);' : 'opacity: 0.4; filter: grayscale(1); cursor: not-allowed;'}" title="${canArrest ? 'Verdächtigen verhaften' : 'Erst ab 12 gelösten Stationen verfügbar'}">
               🚨 Verhaften
             </button>
           </div>
@@ -351,7 +352,7 @@ export function updateDossier() {
           import('../main.js').then(m => {
             if (m.showNoirAlert) {
               m.showNoirAlert(
-                `Haftbefehl noch nicht bereit: Du hast bisher ${pflichtCountNow}/12 Pflichtstationen gelöst. Löse alle 12 Pflichtstationen, um den Zugriff zu autorisieren.${missingText}`,
+                `Haftbefehl noch nicht bereit: Du hast bisher erst ${totalSolvedNow}/12 Stationen gelöst (Minimum zum Lösen des Falls). Löse mindestens 12 Stationen (Pflicht- oder Bonusstationen), um den Zugriff zu autorisieren.${missingText}`,
                 'Ermittlungsakte unvollständig'
               );
             }

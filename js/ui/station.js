@@ -335,7 +335,7 @@ function checkFinalAndProceed() {
     import('../main.js').then(m => {
       if (m.showNoirAlert) {
         m.showNoirAlert(
-          'Alle Pflichtstationen gelöst! Die Ermittlungsakte ist vollständig. Du kannst nun im Dossier letzte Beweise zuordnen, Verdächtige nochmals aufsuchen oder direkt die Verhaftung einleiten!',
+          `Du hast das Minimum zum Lösen des Falls erreicht (${totalSolved} Stationen gelöst)! Die Ermittlungsakte ist bereit für die Verhaftung. Du kannst nun im Dossier letzte Beweise prüfen oder direkt den Haftbefehl vollstrecken!`,
           '🏁 Finale Phase erreicht!'
         );
       }
