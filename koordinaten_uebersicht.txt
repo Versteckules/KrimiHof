@@ -7,7 +7,7 @@ ludwigstrasse | Ludwigstraße (Der Notar) | N 50° 19.168 E 011° 55.004
 karolinenstrasse | Karolinenstraße (Die Telefonzelle) | N 50° 19.306 E 011° 55.037
 schlossplatz | Schlossplatz (Die alte Residenz) | N 50° 19.220 E 011° 54.950
 sonnenplatz | Sonnenplatz (Das Wirtshaus) | N 50° 18.981 E 011° 54.892
-marienkirche | St. Marien (Die Predigt) | N 50° 19.321 E 011° 55.167
+marienkirche | St. Marien (Die Predigt) | N 50° 19.023 E 011° 54.923
 michaeliskirche | St. Michaelis (Das Siegel) | N 50° 19.321 E 011° 55.167
 hospitalkirche | Hospitalkirche (Der Übergabeort) | N 50° 19.455 E 011° 55.147
 saale_schmuggel | Saale-Ufer (Schmugglerpfad) | N 50° 19.462 E 011° 55.272

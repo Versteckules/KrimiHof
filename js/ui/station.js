@@ -148,7 +148,7 @@ export function openStation(stationId) {
       `;
       document.getElementById('btn-station-direct-gadget').addEventListener('click', () => {
         if (station.gadget && station.gadget.id) {
-          startGadget(station.gadget.id, currentStationId);
+          startGadget(station.gadget.id, station.id);
         } else {
           onStationComplete(station.id);
         }
@@ -211,7 +211,7 @@ function handleCharacterClick(station, char) {
     } else if (station.type === 'easteregg' || station.id === 'jean_paul') {
       onStationComplete(station.id);
     } else if (station.gadget && station.gadget.id) {
-      startGadget(station.gadget.id, currentStationId, () => {
+      startGadget(station.gadget.id, station.id, () => {
         onStationComplete(station.id);
       });
     } else {
@@ -237,7 +237,7 @@ function handleChoiceClick(station, choice, btnEl) {
     if (errorMsg) errorMsg.classList.add('hidden');
 
     setTimeout(() => {
-      startGadget(station.gadget.id, currentStationId);
+      startGadget(station.gadget.id, station.id);
     }, 400);
   } else {
     btnEl.classList.add('wrong');
