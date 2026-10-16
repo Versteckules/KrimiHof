@@ -76,8 +76,14 @@ export function runGadget(stationId, onSuccess) {
 
   updateVisuals();
 
-  document.getElementById('btn-mugshot-submit').onclick = () => {
+  let solved = false;
+  const btnSubmit = document.getElementById('btn-mugshot-submit');
+  btnSubmit.onclick = () => {
+    if (solved) return;
     if (state.hat === target.hat && state.eyes === target.eyes && state.mouth === target.mouth) {
+      solved = true;
+      btnSubmit.disabled = true;
+      btnSubmit.style.pointerEvents = 'none';
       overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Übereinstimmung gefunden!</h2></div>`;
       setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1000);
     } else {

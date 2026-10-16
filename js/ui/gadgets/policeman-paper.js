@@ -36,13 +36,17 @@ export function runGadget(stationId, onSuccess, onCancel) {
   overlay.style.display = 'flex';
 
   document.getElementById('btn-paper-cancel').onclick = () => {
+    solved = true;
     cleanup();
     overlay.remove();
     if (onCancel) onCancel();
   };
 
   document.getElementById('btn-paper-abort').onclick = () => {
+    if (solved) return;
     const doSkip = () => {
+      solved = true;
+      cleanup();
       import('../../state.js').then(m => m.addScore(-10));
       import('../../main.js').then(m => {
         if (m.showNoirAlert) m.showNoirAlert('Ruß mit Bürste entfernt (-10 Kommissarpunkte)', 'Punkteabzug');
@@ -128,7 +132,9 @@ export function runGadget(stationId, onSuccess, onCancel) {
   });
   observer.observe(document.body, { childList: true });
 
+  let isDone = false;
   function revealEvidence() {
+    solved = true;
     cleanup();
     overlay.innerHTML = `
       <h2 style="color:var(--color-amber-glow); margin-bottom:20px;">Beweis gesichert!</h2>
@@ -139,15 +145,22 @@ export function runGadget(stationId, onSuccess, onCancel) {
       <button class="btn-primary" id="btn-paper-done">Zurück zur Tatort-Analyse</button>
     `;
 
-    document.getElementById('btn-paper-done').onclick = () => {
-      addInventoryItem('notenblatt_heiden');
-      overlay.remove();
-      if (FX.playSuccessWumms) {
-        FX.playSuccessWumms().then(() => onSuccess());
-      } else {
-        onSuccess();
-      }
-    };
+    const btnDone = document.getElementById('btn-paper-done');
+    if (btnDone) {
+      btnDone.onclick = () => {
+        if (isDone) return;
+        isDone = true;
+        btnDone.disabled = true;
+        btnDone.style.pointerEvents = 'none';
+        addInventoryItem('notenblatt_heiden');
+        overlay.remove();
+        if (FX.playSuccessWumms) {
+          FX.playSuccessWumms().then(() => onSuccess());
+        } else {
+          onSuccess();
+        }
+      };
+    }
   }
 
   function checkSolved() {

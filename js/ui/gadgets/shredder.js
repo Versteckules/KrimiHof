@@ -98,8 +98,15 @@ export function runGadget(stationId, onComplete, onCancel) {
       </div>
     `;
 
+    let isSubmitted = false;
     overlay.querySelectorAll('.suspect-choice').forEach(btn => {
       btn.onclick = () => {
+        if (isSubmitted) return;
+        isSubmitted = true;
+        overlay.querySelectorAll('.suspect-choice').forEach(b => {
+          b.disabled = true;
+          b.style.pointerEvents = 'none';
+        });
         const suspect = btn.getAttribute('data-suspect');
         const val = parseInt(btn.getAttribute('data-val'), 10);
         addSuspectImpact(suspect, val);

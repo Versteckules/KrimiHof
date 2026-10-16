@@ -55,8 +55,15 @@ export function showNoirAlert(message, title = 'HINWEIS') {
   const btnClose = document.getElementById('noir-alert-close');
 
   if (modal && titleEl && msgEl && btnClose) {
+    if (!modal.classList.contains('hidden')) {
+      // Bereits offen: Meldung anhängen statt überschreiben
+      msgEl.textContent = msgEl.textContent + '\n\n' + message;
+      msgEl.style.whiteSpace = 'pre-line';
+      return;
+    }
     titleEl.textContent = title;
     msgEl.textContent = message;
+    msgEl.style.whiteSpace = 'pre-line';
     modal.classList.remove('hidden');
 
     const closeModal = () => {

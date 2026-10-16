@@ -6,7 +6,7 @@
  * - Jede erfolgreiche Antwort wird im Cache abgelegt
  * - Offline (z.B. Funkloch in der Altstadt) wird aus dem Cache bedient
  */
-const CACHE_NAME = 'krimi-hof-v10';
+const CACHE_NAME = 'krimi-hof-v11';
 const ASSETS = [
   './',
   './index.html',
@@ -17,6 +17,8 @@ const ASSETS = [
   './css/components.css',
   './css/effects.css',
   './css/debug.css',
+  './css/dialogue.css',
+  './css/gadget-fx.css',
   './data/stations.json',
   './data/story.json',
   './data/events.json',
@@ -56,6 +58,11 @@ const ASSETS = [
   './js/ui/gadgets/laser.js',
   './js/ui/gadgets/letter.js',
   './js/ui/gadgets/mugshot.js',
+  './js/ui/gadgets/music-cryptogram.js',
+  './js/ui/gadgets/policeman-paper.js',
+  './js/ui/gadgets/reporter-camera.js',
+  './js/ui/gadgets/safe.js',
+  './js/ui/gadgets/shredder.js',
   './js/ui/gadgets/polaroid.js',
   './js/ui/gadgets/scanner.js',
   './js/ui/gadgets/scratch.js',

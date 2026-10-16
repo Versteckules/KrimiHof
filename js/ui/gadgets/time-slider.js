@@ -132,7 +132,11 @@ export function runGadget(stationId, onSuccess) {
   });
   observer.observe(document.body, { childList: true });
 
+  let isDone = false;
   btnDone.onclick = () => {
+    if (isDone) return;
+    isDone = true;
+    btnDone.disabled = true;
     cleanup();
     overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Beweis gesichert!</h2></div>`;
     setTimeout(() => { overlay.remove(); FX.playSuccessWumms().then(() => onSuccess()); }, 1000);

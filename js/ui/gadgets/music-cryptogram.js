@@ -46,7 +46,10 @@ export function runGadget(stationId, onComplete, onCancel) {
     if (onCancel) onCancel();
   }
 
+  let isFinished = false;
   function finishGadget() {
+    if (isFinished) return;
+    isFinished = true;
     if (audioCtx) {
       try { audioCtx.close(); } catch(e) {}
     }
@@ -216,6 +219,11 @@ export function runGadget(stationId, onComplete, onCancel) {
 
     overlay.querySelectorAll('.suspect-choice').forEach(btn => {
       btn.onclick = () => {
+        if (isFinished) return;
+        overlay.querySelectorAll('.suspect-choice').forEach(b => {
+          b.disabled = true;
+          b.style.pointerEvents = 'none';
+        });
         const suspect = btn.getAttribute('data-suspect');
         const val = parseInt(btn.getAttribute('data-val'), 10);
         addSuspectImpact(suspect, val);

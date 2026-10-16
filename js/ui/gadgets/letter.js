@@ -14,7 +14,7 @@ export function runGadget(stationId, onSuccess) {
     <h2 style="font-family:var(--font-serif); margin-bottom:10px; color:var(--color-amber-glow);">Zerrissenes Dokument</h2>
     <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Ziehe die Schnipsel zusammen.</p>
     
-    <div id="puzzle-area" style="position:relative; width:100%; height:350px; background: url('assets/texture_paper.webp') center/cover; filter: contrast(1.1) brightness(0.5); border: 2px solid var(--color-brass-dark); border-radius: 5px; box-shadow: inset 0 0 30px rgba(0,0,0,0.8); overflow:hidden; touch-action: none;">
+    <div id="puzzle-area" style="position:relative; width:100%; height:350px; background: radial-gradient(circle at 30% 30%, #b8a77c, #7a6a45); filter: contrast(1.1) brightness(0.5); border: 2px solid var(--color-brass-dark); border-radius: 5px; box-shadow: inset 0 0 30px rgba(0,0,0,0.8); overflow:hidden; touch-action: none;">
       
       <!-- Target Area outlines -->
       <div style="position:absolute; top: 100px; left: 60px; width: 220px; height: 160px; border: 2px dashed rgba(255,255,255,0.1); pointer-events: none;"></div>

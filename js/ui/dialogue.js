@@ -106,14 +106,20 @@ export function openDialogue(treeData, completeCallback, treeKey) {
   }
 
   // Zeige die View
-  document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
-  document.getElementById('view-dialogue').classList.remove('hidden');
+  showView('view-dialogue');
+  window.scrollTo(0, 0);
+  const viewDialogue = document.getElementById('view-dialogue');
+  if (viewDialogue) viewDialogue.scrollTop = 0;
 
   renderNode();
 }
 
 function renderNode() {
   if (!currentTree || !currentTree[currentNodeIndex]) return;
+  window.scrollTo(0, 0);
+  const viewDialogue = document.getElementById('view-dialogue');
+  if (viewDialogue) viewDialogue.scrollTop = 0;
+
   const node = currentTree[currentNodeIndex];
   const state = getState();
   const playerName = state.playerName || 'Ermittler';
@@ -186,7 +192,17 @@ function renderChoices(choices, isEnd, unlockSuspects) {
   playerAvatarWrap.appendChild(choicesContainer);
   choicesEl.appendChild(playerAvatarWrap);
   
+  let isFinishing = false;
   const finishDialogue = () => {
+    if (isFinishing) return;
+    isFinishing = true;
+
+    // Alle Buttons sofort sperren, um Doppelklicks bei Touch-Events zu verhindern
+    choicesContainer.querySelectorAll('button').forEach(b => {
+      b.disabled = true;
+      b.style.pointerEvents = 'none';
+    });
+
     stopVoice();
     if (currentSuspectId) {
       FX.stopCharacterTheme();
@@ -217,8 +233,11 @@ function renderChoices(choices, isEnd, unlockSuspects) {
     } else if (node && !node.isFailure) {
       addScore(10); // Standard +10 Punkte für ein abgeschlossenes Verhör
     }
-    if (onDialogComplete) {
-      onDialogComplete();
+
+    const cb = onDialogComplete;
+    onDialogComplete = null;
+    if (cb) {
+      cb();
     } else {
       showView('view-dashboard');
     }
@@ -259,6 +278,13 @@ function renderChoices(choices, isEnd, unlockSuspects) {
     btn.className = 'btn-secondary dialogue-btn';
     btn.textContent = choice.text.replace(/{PLAYER_NAME}/g, playerName);
     btn.onclick = () => {
+      if (isFinishing) return;
+      // Disable choice buttons during transition to next node/view
+      choicesContainer.querySelectorAll('button').forEach(b => {
+        b.disabled = true;
+        b.style.pointerEvents = 'none';
+      });
+
       stopVoice();
       // Animation & Haptik
       btn.classList.add('shake-animation');

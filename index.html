@@ -523,38 +523,55 @@
 
       </section>
     </main>
-  </div>
 
-  <!-- Bilderstory / Prologue View -->
-  <main id="view-intro" class="view hidden">
-    <div class="intro-overlay">
-      <div class="intro-container">
-        <div class="intro-badge" id="intro-slide-badge">KAPITEL 1 • HISTORIE</div>
+    <!-- Bilderstory / Prologue View -->
+    <main id="view-intro" class="view hidden">
+      <div class="intro-overlay">
+        <div class="intro-container">
+          <div class="intro-badge" id="intro-slide-badge">KAPITEL 1 • HISTORIE</div>
 
-        <div class="intro-media-wrapper">
-          <img id="intro-slide-img" src="assets/intro_fire_1823.jpg" alt="Prolog Szene" class="intro-slide-image">
-          <div class="intro-media-vignette"></div>
-        </div>
-
-        <div class="intro-body">
-          <div class="intro-dots" id="intro-indicators"></div>
-          <h2 id="intro-slide-title" class="intro-title">4. September 1823 — Die Flammen von Hof</h2>
-          <div id="intro-slide-text" class="intro-text">
-            Ein verheerendes Feuer vernichtet über zweihundert Häuser der Hofer Altstadt...
+          <div class="intro-media-wrapper">
+            <img id="intro-slide-img" src="assets/intro_fire_1823.jpg" alt="Prolog Szene" class="intro-slide-image">
+            <div class="intro-media-vignette"></div>
           </div>
 
-          <div class="intro-controls">
-            <button id="btn-intro-prev" class="btn-secondary" style="font-size: 0.95rem; padding: 10px 18px;">‹
-              Zurück</button>
-            <button id="btn-intro-skip" class="btn-text"
-              style="color: var(--color-text-muted); background: none; border: none; cursor: pointer; text-decoration: underline; font-family: var(--font-mono); font-size: 0.85rem;">Überspringen</button>
-            <button id="btn-intro-next" class="btn-primary" style="font-size: 0.95rem; padding: 10px 22px;">Weiter
-              ›</button>
+          <div class="intro-body">
+            <div class="intro-dots" id="intro-indicators"></div>
+            <h2 id="intro-slide-title" class="intro-title">4. September 1823 — Die Flammen von Hof</h2>
+            <div id="intro-slide-text" class="intro-text">
+              Ein verheerendes Feuer vernichtet über zweihundert Häuser der Hofer Altstadt...
+            </div>
+
+            <div class="intro-controls">
+              <button id="btn-intro-prev" class="btn-secondary" style="font-size: 0.95rem; padding: 10px 18px;">‹
+                Zurück</button>
+              <button id="btn-intro-skip" class="btn-text"
+                style="color: var(--color-text-muted); background: none; border: none; cursor: pointer; text-decoration: underline; font-family: var(--font-mono); font-size: 0.85rem;">Überspringen</button>
+              <button id="btn-intro-next" class="btn-primary" style="font-size: 0.95rem; padding: 10px 22px;">Weiter
+                ›</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
+
+    <!-- Visual Novel Dialogue View -->
+    <main id="view-dialogue" class="view hidden">
+      <div class="dialogue-scene">
+        <div class="dialogue-character">
+          <img id="dialogue-avatar" src="" alt="Avatar" style="display:none;">
+          <div class="dialogue-box">
+            <div class="dialogue-box-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; margin-bottom: 8px;">
+              <div id="dialogue-name" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;"></div>
+              <button id="btn-toggle-voice" style="background: none; border: none; font-size: 1.15rem; cursor: pointer; color: var(--color-amber-muted); padding: 0 4px; line-height: 1;" title="Sprachausgabe (Stummschalten/Aktivieren)">🔊</button>
+            </div>
+            <div id="dialogue-text"></div>
+          </div>
+        </div>
+        <div id="dialogue-choices"></div>
+      </div>
+    </main>
+  </div>
 
   <!-- Modal Akte Schreddern -->
   <div id="modal-reset" class="modal-backdrop hidden">
@@ -685,22 +702,6 @@
     </div>
   </div>
 
-  <!-- Visual Novel Dialogue View -->
-  <main id="view-dialogue" class="view hidden">
-    <div class="dialogue-scene">
-      <div class="dialogue-character">
-        <img id="dialogue-avatar" src="" alt="Avatar" style="display:none;">
-        <div class="dialogue-box">
-          <div class="dialogue-box-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; margin-bottom: 8px;">
-            <div id="dialogue-name" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;"></div>
-            <button id="btn-toggle-voice" style="background: none; border: none; font-size: 1.15rem; cursor: pointer; color: var(--color-amber-muted); padding: 0 4px; line-height: 1;" title="Sprachausgabe (Stummschalten/Aktivieren)">🔊</button>
-          </div>
-          <div id="dialogue-text"></div>
-        </div>
-      </div>
-      <div id="dialogue-choices"></div>
-    </div>
-  </main>
 
   <!-- Custom Alert Modal (Noir Theme) -->
   <div id="noir-alert-modal" class="hidden"

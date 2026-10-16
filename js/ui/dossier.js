@@ -682,6 +682,12 @@ export function startSuspectInterrogation(suspectId) {
   const state = getState();
   const currentSolved = state.solvedStations ? state.solvedStations.length : 0;
 
+  if (!(story && story.dialogueTrees && story.dialogueTrees[treeKey])) {
+    console.warn("Dialogbaum für Verdächtigen nicht gefunden:", treeKey);
+    import('../main.js').then(m => m.showNoirAlert && m.showNoirAlert('Dieses Verhör ist momentan nicht verfügbar.', 'Hinweis'));
+    return;
+  }
+
   recordInterrogation(suspectId, currentSolved);
 
   // Falls der Dialog zuvor gesperrt wurde, für diesen erneuten Anlauf entsperren

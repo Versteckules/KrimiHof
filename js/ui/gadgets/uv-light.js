@@ -21,7 +21,7 @@ export function runGadget(stationId, onSuccess) {
     <p style="color:rgba(255,255,255,0.5); position:absolute; top:60px; left: 0; width: 100%; text-align: center; z-index:2; pointer-events:none;">Wische, um die Wand abzusuchen.</p>
     
     <!-- Background Wall -->
-    <div style="position:absolute; width:100%; height:100%; background: url('assets/texture_paper.webp') center/cover; filter: grayscale(100%) brightness(0.2); z-index:0;"></div>
+    <div style="position:absolute; width:100%; height:100%; background: radial-gradient(circle at 30% 30%, #b8a77c, #7a6a45); filter: grayscale(100%) brightness(0.2); z-index:0;"></div>
     
     <!-- Glowing UV Layer (Masked) -->
     <div id="uv-glow-layer" style="position:absolute; width:100%; height:100%; display:flex; align-items:center; justify-content:center; z-index:1; 

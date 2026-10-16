@@ -100,16 +100,25 @@ export function initIntro() {
 }
 
 let currentSlides = [];
+let isFinishingIntro = false;
 
 export function openIntro(onComplete, customSlides) {
+  isFinishingIntro = false;
   currentSlideIndex = 0;
   onIntroCompleteCallback = onComplete || null;
   currentSlides = customSlides || slides;
   renderSlide();
   showView('view-intro');
+  window.scrollTo(0, 0);
+  const viewIntro = document.getElementById('view-intro');
+  if (viewIntro) viewIntro.scrollTop = 0;
 }
 
 function renderSlide() {
+  window.scrollTo(0, 0);
+  const viewIntro = document.getElementById('view-intro');
+  if (viewIntro) viewIntro.scrollTop = 0;
+
   const slide = currentSlides[currentSlideIndex];
 
   const state = getState();
@@ -144,7 +153,12 @@ function renderSlide() {
       if (slide.buttonText) {
         btnNext.innerHTML = slide.buttonText;
       } else if (currentSlides !== slides) {
-        btnNext.innerHTML = '🏁 Zum Urteil &amp; Final-Cache ›';
+        const solvedCount = (state.solvedStations || []).length;
+        if (solvedCount >= 12) {
+          btnNext.innerHTML = '🏁 Zum Urteil &amp; Final-Cache ›';
+        } else {
+          btnNext.innerHTML = '🔍 Zu den Verdächtigen &amp; Stationen ›';
+        }
       } else {
         btnNext.innerHTML = '🔍 Ermittlung am Tatort aufnehmen';
       }
@@ -157,7 +171,8 @@ function renderSlide() {
 
   const btnSkip = document.getElementById('btn-intro-skip');
   if (btnSkip) {
-    btnSkip.textContent = (currentSlides !== slides) ? 'Epilog überspringen' : 'Überspringen';
+    const solvedCount = (state.solvedStations || []).length;
+    btnSkip.textContent = (currentSlides !== slides && solvedCount >= 12) ? 'Epilog überspringen' : 'Überspringen';
   }
 
   if (dotsContainer) {
@@ -183,9 +198,13 @@ function renderSlide() {
 }
 
 function finishIntro() {
+  if (isFinishingIntro) return;
+  isFinishingIntro = true;
   stopSlideAudio();
-  if (onIntroCompleteCallback) {
-    onIntroCompleteCallback();
+  const cb = onIntroCompleteCallback;
+  onIntroCompleteCallback = null;
+  if (cb) {
+    cb();
   } else {
     window.dispatchEvent(new Event('requestRouting'));
   }

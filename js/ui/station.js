@@ -20,6 +20,7 @@ export function openStation(stationId) {
     return;
   }
 
+  isCharacterInteracting = false;
   currentStationId = stationId;
   
   const station = getStationById(stationId);
@@ -158,32 +159,54 @@ export function openStation(stationId) {
   showView('view-station');
 }
 
+let isCharacterInteracting = false;
+
 function handleCharacterClick(station, char) {
+  if (isCharacterInteracting) return;
+  isCharacterInteracting = true;
+
   const story = getStory();
   const treeKey = char.dialogueKey || (station.storyEventId + "_" + char.id);
 
+  // Rathaus: Es wird nur EINE der beiden Personen befragt (Stahl ODER Stift).
+  // Danach ist die Station abgeschlossen.
+  const completeRathausPart = () => {
+    onStationComplete(station.id);
+  };
+
   const postDialogueAction = () => {
+    isCharacterInteracting = false;
     if (station.id === 'rathaus' && char.id === 'reporter') {
+      if (window.isGadgetRunning) return;
+      window.isGadgetRunning = true;
       import('./gadgets/reporter-camera.js').then(mod => {
         mod.runGadget(station.id, () => {
-          onStationComplete(station.id);
+          window.isGadgetRunning = false;
+          completeRathausPart();
         }, () => {
+          window.isGadgetRunning = false;
           showView('view-station');
         });
       }).catch(err => {
         console.error(err);
-        onStationComplete(station.id);
+        window.isGadgetRunning = false;
+        completeRathausPart();
       });
     } else if (station.id === 'rathaus' && char.id === 'polizist') {
+      if (window.isGadgetRunning) return;
+      window.isGadgetRunning = true;
       import('./gadgets/policeman-paper.js').then(mod => {
         mod.runGadget(station.id, () => {
-          onStationComplete(station.id);
+          window.isGadgetRunning = false;
+          completeRathausPart();
         }, () => {
+          window.isGadgetRunning = false;
           showView('view-station');
         });
       }).catch(err => {
         console.error(err);
-        onStationComplete(station.id);
+        window.isGadgetRunning = false;
+        completeRathausPart();
       });
     } else if (station.type === 'easteregg' || station.id === 'jean_paul') {
       onStationComplete(station.id);

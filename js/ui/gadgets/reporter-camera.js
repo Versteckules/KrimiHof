@@ -28,13 +28,19 @@ export function runGadget(stationId, onComplete, onCancel) {
 
   document.body.appendChild(overlay);
 
+  let solved = false;
+  let isDone = false;
+
   document.getElementById('btn-camera-cancel').onclick = () => {
+    solved = true;
     overlay.remove();
     if (onCancel) onCancel();
   };
 
   document.getElementById('btn-camera-abort').onclick = () => {
+    if (solved) return;
     const doSkip = () => {
+      solved = true;
       import('../../state.js').then(m => m.addScore(-10));
       import('../../main.js').then(m => {
         if (m.showNoirAlert) m.showNoirAlert('Kamera manuell justiert (-10 Kommissarpunkte)', 'Punkteabzug');
@@ -56,6 +62,7 @@ export function runGadget(stationId, onComplete, onCancel) {
   let isFocused = false;
 
   slider.addEventListener('input', (e) => {
+    if (solved) return;
     const val = parseInt(e.target.value, 10);
     const diff = Math.abs(targetFocus - val);
     
@@ -77,6 +84,7 @@ export function runGadget(stationId, onComplete, onCancel) {
   });
 
     function showSuccessView() {
+      solved = true;
       overlay.innerHTML = `
         <h2 style="color:var(--color-amber-glow); margin-bottom:20px;">Beweis gesichert!</h2>
         <div style="background:#222; border:1px solid #d4af37; padding:20px; text-align:left; max-width:300px; margin-bottom:20px;">
@@ -86,17 +94,27 @@ export function runGadget(stationId, onComplete, onCancel) {
         <button class="btn-primary" id="btn-camera-done">Zurück zur Tatort-Analyse</button>
       `;
 
-      document.getElementById('btn-camera-done').onclick = () => {
-        import('../../state.js').then(mod => {
-          mod.addInventoryItem('foto_gipser_auto');
-          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-          onComplete();
-        });
-      };
+      const btnDone = document.getElementById('btn-camera-done');
+      if (btnDone) {
+        btnDone.onclick = () => {
+          if (isDone) return;
+          isDone = true;
+          btnDone.disabled = true;
+          btnDone.style.pointerEvents = 'none';
+          import('../../state.js').then(mod => {
+            mod.addInventoryItem('foto_gipser_auto');
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+            onComplete();
+          });
+        };
+      }
     }
 
     btnSnap.onclick = () => {
-      if (!isFocused) return;
+      if (!isFocused || solved) return;
+      solved = true;
+      btnSnap.disabled = true;
+      btnSnap.style.pointerEvents = 'none';
       
       // Flash effect
       const flash = document.createElement('div');

@@ -219,8 +219,10 @@ export function runGadget(stationId, onSuccess) {
   window.addEventListener('devicemotion', handleMotion);
 
   skipBtn.onclick = () => {
+    if (solved) return;
     if (window.showNoirConfirm) {
       window.showNoirConfirm('Wirt bestechen?', 'Möchtest du den Stammtisch mit einer Lokalrunde bestechen und das Rätsel überspringen? (-10 Punkte)', () => {
+        if (solved) return;
         solved = true;
         window.removeEventListener('devicemotion', handleMotion);
         import('../../state.js').then(m => m.addScore(-10));
