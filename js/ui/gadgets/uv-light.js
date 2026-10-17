@@ -52,6 +52,9 @@ export function runGadget(stationId, onSuccess) {
     if (solved || humOsc) return;
     if (!window.AudioContext && !window.webkitAudioContext) return;
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(() => {});
+    }
     humOsc = audioCtx.createOscillator();
     humGain = audioCtx.createGain();
     
@@ -146,9 +149,11 @@ export function runGadget(stationId, onSuccess) {
   touchArea.addEventListener('touchmove', moveSpotlight, {passive: false});
   touchArea.addEventListener('mouseleave', hideSpotlight);
   touchArea.addEventListener('touchend', hideSpotlight);
+  touchArea.addEventListener('touchcancel', hideSpotlight);
 
   const observer = new MutationObserver(() => {
     if (!document.body.contains(overlay)) {
+      window.isGadgetRunning = false;
       stopHum();
       if (audioCtx) {
         try { audioCtx.close(); } catch(e) {}

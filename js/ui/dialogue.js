@@ -323,4 +323,12 @@ function renderChoices(choices, isEnd, unlockSuspects) {
     };
     choicesContainer.appendChild(btn);
   });
+
+  if (choicesContainer.children.length === 0) {
+    const fallbackBtn = document.createElement('button');
+    fallbackBtn.className = 'btn-primary dialogue-btn';
+    fallbackBtn.textContent = 'Gespräch beenden';
+    fallbackBtn.onclick = () => finishDialogue();
+    choicesContainer.appendChild(fallbackBtn);
+  }
 }

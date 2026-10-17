@@ -112,10 +112,12 @@ export function runGadget(stationId, onSuccess) {
   }
 
   function cleanup() {
+    window.isGadgetRunning = false;
     window.removeEventListener('mousemove', moveDrag);
     window.removeEventListener('mouseup', endDrag);
     window.removeEventListener('touchmove', moveDrag);
     window.removeEventListener('touchend', endDrag);
+    window.removeEventListener('touchcancel', endDrag);
   }
 
   const observer = new MutationObserver(() => {
@@ -133,4 +135,5 @@ export function runGadget(stationId, onSuccess) {
   player.addEventListener('touchstart', startDrag, {passive: false});
   window.addEventListener('touchmove', moveDrag, {passive: false});
   window.addEventListener('touchend', endDrag);
+  window.addEventListener('touchcancel', endDrag);
 }

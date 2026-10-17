@@ -44,6 +44,9 @@ export function runGadget(stationId, onSuccess) {
   function initAudio() {
     if (audioCtx || !window.AudioContext) return;
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(() => {});
+    }
     const bufferSize = audioCtx.sampleRate * 2; 
     const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
     const data = buffer.getChannelData(0);
@@ -140,6 +143,7 @@ export function runGadget(stationId, onSuccess) {
   }
 
   function cleanup() {
+    window.isGadgetRunning = false;
     window.removeEventListener('deviceorientation', handleOrientation);
     stopAudio();
     if (audioCtx) {

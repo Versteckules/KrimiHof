@@ -56,6 +56,9 @@ export function runGadget(stationId, onSuccess) {
   function playClickSound(isCorrect) {
     try {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.connect(gain);
@@ -83,6 +86,7 @@ export function runGadget(stationId, onSuccess) {
 
   function moveDrag(e) {
     if (activeDialIndex === -1 || !activeDialEl || solved) return;
+    if (e.cancelable) e.preventDefault();
     let y = e.touches ? e.touches[0].clientY : e.clientY;
     let diff = startY - y;
     
@@ -122,19 +126,22 @@ export function runGadget(stationId, onSuccess) {
     }
     
     dial.addEventListener('mousedown', startDrag);
-    dial.addEventListener('touchstart', startDrag, {passive: true});
+    dial.addEventListener('touchstart', startDrag, {passive: false});
   });
 
   window.addEventListener('mousemove', moveDrag);
   window.addEventListener('mouseup', endDrag);
-  window.addEventListener('touchmove', moveDrag, {passive: true});
+  window.addEventListener('touchmove', moveDrag, {passive: false});
   window.addEventListener('touchend', endDrag);
+  window.addEventListener('touchcancel', endDrag);
 
   function cleanup() {
+    window.isGadgetRunning = false;
     window.removeEventListener('mousemove', moveDrag);
     window.removeEventListener('mouseup', endDrag);
     window.removeEventListener('touchmove', moveDrag);
     window.removeEventListener('touchend', endDrag);
+    window.removeEventListener('touchcancel', endDrag);
     if (audioCtx) {
       try { audioCtx.close(); } catch(e) {}
     }

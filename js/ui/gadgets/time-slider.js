@@ -1,6 +1,7 @@
 import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
+  window.isGadgetRunning = true;
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -116,12 +117,15 @@ export function runGadget(stationId, onSuccess) {
   container.addEventListener('touchstart', startDrag, {passive: false});
   window.addEventListener('touchmove', moveDrag, {passive: false});
   window.addEventListener('touchend', endDrag);
+  window.addEventListener('touchcancel', endDrag);
 
   function cleanup() {
+    window.isGadgetRunning = false;
     window.removeEventListener('mousemove', moveDrag);
     window.removeEventListener('mouseup', endDrag);
     window.removeEventListener('touchmove', moveDrag);
     window.removeEventListener('touchend', endDrag);
+    window.removeEventListener('touchcancel', endDrag);
   }
 
   const observer = new MutationObserver(() => {
