@@ -126,7 +126,18 @@ function checkGeofence(dist, geoConfig, targetId) {
     isGeofenceTriggered = false;
   }
 
-  const hitRadius = geoConfig.standardRadiusMeters;
+  // Nicht unterbrechen, wenn bereits ein Minispiel, Dialog oder Station geöffnet ist
+  const isOverlayOpen = Boolean(window.isGadgetRunning || document.getElementById('gadget-fullscreen-overlay'));
+  const isDialogueOpen = Boolean(document.querySelector('.view:not(.hidden)#view-dialogue'));
+  const isStationOpen = Boolean(document.querySelector('.view:not(.hidden)#view-station'));
+  const isFinalOpen = Boolean(document.querySelector('.view:not(.hidden)#view-final'));
+  const isAlertOpen = Boolean(document.getElementById('noir-alert-modal') && !document.getElementById('noir-alert-modal').classList.contains('hidden'));
+
+  if (isOverlayOpen || isDialogueOpen || isStationOpen || isFinalOpen || isAlertOpen) {
+    return;
+  }
+
+  const hitRadius = geoConfig.standardRadiusMeters || 20;
   if (dist <= hitRadius && !isGeofenceTriggered) {
     isGeofenceTriggered = true;
     
@@ -142,7 +153,9 @@ function checkGeofence(dist, geoConfig, targetId) {
         module.openStation(targetId);
       });
     }
-  } else if (dist > hitRadius) {
+  } else if (dist > (hitRadius + 15)) {
+    // Hysterese: Erst bei Verlassen von hitRadius + 15m (z.B. > 35m) zurücksetzen,
+    // um GPS-Jitter-Schleifen auf Mobilgeräten zu verhindern!
     isGeofenceTriggered = false;
   }
 }

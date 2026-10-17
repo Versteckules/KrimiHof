@@ -95,8 +95,8 @@ export function runGadget(stationId, onComplete, onCancel) {
     const rect = dialContainer.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : cx);
-    const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : cy);
+    const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : cx);
+    const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : cy);
 
     const rad = Math.atan2(clientY - cy, clientX - cx);
     let deg = (rad * 180) / Math.PI + 90; // Align 0 with top
@@ -109,16 +109,55 @@ export function runGadget(stationId, onComplete, onCancel) {
   }
 
   dialContainer.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
     isDragging = true;
+    try {
+      dialContainer.setPointerCapture(e.pointerId);
+    } catch (_) {}
     dialContainer.style.cursor = 'grabbing';
     handlePointerMove(e);
   });
 
+  dialContainer.addEventListener('pointermove', handlePointerMove);
   window.addEventListener('pointermove', handlePointerMove);
-  window.addEventListener('pointerup', () => {
+
+  const stopDragging = (e) => {
     isDragging = false;
+    if (e && e.pointerId && dialContainer) {
+      try {
+        dialContainer.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+    }
     if (dialContainer) dialContainer.style.cursor = 'grab';
-  });
+  };
+
+  dialContainer.addEventListener('pointerup', stopDragging);
+  dialContainer.addEventListener('pointercancel', stopDragging);
+  window.addEventListener('pointerup', stopDragging);
+  window.addEventListener('pointercancel', stopDragging);
+
+  // Robuster nativer Touch-Fallback für Android Chrome
+  const handleTouch = (e) => {
+    if (e.touches && e.touches.length > 0) {
+      e.preventDefault();
+      const rect = dialContainer.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const t = e.touches[0];
+      const rad = Math.atan2(t.clientY - cy, t.clientX - cx);
+      let deg = (rad * 180) / Math.PI + 90;
+      if (deg < 0) deg += 360;
+      const val = Math.round((deg / 360) * 100) % 100;
+      if (val !== lastVal) {
+        updateDial(val, true);
+        lastVal = val;
+      }
+    }
+  };
+  dialContainer.addEventListener('touchstart', handleTouch, { passive: false });
+  dialContainer.addEventListener('touchmove', handleTouch, { passive: false });
+  dialContainer.addEventListener('touchend', () => { isDragging = false; });
+  dialContainer.addEventListener('touchcancel', () => { isDragging = false; });
 
   // --- 2. STEPPER BUTTONS WITH AUTOREPEAT ---
   function setupStepper(btnId, delta) {
@@ -146,6 +185,7 @@ export function runGadget(stationId, onComplete, onCancel) {
     btn.addEventListener('pointerup', stopRepeat);
     btn.addEventListener('pointerleave', stopRepeat);
     btn.addEventListener('pointercancel', stopRepeat);
+    btn.addEventListener('touchend', stopRepeat);
   }
 
   setupStepper('btn-dial-left', -1);
@@ -163,6 +203,7 @@ export function runGadget(stationId, onComplete, onCancel) {
 
   // Close button
   document.getElementById('btn-safe-cancel').onclick = () => {
+    window.isGadgetRunning = false;
     cleanup();
     if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
     if (onCancel) onCancel();
@@ -186,11 +227,14 @@ export function runGadget(stationId, onComplete, onCancel) {
 
   function cleanup() {
     window.removeEventListener('pointermove', handlePointerMove);
+    window.removeEventListener('pointerup', stopDragging);
+    window.removeEventListener('pointercancel', stopDragging);
     window.removeEventListener('keydown', handleKeyDown);
   }
 
   const observer = new MutationObserver(() => {
     if (!document.body.contains(overlay)) {
+      window.isGadgetRunning = false;
       cleanup();
       observer.disconnect();
     }
@@ -253,6 +297,7 @@ export function runGadget(stationId, onComplete, onCancel) {
         const val = parseInt(btn.getAttribute('data-val'), 10);
         addSuspectImpact(suspect, val);
         showNoirAlert("Beweisstück gesichert und Verdacht aktualisiert!", "Erfolg");
+        window.isGadgetRunning = false;
         if (overlay.parentNode) document.body.removeChild(overlay);
         onComplete();
       };

@@ -7,22 +7,35 @@ export function runGadget(stationId, onComplete, onCancel) {
 
   // Web Audio Context for notes
   const AudioContext = window.AudioContext || window.webkitAudioContext;
-  let audioCtx;
+  let audioCtx = null;
 
   function playNoteFreq(frequency) {
-    if (!audioCtx) audioCtx = new AudioContext();
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
+    try {
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
 
-    oscillator.type = 'triangle';
-    oscillator.frequency.value = frequency;
+      oscillator.type = 'triangle';
+      oscillator.frequency.value = frequency;
 
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
 
-    oscillator.start();
-    gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 1);
-    oscillator.stop(audioCtx.currentTime + 1);
+      const now = audioCtx.currentTime;
+      // W3C Web Audio standard: Setze erst expliziten Startwert, bevor exponentiell gerampt wird
+      gainNode.gain.setValueAtTime(0.25, now);
+      gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.8);
+
+      oscillator.start(now);
+      oscillator.stop(now + 0.8);
+    } catch (err) {
+      console.warn('[MusicCryptogram] Audio playback error (tolerated):', err);
+    }
   }
 
   const noteFrequencies = {
@@ -37,8 +50,10 @@ export function runGadget(stationId, onComplete, onCancel) {
   };
 
   function cancelGadget() {
+    window.isGadgetRunning = false;
     if (audioCtx) {
       try { audioCtx.close(); } catch(e) {}
+      audioCtx = null;
     }
     if (overlay.parentNode) {
       overlay.parentNode.removeChild(overlay);
@@ -50,8 +65,10 @@ export function runGadget(stationId, onComplete, onCancel) {
   function finishGadget() {
     if (isFinished) return;
     isFinished = true;
+    window.isGadgetRunning = false;
     if (audioCtx) {
       try { audioCtx.close(); } catch(e) {}
+      audioCtx = null;
     }
     if (overlay.parentNode) {
       overlay.parentNode.removeChild(overlay);

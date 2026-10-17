@@ -238,19 +238,44 @@ export function updateDossier() {
           <div style="font-size: 0.76rem; color: #cbd5e1; background: rgba(0,0,0,0.4); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); margin-top: 4px; line-height: 1.35;">
             ${(() => {
               const intStatus = getInterrogationStatus(s.id);
+              const suspectGames = { herold: 'safe', gipser: 'shredder', heiden: 'music-cryptogram' };
+              const gKey = suspectGames[s.id];
+              const solvedBoss = state.solvedBossGames || [];
+              const isBossSolved = gKey && solvedBoss.includes(gKey);
+              let statusText = '';
               if (intStatus.count >= 2) {
-                return '🚫 <strong>Verhör-Status:</strong> Max. 2 Verhöre geführt (Aussage verweigert)';
+                statusText = '🚫 <strong>Verhör-Status:</strong> Max. 2 Verhöre geführt (Aussage verweigert)';
               } else if (intStatus.count === 1 && !intStatus.canInterrogate) {
-                return `⏳ <strong>Verhör-Status:</strong> Noch ${intStatus.remainingStations} Station(en) für 2. Verhör nötig`;
+                statusText = `⏳ <strong>Verhör-Status:</strong> Noch ${intStatus.remainingStations} Station(en) für 2. Verhör nötig`;
               } else if (intStatus.count === 1) {
-                return '🗣️ <strong>Verhör-Status:</strong> 2. Verhör bereit – <em>nur persönlich vor Ort am Standort</em>';
+                statusText = '🗣️ <strong>Verhör-Status:</strong> 2. Verhör bereit – <em>nur persönlich vor Ort am Standort</em>';
               } else {
-                return '🗣️ <strong>Verhör-Status:</strong> 1. Verhör offen – <em>nur persönlich vor Ort am Standort</em>';
+                statusText = '🗣️ <strong>Verhör-Status:</strong> 1. Verhör offen – <em>nur persönlich vor Ort am Standort</em>';
               }
+              if (isBossSolved) {
+                statusText += ' • <span style="color:#10b981; font-weight:bold;">✓ Spezial-Rätsel gelöst</span>';
+              }
+              return statusText;
             })()}
           </div>
 
           <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
+            ${(() => {
+              const suspectGames = { herold: 'safe', gipser: 'shredder', heiden: 'music-cryptogram' };
+              const gKey = suspectGames[s.id];
+              const solvedBoss = state.solvedBossGames || [];
+              const intStatus = getInterrogationStatus(s.id);
+              const currentSolved = state.solvedStations ? state.solvedStations.length : 0;
+              const isBossPending = gKey && !solvedBoss.includes(gKey);
+              if (isBossPending && (intStatus.count >= 1 || state.isTestingMode || currentSolved >= 8)) {
+                return `
+                  <button class="btn-secondary btn-launch-boss-game" data-suspect-id="${s.id}" style="flex: 1.2; padding: 10px 8px; font-size: 0.8rem; text-align: center; border-radius: 4px; background: rgba(212, 175, 55, 0.2); border: 1px solid var(--color-amber-glow); color: var(--color-amber-glow); font-weight: bold; cursor: pointer;" title="Das Spezial-Rätsel dieses Verdächtigen lösen">
+                    🧩 Rätsel lösen
+                  </button>
+                `;
+              }
+              return '';
+            })()}
             ${state.isTestingMode ? (() => {
               const intStatus = getInterrogationStatus(s.id);
               if (!intStatus.canInterrogate) {
@@ -280,6 +305,14 @@ export function updateDossier() {
       `;
     });
     suspContainer.innerHTML = html;
+
+    // Klick-Handler für direktes Lösen des Spezial-Rätsels
+    suspContainer.querySelectorAll('.btn-launch-boss-game').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const suspectId = btn.getAttribute('data-suspect-id');
+        launchSuspectBossGame(suspectId);
+      });
+    });
 
     // Klick-Handler für Test-Verhör aus dem Dossier (NUR im Offline-Testmodus verfügbar)
     suspContainer.querySelectorAll('.btn-interrogate-direct').forEach(btn => {
@@ -711,18 +744,65 @@ export function updateDossier() {
 }
 
 /**
+ * Startet direkt das Spezial-Minispiel eines Verdächtigen (Tresor, Schredder, Orgel)
+ * @param {string} suspectId ('herold' | 'gipser' | 'heiden')
+ */
+export function launchSuspectBossGame(suspectId) {
+  const suspectGames = {
+    'herold': 'safe',
+    'gipser': 'shredder',
+    'heiden': 'music-cryptogram'
+  };
+  const gameKey = suspectGames[suspectId];
+  if (!gameKey) return;
+
+  window.isGadgetRunning = true;
+  import(`./gadgets/${gameKey}.js`).then(gameMod => {
+    gameMod.runGadget(suspectId, () => {
+      window.isGadgetRunning = false;
+      recordBossGameSolved(gameKey);
+      import('../main.js').then(m => m.showView('view-dossier'));
+      updateDossier();
+    }, () => {
+      window.isGadgetRunning = false;
+      import('../main.js').then(m => m.showView('view-dossier'));
+      updateDossier();
+    });
+  }).catch(err => {
+    window.isGadgetRunning = false;
+    console.error("Fehler beim Laden des Suspect-Minispiels:", err);
+    import('../main.js').then(m => m.showView('view-dossier'));
+    updateDossier();
+  });
+}
+
+/**
  * Startet ein Verhör mit einem Hauptverdächtigen
  * @param {string} suspectId ('herold' | 'gipser' | 'heiden')
  */
 export function startSuspectInterrogation(suspectId) {
+  const state = getState();
+  const currentSolved = state.solvedStations ? state.solvedStations.length : 0;
+  const suspectGames = {
+    'herold': 'safe',
+    'gipser': 'shredder',
+    'heiden': 'music-cryptogram'
+  };
+  const gameKey = suspectGames[suspectId];
+  const solvedBossGames = state.solvedBossGames || [];
+  const bossGamePending = gameKey && !solvedBossGames.includes(gameKey);
+  const isEndgame = currentSolved >= 8;
+
   const intStatus = getInterrogationStatus(suspectId);
-  if (!intStatus.canInterrogate) {
+  // Wenn das Boss-Minispiel noch nicht gelöst wurde oder im Endgame (>= 8 Stationen):
+  // Verhör zulassen, damit der Spieler das Rätsel des Verdächtigen keinesfalls verpasst!
+  if (!intStatus.canInterrogate && !bossGamePending && !isEndgame) {
     import('../main.js').then(m => {
       if (m.showNoirAlert) {
         m.showNoirAlert(
           intStatus.count >= 2
             ? `🚫 ${getSuspectName(suspectId)} verweigert weitere Verhöre (Max. 2 Verhöre erreicht).`
-            : `⏳ Löse noch ${intStatus.remainingStations} Station(en), um das 2. Verhör freizuschalten.`,
+            : `⏳ Löse noch ${intStatus.remainingStations} Station(en), um das nächste Verhör freizuschalten.`,
           'Verhör gesperrt'
         );
       }
@@ -732,8 +812,6 @@ export function startSuspectInterrogation(suspectId) {
 
   const story = getStory();
   const treeKey = 'interrogate_' + suspectId;
-  const state = getState();
-  const currentSolved = state.solvedStations ? state.solvedStations.length : 0;
 
   if (!(story && story.dialogueTrees && story.dialogueTrees[treeKey])) {
     console.warn("Dialogbaum für Verdächtigen nicht gefunden:", treeKey);
@@ -741,7 +819,9 @@ export function startSuspectInterrogation(suspectId) {
     return;
   }
 
-  recordInterrogation(suspectId, currentSolved);
+  if (intStatus.count < 2) {
+    recordInterrogation(suspectId, currentSolved);
+  }
 
   // Falls der Dialog zuvor gesperrt wurde, für diesen erneuten Anlauf entsperren
   if (state.lockedDialogues && state.lockedDialogues.includes(treeKey)) {
@@ -752,33 +832,14 @@ export function startSuspectInterrogation(suspectId) {
   import('./dialogue.js').then(dMod => {
     if (story && story.dialogueTrees && story.dialogueTrees[treeKey]) {
       dMod.openDialogue(story.dialogueTrees[treeKey], () => {
-        const suspectGames = {
-          'herold': 'safe',
-          'gipser': 'shredder',
-          'heiden': 'music-cryptogram'
-        };
-        const gameKey = suspectGames[suspectId];
         const stateNow = getState();
-        const solvedBossGames = stateNow.solvedBossGames || [];
+        const curSolvedBoss = stateNow.solvedBossGames || [];
 
-        // Boss-Minispiel nur ausführen, wenn es für diesen Verdächtigen noch nicht gelöst wurde
-        if (gameKey && !solvedBossGames.includes(gameKey)) {
-          import(`./gadgets/${gameKey}.js`).then(gameMod => {
-            gameMod.runGadget(suspectId, () => {
-              recordBossGameSolved(gameKey);
-              import('../main.js').then(m => m.showView('view-dossier'));
-              updateDossier();
-            }, () => {
-              // onCancel: Minispiel ohne Lösung abgebrochen
-              import('../main.js').then(m => m.showView('view-dossier'));
-              updateDossier();
-            });
-          }).catch(err => {
-            console.error("Fehler beim Laden des Suspect-Minispiels:", err);
-            import('../main.js').then(m => m.showView('view-dossier'));
-            updateDossier();
-          });
+        // Boss-Minispiel ausführen, wenn es für diesen Verdächtigen noch nicht gelöst wurde
+        if (gameKey && !curSolvedBoss.includes(gameKey)) {
+          launchSuspectBossGame(suspectId);
         } else {
+          window.isGadgetRunning = false;
           import('../main.js').then(m => m.showView('view-dossier'));
           updateDossier();
         }

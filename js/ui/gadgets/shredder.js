@@ -19,7 +19,8 @@ export function runGadget(stationId, onComplete, onCancel) {
   document.body.appendChild(overlay);
 
   document.getElementById('btn-shredder-cancel').onclick = () => {
-    document.body.removeChild(overlay);
+    window.isGadgetRunning = false;
+    if (overlay.parentNode) document.body.removeChild(overlay);
     if (onCancel) onCancel();
   };
 
@@ -112,7 +113,8 @@ export function runGadget(stationId, onComplete, onCancel) {
         addSuspectImpact(suspect, val);
         
         showNoirAlert("Schuldzuweisung notiert! Beweis gesichert.", "Beweisaufnahme");
-        document.body.removeChild(overlay);
+        window.isGadgetRunning = false;
+        if (overlay.parentNode) document.body.removeChild(overlay);
         onComplete();
       };
     });

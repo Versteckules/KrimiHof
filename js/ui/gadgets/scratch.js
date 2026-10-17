@@ -76,13 +76,15 @@ export function runGadget(stationId, onSuccess) {
   canvas.addEventListener('mousemove', scratch);
   window.addEventListener('mouseup', onMouseUp);
   
-  canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
-  canvas.addEventListener('touchmove', scratch);
+  canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, { passive: false });
+  canvas.addEventListener('touchmove', scratch, { passive: false });
   window.addEventListener('touchend', onTouchEnd);
+  window.addEventListener('touchcancel', onTouchEnd);
 
   function cleanup() {
     window.removeEventListener('mouseup', onMouseUp);
     window.removeEventListener('touchend', onTouchEnd);
+    window.removeEventListener('touchcancel', onTouchEnd);
   }
 
   const observer = new MutationObserver(() => {

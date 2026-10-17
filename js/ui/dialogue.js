@@ -214,7 +214,8 @@ function renderChoices(choices, isEnd, unlockSuspects) {
       unlockSuspectsInState();
     }
     const node = currentTree[currentNodeIndex];
-    if (node && (node.outcome === 'OUTCOME_C' || node.isFailure)) {
+    const isFailedDialogue = node && (node.outcome === 'OUTCOME_C' || node.isFailure);
+    if (isFailedDialogue) {
       import('../state.js').then(mod => {
         const curLocked = mod.getState().lockedDialogues || [];
         if (!curLocked.includes(currentTreeKey)) {
@@ -236,7 +237,7 @@ function renderChoices(choices, isEnd, unlockSuspects) {
 
     const cb = onDialogComplete;
     onDialogComplete = null;
-    if (cb) {
+    if (cb && !isFailedDialogue) {
       cb();
     } else {
       showView('view-dashboard');

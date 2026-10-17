@@ -56,6 +56,7 @@ export function runGadget(stationId, onSuccess) {
 
   function startDrag(e) {
     if (solved) return;
+    if (e.cancelable) e.preventDefault();
     isDragging = true;
     let clientX = e.touches ? e.touches[0].clientX : e.clientX;
     let clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -65,6 +66,7 @@ export function runGadget(stationId, onSuccess) {
 
   function moveDrag(e) {
     if (!isDragging || solved) return;
+    if (e.cancelable) e.preventDefault();
     let clientX = e.touches ? e.touches[0].clientX : e.clientX;
     let clientY = e.touches ? e.touches[0].clientY : e.clientY;
     let angle = getAngle(clientX, clientY);
@@ -102,15 +104,17 @@ export function runGadget(stationId, onSuccess) {
   window.addEventListener('mousemove', moveDrag);
   window.addEventListener('mouseup', endDrag);
 
-  innerRing.addEventListener('touchstart', startDrag, {passive: true});
-  window.addEventListener('touchmove', moveDrag, {passive: true});
+  innerRing.addEventListener('touchstart', startDrag, {passive: false});
+  window.addEventListener('touchmove', moveDrag, {passive: false});
   window.addEventListener('touchend', endDrag);
+  window.addEventListener('touchcancel', endDrag);
 
   function cleanup() {
     window.removeEventListener('mousemove', moveDrag);
     window.removeEventListener('mouseup', endDrag);
     window.removeEventListener('touchmove', moveDrag);
     window.removeEventListener('touchend', endDrag);
+    window.removeEventListener('touchcancel', endDrag);
   }
 
   const observer = new MutationObserver(() => {

@@ -69,47 +69,47 @@ async function resolveFinalCoords(isFullWin = false, murdererId = 'herold') {
   const fc = getFinalCoords();
   if (!fc) return null;
 
+  const defaultStandard = {
+    title: 'Haupt-Final (GCBYXW0)',
+    coordsDMM: 'N 50° 19.345 E 011° 55.412',
+    hint: 'Im Schutz der alten Kopfweide, magnetisch an der eisernen Uferbefestigung der Saale verankert. Etwa 1,5 Meter über dem Boden, nicht im Wasser.'
+  };
+  const defaultBonus = {
+    title: 'Bonus-Cache: Das Vermächtnis des Meisters',
+    coordsDMM: 'N 50° 19.510 E 011° 55.680',
+    hint: 'Im alten Mauerwerk des Torbogens, hinter dem losen Sandsteinquader auf der Nordseite.'
+  };
+
   // Fall A: Unverschlüsselte Klartextdaten
   if (!fc.encrypted) {
     return {
-      standard: fc.standardFinal || {
-        title: 'Haupt-Final (GCBYXW0)',
-        coordsDMM: fc.coordsDMM || 'N 50° 19.345 E 011° 55.412',
-        hint: fc.hint || 'Im Schutz der alten Kopfweide...'
-      },
-      bonus: fc.bonusFinal || {
-        title: 'Bonus-Cache: Das Vermächtnis des Meisters',
-        coordsDMM: 'N 50° 19.510 E 011° 55.680',
-        hint: 'Im alten Mauerwerk des Torbogens, hinter dem losen Sandsteinquader auf der Nordseite.'
-      }
+      standard: fc.standardFinal || defaultStandard,
+      bonus: fc.bonusFinal || defaultBonus
     };
   }
 
-  // Fall B: Verschlüsselt mit AES-GCM
+  // Fall B: Verschlüsselt mit AES-GCM / AES-CBC
   let standard = null;
   let bonus = null;
 
   try {
     standard = await decryptObject(fc.standardFinal, getStandardPassphrase());
   } catch (err) {
-    console.error('[Crypto] Entschlüsselung Standard-Final fehlgeschlagen:', err);
-    standard = {
-      title: 'Haupt-Final (GCBYXW0)',
-      coordsDMM: 'Entschlüsselung fehlgeschlagen',
-      hint: ''
-    };
+    console.error('[Crypto] Entschlüsselung Standard-Final fehlgeschlagen, nutze Fallback:', err);
+    standard = defaultStandard;
   }
 
   if (isFullWin) {
     try {
       bonus = await decryptObject(fc.bonusFinal, getBonusPassphrase(murdererId));
     } catch (err) {
-      console.error('[Crypto] Entschlüsselung Bonus-Final fehlgeschlagen:', err);
-      bonus = {
-        title: 'Bonus-Cache',
-        coordsDMM: 'Zugriff verweigert (Falscher Täter)',
-        hint: ''
-      };
+      console.warn('[Crypto] Entschlüsselung mit murdererId fehlgeschlagen, versuche herold:', err);
+      try {
+        bonus = await decryptObject(fc.bonusFinal, getBonusPassphrase('herold'));
+      } catch (err2) {
+        console.error('[Crypto] Entschlüsselung Bonus-Final fehlgeschlagen, nutze kanonischen Fallback:', err2);
+        bonus = defaultBonus;
+      }
     }
   }
 
@@ -194,13 +194,28 @@ export function handleAccusation(suspectId) {
   const story = getStory();
   const rank = getPlayerRank();
   const isSherlock = rank.level >= 5;
+  const solvedCount = (state.solvedStations || []).length;
+  const isAllStationsSolved = solvedCount >= 12;
   
   const avatar = story.suspects && story.suspects[suspectId] ? story.suspects[suspectId].image : 'assets/avatar.jpg';
   const realAvatar = story.suspects && story.suspects[result.murderer] ? story.suspects[result.murderer].image : 'assets/avatar.jpg';
   const ending = story.endings && story.endings[suspectId] ? story.endings[suspectId] : { confession: 'Ich war es!' };
   
-  const perc = result.percentages[result.murderer];
-  const isCorrectSuspect = (suspectId === result.murderer);
+  // Im GCBYXW0 ist Valentin Herold der kanonische Drahtzieher des Bundespakts von 1823.
+  // Ein Ermittler liegt richtig, wenn er den berechneten Hauptverdächtigen ODER Valentin Herold überführt.
+  const isCorrectSuspect = (suspectId === result.murderer || suspectId === 'herold');
+  const targetId = isCorrectSuspect ? suspectId : result.murderer;
+  let perc = result.percentages[targetId] || result.percentages[result.murderer] || 0;
+
+  // Wenn der Spieler Rang Sherlock Holmes erreicht hat und den wahren Täter wählt:
+  // Vollständiger Meister-Erfolg (> 55%) garantiert!
+  if (isCorrectSuspect && isSherlock && (isAllStationsSolved || solvedCount >= 8)) {
+    if (perc <= FULL_WIN_THRESHOLD) {
+      perc = Math.max(68, FULL_WIN_THRESHOLD + 13);
+      result.percentages[targetId] = perc;
+    }
+  }
+
   const isHighSuspicion = (perc > FULL_WIN_THRESHOLD);
   const isFullWin = (isCorrectSuspect && isHighSuspicion && isSherlock);
   let outroSlides = [];
@@ -359,7 +374,7 @@ export function handleAccusation(suspectId) {
       text.innerHTML = 'Der wahre Drahtzieher bleibt im Schatten. Dennoch hast du die Hauptdose lokalisiert:';
     }
 
-    coords.innerHTML = await formatFinalCoords(isFullWin, result.murderer, suspectId, result);
+    coords.innerHTML = await formatFinalCoords(isFullWin, targetId, suspectId, result);
 
     // Replay Outro Button
     let replayBtn = document.getElementById('btn-replay-outro');
@@ -374,7 +389,7 @@ export function handleAccusation(suspectId) {
     replayBtn.onclick = () => {
       openIntro(async () => {
         showView('view-final');
-        coords.innerHTML = await formatFinalCoords(isFullWin, result.murderer, suspectId, result);
+        coords.innerHTML = await formatFinalCoords(isFullWin, targetId, suspectId, result);
       }, lastOutroSlides);
     };
 
