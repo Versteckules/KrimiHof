@@ -155,8 +155,9 @@ async function formatFinalCoords(isFullWin = false, murdererId = 'herold', suspe
   } else {
     // Fall 2: Bonus nicht freigeschaltet -> Spezifische Begründung
     const rank = getPlayerRank();
-    const perc = result && result.percentages && result.murderer ? result.percentages[result.murderer] : 0;
-    const isCorrect = (suspectId && result && suspectId === result.murderer);
+    const isCorrect = Boolean(suspectId && result && (suspectId === result.murderer || suspectId === 'herold'));
+    const targetSuspect = isCorrect ? suspectId : (result ? result.murderer : 'herold');
+    const perc = result && result.percentages && targetSuspect ? (result.percentages[targetSuspect] || 0) : 0;
     
     let reasonText = '';
     if (!isCorrect) {
