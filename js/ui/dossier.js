@@ -62,14 +62,22 @@ export function initDossier() {
   const shredBtn = document.getElementById('btn-dossier-shred');
   if (shredBtn) {
     shredBtn.addEventListener('click', () => {
-      const modal = document.getElementById('modal-reset');
-      if (modal) {
-        modal.classList.remove('hidden');
-      } else if (confirm("Möchtest du die gesamte Ermittlungsakte wirklich schreddern und von vorne anfangen?")) {
+      const doReset = () => {
         import('../state.js').then(m => {
           m.resetState();
           window.location.reload();
         });
+      };
+
+      if (window.showNoirConfirm) {
+        window.showNoirConfirm(
+          "Akte schreddern",
+          "Möchtest du die gesamte Ermittlungsakte wirklich schreddern und alle Fortschritte unwiderruflich zurücksetzen?",
+          doReset,
+          "Ja, Akte schreddern"
+        );
+      } else if (confirm("Möchtest du die gesamte Ermittlungsakte wirklich schreddern und von vorne anfangen?")) {
+        doReset();
       }
     });
   }
@@ -98,7 +106,7 @@ export function updateDossier() {
     }
 
     const rathausSolved = Boolean(state.solvedStations && state.solvedStations.includes('rathaus'));
-    const isUnlocked = Boolean(state.suspectsUnlocked && rathausSolved);
+    const isUnlocked = Boolean((state.suspectsUnlocked && rathausSolved) || state.isTestingMode);
 
     if (isUnlocked) {
       openBtn.classList.remove('hidden');

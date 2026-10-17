@@ -1,6 +1,7 @@
 import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
+  window.isGadgetRunning = true;
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -124,19 +125,31 @@ export function runGadget(stationId, onSuccess) {
 
     // Speak creepy message
     setTimeout(() => {
+      let callEnded = false;
+      const safeEndCall = () => {
+        if (!callEnded) {
+          callEnded = true;
+          endCall(true);
+        }
+      };
+
       if (window.speechSynthesis) {
-        const utter = new SpeechSynthesisUtterance("Lass die Akte ruhen... sonst wirst du es bereuen.");
-        utter.lang = 'de-DE';
-        utter.pitch = 0.3; // Deep voice
-        utter.rate = 0.8;  // Slow
-        window.speechSynthesis.speak(utter);
-        
-        utter.onend = () => {
-           endCall(true);
-        };
+        try {
+          const utter = new SpeechSynthesisUtterance("Lass die Akte ruhen... sonst wirst du es bereuen.");
+          utter.lang = 'de-DE';
+          utter.pitch = 0.3; // Deep voice
+          utter.rate = 0.8;  // Slow
+          utter.onend = safeEndCall;
+          utter.onerror = safeEndCall;
+          window.speechSynthesis.speak(utter);
+          // Android speech timeout fallback: guaranteed to progress after 4.5s
+          setTimeout(safeEndCall, 4500);
+        } catch (e) {
+          safeEndCall();
+        }
       } else {
-         // Fallback timeout
-         setTimeout(() => endCall(true), 4000);
+        // Fallback timeout
+        setTimeout(safeEndCall, 4000);
       }
     }, 1000);
   };
@@ -149,6 +162,7 @@ export function runGadget(stationId, onSuccess) {
 
   function endCall(accepted) {
     solved = true;
+    window.isGadgetRunning = false;
     if (callTimer) clearInterval(callTimer);
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     
@@ -169,6 +183,7 @@ export function runGadget(stationId, onSuccess) {
 
   const observer = new MutationObserver(() => {
     if (!document.body.contains(overlay)) {
+      window.isGadgetRunning = false;
       stopRingtone();
       if (callTimer) clearInterval(callTimer);
       if (window.speechSynthesis) window.speechSynthesis.cancel();

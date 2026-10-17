@@ -1,5 +1,6 @@
 import * as FX from '../../fx.js';
 export function runGadget(stationId, onSuccess) {
+  window.isGadgetRunning = true;
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -35,6 +36,7 @@ export function runGadget(stationId, onSuccess) {
   function solve() {
     if (solved) return;
     solved = true;
+    window.isGadgetRunning = false;
     
     const canvas = document.getElementById('ambigram-canvas');
     canvas.style.transform = 'rotate(180deg)';
@@ -65,6 +67,7 @@ export function runGadget(stationId, onSuccess) {
   }
 
   function cleanup() {
+    window.isGadgetRunning = false;
     window.removeEventListener('deviceorientation', handleOrientation);
   }
 

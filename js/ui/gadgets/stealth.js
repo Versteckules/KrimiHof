@@ -1,6 +1,7 @@
 import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
+  window.isGadgetRunning = true;
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -102,6 +103,7 @@ export function runGadget(stationId, onSuccess) {
 
       if (steps >= 5) {
         solved = true;
+        window.isGadgetRunning = false;
         cancelAnimationFrame(animFrame);
         btnTap.style.background = "#0f0";
         btnTap.style.color = "#000";
@@ -146,6 +148,7 @@ export function runGadget(stationId, onSuccess) {
 
   const observer = new MutationObserver(() => {
     if (!document.body.contains(overlay)) {
+      window.isGadgetRunning = false;
       if (animFrame) cancelAnimationFrame(animFrame);
       observer.disconnect();
     }

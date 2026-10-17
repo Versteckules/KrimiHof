@@ -45,14 +45,22 @@ export function initFinalView() {
   const finalResetBtn = document.getElementById('btn-final-reset');
   if (finalResetBtn) {
     finalResetBtn.addEventListener('click', () => {
-      const modal = document.getElementById('modal-reset');
-      if (modal) {
-        modal.classList.remove('hidden');
-      } else if (confirm("Möchtest du die Fallakte wirklich schreddern und das Spiel von vorne beginnen?")) {
+      const doReset = () => {
         import('../state.js').then(m => {
           m.resetState();
           window.location.reload();
         });
+      };
+
+      if (window.showNoirConfirm) {
+        window.showNoirConfirm(
+          "Akte schreddern",
+          "Möchtest du die Fallakte wirklich schreddern und das Spiel von vorne beginnen?",
+          doReset,
+          "Ja, Akte schreddern"
+        );
+      } else if (confirm("Möchtest du die Fallakte wirklich schreddern und das Spiel von vorne beginnen?")) {
+        doReset();
       }
     });
   }
@@ -155,7 +163,7 @@ async function formatFinalCoords(isFullWin = false, murdererId = 'herold', suspe
   } else {
     // Fall 2: Bonus nicht freigeschaltet -> Spezifische Begründung
     const rank = getPlayerRank();
-    const isCorrect = Boolean(suspectId && result && (suspectId === result.murderer || suspectId === 'herold'));
+    const isCorrect = Boolean(suspectId && ['herold', 'gipser', 'heiden'].includes(suspectId));
     const targetSuspect = isCorrect ? suspectId : (result ? result.murderer : 'herold');
     const perc = result && result.percentages && targetSuspect ? (result.percentages[targetSuspect] || 0) : 0;
     
@@ -202,23 +210,29 @@ export function handleAccusation(suspectId) {
   const realAvatar = story.suspects && story.suspects[result.murderer] ? story.suspects[result.murderer].image : 'assets/avatar.jpg';
   const ending = story.endings && story.endings[suspectId] ? story.endings[suspectId] : { confession: 'Ich war es!' };
   
-  // Im GCBYXW0 ist Valentin Herold der kanonische Drahtzieher des Bundespakts von 1823.
-  // Ein Ermittler liegt richtig, wenn er den berechneten Hauptverdächtigen ODER Valentin Herold überführt.
-  const isCorrectSuspect = (suspectId === result.murderer || suspectId === 'herold');
-  const targetId = isCorrectSuspect ? suspectId : result.murderer;
-  let perc = result.percentages[targetId] || result.percentages[result.murderer] || 0;
+  // Im GCBYXW0 kann jeder der drei Hauptverdächtigen (Herold, Gipser, Heiden)
+  // durch Ermittlungsergebnisse und Zuweisung als Täter überführt werden.
+  const isCorrectSuspect = Boolean(suspectId && ['herold', 'gipser', 'heiden'].includes(suspectId));
+  const targetId = suspectId;
+  let perc = (result.percentages && result.percentages[targetId]) || 0;
 
-  // Wenn der Spieler Rang Sherlock Holmes erreicht hat und den wahren Täter wählt:
+  // Wenn der Spieler Rang Sherlock Holmes erreicht hat:
   // Vollständiger Meister-Erfolg (> 55%) garantiert!
   if (isCorrectSuspect && isSherlock && (isAllStationsSolved || solvedCount >= 8)) {
     if (perc <= FULL_WIN_THRESHOLD) {
       perc = Math.max(68, FULL_WIN_THRESHOLD + 13);
-      result.percentages[targetId] = perc;
+      if (result.percentages) result.percentages[targetId] = perc;
     }
   }
 
   const isHighSuspicion = (perc > FULL_WIN_THRESHOLD);
   const isFullWin = (isCorrectSuspect && isHighSuspicion && isSherlock);
+
+  // Status persistent in localStorage sichern
+  import('../state.js').then(mod => {
+    mod.saveState({ accusedSuspect: suspectId, solvedAt: new Date().toISOString() });
+  });
+
   let outroSlides = [];
 
   if (isCorrectSuspect) {
@@ -406,6 +420,7 @@ export function handleAccusation(suspectId) {
     }
     retryBtn.onclick = () => {
       accusedSuspect = null;
+      import('../state.js').then(mod => mod.saveState({ accusedSuspect: null }));
       if (container) {
         container.classList.remove('hidden');
         container.style.display = 'flex';

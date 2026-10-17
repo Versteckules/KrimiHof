@@ -167,38 +167,25 @@ export function initLanding() {
   // 4. Reset Modal Logik (Sicherheitsbestätigung)
   if (openResetBtn) {
     openResetBtn.addEventListener('click', () => {
-      if (modalReset) {
-        modalReset.classList.remove('hidden');
-      } else {
-        // Fallback falls Modal nicht im DOM ist
-        if (confirm("Möchtest du die Fallakte wirklich schreddern und alle Daten zurücksetzen?")) {
-          resetState();
-          nameInput.value = '';
-          nameInput.disabled = false;
-          nameInput.style.opacity = '1';
-          updateUIFromState(getState());
-          showNoirAlert("Die Fallakte wurde erfolgreich geschreddert.", "Akte gelöscht");
-        }
+      const doReset = () => {
+        resetState();
+        nameInput.value = '';
+        nameInput.disabled = false;
+        nameInput.style.opacity = '1';
+        updateUIFromState(getState());
+        showNoirAlert("Die Fallakte wurde erfolgreich geschreddert.", "Akte gelöscht");
+      };
+
+      if (window.showNoirConfirm) {
+        window.showNoirConfirm(
+          "Akte schreddern",
+          "Möchtest du die Fallakte wirklich schreddern und alle bisherigen Ermittlungsdaten unwiderruflich zurücksetzen?",
+          doReset,
+          "Ja, Akte schreddern"
+        );
+      } else if (confirm("Möchtest du die Fallakte wirklich schreddern und alle Daten zurücksetzen?")) {
+        doReset();
       }
-    });
-  }
-
-  const closeResetModal = () => {
-    if (modalReset) modalReset.classList.add('hidden');
-  };
-
-  if (modalResetClose) modalResetClose.addEventListener('click', closeResetModal);
-  if (btnCancelReset) btnCancelReset.addEventListener('click', closeResetModal);
-
-  if (btnConfirmReset) {
-    btnConfirmReset.addEventListener('click', () => {
-      resetState();
-      nameInput.value = '';
-      nameInput.disabled = false;
-      nameInput.style.opacity = '1';
-      closeResetModal();
-      updateUIFromState(getState());
-      window.location.reload();
     });
   }
 

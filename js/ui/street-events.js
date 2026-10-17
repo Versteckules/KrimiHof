@@ -25,6 +25,17 @@ export function initStreetEvents() {
 }
 
 function checkEventTrigger() {
+  // Nicht unterbrechen, wenn bereits ein Minispiel, Dialog, Station oder Finale aktiv ist
+  const isOverlayOpen = Boolean(window.isGadgetRunning || document.getElementById('gadget-fullscreen-overlay'));
+  const isDialogueOpen = Boolean(document.querySelector('.view:not(.hidden)#view-dialogue'));
+  const isStationOpen = Boolean(document.querySelector('.view:not(.hidden)#view-station'));
+  const isFinalOpen = Boolean(document.querySelector('.view:not(.hidden)#view-final'));
+  const isAlertOpen = Boolean(document.getElementById('noir-alert-modal') && !document.getElementById('noir-alert-modal').classList.contains('hidden'));
+
+  if (isOverlayOpen || isDialogueOpen || isStationOpen || isFinalOpen || isAlertOpen) {
+    return;
+  }
+
   // Alle 150m wird ein Event getriggert
   if (totalDistanceWalked > 150) {
     totalDistanceWalked = 0; // Reset

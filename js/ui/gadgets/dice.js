@@ -1,6 +1,7 @@
 import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
+  window.isGadgetRunning = true;
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -187,6 +188,7 @@ export function runGadget(stationId, onSuccess) {
           </div>
         `;
         setTimeout(() => {
+          window.isGadgetRunning = false;
           overlay.remove();
           FX.playSuccessWumms().then(() => onSuccess());
         }, 1800);
@@ -224,6 +226,7 @@ export function runGadget(stationId, onSuccess) {
       window.showNoirConfirm('Wirt bestechen?', 'Möchtest du den Stammtisch mit einer Lokalrunde bestechen und das Rätsel überspringen? (-10 Punkte)', () => {
         if (solved) return;
         solved = true;
+        window.isGadgetRunning = false;
         window.removeEventListener('devicemotion', handleMotion);
         import('../../state.js').then(m => m.addScore(-10));
         import('../../main.js').then(m => m.showNoirAlert('Wirt bestochen (-10 Punkte)', 'Punkteabzug'));
@@ -232,6 +235,7 @@ export function runGadget(stationId, onSuccess) {
       });
     } else {
       solved = true;
+      window.isGadgetRunning = false;
       window.removeEventListener('devicemotion', handleMotion);
       overlay.remove();
       onSuccess();
@@ -240,6 +244,7 @@ export function runGadget(stationId, onSuccess) {
 
   const observer = new MutationObserver(() => {
     if (!document.body.contains(overlay)) {
+      window.isGadgetRunning = false;
       window.removeEventListener('devicemotion', handleMotion);
       observer.disconnect();
     }

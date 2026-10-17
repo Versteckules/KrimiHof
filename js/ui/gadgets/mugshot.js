@@ -1,6 +1,7 @@
 import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
+  window.isGadgetRunning = true;
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -82,6 +83,7 @@ export function runGadget(stationId, onSuccess) {
     if (solved) return;
     if (state.hat === target.hat && state.eyes === target.eyes && state.mouth === target.mouth) {
       solved = true;
+      window.isGadgetRunning = false;
       btnSubmit.disabled = true;
       btnSubmit.style.pointerEvents = 'none';
       overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; margin-top:50px;">Übereinstimmung gefunden!</h2></div>`;
@@ -90,4 +92,12 @@ export function runGadget(stationId, onSuccess) {
       FX.shakeElement(document.querySelector('.cl-gadget-wrapper'));
     }
   };
+
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      window.isGadgetRunning = false;
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
 }

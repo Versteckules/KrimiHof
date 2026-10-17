@@ -1,6 +1,7 @@
 import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
+  window.isGadgetRunning = true;
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -56,6 +57,7 @@ export function runGadget(stationId, onSuccess) {
 
   const observer = new MutationObserver(() => {
     if (!document.body.contains(overlay)) {
+      window.isGadgetRunning = false;
       stopCamera();
       clearTimeout(skipTimeout);
       observer.disconnect();
@@ -66,6 +68,7 @@ export function runGadget(stationId, onSuccess) {
   function finishScan() {
     if (solved) return;
     solved = true;
+    window.isGadgetRunning = false;
     stopCamera();
     
     reticle.style.borderColor = '#0f0';
@@ -92,6 +95,7 @@ export function runGadget(stationId, onSuccess) {
   skipBtn.onclick = () => {
     if (solved) return;
     solved = true;
+    window.isGadgetRunning = false;
     clearTimeout(skipTimeout);
     stopCamera();
     overlay.innerHTML = `<div class="cl-gadget-wrapper"><h2 style="color:var(--color-amber-glow); font-family:var(--font-serif); font-size:2rem; text-align:center;">Manuell umgangen!</h2></div>`;

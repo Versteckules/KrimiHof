@@ -1,6 +1,7 @@
 import * as FX from '../../fx.js';
 
 export function runGadget(stationId, onSuccess) {
+  window.isGadgetRunning = true;
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -38,6 +39,7 @@ export function runGadget(stationId, onSuccess) {
   function finishSuccess() {
     if (solved) return;
     solved = true;
+    window.isGadgetRunning = false;
     if (recognition) recognition.stop();
     
     statusEl.textContent = "PASSWORT AKZEPTIERT!";
@@ -58,6 +60,7 @@ export function runGadget(stationId, onSuccess) {
   function finishSkip() {
     if (solved) return;
     solved = true;
+    window.isGadgetRunning = false;
     if (recognition) recognition.stop();
     import('../../state.js').then(m => m.addScore(-10));
     import('../../main.js').then(m => m.showNoirAlert('Rätsel gewaltsam gelöst (-10 Punkte)', 'Punkteabzug'));
@@ -148,6 +151,7 @@ export function runGadget(stationId, onSuccess) {
   const observer = new MutationObserver(() => {
     if (!document.body.contains(overlay)) {
       solved = true;
+      window.isGadgetRunning = false;
       if (recognition) {
         try { recognition.stop(); } catch(e) {}
       }

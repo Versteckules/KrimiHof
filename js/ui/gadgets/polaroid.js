@@ -1,5 +1,6 @@
 import * as FX from '../../fx.js';
 export function runGadget(stationId, onSuccess) {
+  window.isGadgetRunning = true;
   let overlay = document.getElementById('gadget-fullscreen-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -33,6 +34,7 @@ export function runGadget(stationId, onSuccess) {
     
     if (development >= 100 && !solved) {
       solved = true;
+      window.isGadgetRunning = false;
       window.removeEventListener('devicemotion', handleMotion);
       import('../../state.js').then(m => {
         m.addInventoryItem('evidence_polaroid_station');
@@ -76,6 +78,7 @@ export function runGadget(stationId, onSuccess) {
 
   const observer = new MutationObserver(() => {
     if (!document.body.contains(overlay)) {
+      window.isGadgetRunning = false;
       window.removeEventListener('devicemotion', handleMotion);
       observer.disconnect();
     }

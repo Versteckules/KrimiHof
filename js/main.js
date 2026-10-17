@@ -90,6 +90,11 @@ export function checkRouting() {
       showView('view-landing');
       return;
     }
+    if (state.accusedSuspect) {
+      showView('view-final');
+      import('./ui/final.js').then(fMod => fMod.handleAccusation(state.accusedSuspect));
+      return;
+    }
     showView('view-dashboard');
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
