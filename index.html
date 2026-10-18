@@ -454,25 +454,6 @@
           <div id="dossier-stations" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px;"></div>
         </div>
 
-        <!-- OFFLINE TEST ANRUFE -->
-        <div
-          style="margin-top: var(--space-lg); background: rgba(255,0,0,0.1); border: 1px dashed red; padding: var(--space-md); border-radius: 8px; position: relative; z-index: 1;">
-          <h3 style="color: #ff6666; border-bottom: 1px solid #ff6666; padding-bottom: 5px;">OFFLINETEST: Anrufe</h3>
-          <p style="font-size: 0.8rem; color: #ff9999; margin-top: 5px; margin-bottom: 10px;">Diese Zufalls-Anrufe
-            kommen normalerweise während dem Laufen. Hier manuell testbar:</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-            <button class="btn-secondary"
-              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_herold'))">📞
-              Herold</button>
-            <button class="btn-secondary"
-              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_gipser'))">📞
-              Gipser</button>
-            <button class="btn-secondary"
-              onclick="import('./js/ui/street-events.js').then(m => m.triggerStoryEventById('event_call_heiden'))">📞
-              Heiden</button>
-          </div>
-        </div>
-
         <!-- Akte Schreddern im Dossier -->
         <div style="margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: 1px solid var(--color-glass-border); text-align: center; position: relative; z-index: 1;">
           <button id="btn-dossier-shred" class="btn-danger" style="font-size: 0.95rem; padding: 10px 20px; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);">
