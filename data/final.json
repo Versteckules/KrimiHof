@@ -1,20 +1,19 @@
 {
-    "_hinweis":  "DIESE DATEI IST MIT AES-256-CBC VERSCHLUESSELT. Sie kann bedenkenlos auf GitHub hochgeladen werden!",
-    "_bearbeitung":  "Zum Aendern der Koordinaten nutze data/final_plain.json oder tools/encrypt_final.html",
-    "encrypted":  true,
-    "algorithm":  "AES-CBC",
-    "standardFinal":  {
-                          "iv":  "b3a6ff1415c1e94794e466b136b3e32d",
-                          "data":  "73b8b53184a52265b4c7635a036f44ada72fc0feedbccb534cf0321e03e95065273b681cc0916c75ff2a989260c6e5aa4395185183a65c07541e5bb3e3470861d170ab324c7e4db54b108ae98f6a956d93ebd30dff6c075c1a9803751b1879200485952936de0eaf378ba543eeaa905d04064ccb82773741f3c9c95b6142a850f257bc9de660a5aeb3b454872602c168fee6edf6fd4b601304c3591b19f4b5f8542fed6f0386c91df37fea57cdf482e48b9609697189fbaf8994d40fb9ec4e1c9f2f95e306de9d7eeb75a6994b97e276168d21170c9bb67d63fdb497d326e4e90c3d82c6c98f7b5f520bdde1563615d039f82ddf1106374df896046e2db80a9c27aff2d53f3dcf685d8d95d5276f3e0d28a854acfec509147b98428c782bbedb07864f20114ba554f34c26c97b74eef56faef442184aa9223c7db66e57e2a98b6f2756417bd619a70f502fbbcc6c77064d637e4ef66c566c7907d556ad2e4f7d"
-                      },
-    "bonusFinal":  {
-                       "iv":  "1c780e27247346c94e5f225250a49504",
-                       "data":  "ecf5a2436e1797d905b25cfb6e0a646e05a5b81193cd5d5d0ed96dbf7bf2ef3a7cc156f78065b4f52af0a8bf76d888605dcbe2622123d306c75e69874c83e1f00ad507be0a0c1b4c02f611c0be19b86722ff0becbb6cd3e013abdcd32d9347e17bd7c82b9a483fd61a1b987075bdee72ed40d0c328fd9beab3ef7e681682083e94167dae749ac49ee6a08a0ecb65dfc5cf8944160a38c685983b407e6ab3def93f2d8da00237cbf64bc9041aecbcbd06c72833c162e9481e9506961bba219e566d2c260ec929d3bb1b7ff4119841e3e9abda7450f3a9b144e7e6e8057a3a50a97e87b3bdb3d92eaed31387b6d8cd903b5acb2d1850b551303b699f5b82887577bb76aa681aea877a0e4fc49057287a13113b753249a3b2e01111aa16efb87dce311dcf08f2d8c66ebb9ed579f176a26d6338800b4949b0b7bfecb62b9c15bf970b3330f018fc08454df1c83b32ff146c65fbcc98b1762d9926adc39f87adfa925d4c050085af5272056d61797f69f256"
-                   },
-    "diploma":  {
-                    "title":  "Meister-Ermittler der Stadt Hof",
-                    "subtitle":  "Im Fall des verschwundenen Bundespakts von 1823",
-                    "signature":  "Der Hohe Rat der Hofer Schlappen-Erben",
-                    "bonusBadgeTitle":  "Ehren-Detektiv mit Auszeichnung (Alle Bonus-Faelle geloest)"
-                }
+  "_hinweis": "DIESE DATEI IST MIT AES-GCM VERSCHLÜSSELT. Sie kann bedenkenlos öffentlich auf GitHub hochgeladen werden!",
+  "_bearbeitung": "Zum Ändern der Koordinaten nutze tools/encrypt_final.html oder bearbeite data/final_plain.json",
+  "encrypted": true,
+  "standardFinal": {
+    "iv": "75006522254c4969e6cf04461a173365",
+    "data": "d015cf57a0423015a68f9c11801786eef4cde615881d72c26d2d7595b7ea17b23e3081ef7706ee58f642f60566ae6b2a597af349716a1183b5fea1d0aa58ca7ddba480ba3bce54e5507b06ec2f5e9c2845bbcaee238b3a4d3f660d7a90cd15fe9f669cb83ee9cefaa22236ac8153519f2d30803864984480ded10f9a623b76d2de6eaf7222746f41bae20341516874c352abf80daaa919133ae12d5374967e5499c6d3752a9418e65e18f03309d656ef"
+  },
+  "bonusFinal": {
+    "iv": "becea042c6f1848fc27414de6dfd9aae",
+    "data": "f94764d77d308f59cdae19f1f05764fcd5771ead6f2f5c59c227127a26b6eb431c3aa94566159f652c8f0aaad2c155c8f0eba8fdc329351695e2734541dd1fc15451d4b87bffc509c8e99c5f96c8a8e4d70f6c6bb1efbc76753837c1cb5fcf6fe4e4c181f728fc082a71278c6b9c91acca908e4e2058fc5dcc1e9a07ca2bf36bdfe56e22d8d07a40b67e9a9ec0b12b37ea1e042e4c859c58a2f102942721e438993982a6e8154de385183e1fecce20be0ecd98308b9219400ae44c4934a4a302b51350722ca6e07b3ae69609986b7959aac546285d1b1a8e91f6baae2729bc619dbc7828d746b410892120336b402774d01eba2f8a86a5fdee65a01c1dc0a1fc8dd8421e390feee430ac10975dfb3e0ce71741af8d22c4c394ee877f7d1dc58848e1dc42d2b8c87e487e1ebd0bfbfceb"
+  },
+  "diploma": {
+    "title": "Meister-Ermittler der Stadt Hof",
+    "subtitle": "Im Fall des verschwundenen Bundespakts von 1823",
+    "signature": "Der Hohe Rat der Hofer Schlappen-Erben",
+    "bonusBadgeTitle": "Ehren-Detektiv mit Auszeichnung (Alle Bonus-Fälle gelöst)"
+  }
 }
