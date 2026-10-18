@@ -11,89 +11,100 @@ export function calculateFinalResult(state) {
   const scores = state.suspectScores || { herold: 0, gipser: 0, heiden: 0 };
   
   let suspects = [
-    { id: 'herold', score: scores.herold },
-    { id: 'gipser', score: scores.gipser },
-    { id: 'heiden', score: scores.heiden }
+    { id: 'herold', score: scores.herold || 0 },
+    { id: 'gipser', score: scores.gipser || 0 },
+    { id: 'heiden', score: scores.heiden || 0 }
   ];
   
   // Sort descending
   suspects.sort((a, b) => b.score - a.score);
   
-  // Check for tie
-  let isTie = suspects[0].score === suspects[1].score;
-  let murderer = suspects[0].id;
+  const top1 = suspects[0];
+  const top2 = suspects[1];
+  const top3 = suspects[2];
   
-  // Tie-Breaker: Zonen-Auswertung (Simuliert: Saale = Heiden, Altstadt = Herold, Neustadt = Gipser)
+  const lead = top1.score - top2.score;
+  const isTie = lead === 0;
+  let murderer = top1.id;
+  
+  // Tie-Breaker: Zuweisung von Beweisen & Zonen-Auswertung
   if (isTie) {
-    const zs = state.zoneScores || {};
-    let tieBreaker = {
-      herold: zs.altstadt || 0,
-      gipser: zs.neustadt || 0,
-      heiden: zs.saale || 0
-    };
-    
-    // If tie between top 2, pick the one with highest tieBreaker score
-    let top1 = suspects[0];
-    let top2 = suspects[1];
-    if (tieBreaker[top1.id] > tieBreaker[top2.id]) {
+    const assigned = state.assignedEvidence || {};
+    const evCounts = { herold: 0, gipser: 0, heiden: 0 };
+    Object.values(assigned).forEach(sId => {
+      if (evCounts[sId] !== undefined) evCounts[sId]++;
+    });
+
+    if (evCounts[top1.id] > evCounts[top2.id]) {
       murderer = top1.id;
-    } else if (tieBreaker[top2.id] > tieBreaker[top1.id]) {
+    } else if (evCounts[top2.id] > evCounts[top1.id]) {
       murderer = top2.id;
     } else {
-      // Kanonischer Fallback: Herold ist der Mastermind im Geocache
-      murderer = (top1.id === 'herold' || top2.id === 'herold') ? 'herold' : top1.id;
+      const zs = state.zoneScores || {};
+      let tieBreaker = {
+        herold: zs.altstadt || 0,
+        gipser: zs.neustadt || 0,
+        heiden: zs.saale || 0
+      };
+      if (tieBreaker[top1.id] > tieBreaker[top2.id]) {
+        murderer = top1.id;
+      } else if (tieBreaker[top2.id] > tieBreaker[top1.id]) {
+        murderer = top2.id;
+      } else {
+        murderer = top1.id;
+      }
     }
   }
 
-  // Kommissarrang einbeziehen:
-  // Mit steigendem Rang schärft sich der Ermittlerfokus (Grundrauschen base sinkt)
-  // und der Hauptverdächtige wird dank meisterhafter Deduktion glasklar überführt.
+  // Kommissarrang einbeziehen
   const rank = getPlayerRank();
   const rankLevel = (rank && rank.level) ? rank.level : 1;
+  const rankRatio = Math.min(1.0, Math.max(0.0, (rankLevel - 1) / 4.0));
+  const solvedCount = (state.solvedStations || []).length;
+  const totalRaw = top1.score + top2.score + top3.score;
 
-  // Grundunschärfe nimmt mit Rang ab (von 28 bei Rang 1 bis 4 bei Rang 5)
-  const base = Math.max(4, 28 - (rankLevel - 1) * 6);
-
-  const topSuspectId = murderer;
-  const totalRaw = (scores.herold || 0) + (scores.gipser || 0) + (scores.heiden || 0);
-  const secondScore = suspects.find(s => s.id !== topSuspectId)?.score || 0;
-  const topScore = scores[topSuspectId] || 0;
-  const lead = Math.max(0, topScore - secondScore);
-  const rankRatio = (rankLevel - 1) / 4.0; // 0.0 bei Rang 1 bis 1.0 bei Rang 5
-
-  // Ermittlungs-Fokusbonus für den führenden Verdächtigen:
-  // Skaliert dynamisch mit der Gesamtpunktzahl, sodass auch bei 300-500 Punkten im Endgame
-  // ein Meister-Ermittler (Sherlock) eine glasklare Beweislast von 60% - 75% erzielt.
-  const rankFocusBonus = Math.round(
-    ((totalRaw * 0.45) + 30) * rankRatio + (lead * 1.0 * rankRatio)
-  );
-
-  // Falsche Fährten bei den unschuldigen Verdächtigen verblassen durch Meister-Deduktion
-  const discountFactor = 0.25 * rankRatio;
-
-  let heroldPoints = Math.max(0, base + (topSuspectId === 'herold' ? scores.herold + rankFocusBonus : scores.herold * (1 - discountFactor)));
-  let gipserPoints = Math.max(0, base + (topSuspectId === 'gipser' ? scores.gipser + rankFocusBonus : scores.gipser * (1 - discountFactor)));
-  let heidenPoints = Math.max(0, base + (topSuspectId === 'heiden' ? scores.heiden + rankFocusBonus : scores.heiden * (1 - discountFactor)));
-  
-  const totalPoints = heroldPoints + gipserPoints + heidenPoints;
   let percentages = { herold: 33, gipser: 33, heiden: 34 };
-  
-  if (totalPoints > 0) {
-    percentages.herold = Math.round((heroldPoints / totalPoints) * 100);
-    percentages.gipser = Math.round((gipserPoints / totalPoints) * 100);
-    percentages.heiden = Math.max(0, 100 - percentages.herold - percentages.gipser);
-  }
 
-  // Sicherheitsgarantie für Sherlock Holmes (Rang 5):
-  // Wenn der Spieler Rang 5 erreicht hat, muss der Top-Verdächtige mindestens 60% erreichen
-  if (rankLevel >= 5 && percentages[topSuspectId] < 60) {
-    const diff = 60 - percentages[topSuspectId];
-    percentages[topSuspectId] = 60;
-    const others = ['herold', 'gipser', 'heiden'].filter(id => id !== topSuspectId);
-    let p0 = Math.max(0, percentages[others[0]] - Math.ceil(diff / 2));
-    let p1 = Math.max(0, 100 - 60 - p0);
-    percentages[others[0]] = p0;
-    percentages[others[1]] = p1;
+  if (totalRaw > 0) {
+    if (lead === 0) {
+      if (top2.score === top3.score) {
+        percentages = { herold: 33, gipser: 33, heiden: 34 };
+      } else {
+        const p3 = Math.max(10, Math.round((top3.score / totalRaw) * 100 * 0.7));
+        const rem = 100 - p3;
+        const p1 = Math.floor(rem / 2);
+        const p2 = rem - p1;
+        percentages[top1.id] = p1;
+        percentages[top2.id] = p2;
+        percentages[top3.id] = p3;
+      }
+    } else {
+      const leadRatio = Math.min(1.0, lead / Math.max(20, top2.score));
+      const rawShare = top1.score / totalRaw;
+      
+      // Bei klarer Beweislage (ab 12 Pkt Vorsprung oder im Endgame ab 8 Pkt Vorsprung)
+      // erreicht der Führende zuverlässig über 50% und über die 55%-Haftbefehlsschwelle (56% bis 75%)
+      let targetTopPerc;
+      if (lead >= 12 || (solvedCount >= 8 && lead >= 8)) {
+        targetTopPerc = Math.min(75, Math.round(56 + (leadRatio * 10) + (rankRatio * 9)));
+      } else {
+        targetTopPerc = Math.min(54, Math.round(38 + (rawShare * 20) + (leadRatio * 10)));
+      }
+
+      // Sicherheitsgarantie für Sherlock Holmes (Rang 5) bei Führung:
+      if (rankLevel >= 5 && lead > 0) {
+        targetTopPerc = Math.max(60, targetTopPerc);
+      }
+
+      const remPoints = 100 - targetTopPerc;
+      const otherTotal = top2.score + top3.score;
+      let p2 = otherTotal > 0 ? Math.round((top2.score / otherTotal) * remPoints) : Math.floor(remPoints / 2);
+      let p3 = remPoints - p2;
+
+      percentages[top1.id] = targetTopPerc;
+      percentages[top2.id] = p2;
+      percentages[top3.id] = p3;
+    }
   }
 
   return {
@@ -104,3 +115,4 @@ export function calculateFinalResult(state) {
     rank
   };
 }
+

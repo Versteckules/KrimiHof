@@ -587,7 +587,10 @@
             "requires_evidence": null,
             "requires_rank": 0,
             "contradiction_target": false,
-            "impact": null
+            "impact": {
+              "suspect": "herold",
+              "value": 15
+            }
           }
         ],
         "isEnd": false,
@@ -609,7 +612,10 @@
             "requires_evidence": null,
             "requires_rank": 0,
             "contradiction_target": false,
-            "impact": null
+            "impact": {
+              "suspect": "heiden",
+              "value": 15
+            }
           }
         ],
         "isEnd": false,
@@ -1148,7 +1154,7 @@
             "requires_rank": 0,
             "contradiction_target": false,
             "impact": {
-              "suspect": "gipser",
+              "suspect": "herold",
               "value": 15
             }
           }

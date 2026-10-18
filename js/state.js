@@ -128,20 +128,6 @@ export function loadState() {
         }
       }
 
-      // Auto-Repair: Falls 'foto_gipser_auto' zuvor durch alten Mapping-Bug fälschlicherweise als falsch gewertet wurde
-      if (_currentState.assignedEvidence && _currentState.assignedEvidence['foto_gipser_auto'] === 'gipser' && !_currentState._evidenceV2Repaired) {
-        _currentState._evidenceV2Repaired = true;
-        if (_currentState.suspectScores) {
-          _currentState.suspectScores.gipser = (_currentState.suspectScores.gipser || 0) + 22;
-        }
-        _currentState.score = (_currentState.score || 0) + 5;
-        saveState({
-          _evidenceV2Repaired: true,
-          suspectScores: _currentState.suspectScores,
-          score: _currentState.score
-        });
-      }
-
       // Die Hauptverdächtigen dürfen AUSSCHLIESSLICH nach Abschluss des Rathauses freigeschaltet sein!
       const rathausSolved = Boolean(_currentState.solvedStations && _currentState.solvedStations.includes('rathaus'));
       if (!rathausSolved) {
